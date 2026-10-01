@@ -589,6 +589,66 @@
       "license_status": "unknown",
       "description": "Risa malvada de gato (0.8 s): remates",
       "notes": "Recorte 0.2-1.0 s del original, mono 48 kHz, pico normalizado."
+    },
+    {
+      "id": "bg_theme_sakura",
+      "type": "background_video",
+      "path": "assets/backgrounds/bg_theme_sakura.mp4",
+      "tags": [
+        "fondo",
+        "loop",
+        "tema",
+        "sakura"
+      ],
+      "loop": true,
+      "source": "generado por src/autopilot/backgrounds.ts (tema sakura)",
+      "license": "propio",
+      "license_status": "owned"
+    },
+    {
+      "id": "bg_theme_matrix",
+      "type": "background_video",
+      "path": "assets/backgrounds/bg_theme_matrix.mp4",
+      "tags": [
+        "fondo",
+        "loop",
+        "tema",
+        "matrix"
+      ],
+      "loop": true,
+      "source": "generado por src/autopilot/backgrounds.ts (tema matrix)",
+      "license": "propio",
+      "license_status": "owned"
+    },
+    {
+      "id": "bg_theme_sunset",
+      "type": "background_video",
+      "path": "assets/backgrounds/bg_theme_sunset.mp4",
+      "tags": [
+        "fondo",
+        "loop",
+        "tema",
+        "sunset"
+      ],
+      "loop": true,
+      "source": "generado por src/autopilot/backgrounds.ts (tema sunset)",
+      "license": "propio",
+      "license_status": "owned"
+    },
+    {
+      "id": "bg_theme_ocean",
+      "type": "background_video",
+      "path": "assets/backgrounds/bg_theme_ocean.mp4",
+      "tags": [
+        "fondo",
+        "loop",
+        "tema",
+        "ocean"
+      ],
+      "loop": true,
+      "source": "generado por src/autopilot/backgrounds.ts (tema ocean)",
+      "license": "propio",
+      "license_status": "owned"
     }
   ]
 }

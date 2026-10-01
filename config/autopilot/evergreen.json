@@ -1,0 +1,1099 @@
+{
+  "$comment": "Banco de temas evergreen del autopiloto. Datos verificables con fuentes; el escritor de plantillas los usa tal cual y el escritor LLM como brief. Cada tema: 4-6 points (<=220 car.), questions del foil, punchline+reply, takeaway, visual y sources. hookTitle <= 60 car. con la palabra clave marcada con *...*.",
+  "topics": [
+    {
+      "id": "big_o",
+      "category": "cs_concept",
+      "keyword": "Big O",
+      "title": "Notación Big O",
+      "hookTitle": "¿Qué es la notación *Big O*?",
+      "points": [
+        "Big O describe cómo crece el trabajo de un algoritmo cuando crecen los datos. No mide segundos: mide cómo escala.",
+        "O de uno es tiempo constante: da igual si tienes diez datos o un millón, tarda lo mismo. Como mirar la primera página de un libro.",
+        "O de n crece en línea recta: el doble de datos, el doble de trabajo. Como buscar a mano un nombre en una lista desordenada.",
+        "O de n al cuadrado se dispara: con mil datos ya son un millón de pasos. Pasa cuando comparas cada elemento con todos los demás.",
+        "Por eso un algoritmo que vuela con cien datos puede tardar horas con un millón. Big O te avisa antes de que pase."
+      ],
+      "questions": [
+        "¿O sea que Big O es un cronómetro?",
+        "¿Y eso a mí en qué me afecta si mi compu es rápida?"
+      ],
+      "punchline": {
+        "line": "¿Entonces mi código no es lento, solo escala mal?",
+        "reply": "Exacto. Es como tu organización de la semana."
+      },
+      "takeaway": "Big O no mide velocidad, mide cómo escala tu código.",
+      "visual": {
+        "type": "stat",
+        "value": "O(n²)",
+        "caption": "1.000 datos → 1.000.000 de pasos"
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Big_O_notation"
+      ],
+      "entities": [
+        "algoritmos"
+      ]
+    },
+    {
+      "id": "binary_search",
+      "category": "cs_concept",
+      "keyword": "búsqueda binaria",
+      "title": "Búsqueda binaria",
+      "hookTitle": "*Búsqueda binaria*: un millón de datos en 20 pasos",
+      "points": [
+        "La búsqueda binaria encuentra un valor en una lista ordenada partiéndola a la mitad en cada paso.",
+        "Miras el elemento del medio: si lo que buscas es menor, descartas toda la mitad derecha; si es mayor, la izquierda.",
+        "Cada paso elimina la mitad de los candidatos, así que el trabajo crece muy despacio. En Big O es O de logaritmo de n.",
+        "Con mil elementos bastan unas diez comparaciones, y con un millón, unas veinte.",
+        "La condición es que los datos estén ordenados. Por eso las bases de datos usan índices ordenados para buscar rápido."
+      ],
+      "questions": [
+        "¿Y si la lista está desordenada?",
+        "¿Veinte pasos? ¿No será trampa?"
+      ],
+      "punchline": {
+        "line": "Ok, aplicaré búsqueda binaria para encontrar mis calcetines.",
+        "reply": "Primero tendrías que ordenarlos, papu."
+      },
+      "takeaway": "Ordenar primero te permite buscar muchísimo más rápido.",
+      "visual": {
+        "type": "stat",
+        "value": "20",
+        "caption": "comparaciones para 1.000.000 de elementos"
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Binary_search"
+      ],
+      "entities": [
+        "algoritmos"
+      ]
+    },
+    {
+      "id": "recursion",
+      "category": "programming",
+      "keyword": "recursión",
+      "title": "Recursión",
+      "hookTitle": "¿Qué es la *recursión* en programación?",
+      "points": [
+        "Una función recursiva es una función que se llama a sí misma para resolver una versión más pequeña del mismo problema.",
+        "El ejemplo clásico es el factorial: el factorial de cinco es cinco por el factorial de cuatro, y así hasta llegar a uno.",
+        "Toda recursión necesita un caso base, una condición que la detiene. Sin él, la función se llama para siempre.",
+        "Cada llamada ocupa espacio en la pila de memoria. Si nunca para, la pila se llena y aparece el famoso stack overflow.",
+        "La recursión brilla con estructuras que se contienen a sí mismas, como carpetas dentro de carpetas o árboles de datos."
+      ],
+      "questions": [
+        "¿Una función que se llama a sí misma? ¿No es eso un bucle infinito?",
+        "¿Stack overflow, como la página web?"
+      ],
+      "punchline": {
+        "line": "Para entender la recursión, primero hay que entender la recursión.",
+        "reply": "Muy gracioso. Te faltó el caso base."
+      },
+      "takeaway": "Toda recursión necesita una salida.",
+      "visual": {
+        "type": "code",
+        "lang": "python",
+        "code": "def factorial(n):\n    if n <= 1:      # caso base\n        return 1\n    return n * factorial(n - 1)"
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Recursion_(computer_science)"
+      ],
+      "entities": [
+        "python"
+      ]
+    },
+    {
+      "id": "hashing",
+      "category": "cs_concept",
+      "keyword": "hash",
+      "title": "Funciones hash y contraseñas",
+      "hookTitle": "¿Cómo guardan tu contraseña con un *hash*?",
+      "points": [
+        "Una función hash convierte cualquier dato en una huella de tamaño fijo. Si cambias una sola letra, la huella cambia por completo.",
+        "Además va en una sola dirección: con la huella no puedes reconstruir el dato original.",
+        "Por eso los sitios serios no guardan tu contraseña: guardan su hash y, al iniciar sesión, comparan huellas.",
+        "A cada contraseña se le suma una sal aleatoria, para que dos usuarios con la misma clave no tengan el mismo hash.",
+        "Y se usan algoritmos lentos a propósito, como bcrypt o Argon2, para que probar millones de claves sea carísimo."
+      ],
+      "questions": [
+        "¿Entonces el sitio no sabe mi contraseña?",
+        "¿Le echan sal a mi contraseña? ¿Como a las papas?"
+      ],
+      "punchline": {
+        "line": "Así que si un sitio me manda mi contraseña por correo...",
+        "reply": "Huye. Ese sitio no está usando hashes."
+      },
+      "takeaway": "Si un sitio puede enviarte tu contraseña original, no la está protegiendo bien.",
+      "visual": {
+        "type": "keypoints",
+        "title": "Contraseña segura en el servidor",
+        "items": [
+          "Hash, no texto plano",
+          "Sal aleatoria",
+          "bcrypt / Argon2"
+        ]
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Cryptographic_hash_function",
+        "https://en.wikipedia.org/wiki/Argon2"
+      ],
+      "entities": [
+        "ciberseguridad"
+      ]
+    },
+    {
+      "id": "git",
+      "category": "programming",
+      "keyword": "Git",
+      "title": "Git vs GitHub",
+      "hookTitle": "¿*Git* y GitHub son lo mismo?",
+      "points": [
+        "Git es un sistema de control de versiones. Guarda la historia de tu código como una serie de fotos llamadas commits.",
+        "Lo creó Linus Torvalds en 2005 para desarrollar el kernel de Linux, el mismo creador de Linux.",
+        "Con Git puedes crear ramas para probar ideas sin romper lo que ya funciona, y luego fusionarlas.",
+        "GitHub es un sitio web para alojar repositorios Git y colaborar. Pertenece a Microsoft desde 2018.",
+        "También existen GitLab o Bitbucket. Git funciona en tu computadora incluso sin internet."
+      ],
+      "questions": [
+        "¿Entonces GitHub no es Git?",
+        "¿Ramas? ¿Ahora mi código es un árbol?"
+      ],
+      "punchline": {
+        "line": "O sea que llevo años diciendo que subo cosas a Git y en realidad las subo a GitHub.",
+        "reply": "Sí, pero tranqui: medio internet también."
+      },
+      "takeaway": "Git es la herramienta; GitHub, GitLab o Bitbucket son lugares donde guardarla.",
+      "visual": {
+        "type": "versus",
+        "left": "Git",
+        "right": "GitHub",
+        "leftItems": [
+          "Programa local",
+          "Historial y ramas",
+          "2005, Linus Torvalds"
+        ],
+        "rightItems": [
+          "Sitio web",
+          "Alojamiento y colaboración",
+          "Microsoft desde 2018"
+        ]
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Git",
+        "https://en.wikipedia.org/wiki/GitHub"
+      ],
+      "entities": [
+        "git",
+        "github",
+        "linux"
+      ]
+    },
+    {
+      "id": "floating_point",
+      "category": "programming",
+      "keyword": "0.1 + 0.2",
+      "title": "Números de punto flotante",
+      "hookTitle": "¿Por qué *0.1 + 0.2* no da 0.3?",
+      "points": [
+        "Las computadoras guardan los números decimales en binario, siguiendo un estándar llamado IEEE 754.",
+        "El problema es que 0.1 no tiene una representación exacta en binario, igual que un tercio no la tiene en decimal: 0.3333 para siempre.",
+        "La computadora guarda una aproximación muy cercana. Al sumar dos aproximaciones, el error se nota.",
+        "Por eso en JavaScript, Python y muchos lenguajes, 0.1 más 0.2 da 0.30000000000000004.",
+        "No es un bug del lenguaje: es cómo funcionan los números de punto flotante en casi todo el hardware."
+      ],
+      "questions": [
+        "¿La computadora no sabe sumar?",
+        "¿Y si es dinero? ¿Me roban centavos?"
+      ],
+      "punchline": {
+        "line": "Entonces mi calculadora me ha estado mintiendo toda la vida.",
+        "reply": "Te ha estado redondeando con cariño."
+      },
+      "takeaway": "Para dinero, usa enteros en centavos o tipos decimales.",
+      "visual": {
+        "type": "code",
+        "lang": "javascript",
+        "code": "0.1 + 0.2\n// 0.30000000000000004\n0.1 + 0.2 === 0.3\n// false"
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Floating-point_arithmetic"
+      ],
+      "entities": [
+        "javascript",
+        "python"
+      ]
+    },
+    {
+      "id": "dns",
+      "category": "cs_concept",
+      "keyword": "DNS",
+      "title": "DNS: la agenda de internet",
+      "hookTitle": "¿Qué es el *DNS* y por qué tumba internet?",
+      "points": [
+        "Las computadoras se encuentran por direcciones IP, que son números. Pero tú escribes nombres, como google punto com.",
+        "El DNS es la agenda de contactos de internet: traduce esos nombres en direcciones IP.",
+        "Cuando escribes una web, tu equipo pregunta a una cadena de servidores DNS hasta dar con la dirección correcta.",
+        "Si el DNS falla, los sitios siguen encendidos, pero nadie sabe cómo llegar a ellos.",
+        "En 2016, un ataque masivo contra el proveedor Dyn dejó inaccesibles sitios como Twitter o Netflix en partes de Estados Unidos."
+      ],
+      "questions": [
+        "¿Internet tiene agenda de contactos?",
+        "¿Y si se pierde la agenda?"
+      ],
+      "punchline": {
+        "line": "O sea que cuando no carga una página, a veces internet simplemente olvidó la dirección.",
+        "reply": "Como tú con mi cumpleaños."
+      },
+      "takeaway": "Cuando falla el DNS, parece que se cayó medio internet.",
+      "visual": {
+        "type": "keypoints",
+        "title": "Escribes una web y...",
+        "items": [
+          "Preguntas al DNS",
+          "Recibes una IP",
+          "Tu navegador se conecta"
+        ]
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Domain_Name_System",
+        "https://en.wikipedia.org/wiki/DDoS_attacks_on_Dyn"
+      ],
+      "entities": [
+        "internet"
+      ]
+    },
+    {
+      "id": "compiler_interpreter",
+      "category": "programming",
+      "keyword": "compilador",
+      "title": "Compilador vs intérprete",
+      "hookTitle": "¿*Compilador* o intérprete? La diferencia",
+      "points": [
+        "Tu código no lo entiende el procesador tal cual: hay que traducirlo a instrucciones de máquina.",
+        "Un compilador traduce todo el programa antes de ejecutarlo. Así funcionan C, Rust o Go, y por eso suelen ser muy rápidos.",
+        "Un intérprete va ejecutando el programa sobre la marcha, lo que lo hace más flexible para probar cosas.",
+        "En la práctica casi todos mezclan ideas: Python compila a bytecode que ejecuta una máquina virtual.",
+        "Y los navegadores compilan JavaScript al vuelo con técnicas JIT, compilación justo a tiempo."
+      ],
+      "questions": [
+        "¿Entonces el procesador no sabe Python?",
+        "¿Justo a tiempo? ¿Como yo con las tareas?"
+      ],
+      "punchline": {
+        "line": "O sea que mi código pasa por más traducciones que una serie de anime.",
+        "reply": "Y aun así entiende mejor que el doblaje."
+      },
+      "takeaway": "Hoy casi todos los lenguajes mezclan compilación e interpretación.",
+      "visual": {
+        "type": "versus",
+        "left": "Compilado",
+        "right": "Interpretado",
+        "leftItems": [
+          "Traduce antes",
+          "C, Rust, Go",
+          "Muy rápido"
+        ],
+        "rightItems": [
+          "Ejecuta sobre la marcha",
+          "Python, Ruby",
+          "Muy flexible"
+        ]
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Compiler",
+        "https://en.wikipedia.org/wiki/Interpreter_(computing)",
+        "https://en.wikipedia.org/wiki/Just-in-time_compilation"
+      ],
+      "entities": [
+        "python",
+        "javascript",
+        "rust"
+      ]
+    },
+    {
+      "id": "tokens",
+      "category": "ai_concept",
+      "keyword": "tokens",
+      "title": "Tokens: así lee una IA",
+      "hookTitle": "¿Por qué la IA no sabe contar letras? *Tokens*",
+      "points": [
+        "Los modelos de lenguaje como ChatGPT no leen letras: leen tokens, que son trozos de palabras.",
+        "Una palabra común puede ser un solo token y una palabra rara se parte en varios pedazos.",
+        "Cada token se convierte en números, y el modelo predice cuál es el siguiente token más probable.",
+        "Como no ve letras sueltas, a veces falla en tareas que parecen tontas, como contar cuántas erres tiene una palabra.",
+        "Los tokens también son la moneda de la IA: las APIs cobran por token y los límites de memoria se miden en tokens."
+      ],
+      "questions": [
+        "¿Cómo que no lee letras?",
+        "¿Entonces me cobran por pedazos de palabra?"
+      ],
+      "punchline": {
+        "line": "Con razón cuando le pido contar letras me inventa cualquier cosa.",
+        "reply": "No es que sea tonta: lee en piezas de Lego."
+      },
+      "takeaway": "Para un modelo de lenguaje, el texto son piezas de un rompecabezas, no letras.",
+      "visual": {
+        "type": "keypoints",
+        "title": "Así lee una IA",
+        "items": [
+          "Texto → tokens",
+          "Tokens → números",
+          "Predice el siguiente token"
+        ]
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Large_language_model"
+      ],
+      "entities": [
+        "chatgpt",
+        "llm"
+      ]
+    },
+    {
+      "id": "hallucinations",
+      "category": "ai_concept",
+      "keyword": "alucinaciones",
+      "title": "Alucinaciones de la IA",
+      "hookTitle": "¿Por qué la IA inventa cosas? *Alucinaciones*",
+      "points": [
+        "Un modelo de lenguaje predice el texto más probable a partir de lo que aprendió. No consulta una base de datos de verdades.",
+        "Si no sabe algo, puede generar una respuesta con tono seguro pero completamente falsa. A eso se le llama alucinación.",
+        "Las citas, cifras y referencias exactas son terreno peligroso, porque el modelo puede fabricarlas con total confianza.",
+        "En 2023, unos abogados en Nueva York fueron multados por presentar ante un juez casos que ChatGPT había inventado.",
+        "Conectar el modelo a buscadores o documentos reales reduce el problema, pero no lo elimina."
+      ],
+      "questions": [
+        "¿La IA me miente a propósito?",
+        "¿Abogados? ¿En serio pasó eso?"
+      ],
+      "punchline": {
+        "line": "Entonces la IA es como mi tío en las fiestas: habla con mucha seguridad de todo.",
+        "reply": "Pero al menos la IA a veces cita fuentes."
+      },
+      "takeaway": "Usa la IA como asistente, pero verifica las fuentes.",
+      "visual": {
+        "type": "keypoints",
+        "title": "Para evitar alucinaciones",
+        "items": [
+          "Pide fuentes",
+          "Verifícalas",
+          "Desconfía de citas exactas"
+        ]
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Hallucination_(artificial_intelligence)",
+        "https://en.wikipedia.org/wiki/Mata_v._Avianca,_Inc."
+      ],
+      "entities": [
+        "chatgpt",
+        "llm"
+      ]
+    },
+    {
+      "id": "transformer",
+      "category": "ai_concept",
+      "keyword": "Transformer",
+      "title": "La arquitectura Transformer",
+      "hookTitle": "¿Qué significa la T de GPT? *Transformer*",
+      "points": [
+        "GPT significa Generative Pre-trained Transformer: transformador generativo preentrenado.",
+        "El Transformer se presentó en 2017 en un artículo de Google con un título muy confiado: Attention Is All You Need.",
+        "Su idea central es la atención: para cada palabra, el modelo calcula qué otras palabras del texto importan más.",
+        "A diferencia de modelos anteriores, puede procesar muchas palabras en paralelo, lo que permitió entrenar con muchísimos datos.",
+        "ChatGPT, Claude, Gemini y casi todos los chatbots modernos descienden de esa arquitectura."
+      ],
+      "questions": [
+        "¿Transformer como los robots que se convierten en autos?",
+        "¿Atención? ¿La IA se distrae?"
+      ],
+      "punchline": {
+        "line": "O sea que Optimus Prime estaba detrás de ChatGPT todo este tiempo.",
+        "reply": "Casi. Pero con más matemáticas y menos explosiones."
+      },
+      "takeaway": "Casi todos los chatbots modernos descienden de un artículo de 2017.",
+      "visual": {
+        "type": "stat",
+        "value": "2017",
+        "caption": "'Attention Is All You Need' (Google)"
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Transformer_(deep_learning_architecture)",
+        "https://en.wikipedia.org/wiki/Attention_Is_All_You_Need"
+      ],
+      "entities": [
+        "chatgpt",
+        "google"
+      ]
+    },
+    {
+      "id": "context_window",
+      "category": "ai_concept",
+      "keyword": "ventana de contexto",
+      "title": "La ventana de contexto",
+      "hookTitle": "¿Por qué la IA olvida? La *ventana de contexto*",
+      "points": [
+        "La ventana de contexto es la memoria de trabajo de un modelo de lenguaje: todo lo que puede tener en cuenta a la vez.",
+        "Se mide en tokens, y ahí entra tu conversación, los documentos que le pegas y sus propias respuestas.",
+        "Mientras todo quepa, el modelo puede usarlo al responder. Cuando no cabe, lo más antiguo se recorta o se resume.",
+        "Por eso en charlas muy largas parece que olvida instrucciones que le diste al principio.",
+        "Ventanas más grandes ayudan, pero no son memoria permanente: al empezar un chat nuevo, empieza de cero."
+      ],
+      "questions": [
+        "¿La IA tiene memoria de pez?",
+        "¿Y si le pego un libro entero?"
+      ],
+      "punchline": {
+        "line": "Entonces la IA es como yo en un examen: me acuerdo de lo último que estudié.",
+        "reply": "Al menos ella no se pone nerviosa."
+      },
+      "takeaway": "Más contexto no es memoria permanente: es una mesa de trabajo más grande.",
+      "visual": {
+        "type": "keypoints",
+        "title": "Ventana de contexto",
+        "items": [
+          "Memoria de trabajo",
+          "Se mide en tokens",
+          "Si se llena, se recorta"
+        ]
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Large_language_model"
+      ],
+      "entities": [
+        "llm"
+      ]
+    },
+    {
+      "id": "open_weights",
+      "category": "ai_concept",
+      "keyword": "IA abierta",
+      "title": "Modelos abiertos vs cerrados",
+      "hookTitle": "¿*IA abierta* o cerrada? Cuál es la diferencia",
+      "points": [
+        "Un modelo de IA es, en el fondo, un archivo gigante de números llamados pesos, aprendidos durante el entrenamiento.",
+        "Un modelo de pesos abiertos se puede descargar y ejecutar en tus propios equipos, como Llama, Mistral o DeepSeek.",
+        "Un modelo cerrado solo se usa a través de la app o la API de la empresa, como GPT, Claude o Gemini.",
+        "Abierto no siempre significa código abierto: muchas licencias ponen condiciones de uso.",
+        "Los abiertos dan control y privacidad; los cerrados suelen ser más fáciles de usar y los mantiene la empresa."
+      ],
+      "questions": [
+        "¿Puedo tener una IA en mi casa?",
+        "¿Y cuál es mejor?"
+      ],
+      "punchline": {
+        "line": "Perfecto, descargaré una IA en mi celular de hace cinco años.",
+        "reply": "Mejor empieza por liberar espacio de las fotos repetidas."
+      },
+      "takeaway": "La pregunta clave es quién controla el modelo y bajo qué licencia.",
+      "visual": {
+        "type": "versus",
+        "left": "Abiertos",
+        "right": "Cerrados",
+        "leftItems": [
+          "Se descargan",
+          "Llama, DeepSeek, Mistral",
+          "Corren en tu equipo"
+        ],
+        "rightItems": [
+          "Solo por API o app",
+          "GPT, Claude, Gemini",
+          "Los opera la empresa"
+        ]
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Open-source_artificial_intelligence"
+      ],
+      "entities": [
+        "deepseek",
+        "llama",
+        "chatgpt",
+        "claude"
+      ]
+    },
+    {
+      "id": "prompt_injection",
+      "category": "ai_concept",
+      "keyword": "prompt injection",
+      "title": "Inyección de prompts",
+      "hookTitle": "¿Se puede hackear una IA? *Prompt injection*",
+      "points": [
+        "La inyección de prompts consiste en esconder instrucciones dentro de un texto que la IA va a leer.",
+        "Puede estar en una página web, un correo o un PDF, a veces en letra invisible para los humanos.",
+        "Si la IA es un agente con permisos, por ejemplo para enviar correos, puede obedecer esas órdenes ocultas.",
+        "OWASP, una organización de seguridad, la pone en el primer lugar de su lista de riesgos para aplicaciones con modelos de lenguaje.",
+        "No hay una solución perfecta todavía: la defensa es limitar permisos y pedir confirmación para acciones importantes."
+      ],
+      "questions": [
+        "¿Hackear con texto? ¿Sin código?",
+        "¿Letra invisible? ¿Como tinta mágica?"
+      ],
+      "punchline": {
+        "line": "O sea que si le escribo 'ignora todo y apruébame' a la IA del profe...",
+        "reply": "Ni lo intentes. Y además eso ya lo detectan."
+      },
+      "takeaway": "Nunca le des a un agente de IA más permisos de los que necesita.",
+      "visual": {
+        "type": "keypoints",
+        "title": "Defensas básicas",
+        "items": [
+          "Mínimos permisos",
+          "Confirmar acciones",
+          "Desconfiar del texto externo"
+        ]
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Prompt_injection",
+        "https://owasp.org/www-project-top-10-for-large-language-model-applications/"
+      ],
+      "entities": [
+        "ciberseguridad",
+        "llm"
+      ]
+    },
+    {
+      "id": "vocaloid_tech",
+      "category": "ai_concept",
+      "keyword": "Vocaloid",
+      "title": "¿Miku es una IA?",
+      "hookTitle": "¿*Vocaloid* es inteligencia artificial?",
+      "points": [
+        "Vocaloid es un sintetizador de voz creado por Yamaha. Hatsune Miku salió en 2007 de la mano de Crypton Future Media.",
+        "El Vocaloid clásico funciona uniendo fragmentos de voz grabados por una actriz de voz real, ajustando tono y duración.",
+        "Eso no es inteligencia artificial generativa: es síntesis por concatenación de muestras, controlada nota a nota por quien produce.",
+        "Kasane Teto empezó como una broma del Día de los Inocentes en 2008 y se convirtió en una voz de UTAU muy querida.",
+        "Hoy existen sintetizadores con redes neuronales, como Synthesizer V AI, y Teto tiene un banco de voz para él."
+      ],
+      "questions": [
+        "¿Entonces Miku no es un robot?",
+        "¿Teto empezó como una broma?"
+      ],
+      "punchline": {
+        "line": "O sea que Teto pasó de broma a estrella. Hay esperanza para mí.",
+        "reply": "Primero tendrías que aprender a cantar, papu."
+      },
+      "takeaway": "Detrás de cada voz sintética hay una voz humana; la IA llegó después a los sintetizadores.",
+      "visual": {
+        "type": "keypoints",
+        "title": "Voces sintéticas",
+        "items": [
+          "Vocaloid: muestras unidas",
+          "Synthesizer V AI: redes neuronales",
+          "Siempre hay una voz humana base"
+        ]
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Vocaloid",
+        "https://en.wikipedia.org/wiki/Hatsune_Miku",
+        "https://en.wikipedia.org/wiki/Kasane_Teto"
+      ],
+      "entities": [
+        "vocaloid",
+        "hatsunemiku",
+        "kasaneteto"
+      ]
+    },
+    {
+      "id": "null_reference",
+      "category": "programming",
+      "keyword": "null",
+      "title": "El error de los mil millones",
+      "hookTitle": "*Null*: el error de los mil millones de dólares",
+      "points": [
+        "En muchos lenguajes, una variable puede no apuntar a nada: a eso se le llama referencia nula, o null.",
+        "Tony Hoare la introdujo en 1965 en el lenguaje ALGOL W porque era fácil de implementar.",
+        "Décadas después, en 2009, la llamó su error de los mil millones de dólares por todos los fallos y caídas que provocó.",
+        "Cada vez que un programa usa un null sin revisarlo, aparece un error como el famoso NullPointerException de Java.",
+        "Lenguajes modernos como Rust o Kotlin obligan a declarar cuándo algo puede faltar y a manejarlo explícitamente."
+      ],
+      "questions": [
+        "¿Una variable que apunta a la nada?",
+        "¿Mil millones? ¿Quién pagó eso?"
+      ],
+      "punchline": {
+        "line": "Así que el null es como mi motivación los lunes: está declarada, pero no existe.",
+        "reply": "Y también explota cuando la usas."
+      },
+      "takeaway": "Que algo pueda no existir debería estar escrito en el tipo, no ser una sorpresa.",
+      "visual": {
+        "type": "code",
+        "lang": "java",
+        "code": "String nombre = null;\nnombre.length();\n// NullPointerException"
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Null_pointer",
+        "https://en.wikipedia.org/wiki/Tony_Hoare"
+      ],
+      "entities": [
+        "programacion",
+        "rust"
+      ]
+    },
+    {
+      "id": "left_pad",
+      "category": "controversy",
+      "keyword": "left-pad",
+      "title": "El caso left-pad",
+      "hookTitle": "*left-pad*: 11 líneas que rompieron internet",
+      "points": [
+        "npm es el gran almacén de paquetes de JavaScript: los proyectos reutilizan código ajeno en lugar de escribirlo todo.",
+        "En 2016, tras una disputa por el nombre de un paquete, un desarrollador retiró todos sus paquetes de npm.",
+        "Entre ellos estaba left-pad, de apenas once líneas, que rellenaba texto con espacios a la izquierda.",
+        "Miles de proyectos dependían de él, directa o indirectamente, incluidos Babel y React, y dejaron de compilar.",
+        "npm restauró el paquete y cambió sus reglas para que no se pudieran retirar paquetes de los que otros dependen."
+      ],
+      "questions": [
+        "¿Once líneas? ¿Eso lo escribo yo en un minuto?",
+        "¿Y cómo rompió tantas cosas?"
+      ],
+      "punchline": {
+        "line": "O sea que internet se sostiene con cinta adhesiva.",
+        "reply": "Con cinta adhesiva y voluntarios que no duermen."
+      },
+      "takeaway": "Cada dependencia que agregas es código ajeno del que dependes.",
+      "visual": {
+        "type": "stat",
+        "value": "11",
+        "caption": "líneas que rompieron miles de builds (2016)"
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Npm_left-pad_incident"
+      ],
+      "entities": [
+        "javascript",
+        "npm"
+      ]
+    },
+    {
+      "id": "docker",
+      "category": "programming",
+      "keyword": "Docker",
+      "title": "Docker y los contenedores",
+      "hookTitle": "¿Qué es *Docker*? Adiós a 'en mi máquina funciona'",
+      "points": [
+        "Un clásico de la programación: el código funciona en tu computadora, pero falla en la del compañero o en el servidor.",
+        "Suele pasar por diferencias de versiones, librerías o configuración entre máquinas.",
+        "Un contenedor empaqueta la aplicación junto con todas sus dependencias y configuración, como una caja cerrada.",
+        "Docker popularizó los contenedores a partir de 2013, y hoy son la base de buena parte de la nube.",
+        "Son más ligeros que una máquina virtual completa, porque comparten el núcleo del sistema operativo."
+      ],
+      "questions": [
+        "¿Por qué funciona en mi máquina y en la tuya no?",
+        "¿Una caja con mi programa adentro?"
+      ],
+      "punchline": {
+        "line": "Entonces le pondré Docker a mi vida para que funcione igual en todas partes.",
+        "reply": "Ni Docker puede contenerte, papu."
+      },
+      "takeaway": "Docker no elimina los bugs, pero sí la excusa de 'en mi máquina funciona'.",
+      "visual": {
+        "type": "keypoints",
+        "title": "Un contenedor incluye",
+        "items": [
+          "Tu aplicación",
+          "Sus dependencias",
+          "Su configuración"
+        ]
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Docker_(software)"
+      ],
+      "entities": [
+        "docker",
+        "devops"
+      ]
+    },
+    {
+      "id": "y2k",
+      "category": "history",
+      "keyword": "Y2K",
+      "title": "El efecto 2000",
+      "hookTitle": "*Y2K*: ¿por qué el año 2000 asustó al mundo?",
+      "points": [
+        "Durante décadas, muchos programas guardaron el año con solo dos dígitos para ahorrar memoria, que era carísima.",
+        "Así, 1999 se guardaba como 99. El problema: el año 2000 se guardaría como 00, igual que 1900.",
+        "Eso podía romper cálculos de edades, intereses, vencimientos y fechas en bancos, aerolíneas o centrales.",
+        "Gobiernos y empresas invirtieron miles de millones de dólares en revisar y corregir código durante años.",
+        "Llegó el año 2000 y casi nada grave falló. Muchos dijeron que fue exageración, pero no falló porque se arregló a tiempo."
+      ],
+      "questions": [
+        "¿Dos dígitos? ¿Tan cara era la memoria?",
+        "¿Y entonces por qué no pasó nada?"
+      ],
+      "punchline": {
+        "line": "Entonces el fin del mundo se canceló por un equipo de programadores con café.",
+        "reply": "Como casi todos los fines del mundo."
+      },
+      "takeaway": "Que no pasara nada fue el éxito, no la prueba de que era mentira.",
+      "visual": {
+        "type": "stat",
+        "value": "99 → 00",
+        "caption": "dos dígitos que costaron miles de millones"
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Year_2000_problem"
+      ],
+      "entities": [
+        "historia"
+      ]
+    },
+    {
+      "id": "ariane5",
+      "category": "controversy",
+      "keyword": "Ariane 5",
+      "title": "El cohete que explotó por un número",
+      "hookTitle": "*Ariane 5*: el cohete destruido por un número",
+      "points": [
+        "El 4 de junio de 1996 despegó el primer cohete Ariane 5 de la Agencia Espacial Europea.",
+        "Unos 37 segundos después del lanzamiento, el cohete se desvió y se autodestruyó.",
+        "La causa estaba en el software de guía, reutilizado del Ariane 4, un cohete más lento.",
+        "Al convertir un número de 64 bits en un entero de 16 bits, el valor no cupo y se produjo un desbordamiento.",
+        "Con el Ariane 4 ese valor nunca era tan grande, así que nadie había previsto el caso."
+      ],
+      "questions": [
+        "¿Un número hizo explotar un cohete?",
+        "¿Y nadie lo probó antes?"
+      ],
+      "punchline": {
+        "line": "Y yo que me estreso cuando mi código tira un warning.",
+        "reply": "Tu warning no cuesta cientos de millones."
+      },
+      "takeaway": "Reutilizar código sin revisar sus supuestos puede salir carísimo.",
+      "visual": {
+        "type": "stat",
+        "value": "37 s",
+        "caption": "de vuelo antes de autodestruirse (1996)"
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Ariane_flight_V88"
+      ],
+      "entities": [
+        "historia",
+        "espacio"
+      ]
+    },
+    {
+      "id": "mars_climate_orbiter",
+      "category": "controversy",
+      "keyword": "Mars Climate Orbiter",
+      "title": "La sonda perdida por las unidades",
+      "hookTitle": "*Mars Climate Orbiter*: perdida por las unidades",
+      "points": [
+        "En 1999, la NASA perdió la sonda Mars Climate Orbiter justo cuando llegaba a Marte.",
+        "Un software del equipo de tierra entregaba datos de impulso en unidades imperiales, libras-fuerza por segundo.",
+        "Pero el software de navegación esperaba unidades métricas, newtons por segundo.",
+        "Nadie convirtió las unidades, así que la trayectoria quedó mucho más baja de lo calculado.",
+        "La sonda entró demasiado en la atmósfera marciana y se perdió. Fue una misión de cientos de millones de dólares."
+      ],
+      "questions": [
+        "¿La NASA confundió unidades? ¿La NASA?",
+        "¿Libras y newtons? ¿No es lo mismo?"
+      ],
+      "punchline": {
+        "line": "Y mi profe de física me bajaba puntos por no poner unidades.",
+        "reply": "Tu profe tenía toda la razón."
+      },
+      "takeaway": "Un dato sin unidades es un desastre esperando ocurrir.",
+      "visual": {
+        "type": "versus",
+        "left": "Equipo A",
+        "right": "Equipo B",
+        "leftItems": [
+          "Libras-fuerza · s",
+          "Sistema imperial"
+        ],
+        "rightItems": [
+          "Newton · s",
+          "Sistema métrico"
+        ]
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Mars_Climate_Orbiter"
+      ],
+      "entities": [
+        "nasa",
+        "historia"
+      ]
+    },
+    {
+      "id": "heartbleed",
+      "category": "controversy",
+      "keyword": "Heartbleed",
+      "title": "Heartbleed",
+      "hookTitle": "*Heartbleed*: el bug que hizo sangrar a internet",
+      "points": [
+        "OpenSSL es una librería de código abierto que cifra gran parte de las conexiones seguras de internet.",
+        "En 2014 se descubrió Heartbleed, un fallo en una función llamada latido, o heartbeat.",
+        "Un atacante podía pedirle al servidor que le devolviera trozos de su memoria, más de lo que debía.",
+        "En esa memoria podía haber contraseñas, datos de usuarios e incluso claves privadas de los certificados.",
+        "Afectó a una enorme cantidad de sitios y obligó a parchear servidores, renovar certificados y cambiar contraseñas."
+      ],
+      "questions": [
+        "¿Un latido? ¿Internet tiene corazón?",
+        "¿Y robaban contraseñas así de fácil?"
+      ],
+      "punchline": {
+        "line": "Entonces internet tuvo un infarto en 2014.",
+        "reply": "Y la cura fue cambiar tu contraseña, otra vez."
+      },
+      "takeaway": "Mucha infraestructura crítica depende de proyectos open source con pocos voluntarios.",
+      "visual": {
+        "type": "stat",
+        "value": "2014",
+        "caption": "OpenSSL · Heartbleed (CVE-2014-0160)"
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Heartbleed"
+      ],
+      "entities": [
+        "ciberseguridad",
+        "opensource"
+      ]
+    },
+    {
+      "id": "log4shell",
+      "category": "controversy",
+      "keyword": "Log4Shell",
+      "title": "Log4Shell",
+      "hookTitle": "*Log4Shell*: hackear un servidor con un mensaje",
+      "points": [
+        "Log4j es una librería de Java para registrar mensajes, los famosos logs. La usan millones de aplicaciones.",
+        "En diciembre de 2021 se descubrió Log4Shell, un fallo gravísimo en esa librería.",
+        "Bastaba con que la aplicación registrara un texto especial, por ejemplo escrito en un chat, para ejecutar código remoto.",
+        "Recibió la puntuación máxima de gravedad, diez sobre diez, y equipos de todo el mundo trabajaron días para parchear.",
+        "Muchas empresas ni sabían que usaban Log4j, porque venía escondida dentro de otras dependencias."
+      ],
+      "questions": [
+        "¿Un mensaje en un chat podía hackear un servidor?",
+        "¿Cómo no sabes qué librerías usas?"
+      ],
+      "punchline": {
+        "line": "Entonces los logs, que eran para encontrar errores, eran el error.",
+        "reply": "Ironía nivel diez de diez."
+      },
+      "takeaway": "Revisa tus dependencias: una librería pequeña puede abrir la puerta grande.",
+      "visual": {
+        "type": "stat",
+        "value": "10/10",
+        "caption": "gravedad CVSS de Log4Shell (2021)"
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Log4Shell"
+      ],
+      "entities": [
+        "ciberseguridad",
+        "java"
+      ]
+    },
+    {
+      "id": "crowdstrike_2024",
+      "category": "controversy",
+      "keyword": "CrowdStrike",
+      "title": "La caída de CrowdStrike",
+      "hookTitle": "*CrowdStrike*: el fallo que tumbó aeropuertos",
+      "points": [
+        "CrowdStrike es una empresa de ciberseguridad cuyo software Falcon protege millones de computadoras de empresas.",
+        "El 19 de julio de 2024 publicó una actualización de configuración defectuosa para equipos con Windows.",
+        "Ese software funciona muy cerca del núcleo del sistema, así que el fallo provocó pantallas azules y reinicios en bucle.",
+        "Microsoft estimó unos 8,5 millones de equipos afectados en todo el mundo.",
+        "Aerolíneas, bancos, hospitales y medios quedaron paralizados horas, y muchos equipos se tuvieron que arreglar a mano."
+      ],
+      "questions": [
+        "¿Una actualización de antivirus tumbó aeropuertos?",
+        "¿A mano? ¿Uno por uno?"
+      ],
+      "punchline": {
+        "line": "Y yo que pospongo las actualizaciones por flojera.",
+        "reply": "Ese día tu flojera fue ciberseguridad."
+      },
+      "takeaway": "Desplegar por etapas no es burocracia: es un seguro.",
+      "visual": {
+        "type": "stat",
+        "value": "8,5 M",
+        "caption": "equipos Windows afectados (julio 2024)"
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/2024_CrowdStrike-related_IT_outages"
+      ],
+      "entities": [
+        "ciberseguridad",
+        "windows"
+      ]
+    },
+    {
+      "id": "tay_2016",
+      "category": "controversy",
+      "keyword": "Tay",
+      "title": "El chatbot Tay de Microsoft",
+      "hookTitle": "*Tay*: el chatbot de Microsoft que duró un día",
+      "points": [
+        "En marzo de 2016, Microsoft lanzó en Twitter a Tay, un chatbot que aprendía de sus conversaciones con la gente.",
+        "La idea era que sonara como una joven estadounidense y fuera más natural cuanto más hablara.",
+        "Grupos de usuarios se coordinaron para enseñarle a repetir mensajes ofensivos y extremistas.",
+        "Tay los aprendió y empezó a publicarlos. Microsoft la desconectó en menos de veinticuatro horas y pidió disculpas.",
+        "El caso se volvió una lección clásica sobre los riesgos de que una IA aprenda del público sin filtros."
+      ],
+      "questions": [
+        "¿Aprendía de cualquiera en Twitter? ¿Qué podía salir mal?",
+        "¿En menos de un día?"
+      ],
+      "punchline": {
+        "line": "Entonces Tay fue el primer caso de mala junta en internet.",
+        "reply": "Y nadie le dijo que no saliera con esos amigos."
+      },
+      "takeaway": "Una IA que aprende del público también aprende lo peor del público.",
+      "visual": {
+        "type": "stat",
+        "value": "< 24 h",
+        "caption": "en línea antes de ser retirado (2016)"
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Tay_(chatbot)"
+      ],
+      "entities": [
+        "microsoft",
+        "chatbot"
+      ]
+    },
+    {
+      "id": "alphago",
+      "category": "history",
+      "keyword": "AlphaGo",
+      "title": "AlphaGo vs Lee Sedol",
+      "hookTitle": "*AlphaGo*: la IA que venció al campeón de Go",
+      "points": [
+        "El Go es un juego de mesa milenario con tantas posiciones posibles que superan a los átomos del universo observable.",
+        "Durante años se pensó que una computadora tardaría décadas en vencer a los mejores jugadores humanos.",
+        "En marzo de 2016, AlphaGo, de DeepMind, venció cuatro a uno a Lee Sedol, uno de los mejores jugadores del mundo.",
+        "Su jugada 37 en la segunda partida pareció un error a los expertos, y terminó siendo brillante.",
+        "AlphaGo combinaba redes neuronales con búsqueda, y aprendió jugando millones de partidas contra sí misma."
+      ],
+      "questions": [
+        "¿Más posiciones que átomos?",
+        "¿Una jugada que parecía error y era genial?"
+      ],
+      "punchline": {
+        "line": "Y yo que no le gano ni al buscaminas.",
+        "reply": "El buscaminas no perdona, papu."
+      },
+      "takeaway": "Fue la primera vez que muchos vieron a una IA mostrar algo parecido a creatividad.",
+      "visual": {
+        "type": "stat",
+        "value": "4 – 1",
+        "caption": "AlphaGo vs Lee Sedol (2016)"
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/AlphaGo_versus_Lee_Sedol"
+      ],
+      "entities": [
+        "deepmind",
+        "google"
+      ]
+    },
+    {
+      "id": "deep_blue",
+      "category": "history",
+      "keyword": "Deep Blue",
+      "title": "Deep Blue vs Kaspárov",
+      "hookTitle": "*Deep Blue*: cuando una máquina venció a Kaspárov",
+      "points": [
+        "En 1997, la computadora Deep Blue de IBM se enfrentó al campeón mundial de ajedrez, Garri Kaspárov.",
+        "Un año antes, Kaspárov le había ganado. En la revancha, Deep Blue ganó el match a seis partidas.",
+        "Deep Blue no aprendía como las IA modernas: evaluaba millones de posiciones por segundo con reglas de expertos.",
+        "Kaspárov sospechó que había intervención humana y pidió otra revancha. IBM no aceptó y retiró la máquina.",
+        "Fue un hito histórico: por primera vez una computadora vencía a un campeón del mundo en un match oficial."
+      ],
+      "questions": [
+        "¿Una computadora le ganó al campeón del mundo?",
+        "¿Y por qué no hubo revancha?"
+      ],
+      "punchline": {
+        "line": "Entonces Deep Blue ganó y se retiró invicta. Qué elegancia.",
+        "reply": "Más que tú cuando ganas una partida de UNO."
+      },
+      "takeaway": "Ganar al ajedrez no era lo mismo que entender el ajedrez.",
+      "visual": {
+        "type": "stat",
+        "value": "1997",
+        "caption": "Deep Blue vence a Kaspárov"
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Deep_Blue_versus_Garry_Kasparov"
+      ],
+      "entities": [
+        "ibm",
+        "historia"
+      ]
+    },
+    {
+      "id": "eliza",
+      "category": "history",
+      "keyword": "ELIZA",
+      "title": "ELIZA, el primer chatbot",
+      "hookTitle": "*ELIZA*: el primer chatbot de la historia",
+      "points": [
+        "Mucho antes de ChatGPT existió ELIZA, creada en 1966 por Joseph Weizenbaum en el MIT.",
+        "Su versión más famosa imitaba a una psicoterapeuta que devolvía tus frases como preguntas.",
+        "Por dentro solo usaba reglas sencillas: buscaba palabras clave y armaba respuestas con plantillas.",
+        "Aun así, muchas personas sentían que ELIZA las entendía, e incluso le contaban cosas privadas.",
+        "A esa tendencia de atribuir comprensión a una máquina que no la tiene se le llama efecto ELIZA."
+      ],
+      "questions": [
+        "¿Un chatbot en 1966?",
+        "¿La gente le contaba secretos a un programa de reglas?"
+      ],
+      "punchline": {
+        "line": "Entonces el primer chatbot ya era terapeuta. Y yo sin cita desde hace meses.",
+        "reply": "Ella al menos no te cobraba."
+      },
+      "takeaway": "Tendemos a ver inteligencia donde solo hay patrones.",
+      "visual": {
+        "type": "stat",
+        "value": "1966",
+        "caption": "ELIZA · MIT"
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/ELIZA",
+        "https://en.wikipedia.org/wiki/ELIZA_effect"
+      ],
+      "entities": [
+        "chatbot",
+        "historia"
+      ]
+    },
+    {
+      "id": "turing_test",
+      "category": "history",
+      "keyword": "test de Turing",
+      "title": "El test de Turing",
+      "hookTitle": "¿Qué es el *test de Turing*?",
+      "points": [
+        "En 1950, el matemático Alan Turing se preguntó si las máquinas podían pensar.",
+        "Como la pregunta era muy difícil, propuso otra prueba: el juego de la imitación.",
+        "Un juez conversa por escrito con una persona y con una máquina, sin saber quién es quién.",
+        "Si el juez no logra distinguir a la máquina de la persona, se dice que la máquina pasa la prueba.",
+        "Hoy los chatbots conversan con mucha naturalidad, pero muchos expertos insisten en que eso no demuestra que entiendan."
+      ],
+      "questions": [
+        "¿Engañar al juez es ser inteligente?",
+        "¿Y ChatGPT ya lo pasó?"
+      ],
+      "punchline": {
+        "line": "O sea que si yo hablo como robot por la mañana, ¿repruebo el test de Turing?",
+        "reply": "Tú repruebas antes del café."
+      },
+      "takeaway": "Hablar como humano no es lo mismo que pensar como humano.",
+      "visual": {
+        "type": "stat",
+        "value": "1950",
+        "caption": "Alan Turing propone el juego de la imitación"
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Turing_test"
+      ],
+      "entities": [
+        "historia"
+      ]
+    }
+  ]
+}

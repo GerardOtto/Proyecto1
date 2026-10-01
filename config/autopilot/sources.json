@@ -1,0 +1,27 @@
+{
+  "$comment": "Fuentes de noticias del autopiloto. Las URLs deben verificarse con `npm run autopilot -- --check-feeds` (no se pudieron probar en el entorno de desarrollo). weight multiplica la puntuacion; lang ayuda a priorizar fuentes en espanol.",
+  "maxAgeHours": 72,
+  "feeds": [
+    { "id": "xataka", "url": "https://www.xataka.com/feedburner.xml", "lang": "es", "weight": 1.2 },
+    { "id": "genbeta", "url": "https://www.genbeta.com/feedburner.xml", "lang": "es", "weight": 1.1 },
+    { "id": "hipertextual", "url": "https://hipertextual.com/feed", "lang": "es", "weight": 1.0 },
+    { "id": "techcrunch_ai", "url": "https://techcrunch.com/category/artificial-intelligence/feed/", "lang": "en", "weight": 1.0 },
+    { "id": "theverge_ai", "url": "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml", "lang": "en", "weight": 1.0 },
+    { "id": "arstechnica", "url": "https://feeds.arstechnica.com/arstechnica/technology-lab", "lang": "en", "weight": 0.9 },
+    { "id": "hackernews", "url": "https://hnrss.org/frontpage?points=150", "lang": "en", "weight": 0.9 }
+  ],
+  "keywords": {
+    "$comment": "Peso por termino (minusculas, sin acentos). Se busca en titulo + resumen.",
+    "ia": 3, "inteligencia artificial": 4, "artificial intelligence": 4, "ai": 2, "llm": 4, "modelo de lenguaje": 4,
+    "openai": 4, "chatgpt": 5, "gpt": 3, "anthropic": 4, "claude": 4, "gemini": 4, "google deepmind": 4, "deepseek": 5,
+    "meta ai": 3, "llama": 3, "mistral": 3, "qwen": 3, "grok": 3, "xai": 2, "copilot": 3, "nvidia": 3, "gpu": 2,
+    "chip": 2, "open source": 2, "codigo abierto": 2, "programacion": 3, "programming": 3, "python": 2, "javascript": 2,
+    "rust": 2, "linux": 2, "github": 2, "ciberseguridad": 3, "vulnerabilidad": 3, "hack": 2, "filtracion": 3,
+    "breach": 3, "outage": 2, "caida": 2, "robot": 2, "agente": 2, "agent": 2, "deepfake": 3, "regulacion": 2,
+    "ley de ia": 3, "copyright": 2, "derechos de autor": 2, "vocaloid": 6, "hatsune miku": 6, "anime": 2,
+    "videojuego": 1, "quantum": 2, "cuantica": 2
+  },
+  "blocklist": ["sorteo", "oferta", "descuento", "rebaja", "black friday", "cupon", "deal", "sponsored", "patrocinado", "muerte", "asesinato", "suicidio"],
+  "minScore": 6,
+  "freshnessHalfLifeHours": 24
+}

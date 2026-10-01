@@ -1,0 +1,102 @@
+{
+  "plan": {
+    "episodeId": "ep_20261002_crowdstrike_2024",
+    "date": "2026-10-02",
+    "topic": {
+      "id": "crowdstrike_2024",
+      "kind": "evergreen",
+      "category": "controversy",
+      "keyword": "CrowdStrike",
+      "title": "La caída de CrowdStrike",
+      "hookTitle": "*CrowdStrike*: el fallo que tumbó aeropuertos",
+      "points": [
+        "CrowdStrike es una empresa de ciberseguridad cuyo software Falcon protege millones de computadoras de empresas.",
+        "El 19 de julio de 2024 publicó una actualización de configuración defectuosa para equipos con Windows.",
+        "Ese software funciona muy cerca del núcleo del sistema, así que el fallo provocó pantallas azules y reinicios en bucle.",
+        "Microsoft estimó unos 8,5 millones de equipos afectados en todo el mundo.",
+        "Aerolíneas, bancos, hospitales y medios quedaron paralizados horas, y muchos equipos se tuvieron que arreglar a mano."
+      ],
+      "questions": [
+        "¿Una actualización de antivirus tumbó aeropuertos?",
+        "¿A mano? ¿Uno por uno?"
+      ],
+      "punchline": {
+        "line": "Y yo que pospongo las actualizaciones por flojera.",
+        "reply": "Ese día tu flojera fue ciberseguridad."
+      },
+      "takeaway": "Desplegar por etapas no es burocracia: es un seguro.",
+      "visual": {
+        "type": "stat",
+        "value": "8,5 M",
+        "caption": "equipos Windows afectados (julio 2024)"
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/2024_CrowdStrike-related_IT_outages"
+      ],
+      "entities": [
+        "ciberseguridad",
+        "windows"
+      ]
+    },
+    "format": "controversy_story",
+    "structure": [
+      "hook",
+      "meme",
+      "context",
+      "explain",
+      "twist",
+      "punchline",
+      "takeaway",
+      "cta"
+    ],
+    "targetSec": 85,
+    "casting": {
+      "host": "luka",
+      "foil": "teto"
+    },
+    "theme": "sunset",
+    "seed": "2026-10-02:1:crowdstrike_2024"
+  },
+  "writer": "template",
+  "estimatedMs": 64947,
+  "lint": [],
+  "sfx": [
+    {
+      "line": 12,
+      "character": "luka",
+      "rule": "hook_drama",
+      "sfx": "sfx_dramatic_boomer",
+      "anchor": "end"
+    },
+    {
+      "line": 37,
+      "character": "luka",
+      "rule": "insight",
+      "sfx": "sfx_ding",
+      "anchor": "end"
+    },
+    {
+      "line": 55,
+      "character": "luka",
+      "rule": "surprise",
+      "sfx": "sfx_vine_boom",
+      "anchor": "start"
+    },
+    {
+      "line": 64,
+      "character": "luka",
+      "rule": "laugh",
+      "sfx": "sfx_evil_laugh",
+      "anchor": "end"
+    },
+    {
+      "line": 73,
+      "character": "teto",
+      "rule": "teto_signature",
+      "sfx": "sfx_teto_wav",
+      "anchor": "end"
+    }
+  ],
+  "notes": [],
+  "status": "needs_review"
+}

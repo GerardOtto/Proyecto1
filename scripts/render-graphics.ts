@@ -4,30 +4,12 @@
 // Uso: npm run graphics [-- <nombre.html>]
 import fs from "node:fs";
 import path from "node:path";
-import { pathToFileURL } from "node:url";
 import { main } from "../src/utils/cli";
-import { run } from "../src/utils/exec";
+import { findChrome, screenshotHtml } from "../src/utils/chrome";
 import { log } from "../src/utils/log";
 import { fromRepo, toRepoRel } from "../src/utils/paths";
 
 const SRC_DIR = fromRepo("assets/visuals/src");
-
-const findChrome = (): string => {
-  const env = process.env.REMOTION_BROWSER_EXECUTABLE;
-  if (env && fs.existsSync(env)) return env;
-  const base = fromRepo("node_modules/.remotion/chrome-headless-shell");
-  const exe = process.platform === "win32" ? "chrome-headless-shell.exe" : "chrome-headless-shell";
-  const stack = fs.existsSync(base) ? [base] : [];
-  while (stack.length) {
-    const dir = stack.pop()!;
-    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
-      const p = path.join(dir, e.name);
-      if (e.isDirectory()) stack.push(p);
-      else if (e.name === exe) return p;
-    }
-  }
-  throw new Error("No se encontro chrome-headless-shell (ejecuta un render una vez o define REMOTION_BROWSER_EXECUTABLE)");
-};
 
 const readTarget = (html: string): { out: string; width: number; height: number } => {
   const m = /<meta name="output" content="([^"]+)" data-width="(\d+)" data-height="(\d+)"/.exec(html);
@@ -42,22 +24,12 @@ main(async () => {
     .filter((f) => f.endsWith(".html") && (!only || f === only))
     .sort();
   if (files.length === 0) throw new Error(`No hay HTML en ${toRepoRel(SRC_DIR)}${only ? ` con nombre ${only}` : ""}`);
-  const chrome = findChrome();
+  findChrome();
   for (const f of files) {
     const file = path.join(SRC_DIR, f);
     const { out, width, height } = readTarget(fs.readFileSync(file, "utf8"));
     fs.mkdirSync(path.dirname(out), { recursive: true });
-    await run(chrome, [
-      "--headless",
-      "--disable-gpu",
-      "--hide-scrollbars",
-      "--force-device-scale-factor=1",
-      "--default-background-color=00000000",
-      `--window-size=${width},${height}`,
-      "--virtual-time-budget=3000", // espera a fuentes e imagenes
-      `--screenshot=${out}`,
-      pathToFileURL(file).href,
-    ]);
+    await screenshotHtml({ file, out, width, height });
     if (!fs.existsSync(out) || fs.statSync(out).size === 0) throw new Error(`${f}: no se genero ${toRepoRel(out)}`);
     log.ok(`${f} -> ${toRepoRel(out)} (${width}x${height})`);
   }

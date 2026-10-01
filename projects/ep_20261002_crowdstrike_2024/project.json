@@ -1,0 +1,27 @@
+{
+  "$schema": "../../schemas/project.schema.json",
+  "title": "La caída de CrowdStrike",
+  "language": "es",
+  "durationTargetSec": 85,
+  "background": "bg_theme_sunset",
+  "director": "rules",
+  "tts": "files",
+  "transcriber": "auto",
+  "assets": [
+    {
+      "id": "ep_main",
+      "type": "diagram",
+      "path": "visuals/ep_main.png",
+      "tags": [
+        "autopilot",
+        "controversy",
+        "ciberseguridad",
+        "windows"
+      ],
+      "safeArea": true,
+      "source": "generado por src/autopilot/graphics.ts (ep_20261002_crowdstrike_2024)",
+      "license": "propio",
+      "license_status": "owned"
+    }
+  ]
+}

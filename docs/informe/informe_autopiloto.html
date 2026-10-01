@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Informe — Autopiloto de producción @tetociencia</title>
+<style>
+  @font-face { font-family: "Montserrat"; font-weight: 800; src: url("../../assets/fonts/montserrat-latin-800-normal.woff2") format("woff2"); }
+  @font-face { font-family: "Montserrat"; font-weight: 900; src: url("../../assets/fonts/montserrat-latin-900-normal.woff2") format("woff2"); }
+  @page { size: A4; margin: 18mm 16mm 18mm 16mm; }
+  :root { --ink: #1d2033; --muted: #5d6280; --line: #d9dcea; --accent: #39c5bb; --teto: #e58fb5; --warn: #b5651d; --bad: #b3261e; --ok: #1e7a4c; --soft: #f3f5fb; }
+  * { box-sizing: border-box; }
+  body { font-family: "DejaVu Sans", Arial, sans-serif; color: var(--ink); font-size: 10.2pt; line-height: 1.45; margin: 0; }
+  h1, h2, h3 { font-family: "Montserrat", "DejaVu Sans", sans-serif; font-weight: 900; color: var(--ink); }
+  h1 { font-size: 26pt; margin: 0 0 6px; line-height: 1.1; }
+  h2 { font-size: 15pt; margin: 22px 0 8px; padding-bottom: 4px; border-bottom: 3px solid var(--accent); page-break-after: avoid; }
+  h3 { font-size: 11.5pt; margin: 14px 0 6px; page-break-after: avoid; }
+  p { margin: 0 0 8px; }
+  ul, ol { margin: 0 0 8px; padding-left: 20px; }
+  li { margin-bottom: 3px; }
+  code { font-family: "DejaVu Sans Mono", monospace; font-size: 8.8pt; background: var(--soft); padding: 1px 4px; border-radius: 4px; }
+  pre { font-family: "DejaVu Sans Mono", monospace; font-size: 8.4pt; background: #1d2033; color: #e8ebff; padding: 10px 12px; border-radius: 8px; white-space: pre-wrap; page-break-inside: avoid; }
+  table { width: 100%; border-collapse: collapse; margin: 6px 0 12px; font-size: 9pt; page-break-inside: auto; }
+  tr { page-break-inside: avoid; }
+  th { background: #1d2033; color: #fff; text-align: left; padding: 6px 7px; font-weight: 700; }
+  td { border-bottom: 1px solid var(--line); padding: 5px 7px; vertical-align: top; }
+  tr:nth-child(even) td { background: #fafbfe; }
+  .cover { height: 245mm; display: flex; flex-direction: column; justify-content: center; page-break-after: always; }
+  .kicker { font-family: "Montserrat", sans-serif; font-weight: 800; color: var(--accent); letter-spacing: 3px; font-size: 11pt; margin-bottom: 10px; }
+  .subtitle { font-size: 13pt; color: var(--muted); margin-bottom: 26px; }
+  .meta { font-size: 10pt; color: var(--muted); }
+  .bar { height: 8px; width: 120px; background: linear-gradient(90deg, var(--teto), var(--accent)); border-radius: 4px; margin: 18px 0; }
+  .box { background: var(--soft); border-left: 5px solid var(--accent); padding: 10px 12px; border-radius: 6px; margin: 8px 0 12px; page-break-inside: avoid; }
+  .box.warn { border-left-color: var(--warn); background: #fff7ee; }
+  .box.bad { border-left-color: var(--bad); background: #fdf1f0; }
+  .box h3 { margin-top: 0; }
+  .pill { display: inline-block; font-size: 8pt; font-weight: 700; padding: 1px 7px; border-radius: 10px; color: #fff; white-space: nowrap; }
+  .ok { background: var(--ok); } .partial { background: var(--warn); } .no { background: var(--bad); } .info { background: #4d6bfe; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .num { text-align: right; white-space: nowrap; }
+  .small { font-size: 8.6pt; color: var(--muted); }
+  .flow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 8px 0 12px; }
+  .step { border: 1.5px solid var(--line); border-radius: 8px; padding: 6px 8px; font-size: 8.8pt; page-break-inside: avoid; }
+  .step b { font-family: "Montserrat", sans-serif; display: block; color: #1d2033; font-size: 9.5pt; }
+  .page-break { page-break-before: always; }
+</style>
+</head>
+<body>
+
+<section class="cover">
+  <div class="kicker">SHORT-VIDEO-ENGINE · @TETOCIENCIA</div>
+  <h1>Autopiloto de producción<br>de videos cortos</h1>
+  <div class="subtitle">Informe de estado: lo que se tiene, lo que se necesita, presupuesto y consejos</div>
+  <div class="bar"></div>
+  <p class="meta"><b>Fecha:</b> 1 de octubre de 2026<br>
+  <b>Repositorio:</b> GerardOtto/Proyecto1 · rama <code>claude/laughing-pasteur-y6cyjy</code><br>
+  <b>Documentación técnica:</b> <code>docs/11_AUTOPILOT.md</code> · <code>docs/adr/0007-autopiloto.md</code><br>
+  <b>Estado:</b> implementado y probado sin conexión; listo para tu revisión y una primera corrida local con claves reales.</p>
+</section>
+
+<h2>1. Resumen ejecutivo</h2>
+<p>Se construyó un <b>autopiloto</b> (<code>npm run autopilot</code>) encima del motor existente. Produce episodios con el <b>mismo formato</b> del demo:
+saludo "¡Papu papu!", rótulo con palabra clave, meme, explicación por turnos, remate y llamada a la acción. En cada episodio varía:</p>
+<ul>
+  <li><b>personajes y roles</b> (presentador, contraparte y, a veces, invitado), sin repetir la misma pareja;</li>
+  <li><b>colores</b> (cinco temas visuales con fondos animados y gráficos propios);</li>
+  <li><b>efectos de sonido</b>, colocados según la reacción, la sección y el personaje;</li>
+  <li><b>tema</b>: noticias de IA e informática o, si no hay, conceptos de Computer Science, IA, programación, polémicas e historia.</li>
+</ul>
+<div class="box">
+  <h3>Qué se verificó en este entorno</h3>
+  <ul>
+    <li>Se planificaron y escribieron 3 episodios distintos (temas, parejas, paletas y formatos), todos válidos para el motor.</li>
+    <li>Un episodio (AlphaGo vs Lee Sedol) se produjo de punta a punta: voces de prueba (flite), reajuste a <b>67,6 s</b> con el audio real, render en ~5 min y QA con todos los checks <i>hard</i> en PASS (licencias en aviso).</li>
+    <li><b>190 tests en verde.</b> Entre ellos, uno que genera y valida un guion para cada uno de los 29 temas del banco (duración de 62 a 115 s, rótulo que cabe, turnos correctos). Lint y typecheck limpios.</li>
+  </ul>
+</div>
+<div class="box warn">
+  <h3>Lo que no se pudo probar aquí (sin red ni claves)</h3>
+  <p>La lectura real de feeds de noticias, el escritor con Claude (sí se probó con un proveedor simulado), las voces de Fish Audio y el modelo de whisper.cpp.
+  Todo está implementado, pero su primera corrida debe hacerse en tu máquina (sección 6).</p>
+</div>
+
+<h2>2. Cómo funciona</h2>
+<div class="flow">
+  <div class="step"><b>1 · Fuentes</b>RSS/Atom de medios en español e inglés → puntuación por nicho y frescura → agrupado de la misma noticia en varias fuentes.</div>
+  <div class="step"><b>2 · Banco evergreen</b>Si no hay noticias nuevas (o no hay escritor LLM): 29 temas con datos verificables y fuentes.</div>
+  <div class="step"><b>3 · Plan</b>Tema + formato + casting por roles + tema visual. Determinista: no repite tema, pareja ni paleta.</div>
+  <div class="step"><b>4 · Gráficos</b>Tarjetas propias (cifra, ideas clave, código, comparación, titular) con la paleta del tema. Licencia propia.</div>
+  <div class="step"><b>5 · Guion</b>Escritor de plantilla (gratis, sin conexión) o escritor LLM (noticias), en el formato del motor.</div>
+  <div class="step"><b>6 · SFX</b>Reglas por <i>tags</i>: shock → golpe dramático, risa → risa, idea → ding, firma de Teto, sin pasarse de 7.</div>
+  <div class="step"><b>7 · Revisión</b>Lint editorial + validador del motor. El episodio queda en <i>needs_review</i>.</div>
+  <div class="step"><b>8 · Producción</b><code>--produce</code>: voces, transcripción, reajuste al audio, render y QA (pipeline existente).</div>
+  <div class="step"><b>9 · Publicación</b>Textos para TikTok, Instagram y YouTube, hashtags, comentario fijado, horario (CDMX) y checklist.</div>
+</div>
+<pre>npm run autopilot                                   # 1 episodio listo para revisar
+npm run autopilot -- --batch 3                      # semana tipo (máx. 1 noticia)
+npm run autopilot -- --episode &lt;id&gt; --produce       # producir tras revisar
+npm run autopilot -- --check-feeds                  # probar las fuentes de noticias
+npm run autopilot -- --make-backgrounds             # fondos de los temas visuales
+npm run avatars:ingest -- --character rin --from &lt;carpeta de renders&gt;</pre>
+
+<h2>3. Lo que se tiene</h2>
+<table>
+  <tr><th style="width:26%">Componente</th><th>Qué hace</th><th style="width:16%">Estado</th></tr>
+  <tr><td>Motor de video (previo)</td><td>Guion etiquetado → timeline validado → voces → reajuste → Remotion → MP4 1080x1920 + SRT + reporte QA. Rótulo de gancho, b-roll, marca de agua, música opcional.</td><td><span class="pill ok">En producción</span></td></tr>
+  <tr><td>Noticias (<code>news.ts</code>)</td><td>Lector RSS/Atom, palabras clave del nicho con peso, bloqueo de ofertas o temas sensibles, frescura (vida media de 24 h), agrupado y deduplicación contra el historial.</td><td><span class="pill partial">Probado con fixtures</span></td></tr>
+  <tr><td>Banco evergreen</td><td>29 temas: 4 conceptos de CS, 7 de IA (incluido "¿Miku es IA?"), 6 de programación, 7 polémicas (left-pad, Heartbleed, Log4Shell, CrowdStrike…) y 5 de historia. Cada uno con 5 puntos, preguntas, remate, idea final, visual y fuentes.</td><td><span class="pill ok">Listo</span></td></tr>
+  <tr><td>Planificador</td><td>Formatos: noticia explicada, concepto en 80 s, historia de una polémica y mito o realidad. Casting por roles, solo con personajes "listos". Temas visuales por categoría.</td><td><span class="pill ok">Listo</span></td></tr>
+  <tr><td>Escritor de plantilla</td><td>Turnos intercalados; cada pregunta va después del dato con el que se relaciona; remate propio del tema; relleno si queda corto. Gratis y reproducible.</td><td><span class="pill ok">Listo</span></td></tr>
+  <tr><td>Escritor LLM</td><td>Prompt con el formato, el demo de ejemplo, el catálogo y el casting. Usa solo los hechos del brief y devuelve las afirmaciones a verificar. Se valida y reintenta hasta 3 veces.</td><td><span class="pill partial">Probado con mock</span></td></tr>
+  <tr><td>Director de SFX</td><td>Elige efectos por <i>tags</i> del catálogo según reacción, sección y personaje; respeta un máximo y una separación; no toca lo marcado a mano.</td><td><span class="pill ok">Listo</span></td></tr>
+  <tr><td>Gráficos y fondos</td><td>Generador HTML → PNG con 5 tipos de tarjeta y 5 paletas; 4 fondos animados nuevos, generados con ffmpeg (licencia propia).</td><td><span class="pill ok">Listo</span></td></tr>
+  <tr><td>Kit de publicación</td><td>Descripciones según el estudio de distribución, hashtags (5/5/3), comentario fijado, horario en CDMX y checklist (incluida la etiqueta de IA).</td><td><span class="pill ok">Listo</span></td></tr>
+  <tr><td>Ingesta de avatares</td><td>Renders → quitar fondo (<code>remove-bg.py</code>) → tamaño acotado → nombres estándar → reacciones y variantes en <code>characters.json</code>. Crea personajes nuevos.</td><td><span class="pill ok">Listo</span></td></tr>
+  <tr><td>Historial</td><td><code>projects/_autopilot/history.json</code>: temas, noticias, parejas y paletas usados, y estado de cada episodio.</td><td><span class="pill ok">Listo</span></td></tr>
+</table>
+
+<h3>Personajes</h3>
+<table>
+  <tr><th>Personaje</th><th>Avatares</th><th>Voz (Fish Audio)</th><th>Roles en el autopiloto</th></tr>
+  <tr><td>Teto</td><td>Reales (renders MMD) + variantes</td><td>Configurada</td><td>Presentadora / contraparte</td></tr>
+  <tr><td>Miku</td><td>Reales + variantes</td><td>Configurada</td><td>Presentadora / contraparte</td></tr>
+  <tr><td>Luka</td><td>Reales + variantes</td><td>Configurada</td><td>Presentadora / contraparte / invitada</td></tr>
+  <tr><td>Rin</td><td><span class="pill no">Placeholder</span></td><td>Sin configurar</td><td>Excluida hasta tener avatares y voz</td></tr>
+  <tr><td>Len</td><td><span class="pill no">Placeholder</span></td><td>Sin configurar</td><td>Excluido hasta tener avatares y voz</td></tr>
+</table>
+
+<h2 class="page-break">4. Lo que se necesita</h2>
+<h3>Imprescindible para producir en serie</h3>
+<table>
+  <tr><th style="width:4%">#</th><th style="width:30%">Necesidad</th><th>Detalle</th></tr>
+  <tr><td>1</td><td>Revisión humana de cada guion</td><td>10–15 min por episodio: hechos contra las fuentes, tono, chistes y respeto a la comunidad. El autopiloto <b>no publica solo</b>, por diseño.</td></tr>
+  <tr><td>2</td><td>Voz de cada personaje del casting</td><td><code>voice.fish.referenceId</code> + <code>FISH_AUDIO_API_KEY</code> (o tu flujo actual de archivos con <code>--tts files</code>), y el saludo <code>assets/voice/&lt;id&gt;/papu_papu.mp3</code> por personaje.</td></tr>
+  <tr><td>3</td><td>Clave de Claude (<code>ANTHROPIC_API_KEY</code>)</td><td>Solo para <b>noticias</b> (y opcionalmente para dar más variedad a los evergreen). Sin clave, el autopiloto usa solo el banco evergreen.</td></tr>
+  <tr><td>4</td><td>Verificar las fuentes de noticias</td><td><code>npm run autopilot -- --check-feeds</code>. Ajusta las URLs y los pesos en <code>config/autopilot/sources.json</code>.</td></tr>
+  <tr><td>5</td><td>Modelo de whisper.cpp</td><td><code>npm run whisper:install</code>. Sin él, los subtítulos usan tiempos estimados (funciona, pero sincroniza peor).</td></tr>
+</table>
+<h3>Recomendado</h3>
+<ul>
+  <li><b>Avatares de Rin y Len</b> (y de nuevos personajes): renders con fondo claro uniforme, nombrados por reacción (<code>neutral.png</code>, <code>feliz_2.png</code>…), y luego <code>npm run avatars:ingest</code>.</li>
+  <li><b>Más SFX con tags</b> (risa, idea, transición, error, éxito) de una biblioteca con licencia. El director los usará sin tocar código.</li>
+  <li><b>Ampliar el banco evergreen</b> a 50–80 temas (≈ 4–6 meses a 3 videos por semana sin repetir). Los tests validan cada tema nuevo.</li>
+  <li><b>Plantillas de humor por personaje</b> (frases de firma, malentendidos típicos) para reforzar las personalidades.</li>
+</ul>
+<div class="box bad">
+  <h3>Bloqueante para monetizar: licencias</h3>
+  <p>Hoy el reporte marca <code>commercialUse: blocked</code>. Los avatares (renders MMD), la mayoría de los SFX, los memes y los GIFs de gatos tienen licencia <i>unknown</i>.
+  Las ilustraciones oficiales de Miku, Rin, Len y Luka usan CC BY-NC (no comercial), y Teto tiene guías propias. Antes de activar Creator Rewards o YouTube Partner:
+  reemplaza los SFX y memes por material licenciado, documenta el origen de cada avatar y revisa las guías de Crypton y de Teto para la monetización.</p>
+</div>
+
+<h2>5. Presupuesto</h2>
+<p class="small">Precios consultados en octubre de 2026 (verificar antes de contratar). Base: 3 videos por semana (≈ 13 al mes), de unos 80 s y ~1.300 caracteres de diálogo.</p>
+<table>
+  <tr><th style="width:24%">Concepto</th><th>Opción / precio de referencia</th><th class="num" style="width:15%">Costo / episodio</th><th class="num" style="width:15%">Costo / mes</th></tr>
+  <tr><td>Claude Code</td><td>Tu plan actual (desarrollo y mantenimiento)</td><td class="num">—</td><td class="num">ya cubierto</td></tr>
+  <tr><td>Escritor LLM (Claude API)</td><td>claude-opus-5-5: 4 USD/M tokens de entrada, 20 USD/M de salida. ~10 k de entrada y ~7 k de salida (con razonamiento) por intento; hasta 3 intentos</td><td class="num">0,20–0,60 USD</td><td class="num">3–8 USD</td></tr>
+  <tr><td>Voces (Fish Audio)</td><td>API ~15 USD por millón de caracteres, o plan Plus 15 USD/mes (~200 min). El plan gratuito (~7 min) da para pruebas</td><td class="num">≈ 0,02 USD (API)</td><td class="num">0,30 USD (API) · 15 USD (Plus)</td></tr>
+  <tr><td>SFX y música con licencia</td><td>Epidemic Sound Creator: 9,99 USD/mes (anual), permite monetizar canales personales. Pro: 16,99 USD/mes si hay trabajos para clientes</td><td class="num">—</td><td class="num">10–17 USD</td></tr>
+  <tr><td>Remotion</td><td>Licencia gratuita para individuos y equipos de hasta 3 personas (revisa los términos vigentes)</td><td class="num">—</td><td class="num">0 USD</td></tr>
+  <tr><td>Whisper.cpp, FFmpeg, Node</td><td>Locales y gratuitos</td><td class="num">—</td><td class="num">0 USD</td></tr>
+  <tr><td>Render</td><td>Tu PC: ~5 min por video de 75 s con 4 núcleos (electricidad despreciable)</td><td class="num">—</td><td class="num">≈ 0 USD</td></tr>
+  <tr><td>Avatares nuevos</td><td>Renders MMD propios (solo tiempo) o ilustraciones encargadas (precio variable según artista)</td><td class="num">—</td><td class="num">único / variable</td></tr>
+</table>
+<div class="grid">
+  <div class="box"><h3>Escenario mínimo · ≈ 0–15 USD/mes</h3>Solo temas evergreen (sin LLM), voces por API o con el plan gratuito/Plus, y SFX existentes. Sirve para validar el formato; <b>no monetizable</b> mientras haya licencias <i>unknown</i>.</div>
+  <div class="box"><h3>Escenario recomendado · ≈ 30–45 USD/mes</h3>Noticias con Claude, Fish Audio Plus y Epidemic Sound Creator. Material con licencia, listo para monetizar tras revisar los avatares.</div>
+</div>
+<p class="small">A modo de referencia: Creator Rewards de TikTok exige 10.000 seguidores, 100.000 visualizaciones en 30 días y videos de más de 60 s. El escenario recomendado se paga con pocos videos que funcionen.</p>
+
+<h2 class="page-break">6. Primera corrida en tu máquina (checklist)</h2>
+<ol>
+  <li><code>git pull</code> y <code>npm install</code>. Python con Pillow, numpy y scipy si vas a ingerir avatares.</li>
+  <li><code>npm run doctor</code> y <code>npm test</code> (deben dar 190 en verde).</li>
+  <li><code>npm run autopilot -- --check-feeds</code>: corrige las fuentes que fallen.</li>
+  <li><code>npm run autopilot -- --mode evergreen --tts files</code> (o <code>--tts fish</code>): revisa <code>projects/ep_…/script.md</code> y <code>autopilot.json</code> (avisos, SFX elegidos, notas).</li>
+  <li>Si el guion te convence: <code>npm run autopilot -- --episode &lt;id&gt; --produce</code>. Si no, edítalo a mano y produce.</li>
+  <li>Con <code>ANTHROPIC_API_KEY</code>: <code>npm run autopilot -- --mode news</code>. Verifica cada línea de <code>factClaims</code> contra las fuentes.</li>
+  <li>Publica con <code>output/&lt;id&gt;/publish/</code> (textos, horario y checklist). Marca el episodio como publicado en el historial (por ahora a mano).</li>
+</ol>
+
+<h2>7. Consejos</h2>
+<h3>Calidad y confianza</h3>
+<ul>
+  <li><b>Nunca publiques sin revisar.</b> En noticias, un error factual cuesta más que un video menos. El escritor LLM solo puede usar los hechos del brief, pero aun así puede equivocarse.</li>
+  <li><b>Etiqueta siempre el contenido de IA</b> en las tres plataformas (las voces imitan a personajes con voces humanas detrás). Es barato y la comunidad Vocaloid lo valora.</li>
+  <li><b>Varía de verdad.</b> YouTube penaliza el contenido masivo y con plantilla ("contenido no auténtico"). Alterna formatos, edita remates a mano y añade de vez en cuando episodios especiales hechos a mano.</li>
+  <li>Evita chistes sobre nacionalidades y política. El prompt del guionista lo prohíbe y la regla de SFX para confusión excluye los memes con tag "china". Revisa también los SFX marcados a mano.</li>
+</ul>
+<h3>Producción</h3>
+<ul>
+  <li><b>Lotes semanales:</b> un día, <code>--batch 3</code> + revisión (≈ 45 min); otro día, producción. Las noticias "calientes" van aparte y se publican de inmediato.</li>
+  <li><b>Haz crecer el banco evergreen</b> con temas que pida tu audiencia en los comentarios: es contenido gratuito, determinista y siempre disponible.</li>
+  <li>Cuida el <b>historial</b> (<code>history.json</code>) en git: es lo que evita repetir temas y parejas.</li>
+  <li>Mide y ajusta: retención, envíos por alcance y "visto frente a deslizado" (docs/10). Cambia <b>una sola</b> variable a la vez (formato, pareja, horario).</li>
+</ul>
+<h3>Técnicos</h3>
+<ul>
+  <li>No automatices capturas de artículos: riesgo de copyright, muros de pago y banners. Las tarjetas de titular propias son seguras.</li>
+  <li>Remotion está fijado en 4.0.530 a propósito (4.0.531 rompe Studio). Comprueba Studio antes de actualizar.</li>
+  <li>Si ejecutas como root (Docker/CI), Chrome necesita <code>--no-sandbox</code>; ya se aplica automáticamente en la generación de gráficos.</li>
+</ul>
+
+<h2>8. Próximos pasos sugeridos (priorizados)</h2>
+<table>
+  <tr><th style="width:4%">#</th><th>Paso</th><th style="width:20%">Esfuerzo</th></tr>
+  <tr><td>1</td><td>Primera corrida local completa (sección 6) y ajuste de feeds y prompts</td><td>1–2 h</td></tr>
+  <tr><td>2</td><td>Resolver licencias: SFX y memes licenciados, origen de los avatares documentado</td><td>2–4 h + suscripción</td></tr>
+  <tr><td>3</td><td>Avatares y voz de Rin y Len (ingesta + <code>referenceId</code> + saludo)</td><td>2–3 h</td></tr>
+  <tr><td>4</td><td>Ampliar el banco evergreen a 50+ temas</td><td>continuo</td></tr>
+  <tr><td>5</td><td>Comando para marcar episodios publicados y registrar métricas (retención, envíos)</td><td>2 h (agente)</td></tr>
+  <tr><td>6</td><td>Generación de hashtags por plataforma con el LLM (hoy, reglas + entidades)</td><td>1 h (agente)</td></tr>
+  <tr><td>7</td><td>Más reglas de SFX y memes por personaje (firmas de Miku y Luka)</td><td>1 h + assets</td></tr>
+  <tr><td>8</td><td>Opcional: programación semanal con un cron local que ejecute <code>--batch 3</code> y avise para revisar</td><td>1 h</td></tr>
+</table>
+
+<h2>Anexo · Archivos principales</h2>
+<table>
+  <tr><th style="width:38%">Ruta</th><th>Contenido</th></tr>
+  <tr><td><code>scripts/autopilot.ts</code></td><td>CLI del autopiloto</td></tr>
+  <tr><td><code>scripts/ingest-avatars.ts</code></td><td>CLI de ingesta de avatares</td></tr>
+  <tr><td><code>src/autopilot/</code></td><td>news, planner, template-writer, llm-writer, sfx-director, lint, graphics, backgrounds, publish, avatars, history, run</td></tr>
+  <tr><td><code>config/autopilot/</code></td><td>sources, evergreen (29 temas), formats, casting, themes, sfx-rules, humor</td></tr>
+  <tr><td><code>prompts/writer.system.md</code></td><td>Prompt del guionista LLM</td></tr>
+  <tr><td><code>schemas/evergreen.schema.json</code></td><td>Contrato del banco de temas</td></tr>
+  <tr><td><code>tests/autopilot-*.test.ts</code></td><td>Noticias, planificador, escritores, SFX, publicación, gráficos, avatares</td></tr>
+  <tr><td><code>assets/backgrounds/bg_theme_*.mp4</code></td><td>Fondos de los temas sakura, matrix, sunset y ocean</td></tr>
+  <tr><td><code>docs/11_AUTOPILOT.md</code>, <code>docs/adr/0007-autopiloto.md</code></td><td>Guía técnica y decisión de arquitectura</td></tr>
+</table>
+<p class="small">Fuentes de precios: Fish Audio (planes y API, reseñas de 2026), Epidemic Sound (planes de 2026), precios de la Claude API (oct. 2026). Licencias: Crypton/Piapro "For Creators" y guías de Kasane Teto (ver docs/09_LICENSING.md).</p>
+</body>
+</html>

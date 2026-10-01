@@ -1,0 +1,194 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://short-video-engine.local/schemas/evergreen.schema.json",
+  "title": "EvergreenBank",
+  "description": "Banco de temas evergreen del autopiloto (config/autopilot/evergreen.json).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "topics"
+  ],
+  "properties": {
+    "$comment": {
+      "type": "string"
+    },
+    "topics": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/definitions/topic"
+      }
+    }
+  },
+  "definitions": {
+    "topic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "category",
+        "keyword",
+        "title",
+        "hookTitle",
+        "points",
+        "takeaway",
+        "visual",
+        "sources",
+        "entities",
+        "questions",
+        "punchline"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9_]+$"
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "cs_concept",
+            "ai_concept",
+            "programming",
+            "controversy",
+            "history"
+          ]
+        },
+        "keyword": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 40
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "hookTitle": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "points": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 6,
+          "items": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 220
+          }
+        },
+        "takeaway": {
+          "type": "string",
+          "minLength": 5,
+          "maxLength": 200
+        },
+        "twist": {
+          "type": "string"
+        },
+        "example": {
+          "type": "string"
+        },
+        "visual": {
+          "$ref": "#/definitions/visual"
+        },
+        "sources": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^https?://"
+          }
+        },
+        "entities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "questions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 160
+          }
+        },
+        "punchline": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "line",
+            "reply"
+          ],
+          "properties": {
+            "line": {
+              "type": "string",
+              "minLength": 3
+            },
+            "reply": {
+              "type": "string",
+              "minLength": 2
+            }
+          }
+        }
+      }
+    },
+    "visual": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "stat",
+            "keypoints",
+            "code",
+            "versus"
+          ]
+        },
+        "value": {
+          "type": "string"
+        },
+        "caption": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "lang": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        },
+        "left": {
+          "type": "string"
+        },
+        "right": {
+          "type": "string"
+        },
+        "leftItems": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rightItems": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

@@ -10,6 +10,7 @@
   "scripts": {
     "doctor": "tsx scripts/doctor.ts",
     "assets:placeholders": "tsx scripts/make-placeholders.ts",
+    "avatars:ingest": "tsx scripts/ingest-avatars.ts",
     "graphics": "tsx scripts/render-graphics.ts",
     "catalog": "tsx scripts/catalog.ts",
     "analyze": "tsx scripts/analyze-script.ts",
@@ -19,6 +20,7 @@
     "validate": "tsx scripts/validate.ts",
     "render": "tsx scripts/render.ts",
     "generate": "tsx scripts/generate.ts",
+    "autopilot": "tsx scripts/autopilot.ts",
     "studio": "tsx scripts/studio.ts",
     "smoke": "tsx scripts/smoke.ts",
     "whisper:install": "tsx scripts/setup-whisper.ts",
@@ -39,6 +41,7 @@
     "@remotion/install-whisper-cpp": "4.0.530",
     "@remotion/renderer": "4.0.530",
     "ajv": "8.20.0",
+    "fast-xml-parser": "5.11.2",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "remotion": "4.0.530"

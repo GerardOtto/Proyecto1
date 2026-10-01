@@ -29,3 +29,6 @@ projects/*/render-plan.json
 projects/*/report.json
 # El timeline manual de ejemplo si se versiona
 !projects/manual_001/timeline.json
+
+# Autopiloto: volcados de noticias (se regeneran en cada corrida)
+projects/_autopilot/news-*.json

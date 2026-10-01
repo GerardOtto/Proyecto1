@@ -1,0 +1,30 @@
+{
+  "$comment": "Formatos de episodio. structure = secuencia de beats que siguen los escritores (plantilla y LLM).",
+  "formats": {
+    "news_explainer": {
+      "label": "Noticia explicada sin drama",
+      "for": ["news"],
+      "targetSec": 80,
+      "structure": ["hook", "meme", "context", "question", "explain", "visual", "punchline", "takeaway", "cta"]
+    },
+    "concept_lesson": {
+      "label": "Concepto de Computer Science en 80 s",
+      "for": ["cs_concept", "ai_concept", "programming"],
+      "targetSec": 80,
+      "structure": ["hook", "meme", "question", "explain", "example", "visual", "punchline", "takeaway", "cta"]
+    },
+    "controversy_story": {
+      "label": "La historia de una polemica",
+      "for": ["controversy", "history"],
+      "targetSec": 85,
+      "structure": ["hook", "meme", "context", "explain", "twist", "punchline", "takeaway", "cta"]
+    },
+    "myth_vs_fact": {
+      "label": "Mito o realidad",
+      "for": ["ai_concept", "cs_concept", "news"],
+      "targetSec": 75,
+      "structure": ["hook", "meme", "question", "explain", "visual", "punchline", "takeaway", "cta"]
+    }
+  },
+  "mix": { "news": 0.6, "evergreen": 0.4 }
+}

@@ -8,6 +8,7 @@ Especificacion completa: `docs/01_PRODUCT_SPEC.md` (plan original en `docs/plan/
 Estado actual y pendientes: `docs/STATUS.md`.
 Distribucion (horarios, descripciones, etiqueta de IA): `docs/10_DISTRIBUCION.md`.
 Rotulo de palabra clave en el gancho: implementado (`meta.hookTitle`, ADR 0006; `docs/10_DISTRIBUCION.md` §8).
+Autopiloto de produccion: `docs/11_AUTOPILOT.md` (ADR 0007; revision humana obligatoria antes de producir/publicar).
 
 ## Reglas (no negociables)
 1. No inventar paths de assets: todo se referencia por ID contra `config/*.json` (catalogo).
@@ -37,6 +38,8 @@ npm run generate -- --project projects/demo_001 [--tts fish|files|flite|silent] 
 npm run render   -- --project projects/demo_001 [--repro] [--safe-area]
 npm run validate -- --project projects/demo_001 [--draft] [--output]   # valida SIN renderizar
 npm run studio   -- --project projects/demo_001                        # preview en Remotion Studio
+npm run autopilot [-- --batch 3 | --produce | --episode <id> --produce]  # produccion automatica (docs/11)
+npm run avatars:ingest -- --character <id> --from <carpeta>           # renders -> avatares
 ```
 Pasos sueltos: `analyze`, `voices`, `transcribe`, `build-timeline` (ver `docs/07_PIPELINE.md`).
 
@@ -48,6 +51,8 @@ Pasos sueltos: `analyze`, `voices`, `transcribe`, `build-timeline` (ver `docs/07
 - `src/director/` — parser de guion, director `rules`, director LLM (`llm/`).
 - `src/tts/`, `src/transcribe/`, `src/audio/` — voz, timestamps (whisper.cpp / estimate), ffmpeg.
 - `src/pipeline/` — pasos, render (bundle+renderMedia), reporte/QA.
+- `src/autopilot/` — autopiloto: noticias/evergreen, plan, escritores, SFX, graficos, publicacion (ADR 0007).
+- `config/autopilot/` — fuentes, banco evergreen, formatos, casting, temas visuales, reglas SFX, humor.
 - `scripts/` — CLIs finos que llaman a `src/pipeline/steps.ts`.
 
 ## Modo de trabajo

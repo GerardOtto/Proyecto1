@@ -1,0 +1,28 @@
+{
+  "$schema": "../../schemas/project.schema.json",
+  "title": "Modelos abiertos vs cerrados",
+  "language": "es",
+  "durationTargetSec": 75,
+  "background": "bg_tech_loop",
+  "director": "rules",
+  "tts": "files",
+  "transcriber": "auto",
+  "assets": [
+    {
+      "id": "ep_main",
+      "type": "diagram",
+      "path": "visuals/ep_main.png",
+      "tags": [
+        "autopilot",
+        "ai_concept",
+        "deepseek",
+        "llama",
+        "chatgpt"
+      ],
+      "safeArea": true,
+      "source": "generado por src/autopilot/graphics.ts (ep_20261002_open_weights)",
+      "license": "propio",
+      "license_status": "owned"
+    }
+  ]
+}

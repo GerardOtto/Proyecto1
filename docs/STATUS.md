@@ -51,6 +51,9 @@ npm run generate -- --project projects/demo_001 --tts fish --repro
 ```
 
 ## Que falta / siguientes pasos sugeridos
+- **Autopiloto (v0.3.0)**: implementado y testeado offline (docs/11_AUTOPILOT.md). Pendiente en local:
+  verificar feeds (`npm run autopilot -- --check-feeds`), primera corrida del escritor LLM con noticias,
+  saludo pregrabado y voz de cada personaje del casting. Informe: docs/Informe_Autopiloto.pdf.
 0. **[HECHO] Rotulo de palabra clave en el gancho** (`meta.hookTitle` + `TitleCard`): especificacion
    completa, tests y criterios de aceptacion en `docs/10_DISTRIBUCION.md` §8. Requiere ADR 0006.
 1. **Assets reales**: reemplazar los placeholders de `assets/characters/*` (8 reacciones x 5

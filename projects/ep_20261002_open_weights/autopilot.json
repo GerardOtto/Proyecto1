@@ -1,0 +1,107 @@
+{
+  "plan": {
+    "episodeId": "ep_20261002_open_weights",
+    "date": "2026-10-02",
+    "topic": {
+      "id": "open_weights",
+      "kind": "evergreen",
+      "category": "ai_concept",
+      "keyword": "IA abierta",
+      "title": "Modelos abiertos vs cerrados",
+      "hookTitle": "¿*IA abierta* o cerrada? Cuál es la diferencia",
+      "points": [
+        "Un modelo de IA es, en el fondo, un archivo gigante de números llamados pesos, aprendidos durante el entrenamiento.",
+        "Un modelo de pesos abiertos se puede descargar y ejecutar en tus propios equipos, como Llama, Mistral o DeepSeek.",
+        "Un modelo cerrado solo se usa a través de la app o la API de la empresa, como GPT, Claude o Gemini.",
+        "Abierto no siempre significa código abierto: muchas licencias ponen condiciones de uso.",
+        "Los abiertos dan control y privacidad; los cerrados suelen ser más fáciles de usar y los mantiene la empresa."
+      ],
+      "questions": [
+        "¿Puedo tener una IA en mi casa?",
+        "¿Y cuál es mejor?"
+      ],
+      "punchline": {
+        "line": "Perfecto, descargaré una IA en mi celular de hace cinco años.",
+        "reply": "Mejor empieza por liberar espacio de las fotos repetidas."
+      },
+      "takeaway": "La pregunta clave es quién controla el modelo y bajo qué licencia.",
+      "visual": {
+        "type": "versus",
+        "left": "Abiertos",
+        "right": "Cerrados",
+        "leftItems": [
+          "Se descargan",
+          "Llama, DeepSeek, Mistral",
+          "Corren en tu equipo"
+        ],
+        "rightItems": [
+          "Solo por API o app",
+          "GPT, Claude, Gemini",
+          "Los opera la empresa"
+        ]
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Open-source_artificial_intelligence"
+      ],
+      "entities": [
+        "deepseek",
+        "llama",
+        "chatgpt",
+        "claude"
+      ]
+    },
+    "format": "myth_vs_fact",
+    "structure": [
+      "hook",
+      "meme",
+      "question",
+      "explain",
+      "visual",
+      "punchline",
+      "takeaway",
+      "cta"
+    ],
+    "targetSec": 75,
+    "casting": {
+      "host": "miku",
+      "foil": "teto"
+    },
+    "theme": "navy_tech",
+    "seed": "2026-10-02:2:open_weights"
+  },
+  "writer": "template",
+  "estimatedMs": 75547,
+  "lint": [],
+  "sfx": [
+    {
+      "line": 12,
+      "character": "miku",
+      "rule": "hook_drama",
+      "sfx": "sfx_dramatic_boomer",
+      "anchor": "end"
+    },
+    {
+      "line": 37,
+      "character": "miku",
+      "rule": "insight",
+      "sfx": "sfx_ding",
+      "anchor": "end"
+    },
+    {
+      "line": 60,
+      "character": "teto",
+      "rule": "shock",
+      "sfx": "sfx_dramatic_boomer",
+      "anchor": "start"
+    },
+    {
+      "line": 69,
+      "character": "miku",
+      "rule": "insight",
+      "sfx": "sfx_ding",
+      "anchor": "end"
+    }
+  ],
+  "notes": [],
+  "status": "needs_review"
+}

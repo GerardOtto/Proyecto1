@@ -1,0 +1,15 @@
+{
+  "$comment": "Director de SFX automatico. Solo actua en bloques SIN efectos marcados a mano. Elige por TAGS del catalogo (config/assets.json), no por id, para que los SFX nuevos se usen solos. anchor: start = primera palabra, end = ultima.",
+  "maxPerVideo": 7,
+  "minBlocksBetween": 1,
+  "excludeTags": ["reservado"],
+  "rules": [
+    { "id": "hook_drama", "when": { "section": ["hook"] }, "pickTags": ["hook"], "volume": 0.5, "anchor": "end" },
+    { "id": "shock", "when": { "reaction": ["shocked"] }, "pickTags": ["drama", "enfasis"], "volume": 0.55, "anchor": "start" },
+    { "id": "surprise", "when": { "reaction": ["sorprendido"] }, "pickTags": ["enfasis"], "volume": 0.45, "anchor": "start" },
+    { "id": "laugh", "when": { "reaction": ["riendo"] }, "pickTags": ["risa"], "volume": 0.5, "anchor": "end" },
+    { "id": "teto_signature", "when": { "character": ["teto"], "section": ["punchline", "closing"] }, "pickTags": ["teto", "firma"], "volume": 0.55, "anchor": "end" },
+    { "id": "insight", "when": { "reaction": ["feliz", "nerd"], "section": ["takeaway", "closing", "visual"] }, "pickTags": ["acierto", "idea"], "volume": 0.45, "anchor": "end" },
+    { "id": "confused_humor", "when": { "reaction": ["confundido"] }, "pickTags": ["humor"], "avoidTags": ["china"], "volume": 0.5, "anchor": "end" }
+  ]
+}

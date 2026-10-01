@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Tech EN</title>
+  <entry>
+    <title>OpenAI unveils new ChatGPT reasoning model</title>
+    <link rel="alternate" href="https://example.com/openai-reasoning-model"/>
+    <summary>OpenAI said the new ChatGPT model is better at math and code.</summary>
+    <published>2026-10-01T12:00:00Z</published>
+  </entry>
+  <entry>
+    <title>Rust 2.0 roadmap published</title>
+    <link href="https://example.com/rust-roadmap"/>
+    <content type="html">&lt;p&gt;The Rust programming language team shared plans.&lt;/p&gt;</content>
+    <updated>2026-09-30T12:00:00Z</updated>
+  </entry>
+</feed>

@@ -1,0 +1,49 @@
+{
+  "episodes": [
+    {
+      "episodeId": "ep_20261002_alphago",
+      "date": "2026-10-02",
+      "kind": "evergreen",
+      "topicId": "alphago",
+      "title": "AlphaGo vs Lee Sedol",
+      "urls": [],
+      "format": "controversy_story",
+      "casting": {
+        "host": "miku",
+        "foil": "luka"
+      },
+      "theme": "navy_tech",
+      "status": "planned"
+    },
+    {
+      "episodeId": "ep_20261002_crowdstrike_2024",
+      "date": "2026-10-02",
+      "kind": "evergreen",
+      "topicId": "crowdstrike_2024",
+      "title": "La caída de CrowdStrike",
+      "urls": [],
+      "format": "controversy_story",
+      "casting": {
+        "host": "luka",
+        "foil": "teto"
+      },
+      "theme": "sunset",
+      "status": "planned"
+    },
+    {
+      "episodeId": "ep_20261002_open_weights",
+      "date": "2026-10-02",
+      "kind": "evergreen",
+      "topicId": "open_weights",
+      "title": "Modelos abiertos vs cerrados",
+      "urls": [],
+      "format": "myth_vs_fact",
+      "casting": {
+        "host": "miku",
+        "foil": "teto"
+      },
+      "theme": "navy_tech",
+      "status": "planned"
+    }
+  ]
+}

@@ -3,7 +3,7 @@ import { Ajv, type ErrorObject, type ValidateFunction } from "ajv";
 import fs from "node:fs";
 import { fromRepo } from "../utils/paths";
 
-export type SchemaName = "timeline" | "characters" | "assets" | "reactions" | "render" | "project" | "requested-voices";
+export type SchemaName = "timeline" | "characters" | "assets" | "reactions" | "render" | "project" | "requested-voices" | "evergreen";
 
 const SCHEMA_FILES: Record<SchemaName, string> = {
   timeline: "timeline.schema.json",
@@ -13,6 +13,7 @@ const SCHEMA_FILES: Record<SchemaName, string> = {
   render: "render.schema.json",
   project: "project.schema.json",
   "requested-voices": "requested-voices.schema.json",
+  evergreen: "evergreen.schema.json",
 };
 
 let ajv: Ajv | null = null;

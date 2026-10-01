@@ -1,0 +1,18 @@
+{
+  "$comment": "Temas visuales. Cambian fondo, paleta de los graficos generados y relleno. Los colores de subtitulo de cada personaje NO cambian (identidad, ADR 0001). background: id de asset existente; si falta, `npm run autopilot -- --make-backgrounds` genera un loop propio con gradient.",
+  "themes": {
+    "navy_tech": { "label": "Azul tecnologico", "background": "bg_tech_loop", "gradient": ["0x1b1f3b", "0x3a1c71", "0x0f4c5c", "0x2a0f3b"], "card": ["#262b52", "#1b1f3b"], "accent": "#ffc83d", "muted": "#b9bfe6" },
+    "sakura": { "label": "Sakura", "background": "bg_theme_sakura", "gradient": ["0x3b1530", "0x6b2a4f", "0x2b1a3f", "0x5a2340"], "card": ["#5a2340", "#3b1530"], "accent": "#ffd1e3", "muted": "#f0bcd2" },
+    "matrix": { "label": "Terminal verde", "background": "bg_theme_matrix", "gradient": ["0x04170d", "0x0b3d22", "0x02100a", "0x0f2a1c"], "card": ["#0f2a1c", "#04170d"], "accent": "#39ff88", "muted": "#a6e8c1" },
+    "sunset": { "label": "Atardecer", "background": "bg_theme_sunset", "gradient": ["0x2d1b3d", "0x7a2e3b", "0x3d2a14", "0x4a1f4f"], "card": ["#4a1f4f", "#2d1b3d"], "accent": "#ffb347", "muted": "#f2c9a8" },
+    "ocean": { "label": "Oceano", "background": "bg_theme_ocean", "gradient": ["0x061a2f", "0x0d3b66", "0x05263a", "0x123c5a"], "card": ["#123c5a", "#061a2f"], "accent": "#5ce1e6", "muted": "#a9d6e5" }
+  },
+  "byCategory": {
+    "news": ["navy_tech", "ocean", "sunset"],
+    "ai_concept": ["navy_tech", "ocean"],
+    "cs_concept": ["matrix", "ocean", "navy_tech"],
+    "programming": ["matrix", "navy_tech"],
+    "controversy": ["sunset", "sakura"],
+    "history": ["sunset", "sakura", "navy_tech"]
+  }
+}

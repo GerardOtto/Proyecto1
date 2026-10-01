@@ -1,0 +1,95 @@
+{
+  "plan": {
+    "episodeId": "ep_20261002_alphago",
+    "date": "2026-10-02",
+    "topic": {
+      "id": "alphago",
+      "kind": "evergreen",
+      "category": "history",
+      "keyword": "AlphaGo",
+      "title": "AlphaGo vs Lee Sedol",
+      "hookTitle": "*AlphaGo*: la IA que venció al campeón de Go",
+      "points": [
+        "El Go es un juego de mesa milenario con tantas posiciones posibles que superan a los átomos del universo observable.",
+        "Durante años se pensó que una computadora tardaría décadas en vencer a los mejores jugadores humanos.",
+        "En marzo de 2016, AlphaGo, de DeepMind, venció cuatro a uno a Lee Sedol, uno de los mejores jugadores del mundo.",
+        "Su jugada 37 en la segunda partida pareció un error a los expertos, y terminó siendo brillante.",
+        "AlphaGo combinaba redes neuronales con búsqueda, y aprendió jugando millones de partidas contra sí misma."
+      ],
+      "questions": [
+        "¿Más posiciones que átomos?",
+        "¿Una jugada que parecía error y era genial?"
+      ],
+      "punchline": {
+        "line": "Y yo que no le gano ni al buscaminas.",
+        "reply": "El buscaminas no perdona, papu."
+      },
+      "takeaway": "Fue la primera vez que muchos vieron a una IA mostrar algo parecido a creatividad.",
+      "visual": {
+        "type": "stat",
+        "value": "4 – 1",
+        "caption": "AlphaGo vs Lee Sedol (2016)"
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/AlphaGo_versus_Lee_Sedol"
+      ],
+      "entities": [
+        "deepmind",
+        "google"
+      ]
+    },
+    "format": "controversy_story",
+    "structure": [
+      "hook",
+      "meme",
+      "context",
+      "explain",
+      "twist",
+      "punchline",
+      "takeaway",
+      "cta"
+    ],
+    "targetSec": 85,
+    "casting": {
+      "host": "miku",
+      "foil": "luka"
+    },
+    "theme": "navy_tech",
+    "seed": "2026-10-02:0:alphago"
+  },
+  "writer": "template",
+  "estimatedMs": 71365,
+  "lint": [],
+  "sfx": [
+    {
+      "line": 12,
+      "character": "miku",
+      "rule": "hook_drama",
+      "sfx": "sfx_dramatic_boomer",
+      "anchor": "end"
+    },
+    {
+      "line": 32,
+      "character": "luka",
+      "rule": "surprise",
+      "sfx": "sfx_vine_boom",
+      "anchor": "start"
+    },
+    {
+      "line": 60,
+      "character": "luka",
+      "rule": "shock",
+      "sfx": "sfx_dramatic_boomer",
+      "anchor": "start"
+    },
+    {
+      "line": 69,
+      "character": "miku",
+      "rule": "insight",
+      "sfx": "sfx_ding",
+      "anchor": "end"
+    }
+  ],
+  "notes": [],
+  "status": "needs_review"
+}

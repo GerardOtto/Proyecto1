@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Tech ES</title>
+    <item>
+      <title>OpenAI presenta un nuevo modelo de ChatGPT capaz de razonar</title>
+      <link>https://example.es/openai-nuevo-modelo</link>
+      <description><![CDATA[<p>La empresa de <b>inteligencia artificial</b> OpenAI anunció hoy un modelo para ChatGPT.</p>]]></description>
+      <pubDate>Thu, 01 Oct 2026 10:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Las mejores ofertas de Black Friday en portátiles</title>
+      <link>https://example.es/ofertas</link>
+      <description>Descuento en laptops con chip de IA.</description>
+      <pubDate>Thu, 01 Oct 2026 09:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Receta de pastel de chocolate</title>
+      <link>https://example.es/pastel</link>
+      <description>Nada que ver con tecnología. Aim for the best.</description>
+      <pubDate>Thu, 01 Oct 2026 08:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Hatsune Miku tendrá un concierto con hologramas en México</title>
+      <link>https://example.es/miku-concierto</link>
+      <description>Crypton confirma la gira de Hatsune Miku.</description>
+      <pubDate>Mon, 21 Sep 2026 10:00:00 GMT</pubDate>
+    </item>
+  </channel>
+</rss>

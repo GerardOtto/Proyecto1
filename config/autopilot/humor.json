@@ -1,0 +1,86 @@
+{
+  "$comment": "Recursos humoristicos reutilizables. {host}/{foil}/{topic}/{keyword} se reemplazan. Las lineas se eligen de forma determinista por episodio (sin repetir la anterior).",
+  "greeting": "¡Papu papu!",
+  "memeBeats": [
+    {
+      "meme": "meme_boom",
+      "sfx": "sfx_boom"
+    },
+    {
+      "meme": "meme_question",
+      "sfx": "sfx_vine_boom"
+    }
+  ],
+  "hookTemplates": {
+    "news": [
+      "¿{keyword} acaba de cambiar todo?",
+      "¿Viste lo de {keyword}?",
+      "¡Alerta! {topic}"
+    ],
+    "cs_concept": [
+      "¿Sabes qué es {keyword}?",
+      "{keyword} en menos de un minuto.",
+      "¿Por qué todos hablan de {keyword}?"
+    ],
+    "ai_concept": [
+      "¿La IA de verdad {keyword}?",
+      "{keyword}: lo que nadie te explica."
+    ],
+    "programming": [
+      "¿Por qué tu código necesita {keyword}?",
+      "{keyword} explicado sin dormirte."
+    ],
+    "controversy": [
+      "La vez que {topic}.",
+      "¿Te acuerdas de {keyword}? Fue un desastre."
+    ],
+    "history": [
+      "La historia de {keyword} es más loca de lo que crees."
+    ]
+  },
+  "foilQuestions": [
+    "Espera, espera. ¿Eso qué significa?",
+    "A ver, explícamelo como si tuviera cinco años.",
+    "¿Y eso a mí en qué me afecta?",
+    "Ok, pero ¿por qué debería importarme?"
+  ],
+  "foilMisunderstandings": [
+    "¿O sea que las computadoras ya piensan solas?",
+    "¿Entonces tengo que borrar todo?",
+    "¿Eso se come?"
+  ],
+  "hostCorrections": [
+    "¡No! Nada que ver.",
+    "Calma, calma, no es tan dramático.",
+    "Casi, pero no."
+  ],
+  "punchlines": [
+    "¿Me estás diciendo que {keyword} es más dramático que mi vida amorosa?",
+    "Ok, ya entendí. Pero sigo sin entender a mi impresora.",
+    "Bueno, al menos no fue culpa del becario."
+  ],
+  "punchlineReplies": [
+    "Bueno... técnicamente sí.",
+    "Eso no te lo puedo prometer.",
+    "Esa es otra historia, papu."
+  ],
+  "ctaLines": [
+    [
+      "{foil}",
+      "¡Papu papu! Si te sirvió, déjanos tu Me gusta."
+    ],
+    [
+      "{host}",
+      "Y síguenos para más IA y computación explicada sin drama. ¡Nos vemos, Papus!"
+    ]
+  ],
+  "ctaVisual": "cta_follow_like",
+  "foilReactions": [
+    "¡No puede ser!",
+    "Ok, eso tiene sentido.",
+    "¿En serio?",
+    "Espera, eso está buenísimo.",
+    "Ajá... sigue, sigue.",
+    "Mmm, ya voy entendiendo."
+  ]
+}

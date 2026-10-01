@@ -1,6 +1,18 @@
 # Changelog
 
 ## Sin publicar
+
+### Autopiloto de produccion (ADR 0007)
+- `npm run autopilot`: noticias RSS/Atom (puntuacion por nicho y frescura, agrupado, historial) o banco
+  evergreen de 29 temas (CS, IA, programacion, polemicas, historia) con fuentes.
+- Planificador determinista: formato, casting por roles (solo personajes listos), tema visual.
+- Escritor de plantilla (offline) y escritor LLM (LLMProvider, validacion + reintentos).
+- Director de SFX por tags; lint editorial del formato de la casa.
+- Graficos propios por episodio (stat/keypoints/code/versus/headline) y fondos por tema.
+- Kit de publicacion (descripciones por plataforma, hashtags, calendario CDMX, checklist).
+- `npm run avatars:ingest`: renders -> avatares sin fondo -> characters.json.
+- `src/utils/chrome.ts` (captura HTML->PNG compartida; `--no-sandbox` si se ejecuta como root).
+
 - Rotulo de palabra clave en el gancho (ADR 0006, `docs/10_DISTRIBUCION.md` §8): `meta.hookTitle`
   (`hook_title:` en el guion), `titleCard` en render.json, `TitleCard.tsx`, visuales del gancho
   desplazados bajo el rotulo, 5 validaciones (HOOK_TITLE_*), portada `cover.jpg` y tests.
