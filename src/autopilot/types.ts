@@ -47,6 +47,10 @@ export interface NewsItem {
   summary: string;
   url: string;
   publishedAt: string | null;
+  /** Nombre del medio para mostrar (si falta, el dominio). */
+  outlet?: string;
+  /** Traduccion del titular al espanol (solo para mostrarla bajo el titular original). */
+  titleEs?: string;
 }
 
 export interface ScoredNews extends NewsItem {

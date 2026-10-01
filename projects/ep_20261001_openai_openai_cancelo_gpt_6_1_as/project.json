@@ -1,0 +1,146 @@
+{
+  "$schema": "../../schemas/project.schema.json",
+  "title": "OpenAI canceló GPT-6.1 Astra por seguridad",
+  "language": "es",
+  "durationTargetSec": 80,
+  "background": "bg_theme_ocean",
+  "director": "rules",
+  "tts": "fish",
+  "transcriber": "auto",
+  "assets": [
+    {
+      "id": "ep_headline",
+      "type": "image",
+      "path": "visuals/ep_headline.png",
+      "tags": [
+        "autopilot",
+        "news",
+        "openai",
+        "chatgpt",
+        "seguridad"
+      ],
+      "safeArea": true,
+      "source": "generado por src/autopilot/graphics.ts (ep_20261001_openai_openai_cancelo_gpt_6_1_as)",
+      "license": "propio",
+      "license_status": "owned"
+    },
+    {
+      "id": "ep_main",
+      "type": "image",
+      "path": "visuals/ep_main.png",
+      "tags": [
+        "autopilot",
+        "news",
+        "openai",
+        "chatgpt",
+        "seguridad"
+      ],
+      "safeArea": true,
+      "source": "generado por src/autopilot/graphics.ts (ep_20261001_openai_openai_cancelo_gpt_6_1_as)",
+      "license": "propio",
+      "license_status": "owned"
+    },
+    {
+      "id": "news_cap_1",
+      "type": "broll",
+      "path": "visuals/news_cap_1.png",
+      "tags": [
+        "broll",
+        "noticia",
+        "openai",
+        "chatgpt",
+        "seguridad",
+        "captura"
+      ],
+      "source": "https://www.washingtonpost.com/technology/2026/09/28/chatgpt-maker-openai-scraps-release-astra-61-model-over-safety/",
+      "license": "Contenido de The Washington Post; captura del titular usada como cita en contenido informativo",
+      "license_status": "unknown",
+      "description": "Captura real del titular de The Washington Post (28 sep 2026): OpenAI cancels new AI launch, citing safety issues"
+    },
+    {
+      "id": "news_card_1",
+      "type": "broll",
+      "path": "visuals/news_card_1.png",
+      "tags": [
+        "broll",
+        "noticia",
+        "openai",
+        "chatgpt",
+        "seguridad",
+        "titular"
+      ],
+      "source": "generado por src/autopilot/newscards.ts (ep_20261001_openai_openai_cancelo_gpt_6_1_as); titular de https://www.washingtonpost.com/technology/2026/09/28/chatgpt-maker-openai-scraps-release-astra-61-model-over-safety/",
+      "license": "propio",
+      "license_status": "owned",
+      "description": "Tarjeta propia (phone) con el titular de The Washington Post: OpenAI cancels new AI launch, citing safety issues"
+    },
+    {
+      "id": "news_cap_2",
+      "type": "broll",
+      "path": "visuals/news_cap_2.png",
+      "tags": [
+        "broll",
+        "noticia",
+        "openai",
+        "chatgpt",
+        "seguridad",
+        "captura"
+      ],
+      "source": "https://dataconomy.com/2026/09/29/openai-cancels-gpt-61-astra-safety-deception-concerns/",
+      "license": "Contenido de Dataconomy; captura del titular usada como cita en contenido informativo",
+      "license_status": "unknown",
+      "description": "Captura real del titular de Dataconomy (29 sep 2026): OpenAI Reportedly Cancels GPT-6.1 Astra Release"
+    },
+    {
+      "id": "news_card_2",
+      "type": "broll",
+      "path": "visuals/news_card_2.png",
+      "tags": [
+        "broll",
+        "noticia",
+        "openai",
+        "chatgpt",
+        "seguridad",
+        "titular"
+      ],
+      "source": "generado por src/autopilot/newscards.ts (ep_20261001_openai_openai_cancelo_gpt_6_1_as); titular de https://dataconomy.com/2026/09/29/openai-cancels-gpt-61-astra-safety-deception-concerns/",
+      "license": "propio",
+      "license_status": "owned",
+      "description": "Tarjeta propia (breaking) con el titular de Dataconomy: OpenAI Reportedly Cancels GPT-6.1 Astra Release"
+    },
+    {
+      "id": "news_cap_3",
+      "type": "broll",
+      "path": "visuals/news_cap_3.png",
+      "tags": [
+        "broll",
+        "noticia",
+        "openai",
+        "chatgpt",
+        "seguridad",
+        "captura"
+      ],
+      "source": "https://elimparcial.com/tecnologia/2026/09/30/la-carrera-de-la-ia-acelera-openai-frena-gpt-61-astra-por-seguridad-mientras-rivales-lanzan-modelos-mas-baratos-y-autonomos",
+      "license": "Contenido de El Imparcial; captura del titular usada como cita en contenido informativo",
+      "license_status": "unknown",
+      "description": "Captura real del titular de El Imparcial (30 sep 2026): La carrera de la IA acelera: OpenAI frena GPT-6.1 Astra por seguridad mientras rivales lanzan modelos más baratos y autónomos"
+    },
+    {
+      "id": "news_card_3",
+      "type": "broll",
+      "path": "visuals/news_card_3.png",
+      "tags": [
+        "broll",
+        "noticia",
+        "openai",
+        "chatgpt",
+        "seguridad",
+        "titular"
+      ],
+      "source": "generado por src/autopilot/newscards.ts (ep_20261001_openai_openai_cancelo_gpt_6_1_as); titular de https://elimparcial.com/tecnologia/2026/09/30/la-carrera-de-la-ia-acelera-openai-frena-gpt-61-astra-por-seguridad-mientras-rivales-lanzan-modelos-mas-baratos-y-autonomos",
+      "license": "propio",
+      "license_status": "owned",
+      "description": "Tarjeta propia (social) con el titular de El Imparcial: La carrera de la IA acelera: OpenAI frena GPT-6.1 Astra por seguridad mientras rivales lanzan modelos más baratos y autónomos"
+    }
+  ]
+}

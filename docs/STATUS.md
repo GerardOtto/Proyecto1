@@ -56,9 +56,12 @@ npm run generate -- --project projects/demo_001 --tts fish --repro
   saludo pregrabado y voz de cada personaje del casting. Informe: docs/Informe_Autopiloto.pdf.
 0. **[HECHO] Rotulo de palabra clave en el gancho** (`meta.hookTitle` + `TitleCard`): especificacion
    completa, tests y criterios de aceptacion en `docs/10_DISTRIBUCION.md` §8. Requiere ADR 0006.
-1. **Assets reales**: reemplazar los placeholders de `assets/characters/*` (8 reacciones x 5
-   personajes), logos y visuales por material con licencia documentada; actualizar `license_status`.
+1. **Assets reales**: [HECHO para avatares, ADR 0008] 7 personajes con imagenes reales desde Pinterest
+   (`assets/characters/SOURCES.md`), todos `license_status: unknown`. Pendiente: documentar autores y
+   licencias de avatares, memes, logos y visuales.
 2. **Voces**: elegir/registrar un `reference_id` de Fish Audio por personaje y verificar sus derechos.
+   Faltan Rin, Len, Kaito y Neru (sin voz no entran al casting automatico); al tener la de Neru, quitar
+   el tag `reservado` de `sfx_neru_phone`.
 3. **Primera corrida real** con Fish Audio + whisper.cpp (`--transcriber whisper-cpp`) y revisar la
    coincidencia de alineado en `transcript/words.json` (warning si < 60%).
 4. **Primera corrida real del director LLM** (`--director anthropic`) con un guion libre; ajustar

@@ -5,11 +5,11 @@
   "excludeTags": ["reservado"],
   "rules": [
     { "id": "hook_drama", "when": { "section": ["hook"] }, "pickTags": ["hook"], "volume": 0.5, "anchor": "end" },
-    { "id": "shock", "when": { "reaction": ["shocked"] }, "pickTags": ["drama", "enfasis"], "volume": 0.55, "anchor": "start" },
+    { "id": "shock", "when": { "reaction": ["shocked", "gritando"] }, "pickTags": ["drama", "enfasis"], "volume": 0.55, "anchor": "start" },
     { "id": "surprise", "when": { "reaction": ["sorprendido"] }, "pickTags": ["enfasis"], "volume": 0.45, "anchor": "start" },
-    { "id": "laugh", "when": { "reaction": ["riendo"] }, "pickTags": ["risa"], "volume": 0.5, "anchor": "end" },
+    { "id": "laugh", "when": { "reaction": ["riendo", "broma"] }, "pickTags": ["risa"], "volume": 0.5, "anchor": "end" },
     { "id": "teto_signature", "when": { "character": ["teto"], "section": ["punchline", "closing"] }, "pickTags": ["teto", "firma"], "volume": 0.55, "anchor": "end" },
     { "id": "insight", "when": { "reaction": ["feliz", "nerd"], "section": ["takeaway", "closing", "visual"] }, "pickTags": ["acierto", "idea"], "volume": 0.45, "anchor": "end" },
-    { "id": "confused_humor", "when": { "reaction": ["confundido"] }, "pickTags": ["humor"], "avoidTags": ["china"], "volume": 0.5, "anchor": "end" }
+    { "id": "confused_humor", "when": { "reaction": ["confundido", "decepcionado"] }, "pickTags": ["humor"], "avoidTags": ["china"], "volume": 0.5, "anchor": "end" }
   ]
 }

@@ -60,4 +60,12 @@ describe("autopiloto: publicacion, graficos y avatares", async () => {
     expect(classified.map((c) => `${c.reaction}:${c.order}`)).toEqual(["feliz:1", "feliz:2", "nerd:1", "neutral:1", "shocked:1"]);
     expect(skipped).toEqual(["random.png"]);
   });
+
+  it("ingesta de avatares: acepta el prefijo <Personaje>_ (Teto_feliz_5.png) solo para ese personaje", () => {
+    const reactions = readJson<never>(fromRepo("config/reactions.json"));
+    const files = ["a/Teto_feliz_5.png", "a/Teto_maldiciendo.png", "a/Teto_sorprendida_2.png", "a/Teto_sonrojada.png", "a/Miku_feliz.png", "a/Teto_peluche.png"];
+    const { classified, skipped } = classifyFiles(files, reactions, { "Teto_sorprendida_2.png": "shocked" }, "teto");
+    expect(classified.map((c) => `${c.reaction}:${c.order}`)).toEqual(["broma:1", "enojado:1", "feliz:5", "shocked:2", "timido:1"]);
+    expect(skipped).toEqual(["Miku_feliz.png"]); // el prefijo de otro personaje no se acepta
+  });
 });

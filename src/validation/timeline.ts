@@ -45,7 +45,7 @@ export interface ValidateOptions {
   checkAudioFiles?: boolean;
 }
 
-const HUMOR_REACTIONS = new Set(["riendo", "shocked", "enojado", "sorprendido", "confundido"]);
+const HUMOR_REACTIONS = new Set(["riendo", "shocked", "enojado", "sorprendido", "confundido", "gritando", "decepcionado", "broma", "presumido", "aburrido"]);
 
 export const validateTimeline = (
   timeline: Timeline,

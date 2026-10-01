@@ -2,6 +2,27 @@
 
 ## Sin publicar
 
+### Avatares reales y reacciones ampliadas (ADR 0008)
+- Set nuevo de avatares desde los tableros de Pinterest (209 imagenes, origen por pin en
+  `assets/characters/SOURCES.md`): Teto, Miku y Luka reemplazados; Rin y Len dejan de ser placeholder;
+  personajes nuevos **kaito** y **neru** (sin voz de Fish Audio aun: no entran al casting automatico).
+- 19 reacciones canonicas (+ gritando, triste, decepcionado, emocionado, timido, saludando, pensando,
+  presumido, aburrido, nervioso, broma) con campo `fallback`: el catalogo resuelve las reacciones sin
+  imagen propia por su cadena (errores `REACTION_FALLBACK_UNKNOWN` / `REACTION_FALLBACK_CYCLE`).
+- `avatars:ingest`: nombres `<Personaje>_<reaccion>[_n]` y `--replace`; el log muestra el original.
+- 18 stickers como memes (`assets/memes/meme_gato_*`, `meme_pera*`, `meme_nugget`...) y 5 meme beats
+  nuevos para el escritor.
+- Casting: kaito/neru con roles y personalidad; el planificador exige `voice.fish.referenceId` (antes
+  bastaba la ruta del saludo, que habria elegido a Rin/Len sin voz).
+
+### Visuales de noticia (ADR 0009)
+- Captura real del titular (`src/autopilot/capture.ts`, puppeteer-core sobre el Chrome de Remotion:
+  movil, sin banners ni fotos, coincidencia del titular, recorte 4:3) enmarcada con el dominio real.
+- Tarjetas estilo noticia propias (`src/autopilot/newscards.ts`): 5 disenos, titular textual, medio,
+  fecha y traduccion; variedad entre episodios de la semana. Nunca imitan el sitio del medio.
+- `--refresh-visuals` para episodios existentes; el brief del escritor lista el relleno de noticia.
+- Episodios de la semana 2026-10-01 con capturas (7/7) y tarjetas en las lineas que citan cada fuente.
+
 ### Autopiloto de produccion (ADR 0007)
 - `npm run autopilot`: noticias RSS/Atom (puntuacion por nicho y frescura, agrupado, historial) o banco
   evergreen de 29 temas (CS, IA, programacion, polemicas, historia) con fuentes.
@@ -12,6 +33,15 @@
 - Kit de publicacion (descripciones por plataforma, hashtags, calendario CDMX, checklist).
 - `npm run avatars:ingest`: renders -> avatares sin fondo -> characters.json.
 - `src/utils/chrome.ts` (captura HTML->PNG compartida; `--no-sandbox` si se ejecuta como root).
+- `--brief <json> --writer manual [--format x]`: noticia investigada a mano -> episodio con
+  `writer-brief.md` y `script.md` esqueleto (escritura en Claude Code, sin costo de API).
+- `npm run compare-writers`: compara modelo x esfuerzo del escritor LLM (costo, tiempo, intentos, lint)
+  contra el guion manual. `AnthropicProvider` acepta modelo/esfuerzo (`DIRECTOR_EFFORT`), cachea el
+  system prompt y reporta tokens de cache.
+- `npm run review` (`src/review/`): carpeta de revision simple fuera del repo (`REVIEW_DIR`): Guion.txt
+  legible, imagenes, avatares, audios, video y Resumen.txt; el autopiloto la actualiza solo.
+- Semana del 2026-10-01: 3 episodios de noticias escritos a mano (OpenAI Astra, filtracion de capturas
+  en GitHub, Meta Muse) con sus briefs en `projects/_autopilot/briefs/`.
 
 - Rotulo de palabra clave en el gancho (ADR 0006, `docs/10_DISTRIBUCION.md` §8): `meta.hookTitle`
   (`hook_title:` en el guion), `titleCard` en render.json, `TitleCard.tsx`, visuales del gancho

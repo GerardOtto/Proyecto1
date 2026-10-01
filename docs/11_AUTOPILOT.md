@@ -38,6 +38,8 @@ polemicas e historia). Decision de arquitectura: [ADR 0007](adr/0007-autopiloto.
 | `npm run autopilot -- --check-feeds` | Prueba cada feed y muestra las historias mejor puntuadas |
 | `npm run autopilot -- --make-backgrounds` | Genera los fondos en loop de cada tema visual |
 | `npm run autopilot -- --list-topics [--category x]` | Banco evergreen y ultimo uso |
+| `npm run autopilot -- --brief <brief.json> --writer manual [--format x]` | Noticia investigada a mano: plan, graficos, `writer-brief.md` y kit; `script.md` queda como esqueleto para escribirlo (p. ej. en Claude Code, sin costo de API) |
+| `npm run compare-writers -- --episodes a,b,c [--variants opus-5-5:high,sonnet-5-5:medium] --yes` | Compara variantes del escritor LLM con el guion actual de cada episodio (costo, tiempo, intentos, lint) |
 | `npm run avatars:ingest -- --character rin --from <carpeta>` | Renders -> avatares sin fondo + characters.json |
 
 Opciones: `--date YYYY-MM-DD`, `--offline` (no lee feeds), `--allow-placeholder` (permite
@@ -69,13 +71,47 @@ personajes con avatares placeholder), `--no-graphics`, `--allow-missing-audio`.
   coloca cada pregunta del tema despues del dato relacionado, usa el remate del tema y rellena con
   malentendido + correccion si queda corto.
 - **LLM** (necesario para noticias): `src/autopilot/llm-writer.ts` usa `LLMProvider` (Anthropic por
-  defecto, `DIRECTOR_MODEL`). Recibe el formato del guion, el ejemplo `demo_001`, el catalogo, el
-  casting y el brief (solo hechos de los articulos). Se valida con el parser, el validador y el lint;
-  reintenta hasta 3 veces con los errores. Devuelve `factClaims` para revisar.
+  defecto, `DIRECTOR_MODEL` y `DIRECTOR_EFFORT`, por defecto `claude-opus-5-5` / `high`). Recibe el
+  formato del guion, el ejemplo `demo_001`, el catalogo, el casting y el brief (solo hechos de los
+  articulos). Se valida con el parser, el validador y el lint; reintenta hasta 3 veces con los errores.
+  Devuelve `factClaims` para revisar. El system prompt se cachea (abarata reintentos y lotes).
+- **Manual** (`--writer manual`): para noticias calientes investigadas fuera del RSS. El brief va en
+  `projects/_autopilot/briefs/*.json` (forma de `TopicBrief`: `points`, `articles` con los hechos,
+  `sources`, `visual`); `--format` fuerza el formato. Genera `writer-brief.md` (la misma entrada que
+  recibe el escritor LLM) y un `script.md` esqueleto.
+
+## Visuales de noticia (ADR 0009)
+Por cada articulo de una noticia, el autopiloto genera relleno contextual (`broll` del proyecto):
+- `news_cap_<n>`: **captura real** del titular + bajada (sin fotos del medio), en un marco de navegador
+  con el dominio real y el pie "Captura de <medio> · <fecha>". Licencia `unknown`. Si el sitio bloquea
+  o el titular no coincide (>= 60 % de palabras), se omite.
+- `news_card_<n>`: **tarjeta propia** con el titular textual entre comillas, el medio, la fecha y la
+  traduccion (`titleEs`) si no esta en espanol. Estilos: navegador, celular, periodico, post del canal,
+  ultima hora; se eligen evitando los usados en los ultimos 7 dias. Nunca imitan el sitio del medio.
+En el brief, cada articulo puede llevar `outlet` (nombre para mostrar) y `titleEs`. El titular debe ser
+el real de la pagina. El escritor recibe la lista y usa `[BROLL: id]` en la linea que cita la fuente.
+Regenerar en un episodio existente: `npm run autopilot -- --episode <id> --refresh-visuals [--brief x]`.
+
+## Carpeta de revision (`npm run review`)
+Version simple de cada episodio fuera del repo (`REVIEW_DIR` en `.env`, p. ej. el escritorio), para
+revisar guiones y hacer control de calidad de imagenes y audios sin abrir el proyecto. El autopiloto la
+actualiza al escribir o producir; tras editar un `script.md` a mano, correr `npm run review`.
+- `<fecha> <titulo>/Guion.txt`: dialogo limpio (sin etiquetas), quien habla y con que emocion, imagen o
+  relleno en pantalla y estado del audio de cada linea (nombre de archivo esperado en `audio/input/`).
+- `Imagenes/`, `Personajes/` (avatares usados), `Audios/` (grabados) y `Video final.mp4` si existe.
+- `Notas.txt` nunca se sobrescribe; el resto se regenera (no se lee de vuelta: la fuente es `script.md`).
+- `Resumen.txt` en la raiz: estado, audios grabados y duracion de todos los episodios.
+
+## Elegir modelo y esfuerzo
+`npm run compare-writers` corre el escritor LLM con varias variantes sobre los mismos planes y deja
+`projects/<ep>/compare/<variante>.script.md` y `projects/_autopilot/compare-<fecha>.md` (tabla con
+costo, tiempo, intentos, duracion estimada y avisos de lint; el guion actual del episodio aparece como
+`manual`). Leer los guiones lado a lado antes de mirar el costo; fijar el ganador en `.env`
+(`DIRECTOR_MODEL`, `DIRECTOR_EFFORT`). Precios en `src/autopilot/compare.ts` (verificar).
 
 ## Limitaciones conocidas
 - Las URLs de feeds no se pudieron probar en el entorno de desarrollo (sin salida de red).
 - Las noticias en ingles se resumen en espanol solo con el escritor LLM.
-- Los graficos de noticias son tarjetas de titular propias; no hay capturas automaticas de articulos
-  (riesgo de derechos de autor). Las capturas siguen siendo manuales (`[BROLL: ...]`).
+- Algunos medios bloquean la captura (muro de pago, bot) o cambian el titular: queda solo la tarjeta
+  propia. Revisar cada captura en la carpeta de revision antes de publicar.
 - La voz depende del proveedor configurado (`--tts`); el saludo pregrabado debe existir por personaje.

@@ -6,6 +6,8 @@
 //   npm run autopilot -- --episode ep_20261002_big_o --produce   # produce un episodio ya revisado
 //   npm run autopilot -- --batch 3                     # planifica 3 episodios (semana tipo)
 //   npm run autopilot -- --mode evergreen --topic big_o --writer template --tts silent
+//   npm run autopilot -- --brief projects/_autopilot/briefs/x.json --writer manual [--format myth_vs_fact]
+//   npm run autopilot -- --episode <id> --refresh-visuals [--brief <json>]   # capturas + tarjetas de titular
 //   npm run autopilot -- --check-feeds | --make-backgrounds | --list-topics [--category cs_concept]
 import { spawn } from "node:child_process";
 import fs from "node:fs";
@@ -13,7 +15,11 @@ import { ensureThemeBackgrounds } from "../src/autopilot/backgrounds";
 import { loadAutopilotConfig } from "../src/autopilot/config";
 import { evergreenLastUsed, loadHistory, saveHistory, setStatus } from "../src/autopilot/history";
 import { clusterNews, fetchFeeds, scoreItem } from "../src/autopilot/news";
-import { runAutopilotEpisode } from "../src/autopilot/run";
+import { parseBrief } from "../src/autopilot/planner";
+import { autoExportReview } from "../src/review/run";
+import { refreshEpisodeVisuals, runAutopilotEpisode } from "../src/autopilot/run";
+import type { FormatId } from "../src/autopilot/types";
+import { readJson } from "../src/utils/fs";
 import { loadEngineConfig } from "../src/catalog/catalog";
 import { main, parseCli } from "../src/utils/cli";
 import { color, log } from "../src/utils/log";
@@ -23,6 +29,8 @@ const { values } = parseCli({
   date: { type: "string" },
   mode: { type: "string" },
   topic: { type: "string" },
+  brief: { type: "string" },
+  format: { type: "string" },
   category: { type: "string" },
   writer: { type: "string" },
   tts: { type: "string" },
@@ -34,6 +42,7 @@ const { values } = parseCli({
   "no-graphics": { type: "boolean" },
   "check-feeds": { type: "boolean" },
   "make-backgrounds": { type: "boolean" },
+  "refresh-visuals": { type: "boolean" },
   "list-topics": { type: "boolean" },
   "allow-missing-audio": { type: "boolean" },
 });
@@ -78,18 +87,29 @@ main(async () => {
     return;
   }
 
+  if (values.episode && values["refresh-visuals"]) {
+    if (!fs.existsSync(fromRepo("projects", values.episode))) throw new Error(`No existe projects/${values.episode}`);
+    const brief = values.brief ? parseBrief(readJson(fromRepo(values.brief)), values.brief) : undefined;
+    log.step("V", `Visuales de ${values.episode}`);
+    const ids = await refreshEpisodeVisuals(engine, ap, values.episode, { ...(brief ? { brief } : {}), offline: values.offline });
+    log.ok(`visuales: ${ids.join(", ")}`);
+    await autoExportReview(engine, [values.episode]);
+    return;
+  }
   if (values.episode) {
-    if (!values.produce) throw new Error("--episode requiere --produce");
+    if (!values.produce) throw new Error("--episode requiere --produce (o --refresh-visuals)");
     if (!fs.existsSync(fromRepo("projects", values.episode))) throw new Error(`No existe projects/${values.episode}`);
     log.step("P", `Produciendo ${values.episode}`);
     const code = await produce(values.episode, values.tts);
     if (code === 0) saveHistory(setStatus(loadHistory(), values.episode, "produced"));
+    await autoExportReview(engine, [values.episode]);
     return code;
   }
 
   const n = Math.max(1, Number(values.batch ?? 1));
   const mode = (values.mode ?? "auto") as "auto" | "news" | "evergreen";
-  const writer = (values.writer ?? "auto") as "auto" | "llm" | "template";
+  const writer = (values.writer ?? "auto") as "auto" | "llm" | "template" | "manual";
+  const brief = values.brief ? parseBrief(readJson(fromRepo(values.brief)), values.brief) : undefined;
   const tts = values.tts ?? "fish";
   const results = [];
   for (let i = 0; i < n; i++) {
@@ -100,6 +120,8 @@ main(async () => {
       writer,
       tts,
       ...(values.topic && i === 0 ? { topic: values.topic } : {}),
+      ...(brief && i === 0 ? { brief } : {}),
+      ...(values.format && i === 0 ? { format: values.format as FormatId } : {}),
       ...(values.category ? { category: values.category } : {}),
       offline: values.offline,
       allowPlaceholder: values["allow-placeholder"],
@@ -110,6 +132,10 @@ main(async () => {
 
   log.step("R", "Revision humana requerida");
   for (const r of results) {
+    if (writer === "manual") {
+      log.info(`${color.yellow("✎")} ${r.plan.episodeId}: escribe projects/${r.plan.episodeId}/script.md (brief: writer-brief.md)`);
+      continue;
+    }
     const errors = r.lint.filter((i) => i.level === "error").length + (r.draftOk ? 0 : 1);
     log.info(`${errors ? color.red("✖") : color.green("✔")} ${r.plan.episodeId}: projects/${r.plan.episodeId}/script.md  (~${Math.round((r.estimatedMs ?? 0) / 1000)} s, ${r.lint.length} avisos)`);
   }
@@ -127,4 +153,5 @@ main(async () => {
       if (code === 0) saveHistory(setStatus(loadHistory(), r.plan.episodeId, "produced"));
     }
   }
+  await autoExportReview(engine, results.map((r) => r.plan.episodeId));
 });

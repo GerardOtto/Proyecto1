@@ -38,10 +38,11 @@ describe("autopiloto: planificador", async () => {
     expect(p2.theme).not.toBe(p1.theme);
   });
 
-  it("solo elige personajes listos (sin avatares placeholder)", () => {
+  it("solo elige personajes listos (avatares no placeholder + voz de Fish Audio)", () => {
     const ready = readyCharacters(cfg);
-    expect(ready).not.toContain("rin");
-    expect(ready).not.toContain("len");
+    // rin/len/kaito/neru ya tienen avatares reales pero aun no tienen referenceId de Fish Audio
+    for (const id of ["rin", "len", "kaito", "neru"]) expect(ready).not.toContain(id);
+    expect(ready).toEqual(["luka", "miku", "teto"]);
     const p = planEpisode({ ...base, date: "2026-10-02", history: empty });
     expect(ready).toContain(p.casting.host);
     expect(ready).toContain(p.casting.foil);

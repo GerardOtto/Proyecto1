@@ -19,7 +19,8 @@ export interface LLMJsonResponse {
   /** Texto crudo devuelto (para agregarlo al historial en reintentos). */
   raw: string;
   model: string;
-  usage?: { inputTokens: number; outputTokens: number };
+  /** inputTokens excluye los tokens leidos/escritos en cache (se reportan aparte). */
+  usage?: { inputTokens: number; outputTokens: number; cacheReadTokens?: number; cacheWriteTokens?: number };
 }
 
 export interface LLMProvider {

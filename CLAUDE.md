@@ -38,6 +38,7 @@ npm run generate -- --project projects/demo_001 [--tts fish|files|flite|silent] 
 npm run render   -- --project projects/demo_001 [--repro] [--safe-area]
 npm run validate -- --project projects/demo_001 [--draft] [--output]   # valida SIN renderizar
 npm run studio   -- --project projects/demo_001                        # preview en Remotion Studio
+npm run review   [-- --episode ep_a,ep_b]                              # carpeta de revision simple (REVIEW_DIR)
 npm run autopilot [-- --batch 3 | --produce | --episode <id> --produce]  # produccion automatica (docs/11)
 npm run avatars:ingest -- --character <id> --from <carpeta>           # renders -> avatares
 ```

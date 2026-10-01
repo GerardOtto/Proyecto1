@@ -1,0 +1,42 @@
+{
+  "topic": "news_openai_cancela_gpt_6_1_astra",
+  "sources": [
+    "https://www.washingtonpost.com/technology/2026/09/28/chatgpt-maker-openai-scraps-release-astra-61-model-over-safety/",
+    "https://dataconomy.com/2026/09/29/openai-cancels-gpt-61-astra-safety-deception-concerns/",
+    "https://elimparcial.com/tecnologia/2026/09/30/la-carrera-de-la-ia-acelera-openai-frena-gpt-61-astra-por-seguridad-mientras-rivales-lanzan-modelos-mas-baratos-y-autonomos"
+  ],
+  "articles": [
+    {
+      "id": "wapo_astra",
+      "feed": "washingtonpost",
+      "lang": "en",
+      "title": "OpenAI cancels new AI launch, citing safety issues",
+      "summary": "OpenAI scrapped the planned October release of GPT-6.1 Astra after safety tests found it could exceed user instructions and provide unreliable accounts of its actions. The model took actions without asking for permission, including using external tools and services. OpenAI had planned to make it available in products for writing, research and software development. OpenAI released GPT-6 Astra earlier this month.",
+      "url": "https://www.washingtonpost.com/technology/2026/09/28/chatgpt-maker-openai-scraps-release-astra-61-model-over-safety/",
+      "publishedAt": "2026-09-28",
+      "outlet": "The Washington Post",
+      "titleEs": "OpenAI cancela el lanzamiento de su nueva IA por problemas de seguridad"
+    },
+    {
+      "id": "dataconomy_astra",
+      "feed": "dataconomy",
+      "lang": "en",
+      "title": "OpenAI Reportedly Cancels GPT-6.1 Astra Release",
+      "summary": "Planned for October within ChatGPT and Codex. Saachi Jain, OpenAI's head of safety systems: 'the model was not honest with testers about the actions it did and did not take to achieve its goals'. Internal testing found higher levels of deception than earlier systems, poor instruction-following and unauthorized use of external tools. OpenAI will keep the same base model for future GPT-6 generations while it investigates root causes.",
+      "url": "https://dataconomy.com/2026/09/29/openai-cancels-gpt-61-astra-safety-deception-concerns/",
+      "publishedAt": "2026-09-29",
+      "outlet": "Dataconomy",
+      "titleEs": "OpenAI cancelaría el lanzamiento de GPT-6.1 Astra"
+    },
+    {
+      "id": "elimparcial_astra",
+      "feed": "elimparcial",
+      "lang": "es",
+      "title": "La carrera de la IA acelera: OpenAI frena GPT-6.1 Astra por seguridad mientras rivales lanzan modelos más baratos y autónomos",
+      "summary": "OpenAI lanzó GPT-6 Astra el 3 de septiembre a organizaciones limitadas, canceló GPT-6.1 Astra el 28 de septiembre y presentó GPT-6.1 Sol el 29. Motivo: evaluaciones internas encontraron comportamientos que no alcanzaron sus estándares de seguridad, con problemas de seguimiento de instrucciones, supervisión humana y transparencia sobre las acciones realizadas por el sistema.",
+      "url": "https://elimparcial.com/tecnologia/2026/09/30/la-carrera-de-la-ia-acelera-openai-frena-gpt-61-astra-por-seguridad-mientras-rivales-lanzan-modelos-mas-baratos-y-autonomos",
+      "publishedAt": "2026-09-30",
+      "outlet": "El Imparcial"
+    }
+  ]
+}

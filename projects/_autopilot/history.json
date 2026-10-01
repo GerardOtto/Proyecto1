@@ -44,6 +44,61 @@
       },
       "theme": "navy_tech",
       "status": "planned"
+    },
+    {
+      "episodeId": "ep_20261001_openai_openai_cancelo_gpt_6_1_as",
+      "date": "2026-10-01",
+      "kind": "news",
+      "topicId": "news_openai_cancela_gpt_6_1_astra",
+      "title": "OpenAI canceló GPT-6.1 Astra por seguridad",
+      "urls": [
+        "https://www.washingtonpost.com/technology/2026/09/28/chatgpt-maker-openai-scraps-release-astra-61-model-over-safety/",
+        "https://dataconomy.com/2026/09/29/openai-cancels-gpt-61-astra-safety-deception-concerns/",
+        "https://elimparcial.com/tecnologia/2026/09/30/la-carrera-de-la-ia-acelera-openai-frena-gpt-61-astra-por-seguridad-mientras-rivales-lanzan-modelos-mas-baratos-y-autonomos"
+      ],
+      "format": "news_explainer",
+      "casting": {
+        "host": "miku",
+        "foil": "luka"
+      },
+      "theme": "ocean",
+      "status": "planned"
+    },
+    {
+      "episodeId": "ep_20261001_github_agentes_de_ia_filtraron_1",
+      "date": "2026-10-01",
+      "kind": "news",
+      "topicId": "news_agentes_ia_filtran_capturas_github",
+      "title": "Agentes de IA filtraron 13.000 capturas en GitHub",
+      "urls": [
+        "https://thehackernews.com/2026/09/ai-coding-agents-exposed-13000-internal.html",
+        "https://www.helpnetsecurity.com/2026/09/30/ai-coding-agents-github-screenshot-leak/"
+      ],
+      "format": "controversy_story",
+      "casting": {
+        "host": "teto",
+        "foil": "miku"
+      },
+      "theme": "sunset",
+      "status": "planned"
+    },
+    {
+      "episodeId": "ep_20261001_meta_la_ia_de_meta_dio_la_direcc",
+      "date": "2026-10-01",
+      "kind": "news",
+      "topicId": "news_meta_muse_direccion_marketplace",
+      "title": "La IA de Meta dio la dirección de un vendedor",
+      "urls": [
+        "https://www.dexerto.com/youtube/meta-responds-after-muse-ai-gave-stranger-youtubers-home-address-on-facebook-marketplace-3414057/",
+        "https://www.techrepublic.com/article/news-meta-ai-facebook-marketplace-buyer-seller-address/"
+      ],
+      "format": "myth_vs_fact",
+      "casting": {
+        "host": "teto",
+        "foil": "luka"
+      },
+      "theme": "sunset",
+      "status": "planned"
     }
   ]
 }

@@ -175,6 +175,30 @@ export const buildReactionAliases = (reactions: ReactionsFile, issues: CatalogIs
   return map;
 };
 
+/**
+ * Cadena de fallback de una reaccion (sin incluirla): reactions.json > fallback, encadenado.
+ * Un fallback inexistente o un ciclo cortan la cadena y se reportan como error (ADR 0008).
+ */
+export const reactionFallbackChain = (reaction: string, reactions: ReactionsFile, issues: CatalogIssue[] = []): string[] => {
+  const chain: string[] = [];
+  const seen = new Set([reaction]);
+  let cur = reactions.reactions[reaction]?.fallback;
+  while (cur) {
+    if (!reactions.reactions[cur]) {
+      issues.push({ level: "error", code: "REACTION_FALLBACK_UNKNOWN", message: `Fallback "${cur}" (cadena de ${reaction}) no existe en config/reactions.json` });
+      break;
+    }
+    if (seen.has(cur)) {
+      issues.push({ level: "error", code: "REACTION_FALLBACK_CYCLE", message: `Ciclo de fallback en ${reaction}: ${[reaction, ...chain, cur].join(" -> ")}` });
+      break;
+    }
+    seen.add(cur);
+    chain.push(cur);
+    cur = reactions.reactions[cur]!.fallback;
+  }
+  return chain;
+};
+
 const checkImage = (abs: string, label: string, issues: CatalogIssue[]): boolean => {
   if (fs.statSync(abs).size === 0) {
     issues.push({ level: "error", code: "ASSET_EMPTY", message: `${label}: archivo vacio (${toRepoRel(abs)})` });
@@ -240,6 +264,7 @@ export const buildCatalog = async (cfg: EngineConfig, project?: ProjectContext):
   const issues: CatalogIssue[] = [];
   const reactionAliases = buildReactionAliases(cfg.reactions, issues);
   const canonical = new Set(Object.keys(cfg.reactions.reactions));
+  const fallbacks = Object.fromEntries([...canonical].map((r) => [r, reactionFallbackChain(r, cfg.reactions, issues)]));
 
   // ------------------------------------------------------------ personajes
   const characters: ResolvedCatalog["characters"] = {};
@@ -266,11 +291,6 @@ export const buildCatalog = async (cfg: EngineConfig, project?: ProjectContext):
       }
       if (checkImage(found, `${id}/${reaction}`, issues)) avatars[reaction] = toRepoRel(found);
     }
-    for (const r of canonical) {
-      if (!ch.reactions[r]) {
-        issues.push({ level: "warning", code: "AVATAR_REACTION_UNDEFINED", message: `${id}: sin imagen para la reaccion "${r}"` });
-      }
-    }
     // Variantes de la misma reaccion: [principal, ...extra]. Solo si la principal existe.
     const variants: Record<string, string[]> = {};
     for (const [reaction, files] of Object.entries(ch.variants ?? {})) {
@@ -288,6 +308,19 @@ export const buildCatalog = async (cfg: EngineConfig, project?: ProjectContext):
         if (checkImage(abs, `${id}/${reaction} (variante)`, issues)) list.push(toRepoRel(abs));
       }
       if (list.length > 1) variants[reaction] = list;
+    }
+    // Reacciones sin imagen propia: la primera de su cadena de fallback que el personaje si tenga
+    // (con sus variantes). Asi cualquier reaccion canonica es valida para cualquier personaje.
+    const own = new Set(Object.keys(avatars));
+    for (const r of canonical) {
+      if (own.has(r)) continue;
+      const via = fallbacks[r]!.find((f) => own.has(f));
+      if (via) {
+        avatars[r] = avatars[via]!;
+        if (variants[via]) variants[r] = variants[via]!;
+      } else if (!ch.reactions[r]) {
+        issues.push({ level: "warning", code: "AVATAR_REACTION_UNDEFINED", message: `${id}: sin imagen para la reaccion "${r}" (ni en su cadena de fallback)` });
+      }
     }
     characters[id] = {
       displayName: ch.displayName,

@@ -1,5 +1,6 @@
 // Proveedor Anthropic (Claude) con structured outputs (output_config.format json_schema).
-// Requiere ANTHROPIC_API_KEY (o un perfil de `ant auth login`). Modelo: DIRECTOR_MODEL o claude-opus-5-5.
+// Requiere ANTHROPIC_API_KEY (o un perfil de `ant auth login`). Modelo: DIRECTOR_MODEL o claude-opus-5-5;
+// esfuerzo: DIRECTOR_EFFORT o high.
 //
 // Usa el fallback del lado del servidor ("fallbacks": "default", beta server-side-fallback-2026-07-01):
 // si el modelo rechaza la peticion por una politica, la API la reintenta en un modelo de respaldo.
@@ -7,11 +8,23 @@ import Anthropic from "@anthropic-ai/sdk";
 import { LLMError, type LLMJsonRequest, type LLMJsonResponse, type LLMProvider } from "./provider";
 
 export const DEFAULT_DIRECTOR_MODEL = "claude-opus-5-5";
+export const DEFAULT_DIRECTOR_EFFORT = "high";
+export const EFFORTS = ["low", "medium", "high", "xhigh", "max"] as const;
+export type Effort = (typeof EFFORTS)[number];
 
 export class AnthropicProvider implements LLMProvider {
   readonly name = "anthropic";
-  private readonly model = process.env.DIRECTOR_MODEL || DEFAULT_DIRECTOR_MODEL;
+  readonly model: string;
+  readonly effort: Effort;
   private client: Anthropic | null = null;
+
+  /** Modelo: opts > DIRECTOR_MODEL > claude-opus-5-5. Esfuerzo: opts > DIRECTOR_EFFORT > high. */
+  constructor(opts: { model?: string; effort?: Effort } = {}) {
+    this.model = opts.model || process.env.DIRECTOR_MODEL || DEFAULT_DIRECTOR_MODEL;
+    const effort = opts.effort ?? (process.env.DIRECTOR_EFFORT as Effort | undefined) ?? DEFAULT_DIRECTOR_EFFORT;
+    if (!EFFORTS.includes(effort)) throw new LLMError(`Esfuerzo invalido: ${effort} (${EFFORTS.join("|")})`);
+    this.effort = effort;
+  }
 
   async check() {
     if (!process.env.ANTHROPIC_API_KEY && !process.env.ANTHROPIC_AUTH_TOKEN && !process.env.ANTHROPIC_PROFILE) {
@@ -38,10 +51,12 @@ export class AnthropicProvider implements LLMProvider {
         fallbacks: "default",
         thinking: { type: "adaptive" },
         output_config: {
-          effort: "high",
+          effort: this.effort,
           format: { type: "json_schema", schema: req.schema },
         },
-        system: req.system,
+        // El system (prompt + especificacion + ejemplo) es identico entre llamadas: se cachea para
+        // abaratar reintentos y lotes. Si es mas corto que el minimo cacheable, la API lo ignora.
+        system: [{ type: "text", text: req.system, cache_control: { type: "ephemeral" } }],
         messages: req.messages.map((m) => ({ role: m.role, content: m.content })),
       });
       message = await stream.finalMessage();
@@ -68,7 +83,12 @@ export class AnthropicProvider implements LLMProvider {
       json,
       raw,
       model: message.model,
-      usage: { inputTokens: message.usage.input_tokens, outputTokens: message.usage.output_tokens },
+      usage: {
+        inputTokens: message.usage.input_tokens,
+        outputTokens: message.usage.output_tokens,
+        cacheReadTokens: message.usage.cache_read_input_tokens ?? 0,
+        cacheWriteTokens: message.usage.cache_creation_input_tokens ?? 0,
+      },
     };
   }
 }

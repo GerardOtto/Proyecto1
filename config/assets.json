@@ -186,6 +186,325 @@
       "license_status": "placeholder"
     },
     {
+      "id": "meme_gato_pulgar",
+      "type": "meme",
+      "path": "assets/memes/meme_gato_pulgar.png",
+      "tags": [
+        "meme",
+        "sticker",
+        "gato",
+        "aprobacion",
+        "pulgar",
+        "bien"
+      ],
+      "safeArea": true,
+      "source": "Pinterest: https://www.pinterest.com/pin/1146166174356099143/ (tablero chaewonjames/stickers); fondo eliminado con scripts/remove-bg.py (T_LO=7)",
+      "license": "Sin documentar (autor original desconocido)",
+      "license_status": "unknown",
+      "description": "Gato con pulgar arriba y destellos (aprobacion)."
+    },
+    {
+      "id": "meme_gato_pulgar_2",
+      "type": "meme",
+      "path": "assets/memes/meme_gato_pulgar_2.jpg",
+      "tags": [
+        "meme",
+        "sticker",
+        "gato",
+        "aprobacion",
+        "pulgar",
+        "bien"
+      ],
+      "safeArea": true,
+      "source": "Pinterest: https://www.pinterest.com/pin/1146166174356099308/ (tablero chaewonjames/stickers); foto/imagen original sin recorte (fondo no uniforme)",
+      "license": "Sin documentar (autor original desconocido)",
+      "license_status": "unknown",
+      "description": "Gato con brazo humano haciendo pulgar arriba (foto)."
+    },
+    {
+      "id": "meme_gato_sorprendido",
+      "type": "meme",
+      "path": "assets/memes/meme_gato_sorprendido.jpg",
+      "tags": [
+        "meme",
+        "sticker",
+        "gato",
+        "sorpresa",
+        "asombro"
+      ],
+      "safeArea": true,
+      "source": "Pinterest: https://www.pinterest.com/pin/1146166174356099191/ (tablero chaewonjames/stickers); foto/imagen original sin recorte (fondo no uniforme)",
+      "license": "Sin documentar (autor original desconocido)",
+      "license_status": "unknown",
+      "description": "Gato con ojos y boca muy abiertos, primer plano (foto)."
+    },
+    {
+      "id": "meme_gato_lengua",
+      "type": "meme",
+      "path": "assets/memes/meme_gato_lengua.jpg",
+      "tags": [
+        "meme",
+        "sticker",
+        "gato",
+        "burla",
+        "picaro"
+      ],
+      "safeArea": true,
+      "source": "Pinterest: https://www.pinterest.com/pin/1146166174356099193/ (tablero chaewonjames/stickers); foto/imagen original sin recorte (fondo no uniforme)",
+      "license": "Sin documentar (autor original desconocido)",
+      "license_status": "unknown",
+      "description": "Gato sacando la lengua con cara picara (foto)."
+    },
+    {
+      "id": "meme_gato_nerd",
+      "type": "meme",
+      "path": "assets/memes/meme_gato_nerd.jpg",
+      "tags": [
+        "meme",
+        "sticker",
+        "gato",
+        "nerd",
+        "dato",
+        "explicacion"
+      ],
+      "safeArea": true,
+      "source": "Pinterest: https://www.pinterest.com/pin/1146166174356099198/ (tablero chaewonjames/stickers); foto/imagen original sin recorte (fondo no uniforme)",
+      "license": "Sin documentar (autor original desconocido)",
+      "license_status": "unknown",
+      "description": "Gato con gafas y dedo arriba: 'dato curioso' (foto)."
+    },
+    {
+      "id": "meme_gato_parado",
+      "type": "meme",
+      "path": "assets/memes/meme_gato_parado.png",
+      "tags": [
+        "meme",
+        "sticker",
+        "gato",
+        "serio",
+        "juicio",
+        "silencio"
+      ],
+      "safeArea": true,
+      "source": "Pinterest: https://www.pinterest.com/pin/1146166174356099207/ (tablero chaewonjames/stickers); fondo eliminado con scripts/remove-bg.py (T_LO=7)",
+      "license": "Sin documentar (autor original desconocido)",
+      "license_status": "unknown",
+      "description": "Gato parado mirando fijo a camara (juicio silencioso)."
+    },
+    {
+      "id": "meme_gato_lamiendo",
+      "type": "meme",
+      "path": "assets/memes/meme_gato_lamiendo.jpg",
+      "tags": [
+        "meme",
+        "sticker",
+        "gato",
+        "absurdo",
+        "caos"
+      ],
+      "safeArea": true,
+      "source": "Pinterest: https://www.pinterest.com/pin/1146166174356099229/ (tablero chaewonjames/stickers); foto/imagen original sin recorte (fondo no uniforme)",
+      "license": "Sin documentar (autor original desconocido)",
+      "license_status": "unknown",
+      "description": "Gato lamiendo la camara (foto)."
+    },
+    {
+      "id": "meme_gato_tarjeta_roja",
+      "type": "meme",
+      "path": "assets/memes/meme_gato_tarjeta_roja.png",
+      "tags": [
+        "meme",
+        "sticker",
+        "gato",
+        "error",
+        "falta",
+        "tarjeta_roja",
+        "correccion"
+      ],
+      "safeArea": true,
+      "source": "Pinterest: https://www.pinterest.com/pin/1146166174356099233/ (tablero chaewonjames/stickers); fondo eliminado con scripts/remove-bg.py (T_LO=7)",
+      "license": "Sin documentar (autor original desconocido)",
+      "license_status": "unknown",
+      "description": "Gato arbitro con silbato sacando tarjeta roja (error / falta)."
+    },
+    {
+      "id": "meme_gato_mojado",
+      "type": "meme",
+      "path": "assets/memes/meme_gato_mojado.jpg",
+      "tags": [
+        "meme",
+        "sticker",
+        "gato",
+        "triste",
+        "derrota",
+        "resignacion"
+      ],
+      "safeArea": true,
+      "source": "Pinterest: https://www.pinterest.com/pin/1146166174356099253/ (tablero chaewonjames/stickers); foto/imagen original sin recorte (fondo no uniforme)",
+      "license": "Sin documentar (autor original desconocido)",
+      "license_status": "unknown",
+      "description": "Gato mojado y resignado bajo el grifo (foto)."
+    },
+    {
+      "id": "meme_gato_oscuro",
+      "type": "meme",
+      "path": "assets/memes/meme_gato_oscuro.jpg",
+      "tags": [
+        "meme",
+        "sticker",
+        "gato",
+        "terror",
+        "giro",
+        "inquietante"
+      ],
+      "safeArea": true,
+      "source": "Pinterest: https://www.pinterest.com/pin/1146166174356099263/ (tablero chaewonjames/stickers); foto/imagen original sin recorte (fondo no uniforme)",
+      "license": "Sin documentar (autor original desconocido)",
+      "license_status": "unknown",
+      "description": "Gato en penumbra mirando fijo (giro inquietante, foto)."
+    },
+    {
+      "id": "meme_gato_buho",
+      "type": "meme",
+      "path": "assets/memes/meme_gato_buho.png",
+      "tags": [
+        "meme",
+        "sticker",
+        "gato",
+        "ternura",
+        "confusion"
+      ],
+      "safeArea": true,
+      "source": "Pinterest: https://www.pinterest.com/pin/1146166174356099280/ (tablero chaewonjames/stickers); fondo eliminado con scripts/remove-bg.py (T_LO=7)",
+      "license": "Sin documentar (autor original desconocido)",
+      "license_status": "unknown",
+      "description": "Gato con cuerpo de buho mirando (ternura / confusion)."
+    },
+    {
+      "id": "meme_nugget",
+      "type": "meme",
+      "path": "assets/memes/meme_nugget.png",
+      "tags": [
+        "meme",
+        "sticker",
+        "nugget",
+        "absurdo",
+        "smug",
+        "roblox"
+      ],
+      "safeArea": true,
+      "source": "Pinterest: https://www.pinterest.com/pin/1146166174356099213/ (tablero chaewonjames/stickers); fondo eliminado con scripts/remove-bg.py (T_LO=7)",
+      "license": "Sin documentar (autor original desconocido)",
+      "license_status": "unknown",
+      "description": "Nugget con cara de Roblox sonriendo (absurdo / 'te lo dije')."
+    },
+    {
+      "id": "meme_pera",
+      "type": "meme",
+      "path": "assets/memes/meme_pera.png",
+      "tags": [
+        "meme",
+        "sticker",
+        "pera",
+        "absurdo",
+        "fruta"
+      ],
+      "safeArea": true,
+      "source": "Pinterest: https://www.pinterest.com/pin/1146166174356099792/ (tablero chaewonjames/stickers); fondo eliminado con scripts/remove-bg.py (T_LO=7)",
+      "license": "Sin documentar (autor original desconocido)",
+      "license_status": "unknown",
+      "description": "Pera con cara de anime sacando la lengua."
+    },
+    {
+      "id": "meme_pera_gumi",
+      "type": "meme",
+      "path": "assets/memes/meme_pera_gumi.png",
+      "tags": [
+        "meme",
+        "sticker",
+        "pera",
+        "gumi",
+        "absurdo",
+        "fruta"
+      ],
+      "safeArea": true,
+      "source": "Pinterest: https://www.pinterest.com/pin/1146166174356099696/ (tablero chaewonjames/stickers); fondo eliminado con scripts/remove-bg.py (T_LO=7)",
+      "license": "Sin documentar (autor original desconocido)",
+      "license_status": "unknown",
+      "description": "Pera con la cara de Gumi sonriendo."
+    },
+    {
+      "id": "meme_pera_senalando",
+      "type": "meme",
+      "path": "assets/memes/meme_pera_senalando.png",
+      "tags": [
+        "meme",
+        "sticker",
+        "pera",
+        "senalar",
+        "te_hablo_a_ti",
+        "fruta"
+      ],
+      "safeArea": true,
+      "source": "Pinterest: https://www.pinterest.com/pin/1146166174356099783/ (tablero chaewonjames/stickers); foto/imagen original sin recorte (fondo no uniforme)",
+      "license": "Sin documentar (autor original desconocido)",
+      "license_status": "unknown",
+      "description": "Pera con cara de anime y mano senalando a camara (fondo claro sin recortar)."
+    },
+    {
+      "id": "meme_pera_mordida",
+      "type": "meme",
+      "path": "assets/memes/meme_pera_mordida.png",
+      "tags": [
+        "meme",
+        "sticker",
+        "pera",
+        "susto",
+        "dolor",
+        "fruta"
+      ],
+      "safeArea": true,
+      "source": "Pinterest: https://www.pinterest.com/pin/1146166174356099802/ (tablero chaewonjames/stickers); fondo eliminado con scripts/remove-bg.py (T_LO=7)",
+      "license": "Sin documentar (autor original desconocido)",
+      "license_status": "unknown",
+      "description": "Pera mordida gritando de susto."
+    },
+    {
+      "id": "meme_toronja",
+      "type": "meme",
+      "path": "assets/memes/meme_toronja.png",
+      "tags": [
+        "meme",
+        "sticker",
+        "toronja",
+        "absurdo",
+        "fruta"
+      ],
+      "safeArea": true,
+      "source": "Pinterest: https://www.pinterest.com/pin/1146166174356099924/ (tablero chaewonjames/stickers); fondo eliminado con scripts/remove-bg.py (T_LO=7)",
+      "license": "Sin documentar (autor original desconocido)",
+      "license_status": "unknown",
+      "description": "Toronja con cara de anime y gajo."
+    },
+    {
+      "id": "meme_miku_verde",
+      "type": "meme",
+      "path": "assets/memes/meme_miku_verde.gif",
+      "tags": [
+        "meme",
+        "sticker",
+        "miku",
+        "animado",
+        "absurdo",
+        "baile"
+      ],
+      "safeArea": true,
+      "source": "Pinterest: https://www.pinterest.com/pin/1146166174356099745/ (tablero chaewonjames/stickers); foto/imagen original sin recorte (fondo no uniforme)",
+      "license": "Sin documentar (autor original desconocido)",
+      "license_status": "unknown",
+      "description": "Mini Miku verde animada (GIF con recuadro blanco)."
+    },
+    {
       "id": "sfx_boom",
       "type": "sfx",
       "path": "assets/sfx/sfx_boom.wav",

@@ -17,6 +17,8 @@ export interface WriterAssets {
   headlineVisual?: string;
   broll: string[];
   background?: string;
+  /** Capturas y tarjetas de titular (noticias): relleno contextual para la linea que cita cada fuente. */
+  newsBroll?: Array<{ id: string; description: string }>;
 }
 
 export interface WrittenScript {

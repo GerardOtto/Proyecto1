@@ -53,6 +53,18 @@ export const topicFromCluster = (c: NewsCluster, cfg: SourcesConfig): TopicBrief
   };
 };
 
+/** Valida un brief manual (--brief). Exige los campos que usan el escritor, los graficos y la publicacion. */
+export const parseBrief = (raw: unknown, file = "brief"): TopicBrief => {
+  const b = raw as Partial<TopicBrief>;
+  const missing = (["id", "kind", "category", "keyword", "title", "hookTitle"] as const).filter((k) => typeof b?.[k] !== "string" || !b[k]);
+  if (!Array.isArray(b?.points) || b.points.length === 0) missing.push("points" as never);
+  if (!Array.isArray(b?.sources) || b.sources.length === 0) missing.push("sources" as never);
+  if (missing.length) throw new Error(`${file}: faltan campos ${missing.join(", ")}`);
+  if (b.kind !== "news" && b.kind !== "evergreen") throw new Error(`${file}: kind debe ser news o evergreen`);
+  if (b.kind === "news" && !b.articles?.length) throw new Error(`${file}: una noticia necesita articles (unica fuente de hechos del escritor)`);
+  return { takeaway: "", entities: [], ...b } as TopicBrief;
+};
+
 /** Primer cluster con puntuacion suficiente y no usado antes. */
 export const pickNews = (clusters: NewsCluster[], history: History, cfg: SourcesConfig): NewsCluster | null =>
   clusters.find((c) => c.score >= cfg.minScore && !c.items.some((i) => newsAlreadyUsed(history, i.url, i.title))) ?? null;
@@ -88,7 +100,8 @@ export const readyCharacters = (engine: EngineConfig, allowPlaceholder = false):
   Object.entries(engine.characters.characters)
     .filter(([, c]) => {
       const lic = c.license?.license_status ?? "unknown";
-      const hasVoice = !!c.voice?.fish?.referenceId || !!(c.voice as { greeting?: string } | undefined)?.greeting;
+      // Voz = referenceId de Fish Audio: un saludo pregrabado solo no alcanza para el resto del dialogo.
+      const hasVoice = !!c.voice?.fish?.referenceId;
       return allowPlaceholder || (lic !== "placeholder" && hasVoice);
     })
     .map(([id]) => id)
@@ -124,6 +137,10 @@ export interface PlanInput {
   clusters: NewsCluster[];
   mode: "auto" | "news" | "evergreen";
   forceTopic?: string;
+  /** Brief redactado a mano (p. ej. una noticia caliente investigada fuera del lector RSS). */
+  forceBrief?: TopicBrief;
+  /** Fuerza el formato (si no, se elige por categoria evitando repetir el ultimo). */
+  format?: FormatId;
   category?: string;
   allowPlaceholder?: boolean;
   /** Sin escritor LLM no se pueden escribir noticias: se cae a evergreen. */
@@ -134,7 +151,9 @@ export const planEpisode = (input: PlanInput): EpisodePlan => {
   const { ap, history, date } = input;
   const baseSeed = `${date}:${history.episodes.length}`;
   let topic: TopicBrief;
-  if (input.forceTopic) {
+  if (input.forceBrief) {
+    topic = input.forceBrief;
+  } else if (input.forceTopic) {
     const t = ap.evergreen.find((x) => x.id === input.forceTopic);
     if (!t) throw new Error(`Tema evergreen desconocido: ${input.forceTopic}`);
     topic = topicFromEvergreen(t);
@@ -144,7 +163,8 @@ export const planEpisode = (input: PlanInput): EpisodePlan => {
     topic = news ? topicFromCluster(news, ap.sources) : topicFromEvergreen(pickEvergreen(ap.evergreen, history, baseSeed, input.category));
   }
   const seed = `${baseSeed}:${topic.id}`;
-  const format = chooseFormat(topic.category, ap, seed, history);
+  const format = input.format ?? chooseFormat(topic.category, ap, seed, history);
+  if (!ap.formats.formats[format]) throw new Error(`Formato desconocido: ${format}`);
   const f = ap.formats.formats[format];
   return {
     episodeId: `ep_${date.replace(/-/g, "")}_${slugify(topic.kind === "news" ? topic.keyword + "_" + topic.title : topic.id).slice(0, 32)}`,

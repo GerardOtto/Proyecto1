@@ -1,0 +1,112 @@
+{
+  "$schema": "../../schemas/project.schema.json",
+  "title": "Agentes de IA filtraron 13.000 capturas en GitHub",
+  "language": "es",
+  "durationTargetSec": 85,
+  "background": "bg_theme_sunset",
+  "director": "rules",
+  "tts": "fish",
+  "transcriber": "auto",
+  "assets": [
+    {
+      "id": "ep_headline",
+      "type": "image",
+      "path": "visuals/ep_headline.png",
+      "tags": [
+        "autopilot",
+        "news",
+        "github",
+        "ciberseguridad",
+        "agentes"
+      ],
+      "safeArea": true,
+      "source": "generado por src/autopilot/graphics.ts (ep_20261001_github_agentes_de_ia_filtraron_1)",
+      "license": "propio",
+      "license_status": "owned"
+    },
+    {
+      "id": "ep_main",
+      "type": "diagram",
+      "path": "visuals/ep_main.png",
+      "tags": [
+        "autopilot",
+        "news",
+        "github",
+        "ciberseguridad",
+        "agentes"
+      ],
+      "safeArea": true,
+      "source": "generado por src/autopilot/graphics.ts (ep_20261001_github_agentes_de_ia_filtraron_1)",
+      "license": "propio",
+      "license_status": "owned"
+    },
+    {
+      "id": "news_cap_1",
+      "type": "broll",
+      "path": "visuals/news_cap_1.png",
+      "tags": [
+        "broll",
+        "noticia",
+        "github",
+        "ciberseguridad",
+        "agentes",
+        "captura"
+      ],
+      "source": "https://thehackernews.com/2026/09/ai-coding-agents-exposed-13000-internal.html",
+      "license": "Contenido de The Hacker News; captura del titular usada como cita en contenido informativo",
+      "license_status": "unknown",
+      "description": "Captura real del titular de The Hacker News (30 sep 2026): AI Coding Agents Exposed 13,000 Internal Images, Including Billing Records, on GitHub"
+    },
+    {
+      "id": "news_card_1",
+      "type": "broll",
+      "path": "visuals/news_card_1.png",
+      "tags": [
+        "broll",
+        "noticia",
+        "github",
+        "ciberseguridad",
+        "agentes",
+        "titular"
+      ],
+      "source": "generado por src/autopilot/newscards.ts (ep_20261001_github_agentes_de_ia_filtraron_1); titular de https://thehackernews.com/2026/09/ai-coding-agents-exposed-13000-internal.html",
+      "license": "propio",
+      "license_status": "owned",
+      "description": "Tarjeta propia (print) con el titular de The Hacker News: AI Coding Agents Exposed 13,000 Internal Images, Including Billing Records, on GitHub"
+    },
+    {
+      "id": "news_cap_2",
+      "type": "broll",
+      "path": "visuals/news_cap_2.png",
+      "tags": [
+        "broll",
+        "noticia",
+        "github",
+        "ciberseguridad",
+        "agentes",
+        "captura"
+      ],
+      "source": "https://www.helpnetsecurity.com/2026/09/30/ai-coding-agents-github-screenshot-leak/",
+      "license": "Contenido de Help Net Security; captura del titular usada como cita en contenido informativo",
+      "license_status": "unknown",
+      "description": "Captura real del titular de Help Net Security (30 sep 2026): AI coding agents leaked 13,000 internal company screenshots to public GitHub repos"
+    },
+    {
+      "id": "news_card_2",
+      "type": "broll",
+      "path": "visuals/news_card_2.png",
+      "tags": [
+        "broll",
+        "noticia",
+        "github",
+        "ciberseguridad",
+        "agentes",
+        "titular"
+      ],
+      "source": "generado por src/autopilot/newscards.ts (ep_20261001_github_agentes_de_ia_filtraron_1); titular de https://www.helpnetsecurity.com/2026/09/30/ai-coding-agents-github-screenshot-leak/",
+      "license": "propio",
+      "license_status": "owned",
+      "description": "Tarjeta propia (browser) con el titular de Help Net Security: AI coding agents leaked 13,000 internal company screenshots to public GitHub repos"
+    }
+  ]
+}

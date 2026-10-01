@@ -24,7 +24,7 @@ describe("validacion semantica del timeline", async () => {
   it("avatar: personaje y reaccion deben existir en el catalogo", () => {
     const t = clone(longTimeline());
     t.scenes[0]!.avatar = "sorpresa2";
-    t.scenes[2]!.character = "kaito";
+    t.scenes[2]!.character = "gakupo"; // no esta en characters.json (kaito ya existe)
     expect(codes(t)).toEqual(expect.arrayContaining(["UNKNOWN_REACTION", "UNKNOWN_CHARACTER"]));
   });
 

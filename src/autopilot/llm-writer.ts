@@ -66,6 +66,12 @@ export const buildWriterBrief = (plan: EpisodePlan, ap: AutopilotConfig, assets:
     "",
     "## Recursos del episodio",
     `Visuales generados: ${[assets.mainVisual, assets.headlineVisual].filter(Boolean).join(", ") || "ninguno"}`,
+    ...(assets.newsBroll?.length
+      ? [
+          "Relleno de noticia (usa [BROLL: id] en el bloque que cita esa fuente; reparte capturas y tarjetas, no repitas la misma seguida):",
+          ...assets.newsBroll.map((v) => `- ${v.id}: ${v.description}`),
+        ]
+      : []),
     `Saludo: ${ap.humor.greeting}`,
     `Memes disponibles: ${ap.humor.memeBeats.map((m) => `[MEME:${m.meme}:${m.sfx}]`).join(" ")}`,
     `CTA (dos bloques finales, con [VISUAL: ${ap.humor.ctaVisual}]): ${ap.humor.ctaLines.map(([w, l]) => `${w.replace("{host}", plan.casting.host).replace("{foil}", plan.casting.foil)}: "${l}"`).join(" | ")}`,

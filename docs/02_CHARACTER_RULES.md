@@ -11,10 +11,13 @@ Ningun guion ni timeline puede cambiar color, escala o anclaje de un personaje.
 | luka | Luka | `#E285B2` | rosa/magenta |
 | rin | Rin | `#F6C744` | amarillo |
 | len | Len | `#F2B544` | amarillo/naranja |
+| kaito | Kaito | `#3D6BFF` | azul |
+| neru | Neru | `#E8D44D` | amarillo limon |
 
 Los colores son una propuesta de implementacion, no colores oficiales. Ajustarlos al material real.
-Nota: luka/teto y rin/len tienen colores cercanos; el nombre del personaje se muestra sobre cada
-pagina de subtitulos para desambiguar.
+Nota: luka/teto y rin/len/neru tienen colores cercanos; el nombre del personaje se muestra sobre cada
+pagina de subtitulos para desambiguar. Kaito y Neru no tienen voz de Fish Audio todavia: el autopiloto
+no los elige hasta que se configure `voice.fish.referenceId`.
 
 Campos por personaje: `displayName`, `subtitleColor`, `defaultScale` (alto del avatar = escala x 1920),
 `anchor` (lado preferido), `avatarDir`, `reactions` (reaccion canonica -> archivo), `voice`
@@ -27,22 +30,35 @@ Campos por personaje: `displayName`, `subtitleColor`, `defaultScale` (alto del a
   YouTube, TikTok e Instagram (sin "suscribete", "campanita", "link en la bio"...), con el visual
   `cta_follow_like`. Recogido tambien en `prompts/director.system.md`.
 
-## Reacciones (8 estados)
-| Canonica | Uso narrativo | Prioridad | Alias aceptados (ejemplos) | Archivo (fem./masc.) |
+## Reacciones (19 estados, ADR 0008)
+| Canonica | Uso narrativo | Prioridad | Alias aceptados (ejemplos) | Fallback |
 |---|---|---|---|---|
-| neutral | explicacion normal / escucha | alta | normal, listening | neutral.png |
-| feliz | aprobacion / remate ligero | alta | happy, contento/a | feliz.png |
-| sorprendido | hook / dato inesperado | alta | sorprendida, surprised | sorprendida.png / sorprendido.png |
-| confundido | pregunta / malentendido | alta | confundida, confused | confundida.png / confundido.png |
-| enojado | correccion / frustracion comica | media | enojada, angry | enojada.png / enojado.png |
-| riendo | remate / reaccion | media | laughing, risa | riendo.png |
-| nerd | explicacion tecnica / conclusion | media | serio_nerd, serio/a | nerd.png |
-| shocked | giro exagerado / meme | media | shock, impactado/a | shocked.png |
+| neutral | explicacion normal / escucha | alta | normal, listening | — |
+| feliz | aprobacion / remate ligero | alta | happy, contento/a, flores | neutral |
+| sorprendido | hook / dato inesperado | alta | sorprendida, surprised | shocked |
+| confundido | pregunta / malentendido | alta | confundida, confused, disgustado/a | neutral |
+| enojado | correccion / frustracion comica | media | enojada, angry, maldiciendo | neutral |
+| riendo | remate / reaccion | media | laughing, risa | feliz |
+| nerd | explicacion tecnica / conclusion | media | serio_nerd, serio/a, profesional | neutral |
+| shocked | giro exagerado / meme (ojos en blanco) | media | shock, impactado/a | gritando |
+| gritando | exasperacion / grito comico (ojos ><) | media | grito, scream, exasperado/a | enojado |
+| triste | mala noticia / llanto comico | media | sad, llorando | confundido |
+| decepcionado | expectativa rota (ojos -_-) | media | decepcionada, disappointed | triste |
+| emocionado | hype / anuncio / celebracion | media | emocionada, excited, bailando | feliz |
+| timido | halago / verguenza | baja | timida, sonrojado/a, shy | feliz |
+| saludando | saludo / despedida a los Papus | media | saludo, hola, wave | feliz |
+| pensando | duda razonada / idea | media | pensativo/a, idea, thinking | confundido |
+| presumido | "te lo dije" / coqueteo comico | baja | presumida, smug, coqueto/a | feliz |
+| aburrido | tema denso / sueno | baja | aburrida, bored, dormido/a | neutral |
+| nervioso | riesgo / preocupacion | media | nerviosa, nervous, preocupado/a | confundido |
+| broma | gag visual (bigote, gato, peluche, chibi) | baja | gag, bigote, gato, chibi | riendo |
 
 - En guiones y timelines se acepta cualquier alias; el motor los resuelve a la forma canonica.
-- Nombres de archivo estandarizados; evitar variantes ambiguas (`sorpresa2.jpg`, `surprised_final.png`).
-- Para agregar una reaccion: agregarla en `config/reactions.json`, mapear el archivo en cada personaje
-  de `config/characters.json`, ejecutar `npm run catalog`. No cambia la arquitectura.
+- **Fallback**: si un personaje no tiene imagen propia para una reaccion, el catalogo usa la primera de
+  su cadena que si tenga (con sus variantes). Cualquier reaccion es valida para cualquier personaje.
+- Archivos: `<reaccion canonica>[_n].png` dentro de `avatarDir` (los genera `npm run avatars:ingest`).
+- Para agregar una reaccion: agregarla en `config/reactions.json` con `use`, `aliases` y `fallback`
+  (sin ciclos), ingestar imagenes donde existan y ejecutar `npm run catalog`.
 
 ## Reglas de escena (implementadas en `src/timeline/plan.ts`)
 - **Lados estables**: cada personaje conserva su lado durante todo el video (orden de aparicion; el

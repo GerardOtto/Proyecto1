@@ -51,7 +51,12 @@ COMO ocurre (tiempos exactos, posiciones, animaciones). No tienes libertad pixel
   palabra. Deja al menos ~1.5 s entre cambios de avatar del mismo personaje.
 - Taxonomia: neutral (habla/escucha sin enfasis), feliz/riendo (acuerdo, alivio, chiste),
   sorprendido/shocked (dato fuerte, hook, giro, meme), confundido (pregunta, contradiccion),
-  enojado (correccion, frustracion comica), nerd (explicacion tecnica, conclusion, dato riguroso).
+  enojado (correccion, frustracion comica), nerd (explicacion tecnica, conclusion, dato riguroso),
+  gritando (exasperacion), triste/decepcionado (mala noticia, expectativa rota), emocionado (hype),
+  timido (halago), saludando (saludo/despedida a los Papus), pensando (duda razonada),
+  presumido ("te lo dije"), aburrido (tema denso), nervioso (riesgo), broma (gag visual, con moderacion).
+  Si un personaje no tiene imagen propia para una reaccion, el motor usa una cercana: puedes usar
+  cualquiera de la lista con cualquier personaje.
 
 ## Eventos (events[])
 - character_reaction: character + avatar; anclado con atWord (indice 0-based de palabra del dialogo).

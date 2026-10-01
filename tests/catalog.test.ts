@@ -77,6 +77,33 @@ describe("catalogo y resolucion de assets por ID", async () => {
     expect(codes).toContain("VARIANT_WITHOUT_MAIN"); // "shock" no es una reaccion con imagen principal
   });
 
+  it("reacciones sin imagen propia usan la primera de su cadena de fallback (con variantes)", async () => {
+    const c = clone(loadEngineConfig());
+    const neru = c.characters.characters.neru!;
+    expect(neru.reactions["aburrido"]).toBeUndefined(); // aburrido -> neutral
+    expect(neru.reactions["pensando"]).toBeUndefined(); // pensando -> confundido -> neutral
+    const res = await buildCatalog(c);
+    const r = res.resolved.characters.neru!;
+    expect(r.avatars.aburrido).toBe(r.avatars.neutral);
+    expect(r.avatars.pensando).toBe(r.avatars.neutral);
+    // decepcionado es propio: no se pisa con el fallback (triste)
+    expect(r.avatars.decepcionado).toContain("decepcionado");
+    // la variante viaja con el fallback: emocionado -> feliz
+    c.characters.characters.neru!.variants = { feliz: ["nerd.png"] };
+    const res2 = await buildCatalog(c);
+    expect(res2.resolved.characters.neru!.variants?.emocionado).toEqual(res2.resolved.characters.neru!.variants?.feliz);
+    expect(res.issues.some((i) => i.code === "AVATAR_REACTION_UNDEFINED")).toBe(false);
+  });
+
+  it("detecta fallbacks inexistentes y ciclos", async () => {
+    const c = clone(loadEngineConfig());
+    c.reactions.reactions["triste"]!.fallback = "no_existe";
+    c.reactions.reactions["shocked"]!.fallback = "sorprendido"; // sorprendido -> shocked -> sorprendido
+    const codes = (await buildCatalog(c)).issues.map((i) => i.code);
+    expect(codes).toContain("REACTION_FALLBACK_UNKNOWN");
+    expect(codes).toContain("REACTION_FALLBACK_CYCLE");
+  });
+
   it("detecta colisiones de alias", () => {
     const issues: Array<{ level: "error" | "warning"; code: string; message: string }> = [];
     buildReactionAliases({ reactions: { a: { use: "", priority: "alta", aliases: ["x"] }, b: { use: "", priority: "alta", aliases: ["x"] } } }, issues);

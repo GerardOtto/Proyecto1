@@ -21,6 +21,8 @@
     "render": "tsx scripts/render.ts",
     "generate": "tsx scripts/generate.ts",
     "autopilot": "tsx scripts/autopilot.ts",
+    "compare-writers": "tsx scripts/compare-writers.ts",
+    "review": "tsx scripts/review.ts",
     "studio": "tsx scripts/studio.ts",
     "smoke": "tsx scripts/smoke.ts",
     "whisper:install": "tsx scripts/setup-whisper.ts",
@@ -42,6 +44,7 @@
     "@remotion/renderer": "4.0.530",
     "ajv": "8.20.0",
     "fast-xml-parser": "5.11.2",
+    "puppeteer-core": "25.12.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "remotion": "4.0.530"

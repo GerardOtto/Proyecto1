@@ -9,37 +9,110 @@
     "feliz": {
       "use": "aprobacion / remate ligero",
       "priority": "alta",
-      "aliases": ["happy", "contento", "contenta", "alegre", "smile"]
+      "aliases": ["happy", "contento", "contenta", "alegre", "smile", "profesional_feliz", "flores", "beso"],
+      "fallback": "neutral"
     },
     "sorprendido": {
       "use": "hook / dato inesperado",
       "priority": "alta",
-      "aliases": ["sorprendida", "surprised", "sorpresa", "surprise"]
+      "aliases": ["sorprendida", "surprised", "sorpresa", "surprise"],
+      "fallback": "shocked"
     },
     "confundido": {
       "use": "pregunta / malentendido",
       "priority": "alta",
-      "aliases": ["confundida", "confused", "confusion"]
+      "aliases": ["confundida", "confused", "confusion", "disgustado", "disgustada"],
+      "fallback": "neutral"
     },
     "enojado": {
       "use": "correccion / frustracion humoristica",
       "priority": "media",
-      "aliases": ["enojada", "angry", "molesto", "molesta", "mad"]
+      "aliases": ["enojada", "angry", "molesto", "molesta", "mad", "maldiciendo", "furioso", "furiosa"],
+      "fallback": "neutral"
     },
     "riendo": {
       "use": "remate / reaccion",
       "priority": "media",
-      "aliases": ["laughing", "laugh", "risa"]
+      "aliases": ["laughing", "laugh", "risa", "carcajada"],
+      "fallback": "feliz"
     },
     "nerd": {
       "use": "explicacion tecnica / conclusion / dato riguroso",
       "priority": "media",
-      "aliases": ["serio_nerd", "serio", "seria", "serious"]
+      "aliases": ["serio_nerd", "serio", "seria", "serious", "profesional"],
+      "fallback": "neutral"
     },
     "shocked": {
-      "use": "giro exagerado / meme",
+      "use": "giro exagerado / meme (ojos en blanco)",
       "priority": "media",
-      "aliases": ["shock", "impactado", "impactada"]
+      "aliases": ["shock", "impactado", "impactada"],
+      "fallback": "gritando"
+    },
+    "gritando": {
+      "use": "exasperacion / grito comico (ojos ><)",
+      "priority": "media",
+      "aliases": ["gritar", "grito", "scream", "screaming", "yelling", "exasperado", "exasperada"],
+      "fallback": "enojado"
+    },
+    "triste": {
+      "use": "mala noticia / perdida / llanto comico",
+      "priority": "media",
+      "aliases": ["sad", "llorando", "llorar", "crying", "tristeza"],
+      "fallback": "confundido"
+    },
+    "decepcionado": {
+      "use": "expectativa rota / 'en serio?' (ojos -_-)",
+      "priority": "media",
+      "aliases": ["decepcionada", "disappointed", "desanimado", "desanimada", "decepcion"],
+      "fallback": "triste"
+    },
+    "emocionado": {
+      "use": "hype / anuncio / celebracion",
+      "priority": "media",
+      "aliases": ["emocionada", "excited", "hype", "euforico", "euforica", "bailando", "celebrando"],
+      "fallback": "feliz"
+    },
+    "timido": {
+      "use": "halago / verguenza / sonrojo",
+      "priority": "baja",
+      "aliases": ["timida", "shy", "sonrojado", "sonrojada", "blush", "avergonzado", "avergonzada"],
+      "fallback": "feliz"
+    },
+    "saludando": {
+      "use": "saludo / despedida / dirigirse a los Papus",
+      "priority": "media",
+      "aliases": ["saluda", "saludo", "wave", "waving", "hola", "greeting", "despedida"],
+      "fallback": "feliz"
+    },
+    "pensando": {
+      "use": "duda razonada / plantear una pregunta / idea",
+      "priority": "media",
+      "aliases": ["pensativo", "pensativa", "thinking", "idea", "reflexionando"],
+      "fallback": "confundido"
+    },
+    "presumido": {
+      "use": "seguridad / 'te lo dije' / coqueteo comico",
+      "priority": "baja",
+      "aliases": ["presumida", "smug", "cool", "coqueto", "coqueta", "orgulloso", "orgullosa"],
+      "fallback": "feliz"
+    },
+    "aburrido": {
+      "use": "tema denso / sueno / desinteres comico",
+      "priority": "baja",
+      "aliases": ["aburrida", "bored", "sleepy", "dormido", "dormida", "cansado", "cansada"],
+      "fallback": "neutral"
+    },
+    "nervioso": {
+      "use": "riesgo / preocupacion / incomodidad",
+      "priority": "media",
+      "aliases": ["nerviosa", "nervous", "preocupado", "preocupada", "worried", "ansioso", "ansiosa"],
+      "fallback": "confundido"
+    },
+    "broma": {
+      "use": "gag visual / disfraz comico (bigote, gato, peluche, chibi...)",
+      "priority": "baja",
+      "aliases": ["gag", "troll", "payaso", "disfraz", "bigote", "gato", "arma", "peluche", "chibi", "tiburon", "limon", "con_miku"],
+      "fallback": "riendo"
     }
   }
 }

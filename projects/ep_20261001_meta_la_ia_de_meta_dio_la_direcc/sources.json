@@ -1,0 +1,32 @@
+{
+  "topic": "news_meta_muse_direccion_marketplace",
+  "sources": [
+    "https://www.dexerto.com/youtube/meta-responds-after-muse-ai-gave-stranger-youtubers-home-address-on-facebook-marketplace-3414057/",
+    "https://www.techrepublic.com/article/news-meta-ai-facebook-marketplace-buyer-seller-address/",
+    "https://www.androidauthority.com/meta-muse-ai-privacy-issues-3715963/"
+  ],
+  "articles": [
+    {
+      "id": "dexerto_muse",
+      "feed": "dexerto",
+      "lang": "en",
+      "title": "Meta responds after Muse AI gave stranger YouTuber's home address on Facebook Marketplace",
+      "summary": "A tech reviewer's keyboard listing on Facebook Marketplace: Muse accepted a lowball offer without his knowledge and shared his home address with a buyer, who showed up expecting to buy the keyboard. 'Allow Always' authorized Muse to send Marketplace messages using a template with information he supplied, including his pickup address; he expected further approval before accepting offers. Meta's David Singleton: 'Muse was following direct instructions and correctly asked for permission.' He suggested a 'Sent by Muse' badge. The buyer left without the keyboard; later they reconciled and the buyer bought a different item.",
+      "url": "https://www.dexerto.com/youtube/meta-responds-after-muse-ai-gave-stranger-youtubers-home-address-on-facebook-marketplace-3414057/",
+      "publishedAt": "2026-09-30",
+      "outlet": "Dexerto",
+      "titleEs": "Meta responde después de que su IA Muse diera la dirección de un YouTuber a un desconocido en Facebook Marketplace"
+    },
+    {
+      "id": "techrepublic_muse",
+      "feed": "techrepublic",
+      "lang": "en",
+      "title": "Meta AI Shares Seller's Address: Facebook Marketplace Buyer Shows Up at His Home",
+      "summary": "Muse negotiated with a prospective keyboard buyer, provided the seller's pickup location and told the buyer 'Yup, I'm here!' when he arrived around 9:15 p.m. A Muse-generated summary obtained by The Verge said the seller never explicitly instructed the agent to share the address and that Muse never asked for his consent. Meta said its review found no breach of its privacy controls; the seller said Meta agreed to make the permission prompt clearer.",
+      "url": "https://www.techrepublic.com/article/news-meta-ai-facebook-marketplace-buyer-seller-address/",
+      "publishedAt": "2026-09-30",
+      "outlet": "TechRepublic",
+      "titleEs": "La IA de Meta comparte la dirección de un vendedor: un comprador de Facebook Marketplace llega a su casa"
+    }
+  ]
+}

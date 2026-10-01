@@ -22,12 +22,14 @@ export interface ClassifiedFile {
 /**
  * Clasifica archivos por nombre: "<reaccion o alias>[ _-(]<n>" -> reaccion canonica + orden.
  * Ej.: "sorprendida.png" -> sorprendido/1, "happy_2.jpg" -> feliz/2, "nerd (3).png" -> nerd/3.
+ * Con `prefix` (id del personaje) tambien acepta "<Personaje>_<reaccion>[_n]": "Teto_feliz_5.png" -> feliz/5.
  * `manifest` (archivo -> reaccion) tiene prioridad sobre el nombre.
  */
 export const classifyFiles = (
   files: string[],
   reactions: ReactionsFile,
   manifest: Record<string, string> = {},
+  prefix?: string,
 ): { classified: ClassifiedFile[]; skipped: string[] } => {
   const aliases = buildReactionAliases(reactions);
   const classified: ClassifiedFile[] = [];
@@ -38,7 +40,8 @@ export const classifyFiles = (
     if (!IMG.includes(ext)) continue;
     const stem = base.slice(0, -ext.length);
     const m = /^(.*?)(?:[\s_\-(]+(\d+)\)?)?$/.exec(stem);
-    const name = manifest[base] ?? m?.[1] ?? stem;
+    let name = manifest[base] ?? m?.[1] ?? stem;
+    if (!manifest[base] && prefix && slugReaction(name).startsWith(`${slugReaction(prefix)}_`)) name = name.slice(prefix.length + 1);
     const canonical = aliases[slugReaction(name)];
     if (!canonical) {
       skipped.push(base);
@@ -61,6 +64,8 @@ export interface IngestOptions {
   maxHeight?: number;
   dryRun?: boolean;
   manifest?: Record<string, string>;
+  /** Reemplaza el set completo: borra las imagenes de avatarDir y reinicia reactions/variants. */
+  replace?: boolean;
 }
 
 export interface IngestResult {
@@ -75,7 +80,7 @@ export const ingestAvatars = async (opts: IngestOptions): Promise<IngestResult> 
   const reactions = readJson<ReactionsFile>(fromRepo("config/reactions.json"));
   const id = opts.character.toLowerCase();
   const files = fs.readdirSync(opts.from).map((f) => path.join(opts.from, f));
-  const { classified, skipped } = classifyFiles(files, reactions, opts.manifest);
+  const { classified, skipped } = classifyFiles(files, reactions, opts.manifest, id);
   if (classified.length === 0) throw new Error(`Ningun archivo de ${opts.from} se pudo asociar a una reaccion (usa nombres como neutral.png, feliz_2.png o un manifest)`);
 
   let created = false;
@@ -95,6 +100,13 @@ export const ingestAvatars = async (opts: IngestOptions): Promise<IngestResult> 
   }
   const ch = chars.characters[id]! as CharactersFile["characters"][string] & { variants?: Record<string, string[]> };
   const dir = fromRepo(ch.avatarDir);
+  if (opts.replace) {
+    ch.reactions = {};
+    delete ch.variants;
+  }
+  if (opts.replace && !opts.dryRun && fs.existsSync(dir)) {
+    for (const f of fs.readdirSync(dir)) if (IMG.includes(path.extname(f).toLowerCase())) fs.rmSync(path.join(dir, f));
+  }
   fs.mkdirSync(dir, { recursive: true });
   const written: IngestResult["written"] = [];
   const byReaction = new Map<string, ClassifiedFile[]>();

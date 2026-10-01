@@ -157,6 +157,8 @@ export interface ReactionDef {
   use: string;
   priority: "alta" | "media" | "baja";
   aliases: string[];
+  /** Reaccion canonica que se usa si el personaje no tiene imagen propia para esta (ADR 0008). */
+  fallback?: string;
 }
 
 export interface ReactionsFile {

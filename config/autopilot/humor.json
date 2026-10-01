@@ -9,6 +9,26 @@
     {
       "meme": "meme_question",
       "sfx": "sfx_vine_boom"
+    },
+    {
+      "meme": "meme_gato_tarjeta_roja",
+      "sfx": "sfx_oohh"
+    },
+    {
+      "meme": "meme_gato_nerd",
+      "sfx": "sfx_ding"
+    },
+    {
+      "meme": "meme_nugget",
+      "sfx": "sfx_vine_boom"
+    },
+    {
+      "meme": "meme_gato_oscuro",
+      "sfx": "sfx_dramatic_boomer"
+    },
+    {
+      "meme": "meme_gato_pulgar",
+      "sfx": "sfx_pop"
     }
   ],
   "hookTemplates": {

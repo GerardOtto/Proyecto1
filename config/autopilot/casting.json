@@ -1,9 +1,9 @@
 {
-  "$comment": "Casting por rol. host explica (nerd/feliz), foil pregunta o se equivoca (confundido/shocked), guest aporta un tercer punto de vista. Solo se eligen personajes 'listos' (avatares no placeholder + voz o saludo configurados) salvo --allow-placeholder.",
+  "$comment": "Casting por rol. host explica (nerd/feliz), foil pregunta o se equivoca (confundido/shocked), guest aporta un tercer punto de vista. Solo se eligen personajes 'listos' (avatares no placeholder + voice.fish.referenceId configurado) salvo --allow-placeholder.",
   "roles": {
     "host": ["teto", "miku", "luka"],
-    "foil": ["miku", "teto", "luka", "rin", "len"],
-    "guest": ["luka", "rin", "len"]
+    "foil": ["miku", "teto", "luka", "rin", "len", "neru"],
+    "guest": ["luka", "rin", "len", "kaito", "neru"]
   },
   "pairsAvoidRepeatWindow": 2,
   "guestProbability": 0.25,
@@ -12,6 +12,8 @@
     "miku": "Curiosa y rapida; hace las preguntas que haria el publico y exagera las reacciones.",
     "luka": "Seria y precisa; corrige mitos con datos y remata con humor seco.",
     "rin": "Impulsiva; propone ideas locas que los demas desmontan.",
+    "kaito": "Hermano mayor tranquilo y bonachon; baja los dramas con calma y analogias de cocina (y de helado).",
+    "neru": "Alivio comico: pegada al celular, sarcastica y floja; comenta todo como si fuera chisme de redes.",
     "len": "Escéptico y bromista; desconfia del hype y pide pruebas."
   }
 }

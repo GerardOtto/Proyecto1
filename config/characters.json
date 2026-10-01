@@ -8,37 +8,25 @@
       "anchor": "bottom-left",
       "avatarDir": "assets/characters/teto",
       "reactions": {
-        "neutral": "neutral.png",
+        "broma": "broma.png",
+        "decepcionado": "decepcionado.png",
+        "emocionado": "emocionado.png",
+        "enojado": "enojado.png",
         "feliz": "feliz.png",
-        "sorprendido": "sorprendida.png",
-        "confundido": "confundida.png",
-        "enojado": "enojada.png",
-        "riendo": "riendo.png",
+        "gritando": "gritando.png",
         "nerd": "nerd.png",
-        "shocked": "shocked.png"
-      },
-      "variants": {
-        "nerd": [
-          "nerd_2.png",
-          "nerd_3.png",
-          "nerd_4.png"
-        ],
-        "feliz": [
-          "feliz_2.png",
-          "feliz_3.png",
-          "feliz_4.png"
-        ],
-        "riendo": [
-          "riendo_2.png"
-        ],
-        "enojado": [
-          "enojada_2.png"
-        ]
+        "neutral": "neutral.png",
+        "riendo": "riendo.png",
+        "saludando": "saludando.png",
+        "shocked": "shocked.png",
+        "sorprendido": "sorprendido.png",
+        "timido": "timido.png",
+        "triste": "triste.png"
       },
       "voice": {
         "fish": {
           "referenceId": "0118a35dcb604837abe7961a43e13ba8",
-          "speed": 1.0
+          "speed": 1
         },
         "flite": {
           "voice": "slt"
@@ -46,9 +34,41 @@
         "greeting": "assets/voice/teto/papu_papu.mp3"
       },
       "license": {
-        "source": "Renders MMD aportados por el usuario (carpeta 'Proyecto vocaloid'); fondo eliminado con scripts/remove-bg.py",
+        "source": "Pinterest (pinterest.com/chaewonjames, tableros por personaje): renders MMD de terceros; fondo eliminado con scripts/remove-bg.py (T_LO=7)",
         "license_status": "unknown",
-        "notes": "Origen de los modelos/renders sin documentar: apto para validacion local, bloqueado para uso comercial. Mapeo reaccion -> archivo original en assets/characters/SOURCES.md."
+        "notes": "Origen de los renders sin documentar (Pinterest, autores de terceros): apto para validacion local, bloqueado para uso comercial. Mapeo reaccion -> archivo original en assets/characters/SOURCES.md."
+      },
+      "variants": {
+        "broma": [
+          "broma_2.png"
+        ],
+        "decepcionado": [
+          "decepcionado_2.png"
+        ],
+        "emocionado": [
+          "emocionado_2.png",
+          "emocionado_3.png"
+        ],
+        "feliz": [
+          "feliz_2.png",
+          "feliz_3.png",
+          "feliz_4.png",
+          "feliz_5.png",
+          "feliz_6.png",
+          "feliz_7.png"
+        ],
+        "nerd": [
+          "nerd_2.png",
+          "nerd_3.png",
+          "nerd_4.png",
+          "nerd_5.png"
+        ],
+        "saludando": [
+          "saludando_2.png"
+        ],
+        "timido": [
+          "timido_2.png"
+        ]
       }
     },
     "miku": {
@@ -58,41 +78,26 @@
       "anchor": "bottom-left",
       "avatarDir": "assets/characters/miku",
       "reactions": {
-        "neutral": "neutral.png",
+        "broma": "broma.png",
+        "confundido": "confundido.png",
+        "decepcionado": "decepcionado.png",
+        "emocionado": "emocionado.png",
+        "enojado": "enojado.png",
         "feliz": "feliz.png",
-        "sorprendido": "sorprendida.png",
-        "confundido": "confundida.png",
-        "enojado": "enojada.png",
-        "riendo": "riendo.png",
+        "gritando": "gritando.png",
         "nerd": "nerd.png",
-        "shocked": "shocked.png"
-      },
-      "variants": {
-        "nerd": [
-          "nerd_2.png",
-          "nerd_3.png"
-        ],
-        "feliz": [
-          "feliz_2.png",
-          "feliz_3.png"
-        ],
-        "shocked": [
-          "shocked_2.png"
-        ],
-        "riendo": [
-          "riendo_2.png"
-        ],
-        "confundido": [
-          "confundida_2.png"
-        ],
-        "enojado": [
-          "enojada_2.png"
-        ]
+        "neutral": "neutral.png",
+        "pensando": "pensando.png",
+        "riendo": "riendo.png",
+        "saludando": "saludando.png",
+        "shocked": "shocked.png",
+        "sorprendido": "sorprendido.png",
+        "triste": "triste.png"
       },
       "voice": {
         "fish": {
           "referenceId": "1ab6c3c810f64cd38536b4f7fb47b840",
-          "speed": 1.0
+          "speed": 1
         },
         "flite": {
           "voice": "slt"
@@ -100,9 +105,43 @@
         "greeting": "assets/voice/miku/papu_papu.mp3"
       },
       "license": {
-        "source": "Renders MMD aportados por el usuario (carpeta 'Proyecto vocaloid'); fondo eliminado con scripts/remove-bg.py",
+        "source": "Pinterest (pinterest.com/chaewonjames, tableros por personaje): renders MMD de terceros; fondo eliminado con scripts/remove-bg.py (T_LO=7)",
         "license_status": "unknown",
-        "notes": "Origen de los modelos/renders sin documentar: apto para validacion local, bloqueado para uso comercial. Mapeo reaccion -> archivo original en assets/characters/SOURCES.md."
+        "notes": "Origen de los renders sin documentar (Pinterest, autores de terceros): apto para validacion local, bloqueado para uso comercial. Mapeo reaccion -> archivo original en assets/characters/SOURCES.md."
+      },
+      "variants": {
+        "broma": [
+          "broma_2.png"
+        ],
+        "decepcionado": [
+          "decepcionado_2.png",
+          "decepcionado_3.png",
+          "decepcionado_4.png"
+        ],
+        "emocionado": [
+          "emocionado_2.png"
+        ],
+        "enojado": [
+          "enojado_2.png"
+        ],
+        "feliz": [
+          "feliz_2.png",
+          "feliz_3.png",
+          "feliz_4.png",
+          "feliz_5.png"
+        ],
+        "gritando": [
+          "gritando_2.png",
+          "gritando_3.png"
+        ],
+        "nerd": [
+          "nerd_2.png",
+          "nerd_3.png",
+          "nerd_4.png"
+        ],
+        "riendo": [
+          "riendo_2.png"
+        ]
       }
     },
     "luka": {
@@ -112,36 +151,30 @@
       "anchor": "bottom-left",
       "avatarDir": "assets/characters/luka",
       "reactions": {
-        "neutral": "neutral.png",
+        "aburrido": "aburrido.png",
+        "broma": "broma.png",
+        "confundido": "confundido.png",
+        "decepcionado": "decepcionado.png",
+        "emocionado": "emocionado.png",
+        "enojado": "enojado.png",
         "feliz": "feliz.png",
-        "sorprendido": "sorprendida.png",
-        "confundido": "confundida.png",
-        "enojado": "enojada.png",
-        "riendo": "riendo.png",
+        "gritando": "gritando.png",
         "nerd": "nerd.png",
-        "shocked": "shocked.png"
-      },
-      "variants": {
-        "feliz": [
-          "feliz_2.png",
-          "feliz_3.png",
-          "feliz_4.png"
-        ],
-        "nerd": [
-          "nerd_2.png"
-        ],
-        "riendo": [
-          "riendo_2.png",
-          "riendo_3.png"
-        ],
-        "sorprendido": [
-          "sorprendida_2.png"
-        ]
+        "nervioso": "nervioso.png",
+        "neutral": "neutral.png",
+        "pensando": "pensando.png",
+        "presumido": "presumido.png",
+        "riendo": "riendo.png",
+        "saludando": "saludando.png",
+        "shocked": "shocked.png",
+        "sorprendido": "sorprendido.png",
+        "timido": "timido.png",
+        "triste": "triste.png"
       },
       "voice": {
         "fish": {
           "referenceId": "3a7bf294c97c4639a182ffdea5449266",
-          "speed": 1.0
+          "speed": 1
         },
         "flite": {
           "voice": "slt"
@@ -149,9 +182,74 @@
         "greeting": "assets/voice/luka/papu_papu.mp3"
       },
       "license": {
-        "source": "Renders MMD aportados por el usuario (carpeta 'Proyecto vocaloid'); fondo eliminado con scripts/remove-bg.py",
+        "source": "Pinterest (pinterest.com/chaewonjames, tableros por personaje): renders MMD de terceros; fondo eliminado con scripts/remove-bg.py (T_LO=7)",
         "license_status": "unknown",
-        "notes": "Origen de los modelos/renders sin documentar: apto para validacion local, bloqueado para uso comercial. Mapeo reaccion -> archivo original en assets/characters/SOURCES.md."
+        "notes": "Origen de los renders sin documentar (Pinterest, autores de terceros): apto para validacion local, bloqueado para uso comercial. Mapeo reaccion -> archivo original en assets/characters/SOURCES.md."
+      },
+      "variants": {
+        "broma": [
+          "broma_2.png",
+          "broma_3.png"
+        ],
+        "decepcionado": [
+          "decepcionado_2.png",
+          "decepcionado_3.png",
+          "decepcionado_4.png"
+        ],
+        "emocionado": [
+          "emocionado_2.png",
+          "emocionado_3.png",
+          "emocionado_4.png",
+          "emocionado_5.png"
+        ],
+        "enojado": [
+          "enojado_2.png"
+        ],
+        "feliz": [
+          "feliz_2.png",
+          "feliz_3.png",
+          "feliz_4.png",
+          "feliz_5.png",
+          "feliz_6.png",
+          "feliz_7.png",
+          "feliz_8.png",
+          "feliz_9.png",
+          "feliz_10.png",
+          "feliz_11.png",
+          "feliz_12.png",
+          "feliz_13.png",
+          "feliz_14.png",
+          "feliz_15.png"
+        ],
+        "gritando": [
+          "gritando_2.png",
+          "gritando_3.png"
+        ],
+        "nerd": [
+          "nerd_2.png",
+          "nerd_3.png",
+          "nerd_4.png",
+          "nerd_5.png",
+          "nerd_6.png"
+        ],
+        "pensando": [
+          "pensando_2.png"
+        ],
+        "presumido": [
+          "presumido_2.png"
+        ],
+        "riendo": [
+          "riendo_2.png",
+          "riendo_3.png"
+        ],
+        "saludando": [
+          "saludando_2.png"
+        ],
+        "timido": [
+          "timido_2.png",
+          "timido_3.png",
+          "timido_4.png"
+        ]
       }
     },
     "rin": {
@@ -161,19 +259,25 @@
       "anchor": "bottom-left",
       "avatarDir": "assets/characters/rin",
       "reactions": {
-        "neutral": "neutral.png",
+        "aburrido": "aburrido.png",
+        "decepcionado": "decepcionado.png",
+        "emocionado": "emocionado.png",
+        "enojado": "enojado.png",
         "feliz": "feliz.png",
-        "sorprendido": "sorprendida.png",
-        "confundido": "confundida.png",
-        "enojado": "enojada.png",
-        "riendo": "riendo.png",
+        "gritando": "gritando.png",
         "nerd": "nerd.png",
-        "shocked": "shocked.png"
+        "neutral": "neutral.png",
+        "pensando": "pensando.png",
+        "presumido": "presumido.png",
+        "riendo": "riendo.png",
+        "shocked": "shocked.png",
+        "timido": "timido.png",
+        "triste": "triste.png"
       },
       "voice": {
         "fish": {
           "referenceId": "",
-          "speed": 1.0
+          "speed": 1
         },
         "flite": {
           "voice": "slt"
@@ -181,9 +285,36 @@
         "greeting": "assets/voice/rin/papu_papu.mp3"
       },
       "license": {
-        "source": "generated by scripts/make-placeholders.ts",
-        "license_status": "placeholder",
-        "notes": "Placeholder generado. Reemplazar por ilustraciones con licencia verificada (ver docs/09_LICENSING.md)."
+        "source": "Pinterest (pinterest.com/chaewonjames, tableros por personaje): renders MMD de terceros; fondo eliminado con scripts/remove-bg.py (T_LO=7)",
+        "license_status": "unknown",
+        "notes": "Origen de los renders sin documentar (Pinterest, autores de terceros): apto para validacion local, bloqueado para uso comercial. Mapeo reaccion -> archivo original en assets/characters/SOURCES.md."
+      },
+      "variants": {
+        "aburrido": [
+          "aburrido_2.png"
+        ],
+        "emocionado": [
+          "emocionado_2.png",
+          "emocionado_3.png"
+        ],
+        "feliz": [
+          "feliz_2.png",
+          "feliz_3.png"
+        ],
+        "nerd": [
+          "nerd_2.png",
+          "nerd_3.png",
+          "nerd_4.png",
+          "nerd_5.png",
+          "nerd_6.png",
+          "nerd_7.png"
+        ],
+        "riendo": [
+          "riendo_2.png"
+        ],
+        "timido": [
+          "timido_2.png"
+        ]
       }
     },
     "len": {
@@ -193,19 +324,22 @@
       "anchor": "bottom-left",
       "avatarDir": "assets/characters/len",
       "reactions": {
-        "neutral": "neutral.png",
-        "feliz": "feliz.png",
-        "sorprendido": "sorprendido.png",
-        "confundido": "confundido.png",
+        "broma": "broma.png",
+        "decepcionado": "decepcionado.png",
+        "emocionado": "emocionado.png",
         "enojado": "enojado.png",
-        "riendo": "riendo.png",
+        "feliz": "feliz.png",
+        "gritando": "gritando.png",
         "nerd": "nerd.png",
+        "neutral": "neutral.png",
+        "presumido": "presumido.png",
+        "riendo": "riendo.png",
         "shocked": "shocked.png"
       },
       "voice": {
         "fish": {
           "referenceId": "",
-          "speed": 1.0
+          "speed": 1
         },
         "flite": {
           "voice": "kal"
@@ -213,9 +347,149 @@
         "greeting": "assets/voice/len/papu_papu.mp3"
       },
       "license": {
-        "source": "generated by scripts/make-placeholders.ts",
-        "license_status": "placeholder",
-        "notes": "Placeholder generado. Reemplazar por ilustraciones con licencia verificada (ver docs/09_LICENSING.md)."
+        "source": "Pinterest (pinterest.com/chaewonjames, tableros por personaje): renders MMD de terceros; fondo eliminado con scripts/remove-bg.py (T_LO=7)",
+        "license_status": "unknown",
+        "notes": "Origen de los renders sin documentar (Pinterest, autores de terceros): apto para validacion local, bloqueado para uso comercial. Mapeo reaccion -> archivo original en assets/characters/SOURCES.md."
+      },
+      "variants": {
+        "broma": [
+          "broma_2.png"
+        ],
+        "decepcionado": [
+          "decepcionado_2.png"
+        ],
+        "emocionado": [
+          "emocionado_2.png"
+        ],
+        "feliz": [
+          "feliz_2.png"
+        ],
+        "gritando": [
+          "gritando_2.png",
+          "gritando_3.png",
+          "gritando_4.png"
+        ],
+        "presumido": [
+          "presumido_2.png",
+          "presumido_3.png",
+          "presumido_4.png"
+        ]
+      }
+    },
+    "kaito": {
+      "displayName": "Kaito",
+      "subtitleColor": "#3D6BFF",
+      "defaultScale": 0.42,
+      "anchor": "bottom-left",
+      "avatarDir": "assets/characters/kaito",
+      "reactions": {
+        "aburrido": "aburrido.png",
+        "decepcionado": "decepcionado.png",
+        "emocionado": "emocionado.png",
+        "enojado": "enojado.png",
+        "feliz": "feliz.png",
+        "gritando": "gritando.png",
+        "nerd": "nerd.png",
+        "nervioso": "nervioso.png",
+        "neutral": "neutral.png",
+        "pensando": "pensando.png",
+        "presumido": "presumido.png",
+        "riendo": "riendo.png",
+        "saludando": "saludando.png",
+        "shocked": "shocked.png",
+        "sorprendido": "sorprendido.png",
+        "timido": "timido.png",
+        "triste": "triste.png"
+      },
+      "voice": {
+        "fish": {
+          "referenceId": "",
+          "speed": 1
+        },
+        "flite": {
+          "voice": "kal"
+        }
+      },
+      "license": {
+        "source": "Pinterest (pinterest.com/chaewonjames, tableros por personaje): renders MMD de terceros; fondo eliminado con scripts/remove-bg.py (T_LO=7)",
+        "license_status": "unknown",
+        "notes": "Origen de los renders sin documentar (Pinterest, autores de terceros): apto para validacion local, bloqueado para uso comercial. Mapeo reaccion -> archivo original en assets/characters/SOURCES.md."
+      },
+      "variants": {
+        "aburrido": [
+          "aburrido_2.png"
+        ],
+        "decepcionado": [
+          "decepcionado_2.png",
+          "decepcionado_3.png"
+        ],
+        "emocionado": [
+          "emocionado_2.png",
+          "emocionado_3.png",
+          "emocionado_4.png"
+        ],
+        "enojado": [
+          "enojado_2.png"
+        ],
+        "feliz": [
+          "feliz_2.png",
+          "feliz_3.png",
+          "feliz_4.png",
+          "feliz_5.png"
+        ],
+        "nerd": [
+          "nerd_2.png",
+          "nerd_3.png"
+        ],
+        "presumido": [
+          "presumido_2.png"
+        ],
+        "saludando": [
+          "saludando_2.png"
+        ],
+        "shocked": [
+          "shocked_2.png"
+        ],
+        "timido": [
+          "timido_2.png"
+        ],
+        "triste": [
+          "triste_2.png"
+        ]
+      }
+    },
+    "neru": {
+      "displayName": "Neru",
+      "subtitleColor": "#E8D44D",
+      "defaultScale": 0.42,
+      "anchor": "bottom-left",
+      "avatarDir": "assets/characters/neru",
+      "reactions": {
+        "broma": "broma.png",
+        "decepcionado": "decepcionado.png",
+        "enojado": "enojado.png",
+        "feliz": "feliz.png",
+        "nerd": "nerd.png",
+        "neutral": "neutral.png"
+      },
+      "voice": {
+        "fish": {
+          "referenceId": "",
+          "speed": 1
+        },
+        "flite": {
+          "voice": "slt"
+        }
+      },
+      "license": {
+        "source": "Pinterest (pinterest.com/chaewonjames, tableros por personaje): renders MMD de terceros; fondo eliminado con scripts/remove-bg.py (T_LO=7)",
+        "license_status": "unknown",
+        "notes": "Origen de los renders sin documentar (Pinterest, autores de terceros): apto para validacion local, bloqueado para uso comercial. Mapeo reaccion -> archivo original en assets/characters/SOURCES.md."
+      },
+      "variants": {
+        "decepcionado": [
+          "decepcionado_2.png"
+        ]
       }
     }
   }

@@ -19,7 +19,12 @@
         "properties": {
           "use": { "type": "string" },
           "priority": { "type": "string", "enum": ["alta", "media", "baja"] },
-          "aliases": { "type": "array", "items": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" } }
+          "aliases": { "type": "array", "items": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" } },
+          "fallback": {
+            "description": "Reaccion canonica que se usa si un personaje no tiene imagen propia para esta (se encadena; sin ciclos).",
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          }
         }
       }
     }

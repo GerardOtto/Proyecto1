@@ -1,0 +1,112 @@
+{
+  "$schema": "../../schemas/project.schema.json",
+  "title": "La IA de Meta dio la dirección de un vendedor",
+  "language": "es",
+  "durationTargetSec": 75,
+  "background": "bg_theme_sunset",
+  "director": "rules",
+  "tts": "fish",
+  "transcriber": "auto",
+  "assets": [
+    {
+      "id": "ep_headline",
+      "type": "image",
+      "path": "visuals/ep_headline.png",
+      "tags": [
+        "autopilot",
+        "news",
+        "meta",
+        "privacidad",
+        "agentes"
+      ],
+      "safeArea": true,
+      "source": "generado por src/autopilot/graphics.ts (ep_20261001_meta_la_ia_de_meta_dio_la_direcc)",
+      "license": "propio",
+      "license_status": "owned"
+    },
+    {
+      "id": "ep_main",
+      "type": "diagram",
+      "path": "visuals/ep_main.png",
+      "tags": [
+        "autopilot",
+        "news",
+        "meta",
+        "privacidad",
+        "agentes"
+      ],
+      "safeArea": true,
+      "source": "generado por src/autopilot/graphics.ts (ep_20261001_meta_la_ia_de_meta_dio_la_direcc)",
+      "license": "propio",
+      "license_status": "owned"
+    },
+    {
+      "id": "news_cap_1",
+      "type": "broll",
+      "path": "visuals/news_cap_1.png",
+      "tags": [
+        "broll",
+        "noticia",
+        "meta",
+        "privacidad",
+        "agentes",
+        "captura"
+      ],
+      "source": "https://www.dexerto.com/youtube/meta-responds-after-muse-ai-gave-stranger-youtubers-home-address-on-facebook-marketplace-3414057/",
+      "license": "Contenido de Dexerto; captura del titular usada como cita en contenido informativo",
+      "license_status": "unknown",
+      "description": "Captura real del titular de Dexerto (30 sep 2026): Meta responds after Muse AI gave stranger YouTuber's home address on Facebook Marketplace"
+    },
+    {
+      "id": "news_card_1",
+      "type": "broll",
+      "path": "visuals/news_card_1.png",
+      "tags": [
+        "broll",
+        "noticia",
+        "meta",
+        "privacidad",
+        "agentes",
+        "titular"
+      ],
+      "source": "generado por src/autopilot/newscards.ts (ep_20261001_meta_la_ia_de_meta_dio_la_direcc); titular de https://www.dexerto.com/youtube/meta-responds-after-muse-ai-gave-stranger-youtubers-home-address-on-facebook-marketplace-3414057/",
+      "license": "propio",
+      "license_status": "owned",
+      "description": "Tarjeta propia (social) con el titular de Dexerto: Meta responds after Muse AI gave stranger YouTuber's home address on Facebook Marketplace"
+    },
+    {
+      "id": "news_cap_2",
+      "type": "broll",
+      "path": "visuals/news_cap_2.png",
+      "tags": [
+        "broll",
+        "noticia",
+        "meta",
+        "privacidad",
+        "agentes",
+        "captura"
+      ],
+      "source": "https://www.techrepublic.com/article/news-meta-ai-facebook-marketplace-buyer-seller-address/",
+      "license": "Contenido de TechRepublic; captura del titular usada como cita en contenido informativo",
+      "license_status": "unknown",
+      "description": "Captura real del titular de TechRepublic (30 sep 2026): Meta AI Shares Seller's Address: Facebook Marketplace Buyer Shows Up at His Home"
+    },
+    {
+      "id": "news_card_2",
+      "type": "broll",
+      "path": "visuals/news_card_2.png",
+      "tags": [
+        "broll",
+        "noticia",
+        "meta",
+        "privacidad",
+        "agentes",
+        "titular"
+      ],
+      "source": "generado por src/autopilot/newscards.ts (ep_20261001_meta_la_ia_de_meta_dio_la_direcc); titular de https://www.techrepublic.com/article/news-meta-ai-facebook-marketplace-buyer-seller-address/",
+      "license": "propio",
+      "license_status": "owned",
+      "description": "Tarjeta propia (breaking) con el titular de TechRepublic: Meta AI Shares Seller's Address: Facebook Marketplace Buyer Shows Up at His Home"
+    }
+  ]
+}

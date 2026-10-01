@@ -3,8 +3,10 @@
 //   npm run avatars:ingest -- --character rin --from "C:/renders/rin" [--color "#F6C744" --display Rin]
 //        [--license-source "Renders MMD propios" --license-status owned] [--no-bg-removal] [--dry-run]
 //        [--manifest manifest.json]   (archivo -> reaccion, si los nombres no siguen la convencion)
-// Nombres esperados: <reaccion o alias>[_n].png|jpg  (neutral, feliz, sorprendida, confundida, enojada,
-// riendo, nerd, shocked; ver config/reactions.json). Requiere Python 3 + Pillow, numpy y scipy.
+//        [--replace]                  (reemplaza el set completo: borra los avatares actuales del personaje)
+// Nombres esperados: [<Personaje>_]<reaccion o alias>[_n].png|jpg  (p. ej. Teto_feliz_5.png, sorprendida.png;
+// reacciones y alias en config/reactions.json). Requiere Python 3 + Pillow, numpy y scipy.
+import path from "node:path";
 import { ingestAvatars } from "../src/autopilot/avatars";
 import { buildCatalog, loadEngineConfig } from "../src/catalog/catalog";
 import { main, parseCli } from "../src/utils/cli";
@@ -21,6 +23,7 @@ const { values } = parseCli({
   "license-status": { type: "string" },
   "no-bg-removal": { type: "boolean" },
   "dry-run": { type: "boolean" },
+  replace: { type: "boolean" },
   manifest: { type: "string" },
   "max-height": { type: "string" },
 });
@@ -36,11 +39,12 @@ main(async () => {
     ...(values["license-status"] ? { licenseStatus: values["license-status"] as "unknown" } : {}),
     removeBackground: !values["no-bg-removal"],
     dryRun: values["dry-run"],
+    replace: values.replace,
     ...(values.manifest ? { manifest: readJson<Record<string, string>>(values.manifest) } : {}),
     ...(values["max-height"] ? { maxHeight: Number(values["max-height"]) } : {}),
   });
   if (res.created) log.ok(`personaje ${values.character} creado en config/characters.json (completa voice.fish.referenceId)`);
-  for (const w of res.written) log.ok(`${w.reaction}${w.variant ? " (variante)" : ""} -> ${toRepoRel(w.file)}`);
+  for (const w of res.written) log.ok(`${w.reaction}${w.variant ? " (variante)" : ""} -> ${toRepoRel(w.file)}  <- ${path.basename(w.src)}`);
   for (const s of res.skipped) log.warn(`omitido (nombre sin reaccion reconocible): ${s}`);
   if (values["dry-run"]) return;
   const cat = await buildCatalog(loadEngineConfig());

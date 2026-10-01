@@ -13,20 +13,25 @@ import type { AutopilotConfig } from "./config";
 import { generateEpisodeGraphics } from "./graphics";
 import { loadHistory, recordPlan, saveHistory, type History } from "./history";
 import { lintScript, type LintIssue } from "./lint";
-import { writeLLMScript } from "./llm-writer";
+import { buildWriterBrief, writeLLMScript } from "./llm-writer";
+import { generateNewsVisuals } from "./newscards";
+import { renderFrontMatter } from "./script-doc";
 import { clusterNews, fetchFeeds, scoreItem } from "./news";
 import { planEpisode } from "./planner";
 import { buildPublishTexts, buildSchedule, writePublishKit } from "./publish";
 import { autoSfx, type SfxDecision } from "./sfx-director";
 import { writeTemplateScript, type WriterAssets } from "./template-writer";
-import type { EpisodePlan, NewsCluster } from "./types";
+import type { EpisodePlan, FormatId, NewsCluster, TopicBrief } from "./types";
 
 export interface AutopilotOptions {
   date: string;
   mode: "auto" | "news" | "evergreen";
-  writer: "auto" | "llm" | "template";
+  /** manual: prepara el episodio (plan, graficos, kit) y deja script.md como esqueleto para escribirlo a mano. */
+  writer: "auto" | "llm" | "template" | "manual";
   tts: string;
   topic?: string;
+  brief?: TopicBrief;
+  format?: FormatId;
   category?: string;
   offline?: boolean;
   allowPlaceholder?: boolean;
@@ -57,11 +62,49 @@ export const gatherNews = async (ap: AutopilotConfig, date: string, now: Date): 
   return clusters;
 };
 
-const genericBroll = (catalog: Awaited<ReturnType<typeof buildCatalog>>): string[] =>
+export const genericBroll = (catalog: Awaited<ReturnType<typeof buildCatalog>>): string[] =>
   Object.values(catalog.entries)
     .filter((e) => (e.type as string) === "broll" && !e.tags.some((t) => ["captura", "noticia", "oficial"].includes(t)))
     .map((e) => e.id)
     .sort();
+
+/** Relleno de noticia ya registrado en el proyecto (capturas/tarjetas), para el brief del escritor. */
+export const newsBrollOf = (assets: Array<{ id: string; description?: string }>): WriterAssets["newsBroll"] =>
+  assets.filter((a) => /^news_(cap|card)_\d+$/.test(a.id)).map((a) => ({ id: a.id, description: a.description ?? a.id }));
+
+/** Regenera graficos + visuales de noticia de un episodio existente (opcionalmente con un brief corregido). */
+export const refreshEpisodeVisuals = async (
+  engine: EngineConfig,
+  ap: AutopilotConfig,
+  episodeId: string,
+  opts: { brief?: TopicBrief; offline?: boolean } = {},
+): Promise<string[]> => {
+  const projectDir = fromRepo("projects", episodeId);
+  const apFile = path.join(projectDir, "autopilot.json");
+  const state = JSON.parse(fs.readFileSync(apFile, "utf8")) as { plan: EpisodePlan } & Record<string, unknown>;
+  const plan: EpisodePlan = opts.brief ? { ...state.plan, topic: opts.brief } : state.plan;
+  const theme = ap.themes.themes[plan.theme]!;
+  const graphics = await generateEpisodeGraphics(plan, theme, projectDir);
+  const news = plan.topic.kind === "news" ? await generateNewsVisuals(plan, theme, projectDir, { capture: !opts.offline }) : { assets: [], visuals: [] };
+  const projFile = path.join(projectDir, "project.json");
+  const proj = JSON.parse(fs.readFileSync(projFile, "utf8")) as { assets?: Array<{ id: string }> };
+  const generated = new Set([...graphics.assets, ...news.assets].map((a) => a.id));
+  const kept = (proj.assets ?? []).filter((a) => !generated.has(a.id) && !/^(ep_main|ep_headline|news_(cap|card)_\d+)$/.test(a.id));
+  writeJson(projFile, { ...proj, assets: [...kept, ...graphics.assets, ...news.assets] });
+  writeJson(apFile, { ...state, plan });
+  writeJson(path.join(projectDir, "sources.json"), { topic: plan.topic.id, sources: plan.topic.sources, articles: plan.topic.articles ?? [] });
+  const project = loadProject(projectDir);
+  const catalog = await buildCatalog(engine, project);
+  const assets: WriterAssets = {
+    ...(graphics.mainVisual ? { mainVisual: graphics.mainVisual } : {}),
+    ...(graphics.headlineVisual ? { headlineVisual: graphics.headlineVisual } : {}),
+    broll: genericBroll(catalog),
+    ...(project.config.background ? { background: project.config.background } : {}),
+    ...(news.visuals.length ? { newsBroll: news.visuals } : {}),
+  };
+  fs.writeFileSync(path.join(projectDir, "writer-brief.md"), buildWriterBrief(plan, ap, assets, catalog, engine));
+  return [...graphics.assets, ...news.assets].map((a) => a.id);
+};
 
 export const runAutopilotEpisode = async (
   engine: EngineConfig,
@@ -71,13 +114,14 @@ export const runAutopilotEpisode = async (
 ): Promise<EpisodeResult> => {
   const now = opts.now ?? new Date();
   let provider: LLMProvider | null = opts.provider ?? null;
-  if (!provider && opts.writer !== "template") {
+  const manual = opts.writer === "manual";
+  if (!provider && opts.writer !== "template" && !manual) {
     const p = new AnthropicProvider();
     const hasKey = !!(process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_AUTH_TOKEN || process.env.ANTHROPIC_PROFILE);
     if (opts.writer === "llm" || hasKey) provider = p;
   }
-  const canWriteNews = provider !== null;
-  const clusters = opts.mode !== "evergreen" && !opts.offline && !opts.topic ? await gatherNews(ap, opts.date, now) : [];
+  const canWriteNews = provider !== null || manual;
+  const clusters = opts.mode !== "evergreen" && !opts.offline && !opts.topic && !opts.brief ? await gatherNews(ap, opts.date, now) : [];
 
   const plan = planEpisode({
     date: opts.date,
@@ -86,6 +130,8 @@ export const runAutopilotEpisode = async (
     history,
     clusters,
     mode: opts.mode,
+    ...(opts.brief ? { forceBrief: opts.brief } : {}),
+    ...(opts.format ? { format: opts.format } : {}),
     ...(opts.topic ? { forceTopic: opts.topic } : {}),
     ...(opts.category ? { category: opts.category } : {}),
     allowPlaceholder: opts.allowPlaceholder,
@@ -102,6 +148,10 @@ export const runAutopilotEpisode = async (
   if (background !== theme.background) log.warn(`fondo ${theme.background} no existe (npm run autopilot -- --make-backgrounds); se usa bg_tech_loop`);
 
   const graphics = opts.graphics === false ? { assets: [], files: [] } : await generateEpisodeGraphics(plan, theme, projectDir);
+  const news =
+    opts.graphics === false || plan.topic.kind !== "news"
+      ? { assets: [], visuals: [] }
+      : await generateNewsVisuals(plan, theme, projectDir, { capture: !opts.offline });
   writeJson(path.join(projectDir, "project.json"), {
     $schema: "../../schemas/project.schema.json",
     title: plan.topic.title.slice(0, 120),
@@ -111,7 +161,7 @@ export const runAutopilotEpisode = async (
     director: "rules",
     tts: opts.tts,
     transcriber: "auto",
-    assets: graphics.assets,
+    assets: [...graphics.assets, ...news.assets],
   });
   writeJson(path.join(projectDir, "sources.json"), { topic: plan.topic.id, sources: plan.topic.sources, articles: plan.topic.articles ?? [] });
 
@@ -122,7 +172,29 @@ export const runAutopilotEpisode = async (
     ...("headlineVisual" in graphics && graphics.headlineVisual ? { headlineVisual: graphics.headlineVisual } : {}),
     broll: genericBroll(catalog),
     background,
+    ...(news.visuals.length ? { newsBroll: news.visuals } : {}),
   };
+
+  // Brief del escritor: la misma entrada para el escritor LLM y para quien escriba a mano.
+  fs.writeFileSync(path.join(projectDir, "writer-brief.md"), buildWriterBrief(plan, ap, assets, catalog, engine));
+
+  if (manual) {
+    const skeleton = `${renderFrontMatter({
+      title: plan.topic.title.slice(0, 120),
+      hook_title: plan.topic.hookTitle,
+      target: plan.targetSec,
+      background,
+      broll: assets.broll,
+      language: "es",
+    })}<!-- autopilot ${plan.episodeId} | formato ${plan.format} | escritor manual | brief: writer-brief.md | fuentes: ${plan.topic.sources.join(" ")} -->\n<!-- PENDIENTE: escribir el guion siguiendo writer-brief.md y prompts/writer.system.md -->\n`;
+    if (!fs.existsSync(project.scriptPath)) fs.writeFileSync(project.scriptPath, skeleton);
+    writeJson(path.join(projectDir, "autopilot.json"), { plan, writer: "manual", estimatedMs: null, lint: [], sfx: [], notes: [], status: "needs_script" });
+    const titleLine = plan.topic.title;
+    writePublishKit(fromRepo("output", plan.episodeId, "publish"), plan, buildPublishTexts(plan, { title: titleLine, hookTitle: plan.topic.hookTitle }), buildSchedule(plan, now));
+    saveHistory(recordPlan(history, plan));
+    log.ok(`esqueleto: ${toRepoRel(project.scriptPath)} (brief: ${toRepoRel(path.join(projectDir, "writer-brief.md"))})`);
+    return { plan, projectDir, lint: [], sfx: [], notes: [], estimatedMs: null, publishDir: fromRepo("output", plan.episodeId, "publish"), draftOk: false };
+  }
 
   // Guion
   const useLLM = provider !== null && (opts.writer === "llm" || plan.topic.kind === "news");

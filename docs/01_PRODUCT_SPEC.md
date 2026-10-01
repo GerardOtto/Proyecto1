@@ -25,6 +25,7 @@ por personaje, recursos visuales y una secuencia narrativa coherente.
 
 ## Decision clave: banco de reacciones a mano
 8 estados por personaje (neutral, feliz, sorprendido, confundido, enojado, riendo, nerd, shocked).
+Ampliado a 19 reacciones con fallback por reaccion (ADR 0008, docs/02_CHARACTER_RULES.md).
 Cubren explicar/preguntar/reaccionar/corregir/rematar, permiten cambios visibles sin animacion y una
 taxonomia simple. Se amplia solo cuando un guion real lo necesite. Ver `02_CHARACTER_RULES.md`.
 
