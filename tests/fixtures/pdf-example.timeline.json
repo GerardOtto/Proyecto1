@@ -1,0 +1,26 @@
+{
+  "meta": {
+    "title": "China no destruyo a ChatGPT",
+    "durationTargetSec": 85,
+    "aspect": "9:16",
+    "fps": 30
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "startMs": 0,
+      "endMs": 4200,
+      "character": "teto",
+      "avatar": "sorprendida",
+      "dialogue": "¿China destruyo a ChatGPT y Claude?",
+      "visuals": ["chatgpt_logo", "claude_logo"],
+      "events": ["subtitle_emphasis"]
+    },
+    {
+      "id": "meme",
+      "startMs": 4200,
+      "endMs": 6500,
+      "events": ["meme_explosion"]
+    }
+  ]
+}

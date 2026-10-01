@@ -1,0 +1,55 @@
+{
+  "$schema": "../../schemas/timeline.schema.json",
+  "version": 1,
+  "meta": {
+    "title": "Smoke test (8 s)",
+    "durationTargetSec": 8,
+    "aspect": "9:16",
+    "fps": 30,
+    "language": "es",
+    "background": "bg_tech_loop",
+    "timingSource": "manual",
+    "generator": "fixture"
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "section": "hook",
+      "startMs": 0,
+      "endMs": 3000,
+      "character": "teto",
+      "avatar": "sorprendida",
+      "dialogue": "¿China destruyó a ChatGPT y Claude?",
+      "visuals": ["chatgpt_logo", "claude_logo"],
+      "events": [{ "type": "subtitle_emphasis", "words": ["destruyó"] }]
+    },
+    {
+      "id": "meme",
+      "section": "reaction",
+      "startMs": 3000,
+      "endMs": 4800,
+      "events": ["meme_explosion"]
+    },
+    {
+      "id": "reply",
+      "section": "development",
+      "startMs": 4800,
+      "endMs": 7000,
+      "character": "miku",
+      "avatar": "confused",
+      "dialogue": "¿Pero de dónde sacaste eso?",
+      "listeners": [{ "character": "teto", "avatar": "neutral" }],
+      "events": [{ "type": "character_reaction", "character": "teto", "avatar": "nerd", "atMs": 700 }]
+    },
+    {
+      "id": "closing",
+      "section": "closing",
+      "startMs": 7000,
+      "endMs": 8000,
+      "character": "teto",
+      "avatar": "happy",
+      "dialogue": "¡Te explico!",
+      "events": ["camera_zoom"]
+    }
+  ]
+}

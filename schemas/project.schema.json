@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://short-video-engine.local/schemas/project.schema.json",
+  "title": "ProjectConfig",
+  "description": "Configuracion opcional por proyecto (projects/<id>/project.json).",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "title": { "type": "string" },
+    "language": { "type": "string" },
+    "durationTargetSec": { "type": "number", "minimum": 60, "maximum": 120 },
+    "background": { "type": "string", "description": "ID de asset o ruta relativa al proyecto (p.ej. background.mp4)." },
+    "director": { "type": "string", "enum": ["rules", "anthropic"] },
+    "tts": { "type": "string", "enum": ["fish", "files", "flite", "silent"] },
+    "transcriber": { "type": "string", "enum": ["whisper-cpp", "estimate", "auto"] },
+    "assets": {
+      "description": "Assets locales del proyecto (rutas relativas a la carpeta del proyecto).",
+      "type": "array",
+      "items": { "$ref": "assets.schema.json#/definitions/asset" }
+    }
+  }
+}

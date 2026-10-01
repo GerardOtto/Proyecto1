@@ -1,0 +1,78 @@
+{
+  "$schema": "../schemas/render.schema.json",
+  "video": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "aspect": "9:16",
+    "codec": "h264",
+    "crf": 20,
+    "pixelFormat": "yuv420p",
+    "audioCodec": "aac",
+    "audioBitrate": "192k"
+  },
+  "duration": {
+    "minMs": 60000,
+    "maxMs": 120000,
+    "targetMs": 85000
+  },
+  "safeArea": {
+    "top": 220,
+    "bottom": 420,
+    "left": 60,
+    "right": 140
+  },
+  "layout": {
+    "visualArea": { "x": 90, "y": 260, "width": 850, "height": 640 },
+    "listenerScaleFactor": 0.78,
+    "listenerDim": 0.25,
+    "maxCharactersOnScreen": 3,
+    "characterMarginX": 20
+  },
+  "captions": {
+    "fontFamily": "Montserrat",
+    "fontWeight": 900,
+    "fontSize": 78,
+    "lineHeight": 1.15,
+    "maxLines": 2,
+    "centerY": 1040,
+    "maxWidth": 860,
+    "strokeWidth": 12,
+    "strokeColor": "#111111",
+    "inactiveColor": "#FFFFFF",
+    "emphasisScale": 1.18,
+    "combineTokensWithinMs": 900,
+    "maxWordsPerPage": 6,
+    "avgCharWidthEm": 0.62
+  },
+  "timing": {
+    "leadInMs": 250,
+    "gapBetweenBlocksMs": 280,
+    "minGapMs": 120,
+    "maxGapMs": 900,
+    "tailMs": 1500,
+    "maxTailMs": 6000,
+    "memeSceneMs": 2200,
+    "pauseSceneMs": 700,
+    "estimatedWordsPerSecond": 2.6,
+    "minAvatarChangeIntervalMs": 1200
+  },
+  "audio": {
+    "sampleRate": 48000,
+    "loudnessLufs": -14,
+    "truePeakDb": -1.5,
+    "sfxVolume": 0.55,
+    "backgroundVideoVolume": 0
+  },
+  "background": {
+    "dim": 0.35,
+    "fallbackColor": "#141420"
+  },
+  "events": {
+    "cameraZoom": { "scale": 1.12, "durationMs": 900 },
+    "cameraShake": { "intensity": 18, "durationMs": 450 },
+    "memeExplosion": { "durationMs": 1400, "flashMs": 180, "punchScale": 1.15, "defaultMeme": "meme_boom", "defaultSfx": "sfx_boom" },
+    "subtitleEmphasis": { "durationMs": 0 },
+    "visual": { "popInMs": 250, "popOutMs": 200 }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://short-video-engine.local/schemas/requested-voices.schema.json",
+  "title": "RequestedVoices",
+  "description": "Override de voces por proyecto (projects/<id>/requested_voices.json). Gana sobre config/characters.json.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "voices": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "fishReferenceId": {
+            "type": "string"
+          },
+          "speed": {
+            "type": "number",
+            "minimum": 0.5,
+            "maximum": 2
+          },
+          "fliteVoice": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

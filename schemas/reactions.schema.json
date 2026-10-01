@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://short-video-engine.local/schemas/reactions.schema.json",
+  "title": "Reactions",
+  "description": "Taxonomia visual minima. Cada reaccion canonica tiene alias aceptados en guiones y timelines.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["reactions"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "reactions": {
+      "type": "object",
+      "required": ["neutral"],
+      "propertyNames": { "pattern": "^[a-z][a-z0-9_]*$" },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["use", "priority", "aliases"],
+        "properties": {
+          "use": { "type": "string" },
+          "priority": { "type": "string", "enum": ["alta", "media", "baja"] },
+          "aliases": { "type": "array", "items": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" } }
+        }
+      }
+    }
+  }
+}

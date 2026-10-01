@@ -1,0 +1,10 @@
+{
+  "$schema": "../../schemas/project.schema.json",
+  "title": "¿China destruyó a ChatGPT?",
+  "language": "es",
+  "durationTargetSec": 85,
+  "background": "bg_tech_loop",
+  "director": "rules",
+  "tts": "fish",
+  "transcriber": "auto"
+}

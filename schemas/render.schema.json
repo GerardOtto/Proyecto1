@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://short-video-engine.local/schemas/render.schema.json",
+  "title": "RenderConfig",
+  "type": "object",
+  "required": ["video", "duration", "safeArea", "layout", "captions", "timing", "audio", "background", "events"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "video": {
+      "type": "object",
+      "required": ["width", "height", "fps", "aspect", "codec", "crf", "pixelFormat", "audioCodec", "audioBitrate"],
+      "properties": {
+        "width": { "const": 1080 },
+        "height": { "const": 1920 },
+        "fps": { "type": "integer", "enum": [24, 25, 30, 60] },
+        "aspect": { "const": "9:16" },
+        "codec": { "enum": ["h264", "h265"] },
+        "crf": { "type": "integer", "minimum": 1, "maximum": 51 },
+        "pixelFormat": { "type": "string" },
+        "audioCodec": { "enum": ["aac", "mp3"] },
+        "audioBitrate": { "type": "string" }
+      }
+    },
+    "duration": {
+      "type": "object",
+      "required": ["minMs", "maxMs", "targetMs"],
+      "properties": {
+        "minMs": { "type": "integer", "minimum": 0 },
+        "maxMs": { "type": "integer", "minimum": 1 },
+        "targetMs": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "safeArea": {
+      "type": "object",
+      "required": ["top", "bottom", "left", "right"],
+      "additionalProperties": { "type": "integer", "minimum": 0 }
+    },
+    "layout": { "type": "object" },
+    "captions": { "type": "object" },
+    "timing": { "type": "object" },
+    "audio": { "type": "object" },
+    "background": { "type": "object" },
+    "events": { "type": "object" }
+  }
+}

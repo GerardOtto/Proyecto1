@@ -1,0 +1,22 @@
+node_modules/
+.cache/
+output/*
+!output/.gitkeep
+.env
+.env.local
+*.log
+.DS_Store
+
+# Binarios de whisper.cpp y modelos (se instalan con `npm run whisper:install`)
+tools/whisper.cpp/
+tools/models/
+
+# Artefactos generados por el pipeline dentro de cada proyecto
+projects/*/audio/
+projects/*/transcript/
+projects/*/timeline.json
+projects/*/timeline.draft.json
+projects/*/render-plan.json
+projects/*/report.json
+# El timeline manual de ejemplo si se versiona
+!projects/manual_001/timeline.json

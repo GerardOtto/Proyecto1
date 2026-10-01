@@ -1,0 +1,7 @@
+{
+  "$schema": "../../schemas/requested-voices.schema.json",
+  "voices": {
+    "teto": { "fishReferenceId": "", "speed": 1.05 },
+    "miku": { "fishReferenceId": "", "speed": 1.05 }
+  }
+}

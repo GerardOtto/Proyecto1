@@ -1,0 +1,145 @@
+// Envolturas finas sobre ffmpeg/ffprobe del sistema. FFmpeg se usa para codificacion, mezcla,
+// normalizacion y chequeos; nunca como sustituto de la logica de escenas (que vive en Remotion).
+import fs from "node:fs";
+import path from "node:path";
+import { CACHE_DIR } from "../utils/paths";
+import { run } from "../utils/exec";
+
+export const FFMPEG = process.env.FFMPEG_PATH || "ffmpeg";
+export const FFPROBE = process.env.FFPROBE_PATH || "ffprobe";
+
+export interface ProbeStream {
+  codec_type: "video" | "audio" | string;
+  codec_name?: string;
+  width?: number;
+  height?: number;
+  pix_fmt?: string;
+  r_frame_rate?: string;
+  avg_frame_rate?: string;
+  sample_rate?: string;
+  channels?: number;
+  duration?: string;
+  nb_frames?: string;
+}
+
+export interface ProbeResult {
+  format: { duration?: string; format_name?: string; size?: string; bit_rate?: string };
+  streams: ProbeStream[];
+}
+
+export const ffprobe = async (file: string): Promise<ProbeResult> => {
+  const res = await run(FFPROBE, ["-v", "error", "-print_format", "json", "-show_format", "-show_streams", file]);
+  return JSON.parse(res.stdout) as ProbeResult;
+};
+
+/** Duracion en ms (redondeada). Cacheada por ruta+tamano+mtime en .cache/probe.json. */
+export const probeDurationMs = async (file: string): Promise<number> => {
+  const st = fs.statSync(file);
+  const key = `${path.resolve(file)}|${st.size}|${st.mtimeMs}`;
+  const cacheFile = path.join(CACHE_DIR, "probe.json");
+  let cache: Record<string, number> = {};
+  try {
+    cache = JSON.parse(fs.readFileSync(cacheFile, "utf8"));
+  } catch {
+    cache = {};
+  }
+  const hit = cache[key];
+  if (hit !== undefined) return hit;
+  const p = await ffprobe(file);
+  const d = Number(p.format.duration ?? p.streams.find((s) => s.duration)?.duration);
+  if (!Number.isFinite(d)) throw new Error(`No se pudo obtener la duracion de ${file}`);
+  const ms = Math.round(d * 1000);
+  cache[key] = ms;
+  fs.mkdirSync(CACHE_DIR, { recursive: true });
+  fs.writeFileSync(cacheFile, JSON.stringify(cache, null, 1));
+  return ms;
+};
+
+export const parseRate = (rate: string | undefined): number => {
+  if (!rate) return NaN;
+  const [n, d] = rate.split("/").map(Number);
+  return d ? n! / d : Number(n);
+};
+
+/** Genera silencio WAV PCM. */
+export const makeSilence = async (out: string, ms: number, sampleRate = 48000): Promise<void> => {
+  await run(FFMPEG, [
+    "-y", "-v", "error",
+    "-f", "lavfi", "-i", `anullsrc=r=${sampleRate}:cl=mono`,
+    "-t", (ms / 1000).toFixed(3),
+    "-c:a", "pcm_s16le", out,
+  ]);
+};
+
+/** Convierte cualquier audio a WAV mono PCM con la frecuencia indicada. */
+export const toWav = async (input: string, out: string, sampleRate: number): Promise<void> => {
+  await run(FFMPEG, ["-y", "-v", "error", "-i", input, "-ac", "1", "-ar", String(sampleRate), "-c:a", "pcm_s16le", out]);
+};
+
+export interface MasterPiece {
+  file: string;
+  offsetMs: number;
+}
+
+/**
+ * Construye la pista maestra: cada bloque en su offset absoluto, silencio en el resto,
+ * normalizacion de loudness (EBU R128) y limitador de pico.
+ */
+export const buildMasterTrack = async (opts: {
+  pieces: MasterPiece[];
+  totalMs: number;
+  out: string;
+  sampleRate: number;
+  loudnessLufs: number;
+  truePeakDb: number;
+}): Promise<void> => {
+  const { pieces, totalMs, out, sampleRate } = opts;
+  const args: string[] = ["-y", "-v", "error"];
+  args.push("-f", "lavfi", "-t", (totalMs / 1000).toFixed(3), "-i", `anullsrc=r=${sampleRate}:cl=mono`);
+  for (const p of pieces) args.push("-i", p.file);
+  const filters: string[] = [];
+  const labels: string[] = ["[0:a]"];
+  pieces.forEach((p, i) => {
+    const l = `[p${i}]`;
+    filters.push(`[${i + 1}:a]aresample=${sampleRate},aformat=channel_layouts=mono,adelay=${Math.max(0, Math.round(p.offsetMs))}:all=1${l}`);
+    labels.push(l);
+  });
+  filters.push(
+    `${labels.join("")}amix=inputs=${labels.length}:duration=first:dropout_transition=0:normalize=0[mix]`,
+    `[mix]loudnorm=I=${opts.loudnessLufs}:TP=${opts.truePeakDb}:LRA=11,alimiter=limit=${dbToLinear(opts.truePeakDb).toFixed(3)},aresample=${sampleRate},atrim=0:${(totalMs / 1000).toFixed(3)}[out]`,
+  );
+  args.push("-filter_complex", filters.join(";"), "-map", "[out]", "-ac", "1", "-c:a", "pcm_s16le", out);
+  await run(FFMPEG, args);
+};
+
+export const dbToLinear = (db: number): number => Math.pow(10, db / 20);
+
+/** Recorta un tramo [startMs, endMs) de un audio a WAV. */
+export const trimAudio = async (input: string, out: string, startMs: number, endMs: number | null): Promise<void> => {
+  const args = ["-y", "-v", "error", "-i", input, "-ss", (startMs / 1000).toFixed(3)];
+  if (endMs !== null) args.push("-to", (endMs / 1000).toFixed(3));
+  args.push("-c:a", "pcm_s16le", out);
+  await run(FFMPEG, args);
+};
+
+/** Concatena WAVs (mismo formato) con el demuxer concat. */
+export const concatWavs = async (inputs: string[], out: string): Promise<void> => {
+  const list = out + ".txt";
+  fs.writeFileSync(list, inputs.map((f) => `file '${path.resolve(f).replace(/'/g, "'\\''")}'`).join("\n"));
+  try {
+    await run(FFMPEG, ["-y", "-v", "error", "-f", "concat", "-safe", "0", "-i", list, "-c:a", "pcm_s16le", out]);
+  } finally {
+    fs.rmSync(list, { force: true });
+  }
+};
+
+/** max_volume / mean_volume en dB (volumedetect). */
+export const volumeStats = async (file: string): Promise<{ maxDb: number; meanDb: number }> => {
+  const res = await run(FFMPEG, ["-v", "info", "-nostats", "-i", file, "-af", "volumedetect", "-vn", "-f", "null", "-"], {
+    allowFail: true,
+  });
+  const max = /max_volume:\s*(-?[\d.]+|-inf) dB/.exec(res.stderr)?.[1];
+  const mean = /mean_volume:\s*(-?[\d.]+|-inf) dB/.exec(res.stderr)?.[1];
+  const num = (v: string | undefined) => (v === undefined || v === "-inf" ? -Infinity : Number(v));
+  return { maxDb: num(max), meanDb: num(mean) };
+};

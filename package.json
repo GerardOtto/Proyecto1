@@ -1,0 +1,54 @@
+{
+  "name": "short-video-engine",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Motor local que convierte un guion en un video vertical educativo (60-120 s) con personajes Vocaloid, subtitulos por color, visuales y fondo.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "doctor": "tsx scripts/doctor.ts",
+    "assets:placeholders": "tsx scripts/make-placeholders.ts",
+    "catalog": "tsx scripts/catalog.ts",
+    "analyze": "tsx scripts/analyze-script.ts",
+    "voices": "tsx scripts/generate-voices.ts",
+    "transcribe": "tsx scripts/transcribe.ts",
+    "build-timeline": "tsx scripts/build-timeline.ts",
+    "validate": "tsx scripts/validate.ts",
+    "render": "tsx scripts/render.ts",
+    "generate": "tsx scripts/generate.ts",
+    "studio": "tsx scripts/studio.ts",
+    "smoke": "tsx scripts/smoke.ts",
+    "whisper:install": "tsx scripts/setup-whisper.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . && tsc --noEmit",
+    "format": "prettier --write .",
+    "test": "vitest run",
+    "test:render": "vitest run tests/render.smoke.test.ts",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "0.131.0",
+    "@remotion/bundler": "4.0.530",
+    "@remotion/captions": "4.0.530",
+    "@remotion/cli": "4.0.530",
+    "@remotion/fonts": "4.0.530",
+    "@remotion/install-whisper-cpp": "4.0.530",
+    "@remotion/renderer": "4.0.530",
+    "ajv": "8.20.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "remotion": "4.0.530"
+  },
+  "devDependencies": {
+    "@remotion/eslint-config-flat": "4.0.530",
+    "@types/node": "22.20.4",
+    "@types/react": "19.3.0",
+    "eslint": "9.39.5",
+    "prettier": "3.9.9",
+    "tsx": "4.23.15",
+    "typescript": "5.7.3",
+    "vitest": "5.0.3"
+  }
+}

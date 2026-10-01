@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://short-video-engine.local/schemas/assets.schema.json",
+  "title": "Assets",
+  "description": "Catalogo estructurado de recursos visuales y sonoros. El agente consulta este catalogo; no adivina el significado de las imagenes.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["assets"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "assets": { "type": "array", "items": { "$ref": "#/definitions/asset" } }
+  },
+  "definitions": {
+    "licenseInfo": {
+      "type": "object",
+      "required": ["source", "license_status"],
+      "properties": {
+        "source": { "type": "string", "minLength": 1 },
+        "license": { "type": "string" },
+        "license_status": {
+          "description": "documented: licencia verificada y registrada. owned: creado por el equipo. placeholder: generado para pruebas. unknown: sin verificar -> bloqueado para publicacion comercial.",
+          "type": "string",
+          "enum": ["documented", "owned", "placeholder", "unknown"]
+        },
+        "notes": { "type": "string" }
+      }
+    },
+    "asset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "path", "tags", "source", "license_status"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_\\-]*$" },
+        "type": {
+          "type": "string",
+          "enum": ["image", "logo", "diagram", "meme", "background_video", "background_image", "sfx"]
+        },
+        "path": { "type": "string", "pattern": "^[^\\\\]+\\.(png|jpg|jpeg|webp|svg|gif|mp4|webm|mov|wav|mp3|ogg|m4a)$" },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "safeArea": { "type": "boolean" },
+        "loop": { "type": "boolean" },
+        "source": { "type": "string", "minLength": 1 },
+        "license": { "type": "string" },
+        "license_status": { "type": "string", "enum": ["documented", "owned", "placeholder", "unknown"] },
+        "description": { "type": "string" },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}

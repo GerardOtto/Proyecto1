@@ -1,0 +1,45 @@
+{
+  "$schema": "../schemas/reactions.schema.json",
+  "reactions": {
+    "neutral": {
+      "use": "explicacion normal / escucha",
+      "priority": "alta",
+      "aliases": ["normal", "listening", "escucha", "calm"]
+    },
+    "feliz": {
+      "use": "aprobacion / remate ligero",
+      "priority": "alta",
+      "aliases": ["happy", "contento", "contenta", "alegre", "smile"]
+    },
+    "sorprendido": {
+      "use": "hook / dato inesperado",
+      "priority": "alta",
+      "aliases": ["sorprendida", "surprised", "sorpresa", "surprise"]
+    },
+    "confundido": {
+      "use": "pregunta / malentendido",
+      "priority": "alta",
+      "aliases": ["confundida", "confused", "confusion"]
+    },
+    "enojado": {
+      "use": "correccion / frustracion humoristica",
+      "priority": "media",
+      "aliases": ["enojada", "angry", "molesto", "molesta", "mad"]
+    },
+    "riendo": {
+      "use": "remate / reaccion",
+      "priority": "media",
+      "aliases": ["laughing", "laugh", "risa"]
+    },
+    "nerd": {
+      "use": "explicacion tecnica / conclusion / dato riguroso",
+      "priority": "media",
+      "aliases": ["serio_nerd", "serio", "seria", "serious"]
+    },
+    "shocked": {
+      "use": "giro exagerado / meme",
+      "priority": "media",
+      "aliases": ["shock", "impactado", "impactada"]
+    }
+  }
+}

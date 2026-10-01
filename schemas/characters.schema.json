@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://short-video-engine.local/schemas/characters.schema.json",
+  "title": "Characters",
+  "description": "Identidad visual y de voz de cada personaje. Ningun guion puede cambiar estos valores.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["characters"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "characters": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": { "pattern": "^[a-z][a-z0-9_]*$" },
+      "additionalProperties": { "$ref": "#/definitions/character" }
+    }
+  },
+  "definitions": {
+    "character": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["displayName", "subtitleColor", "defaultScale", "anchor", "avatarDir", "reactions"],
+      "properties": {
+        "displayName": { "type": "string", "minLength": 1 },
+        "subtitleColor": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+        "defaultScale": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
+        "anchor": { "type": "string", "enum": ["bottom-left", "bottom-right"] },
+        "avatarDir": { "type": "string", "minLength": 1 },
+        "reactions": {
+          "description": "Reaccion canonica (config/reactions.json) -> nombre de archivo dentro de avatarDir.",
+          "type": "object",
+          "minProperties": 1,
+          "required": ["neutral"],
+          "additionalProperties": { "type": "string", "pattern": "^[^/\\\\]+\\.(png|jpg|jpeg|webp|svg)$" }
+        },
+        "voice": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "fish": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "referenceId": { "type": "string" },
+                "speed": { "type": "number", "minimum": 0.5, "maximum": 2 },
+                "volume": { "type": "number" }
+              }
+            },
+            "flite": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": { "voice": { "type": "string" } }
+            }
+          }
+        },
+        "license": { "$ref": "assets.schema.json#/definitions/licenseInfo" }
+      }
+    }
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "$schema": "../../schemas/timeline.schema.json",
+  "version": 1,
+  "meta": {
+    "title": "Tu teléfono vs. la NASA",
+    "durationTargetSec": 64,
+    "aspect": "9:16",
+    "fps": 30,
+    "language": "es",
+    "background": "bg_tech_loop",
+    "timingSource": "manual",
+    "generator": "manual"
+  },
+  "scenes": [
+    {
+      "id": "hook",
+      "section": "hook",
+      "startMs": 0,
+      "endMs": 4500,
+      "character": "teto",
+      "avatar": "sorprendida",
+      "dialogue": "¿Sabías que tu teléfono tiene más potencia que la NASA en 1969?",
+      "visuals": [
+        "chart_benchmarks"
+      ],
+      "events": [
+        {
+          "type": "subtitle_emphasis",
+          "words": [
+            "NASA"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "meme",
+      "section": "reaction",
+      "startMs": 4500,
+      "endMs": 6500,
+      "events": [
+        "meme_explosion"
+      ]
+    },
+    {
+      "id": "context",
+      "section": "context",
+      "startMs": 6500,
+      "endMs": 17000,
+      "character": "teto",
+      "avatar": "nerd",
+      "dialogue": "Las computadoras del Apolo 11 tenían unos pocos kilobytes de memoria y un procesador muy lento. Aun así llevaron a tres personas a la Luna.",
+      "listeners": [
+        {
+          "character": "rin",
+          "avatar": "neutral"
+        }
+      ]
+    },
+    {
+      "id": "question",
+      "section": "development",
+      "startMs": 17000,
+      "endMs": 22000,
+      "character": "rin",
+      "avatar": "confundida",
+      "dialogue": "Espera, ¿entonces cómo hicieron todos esos cálculos?",
+      "events": [
+        {
+          "type": "character_reaction",
+          "character": "teto",
+          "avatar": "feliz",
+          "atMs": 3000
+        }
+      ]
+    },
+    {
+      "id": "explain",
+      "section": "visual",
+      "startMs": 22000,
+      "endMs": 38000,
+      "character": "teto",
+      "avatar": "nerd",
+      "dialogue": "Con programas muy optimizados, mucha matemática hecha en tierra y astronautas entrenados para resolver problemas a mano.",
+      "visuals": [
+        "diagram_cost_down"
+      ],
+      "events": [
+        {
+          "type": "camera_zoom",
+          "atMs": 2000
+        }
+      ]
+    },
+    {
+      "id": "punch",
+      "section": "punchline",
+      "startMs": 38000,
+      "endMs": 45000,
+      "character": "rin",
+      "avatar": "shocked",
+      "dialogue": "¿Y yo uso mi teléfono para ver videos de gatos?",
+      "events": [
+        "camera_shake",
+        {
+          "type": "sfx",
+          "sfx": "sfx_pop",
+          "atMs": 1500
+        }
+      ]
+    },
+    {
+      "id": "laugh",
+      "section": "punchline",
+      "startMs": 45000,
+      "endMs": 50000,
+      "character": "teto",
+      "avatar": "riendo",
+      "dialogue": "Bueno, los gatos también son importantes.",
+      "listeners": [
+        {
+          "character": "rin",
+          "avatar": "riendo"
+        }
+      ]
+    },
+    {
+      "id": "dev",
+      "section": "development",
+      "startMs": 50000,
+      "endMs": 58000,
+      "character": "teto",
+      "avatar": "neutral",
+      "dialogue": "La lección es que no siempre necesitas más potencia: a veces necesitas mejor ingeniería."
+    },
+    {
+      "id": "closing",
+      "section": "closing",
+      "startMs": 58000,
+      "endMs": 64000,
+      "character": "rin",
+      "avatar": "feliz",
+      "dialogue": "Optimizar primero, comprar después. ¡Anotado!",
+      "events": [
+        {
+          "type": "sfx",
+          "sfx": "sfx_ding",
+          "atMs": 800
+        }
+      ]
+    }
+  ]
+}
