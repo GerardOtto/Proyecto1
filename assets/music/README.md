@@ -1,7 +1,7 @@
 # Musica de fondo
 
-> Politica actual: los videos se exportan **sin musica**; se anade al publicar desde TikTok/Instagram
-> (docs/09_LICENSING.md). Usar esta carpeta solo para pistas propias o libres de derechos.
+> Politica actual: el MP4 sale **sin musica**; se anade al publicar desde la biblioteca de cada
+> plataforma (docs/09_LICENSING.md). Los archivos de esta carpeta nunca se suben a git.
 
 Los archivos de esta carpeta **no se versionan** (el repo es publico y la musica suele tener
 copyright). Cada maquina registra sus temas en `config/assets.local.json` (tambien ignorado), que el

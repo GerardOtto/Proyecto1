@@ -28,7 +28,7 @@ Lo deduje del repositorio (`projects/demo_001/script.md`, `config/*.json`, `docs
 
 | Rasgo | Valor | Implicación para la distribución |
 |---|---|---|
-| Formato | Vertical 9:16, **60–120 s** (el demo dura ~75–90 s) | Más de 60 s: elegible para Creator Rewards en TikTok; dentro del límite de 3 min de Reels y Shorts |
+| Formato | Vertical 9:16, **60–120 s** (el demo dura ~68 s) | Más de 60 s: elegible para Creator Rewards en TikTok; dentro del límite de 3 min de Reels y Shorts |
 | Tema | Actualidad de IA y tecnología explicada ("DeepSeek vs ChatGPT", precios, benchmarks) | Contenido de **búsqueda** y de **actualidad**: vive de palabras clave y de llegar a tiempo |
 | Formato narrativo | Gancho, meme, explicación, remate y CTA ("¡Papu papu! … síguenos") | Gancho fuerte en los primeros 3 s; humor con "edutainment" |
 | Personajes | Kasane Teto y Hatsune Miku (renders MMD) con **voces de IA** (Fish Audio) | Atrae al fandom Vocaloid/anime; exige etiqueta de IA |
@@ -275,7 +275,8 @@ que manda es el de tu propia cuenta.**
 
 ## 8. Tarea de implementación para el agente: rótulo de palabra clave en el gancho
 
-> **Estado: APROBADA por el usuario (2026-10-01), pendiente de implementar.** Este apartado es una
+> **Estado: IMPLEMENTADA (2026-10-01, ADR 0006).** Demo: `hook_title: ¿*DeepSeek* destruyó a *ChatGPT*?`
+> (se resalta tambien ChatGPT, que se dice a los ~2 s, para no disparar `HOOK_KEYWORD_LATE`). Este apartado es una
 > especificación accionable para el agente de Claude Code local. Respeta las reglas de `CLAUDE.md`:
 > cambia el contrato del timeline, así que hay que **escribir el ADR 0006 y actualizar los schemas y
 > los tests antes que el render**.

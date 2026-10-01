@@ -39,6 +39,12 @@ COMO ocurre (tiempos exactos, posiciones, animaciones). No tienes libertad pixel
   YouTube, TikTok e Instagram: usa solo "Me gusta" y "siguenos"; nunca "suscribete", "campanita",
   "link en la bio", "duo" ni otras palabras de una sola plataforma. Visual: `cta_follow_like` si existe.
 
+## Rotulo del gancho (hookTitle)
+- Texto fijo en pantalla durante el gancho, para la busqueda de TikTok/Instagram: <= 45 caracteres,
+  con la entidad o palabra clave buscable AL PRINCIPIO y marcada con *asteriscos*
+  (p. ej. "¿*DeepSeek* destruyo a *ChatGPT*?"). Al menos una palabra resaltada debe DECIRSE en los
+  primeros 3 s del video. "" = sin rotulo.
+
 ## Reglas de personajes y avatares
 - El que habla tiene prioridad; el que escucha puede reaccionar (evento character_reaction).
 - Un cambio de avatar debe coincidir con un cambio semantico, una reaccion o un punchline; nunca en cada

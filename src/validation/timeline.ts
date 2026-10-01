@@ -5,6 +5,7 @@ import type { Catalog } from "../catalog/catalog";
 import { buildCaptionPages, layoutCaption, timelineWords } from "../timeline/captions";
 import { normalizeWord, resolveReaction, sceneEvents, splitWords, timelineDurationMs } from "../timeline/normalize";
 import { buildRenderPlan, captionCenterX, PlanError } from "../timeline/plan";
+import { layoutTitle, titleKeywords } from "../timeline/titlecard";
 import type { RenderConfig, Timeline } from "../timeline/types";
 import { fromRepo } from "../utils/paths";
 import { validateSchema } from "./schemas";
@@ -213,6 +214,38 @@ export const validateTimeline = (
   for (const id of assetsUsed) {
     if (catalog.entries[id]?.tags.includes("reservado")) {
       add("warning", "assets", "ASSET_RESERVED", `"${id}" esta reservado (${catalog.entries[id]!.description ?? "ver catalogo"})`);
+    }
+  }
+
+  // ------------------------------------------------------------------ rotulo del gancho (ADR 0006)
+  const tc = cfg.titleCard;
+  if (tc && tc.enabled !== false) {
+    const title = timeline.meta.hookTitle;
+    if (!title) {
+      if (opts.stage === "final") add("warning", "narrative", "HOOK_TITLE_MISSING", "Sin meta.hookTitle: el gancho no muestra la palabra clave escrita (perjudica la busqueda)");
+    } else {
+      const lay = layoutTitle(title, cfg);
+      if (lay) {
+        if (lay.overflow || lay.fontScale < 0.7) {
+          add("error", "subtitles", "HOOK_TITLE_TOO_LONG", `El rotulo "${title}" no cabe en ${tc.maxLines} lineas sin bajar del 70 % de la fuente (acortalo)`);
+        }
+        const b = lay.box;
+        const sa = cfg.safeArea;
+        if (b.x < sa.left || b.y < sa.top || b.x + b.width > cfg.video.width - sa.right || b.y + b.height > cfg.video.height - sa.bottom) {
+          add("error", "subtitles", "HOOK_TITLE_OUTSIDE_SAFE_AREA", `La caja del rotulo (${b.x},${b.y} ${b.width}x${b.height}) sale de la safe area`);
+        }
+        const c = cfg.captions;
+        const capHalf = (c.fontSize * c.emphasisScale * c.lineHeight * c.maxLines) / 2;
+        if (b.y < c.centerY + capHalf && b.y + b.height > c.centerY - capHalf) {
+          add("error", "subtitles", "HOOK_TITLE_OVERLAPS_CAPTIONS", "La caja del rotulo se solapa con la zona de subtitulos");
+        }
+        // La palabra clave debe DECIRSE pronto: TikTok indexa lo que se dice en los primeros segundos.
+        const keys = titleKeywords(lay.tokens);
+        const early = new Set(timelineWords(timeline).filter((w) => w.startMs < 3000).map((w) => normalizeWord(w.text)));
+        if (keys.length > 0 && !keys.some((k) => early.has(k))) {
+          add("warning", "narrative", "HOOK_KEYWORD_LATE", `Ninguna palabra clave del rotulo (${keys.join(", ")}) se dice antes de los 3 s`);
+        }
+      }
     }
   }
 

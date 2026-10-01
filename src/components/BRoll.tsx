@@ -35,11 +35,12 @@ export const BRoll: React.FC<{ broll: PlanBroll[]; area: Box }> = ({ broll, area
   const frame = useCurrentFrame();
   const active = broll.filter((b) => frame >= b.from && frame < b.to);
   const pad = 16;
-  const w = area.width - pad * 2;
-  const h = area.height - pad * 2;
   return (
     <>
       {active.map((b) => {
+        const a = b.area ?? area; // area propia (p. ej. bajo el rotulo del gancho)
+        const w = a.width - pad * 2;
+        const h = a.height - pad * 2;
         const t = frame - b.from;
         const left = b.to - frame;
         const pop = interpolate(t, [0, FADE_FRAMES], [0.92, 1], { extrapolateRight: "clamp", easing: Easing.out(Easing.cubic) });
@@ -52,8 +53,8 @@ export const BRoll: React.FC<{ broll: PlanBroll[]; area: Box }> = ({ broll, area
             key={`broll-${b.from}`}
             style={{
               position: "absolute",
-              left: area.x + pad,
-              top: area.y + pad,
+              left: a.x + pad,
+              top: a.y + pad,
               width: w,
               height: h,
               borderRadius: 36,

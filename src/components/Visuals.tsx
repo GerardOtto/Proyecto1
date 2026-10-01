@@ -41,7 +41,7 @@ export const Visuals: React.FC<{
   return (
     <>
       {active.map((v) => {
-        const box = slotBox(area, v.slot, autos.indexOf(v), autos.length);
+        const box = slotBox(v.area ?? area, v.slot, autos.indexOf(v), autos.length);
         const sinceIn = frame - v.from;
         const untilOut = v.to - frame;
         const pop = interpolate(sinceIn, [0, popIn], [0.6, 1], {

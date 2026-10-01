@@ -29,6 +29,7 @@ export interface BeatsMeta {
   background?: string;
   music?: string;
   broll?: string[];
+  hookTitle?: string;
   project?: string;
   generator: string;
 }
@@ -106,6 +107,7 @@ export const beatsToDraftTimeline = (beats: Beat[], meta: BeatsMeta, cfg: Engine
       ...(meta.background ? { background: meta.background } : {}),
       ...(meta.music ? { music: meta.music } : {}),
       ...(meta.broll && meta.broll.length ? { broll: meta.broll } : {}),
+      ...(meta.hookTitle ? { hookTitle: meta.hookTitle } : {}),
       timingSource: "estimated",
       ...(meta.project ? { project: meta.project } : {}),
       generator: meta.generator,

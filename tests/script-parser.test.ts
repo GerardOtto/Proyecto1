@@ -2,6 +2,8 @@ import { describe, expect, it } from "vitest";
 import fs from "node:fs";
 import { beatsToDraftTimeline, inferSections } from "../src/director/beats";
 import { parseScript } from "../src/director/script-parser";
+import { scriptMeta } from "../src/director/rules";
+import type { ProjectContext } from "../src/catalog/catalog";
 import { fromRepo } from "../src/utils/paths";
 import { validateTimeline } from "../src/validation/timeline";
 import { engine } from "./helpers";
@@ -28,6 +30,15 @@ Si, pero es bastante mas interesante.`;
 
 describe("parser de guion", async () => {
   const { cfg, catalog } = await engine();
+
+  it("hook_title / titulo_gancho llegan a meta.hookTitle; 'none' lo omite", () => {
+    const project = { id: "p", config: {} } as unknown as ProjectContext;
+    const meta = (fm: string) => scriptMeta(parseScript(`---\n${fm}\n---\n[TETO:feliz]\nHola.\n`, catalog), project, catalog, cfg);
+    expect(meta("hook_title: ¿*DeepSeek* destruyo a ChatGPT?").hookTitle).toBe("¿*DeepSeek* destruyo a ChatGPT?");
+    expect(meta("titulo_gancho: *IA* barata").hookTitle).toBe("*IA* barata");
+    expect(meta("hook_title: none").hookTitle).toBeUndefined();
+    expect(meta("title: sin rotulo").hookTitle).toBeUndefined();
+  });
 
   it("parsea el guion de referencia del plan", () => {
     const p = parseScript(PDF_SCRIPT, catalog);

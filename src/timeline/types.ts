@@ -38,6 +38,8 @@ export interface TimelineMeta {
   music?: string;
   /** IDs de assets `broll` que rellenan el area de visuales cuando no hay ningun visual. */
   broll?: string[];
+  /** Rotulo del gancho con la palabra clave (SEO); `*palabra*` la resalta. ADR 0006. */
+  hookTitle?: string;
   timingSource?: TimingSource;
   audio?: { master: string; durationMs: number };
   project?: string;
@@ -280,6 +282,27 @@ export interface RenderConfig {
   };
   background: { dim: number; fallbackColor: string };
   /** Marca de agua rebotando (estilo DVD). El texto depende del idioma del video. */
+  /** Rotulo del gancho (meta.hookTitle): posicion y estilo los decide el motor. ADR 0006. */
+  titleCard?: {
+    enabled?: boolean;
+    y: number;
+    maxWidth: number;
+    fontSize: number;
+    maxLines: number;
+    lineHeight: number;
+    paddingX: number;
+    paddingY: number;
+    radius: number;
+    background: string;
+    textColor: string;
+    emphasisColor: string;
+    minMs: number;
+    maxMs: number;
+    popInMs: number;
+    fadeOutMs: number;
+    /** Si true, visuales y b-roll del gancho usan un area desplazada bajo el rotulo. */
+    reserveVisualArea: boolean;
+  };
   watermark?: {
     enabled?: boolean;
     /** idioma -> handle ("es": "@tetociencia"); "default" si el idioma no esta. */
@@ -305,6 +328,8 @@ export interface RenderConfig {
        * en seco (sin fade) y el video sigue. Si no se define, el meme dura durationMs y se desvanece.
        */
       cutAtMs?: number;
+      /** Velocidad del GIF del meme (1 = original; 1.7 = explosion mas agil). */
+      gifPlaybackRate?: number;
       flashMs: number;
       punchScale: number;
       defaultMeme: string;

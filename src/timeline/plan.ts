@@ -5,8 +5,10 @@ import { resolveEventAnchors } from "./anchors";
 import { buildCaptionPages, layoutCaption, timelineWords } from "./captions";
 import { msRangeToFrames, msToDurationInFrames, msToFrame } from "./frames";
 import { resolveReaction, sceneEvents, timelineDurationMs } from "./normalize";
-import type { RenderConfig, ResolvedCatalog, Timeline, VisualSlot } from "./types";
+import type { Box, RenderConfig, ResolvedCatalog, Timeline, VisualSlot } from "./types";
 import { buildWatermark, type PlanWatermark } from "./watermark";
+import { captionCenterXFor } from "./layout";
+import { areaBelowTitle, layoutTitle, titleEndMs, type PlanTitleCard } from "./titlecard";
 
 export type Side = "left" | "right" | "center";
 
@@ -70,6 +72,8 @@ export interface PlanVisual {
   from: number;
   to: number;
   slot: VisualSlot;
+  /** Area propia (p. ej. desplazada bajo el rotulo del gancho); si falta, style.visualArea. */
+  area?: Box;
 }
 
 export interface PlanCaptionPage {
@@ -101,6 +105,8 @@ export interface PlanMeme {
   seed: string;
   /** true: desaparece de golpe en `to` (estilo corte); false: se desvanece. */
   cut: boolean;
+  /** Velocidad de reproduccion del GIF (1 = original). */
+  playbackRate: number;
 }
 
 export interface PlanBroll {
@@ -113,6 +119,8 @@ export interface PlanBroll {
   startFrom: number;
   /** Si el clip es mas corto que el tramo: se repite en loop cada N frames. */
   loopFrames: number | null;
+  /** Area propia (p. ej. desplazada bajo el rotulo del gancho); si falta, style.visualArea. */
+  area?: Box;
 }
 
 type Span = { from: number; to: number };
@@ -256,6 +264,8 @@ export interface RenderPlan {
   broll: PlanBroll[];
   /** Marca de agua rebotando (handle segun idioma); null = sin marca. */
   watermark: PlanWatermark | null;
+  /** Rotulo con la palabra clave durante el gancho (meta.hookTitle); null = sin rotulo. ADR 0006. */
+  titleCard: PlanTitleCard | null;
   colors: Record<string, string>;
   names: Record<string, string>;
   style: {
@@ -277,8 +287,7 @@ export interface PlanOptions {
 
 export class PlanError extends Error {}
 
-export const captionCenterX = (cfg: RenderConfig): number =>
-  Math.round(cfg.safeArea.left + (cfg.video.width - cfg.safeArea.left - cfg.safeArea.right) / 2);
+export const captionCenterX = captionCenterXFor;
 
 const sideOrder = (anchor: "bottom-left" | "bottom-right"): Side[] =>
   anchor === "bottom-left" ? ["left", "right", "center"] : ["right", "left", "center"];
@@ -468,7 +477,7 @@ export const buildRenderPlan = (
           const d = msToDurationInFrames(e.durationMs ?? me.cutAtMs ?? me.durationMs, fps);
           const memeId = e.meme ?? me.defaultMeme;
           const memeAsset = catalog.assets[memeId] ? asset(memeId, ["meme", "image"]) : null;
-          memes.push({ from: at, to: at + d, src: memeAsset?.path ?? null, flashFrames: msToDurationInFrames(me.flashMs, fps), punchScale: me.punchScale, seed, cut });
+          memes.push({ from: at, to: at + d, src: memeAsset?.path ?? null, flashFrames: msToDurationInFrames(me.flashMs, fps), punchScale: me.punchScale, seed, cut, playbackRate: me.gifPlaybackRate ?? 1 });
           // En estilo corte, la sacudida y el SFX terminan en el mismo frame que la imagen.
           const shake = msToDurationInFrames(cfg.events.cameraShake.durationMs, fps);
           camera.push({ type: "shake", from: at, to: at + (cut ? Math.min(shake, d) : shake), rampFrames: 0, scale: 1, intensity: cfg.events.cameraShake.intensity, seed });
@@ -506,6 +515,40 @@ export const buildRenderPlan = (
     ...pieces.filter((p) => p.list).flatMap((p) => splitEven(p, p.list!.map(brollClip), minBroll)),
     ...fillBroll(pieces.filter((p) => !p.list), pool, msToDurationInFrames(brollCfg.clipMs, fps), minBroll),
   ].sort((a, b) => a.from - b.from);
+
+  // ---------------------------------------------------------------- rotulo del gancho (ADR 0006)
+  // Texto = meta.hookTitle (narrativa); posicion/estilo = render.json > titleCard (motor).
+  let titleCard: PlanTitleCard | null = null;
+  const tc = cfg.titleCard;
+  const hookTitle = timeline.meta.hookTitle;
+  if (tc && tc.enabled !== false && hookTitle) {
+    const lay = layoutTitle(hookTitle, cfg);
+    if (lay) {
+      const to = Math.min(durationInFrames, msToDurationInFrames(titleEndMs(timeline, cfg), fps));
+      titleCard = {
+        ...lay,
+        text: lay.tokens.map((t) => t.text).join(" "),
+        from: 0,
+        to,
+        popInFrames: msToDurationInFrames(tc.popInMs, fps),
+        fadeOutFrames: msToDurationInFrames(tc.fadeOutMs, fps),
+        style: {
+          background: tc.background,
+          textColor: tc.textColor,
+          emphasisColor: tc.emphasisColor,
+          radius: tc.radius,
+          paddingX: tc.paddingX,
+          paddingY: tc.paddingY,
+          lineHeight: tc.lineHeight,
+        },
+      };
+      // Visuales y b-roll que coinciden con el rotulo bajan a un area libre (los logos siguen visibles).
+      if (tc.reserveVisualArea) {
+        const below = areaBelowTitle(cfg.layout.visualArea, lay.box);
+        for (const v of [...visuals, ...broll]) if (v.from < to) v.area = below;
+      }
+    }
+  }
 
   // Pop automatico al aparecer cada visual o tramo de b-roll: da pulso a los monologos largos.
   const pop = cfg.events.visual.sfx;
@@ -594,6 +637,7 @@ export const buildRenderPlan = (
     memes,
     broll,
     watermark: buildWatermark(cfg, timeline.meta.language, fps),
+    titleCard,
     colors,
     names: Object.fromEntries(Object.entries(catalog.characters).map(([id, c]) => [id, c.displayName])),
     style: {

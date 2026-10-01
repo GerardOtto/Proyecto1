@@ -124,6 +124,11 @@ export const limitMp4Audio = async (mp4: string, limitDb: number, codec: string,
   fs.renameSync(tmp, mp4);
 };
 
+/** Convierte una imagen (p. ej. PNG de un fotograma) a JPEG de alta calidad. */
+export const imageToJpeg = async (input: string, out: string): Promise<void> => {
+  await run(FFMPEG, ["-y", "-v", "error", "-i", input, "-q:v", "2", out]);
+};
+
 /** Aplica una ganancia fija (dB) a un WAV, en sitio. */
 export const applyGainDb = async (file: string, gainDb: number): Promise<void> => {
   const tmp = file + ".gain.wav";

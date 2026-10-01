@@ -2,7 +2,7 @@
 // `npm run generate` los encadena. Todos escriben su resultado en disco y en report.json.
 import fs from "node:fs";
 import path from "node:path";
-import { applyGainDb, applyTempo, blockGainDb, concatWavs, makeSilence, measureLoudnessLufs, probeDurationMs, toWav } from "../audio/ffmpeg";
+import { applyGainDb, applyTempo, blockGainDb, concatWavs, imageToJpeg, makeSilence, measureLoudnessLufs, probeDurationMs, toWav } from "../audio/ffmpeg";
 import { AnthropicProvider } from "../director/llm/anthropic";
 import { llmDirector } from "../director/llm/director";
 import type { LLMProvider } from "../director/llm/provider";
@@ -339,6 +339,21 @@ export const stepRender = async (ctx: EngineContext, opts: RenderStepOptions = {
     log.step("9b", "Prueba de reproducibilidad (fotogramas renderizados dos veces)");
     repro = { ...repro, ...(await checkReproducibility(plan, project.id)) };
     log[repro.identical ? "ok" : "error"](`${repro.framesCompared} fotogramas ${repro.identical ? "identicos" : "DIFERENTES"}`);
+  }
+
+  // Portada (Reels/Shorts): fotograma del gancho con el rotulo legible (ADR 0006).
+  let cover: string | null = null;
+  if (plan.titleCard) {
+    try {
+      const frame = Math.max(0, Math.min(15, plan.titleCard.to - 1));
+      const [png] = await renderStills({ plan, frames: [frame], outDir: path.join(CACHE_DIR, "cover", project.id), name: `${project.id}-cover` });
+      cover = path.join(project.paths.outputDir, "cover.jpg");
+      fs.mkdirSync(project.paths.outputDir, { recursive: true });
+      await imageToJpeg(png!, cover);
+      log.ok(`portada: ${toRepoRel(cover)} (fotograma ${frame})`);
+    } catch (err) {
+      log.warn(`No se pudo exportar la portada: ${(err as Error).message}`);
+    }
   }
 
   log.step(10, "Salida");

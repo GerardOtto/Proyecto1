@@ -1,5 +1,6 @@
 ---
 title: ¿China destruyó a ChatGPT?
+hook_title: ¿*DeepSeek* destruyó a *ChatGPT*?
 target: 85
 background: bg_tech_loop
 broll: broll_robot, broll_cat_laptop, broll_cat_keyboard, broll_cat_tap
@@ -11,7 +12,7 @@ language: es
 ## hook
 [TETO:sorprendida]
 [VISUAL: chatgpt_logo, claude_logo]
-¡Papu papu! ¿China *destruyó* a ChatGPT y Claude?
+{SFX:sfx_dramatic_boomer:0.7}{SHAKE}¡Papu papu! {SFX:sfx_social_credit:0.45}¿China {SFX:sfx_oohh:0.7}{ZOOM}*destruyó* a ChatGPT y Claude?
 
 ## reaction
 [MEME:meme_boom:sfx_boom]
@@ -20,7 +21,7 @@ language: es
 [TETO:nerd]
 [VISUAL: headline_card]
 [BROLL: broll_news_financiero]
-Bueno... el titular exagera bastante. Lo que pasó es que un laboratorio chino, {SHOW:deepseek_logo}DeepSeek, publicó un modelo muy bueno y mucho más barato de entrenar.
+Bueno... el titular exagera bastante. Lo que pasó es que un laboratorio {SFX:sfx_oohh:0.6}chino, {SHOW:deepseek_logo}DeepSeek, publicó un modelo muy bueno y mucho más barato de entrenar.
 {HIDE:headline_card}{HIDE:deepseek_logo}Y eso asustó a medio internet.
 
 ## development
@@ -32,7 +33,7 @@ Espera, espera. ¿Entonces ChatGPT ya no sirve? {SFX:sfx_vine_boom:0.5}¿Tengo q
 [TETO:enojada]
 [LISTEN: miku:confundida]
 [BROLL: broll_openai_o1, broll_anthropic_35]
-¡No! Nadie destruyó a nadie. {REACT:miku:sorprendida}Los modelos siguen funcionando igual que ayer.
+{SFX:sfx_dramatic_boomer:0.5}¡No! Nadie destruyó a nadie. {REACT:miku:sorprendida}Los modelos siguen funcionando igual que ayer.
 
 ## visual
 [TETO:nerd]
@@ -69,7 +70,7 @@ Eso suena mucho menos dramático.
 ## closing
 [TETO:feliz]
 [VISUAL: chatgpt_logo, deepseek_logo]
-{SFX:sfx_teto_wav:0.5}Sí, pero es bastante más interesante. Nadie destruyó a nadie: ahora hay más opciones y todos tienen que mejorar. {REACT:miku:feliz}
+{SFX:sfx_teto_wav:0.5}Sí, pero es bastante más interesante. Nadie destruyó a nadie: ahora hay más opciones y todos tienen que {SFX:sfx_evil_laugh:0.5}mejorar. {REACT:miku:feliz}
 
 [MIKU:feliz]
 [LISTEN: teto:feliz]
@@ -79,4 +80,4 @@ Eso suena mucho menos dramático.
 [TETO:feliz]
 [LISTEN: miku:feliz]
 [VISUAL: cta_follow_like]
-Y síguenos para más IA explicada sin drama. ¡Nos vemos, Papus!
+Y síguenos para más IA explicada sin drama. ¡Nos vemos, {SFX:sfx_social_credit:0.45}Papus!

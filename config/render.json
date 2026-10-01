@@ -1,5 +1,24 @@
 {
   "$schema": "../schemas/render.schema.json",
+  "titleCard": {
+    "enabled": true,
+    "y": 240,
+    "maxWidth": 860,
+    "fontSize": 64,
+    "maxLines": 2,
+    "lineHeight": 1.1,
+    "paddingX": 28,
+    "paddingY": 16,
+    "radius": 22,
+    "background": "rgba(17,17,17,0.72)",
+    "textColor": "#FFFFFF",
+    "emphasisColor": "#FFE14D",
+    "minMs": 1500,
+    "maxMs": 6000,
+    "popInMs": 200,
+    "fadeOutMs": 250,
+    "reserveVisualArea": true
+  },
   "watermark": {
     "enabled": true,
     "handles": {
@@ -78,13 +97,13 @@
     ]
   },
   "timing": {
-    "leadInMs": 250,
+    "leadInMs": 60,
     "gapBetweenBlocksMs": 150,
     "minGapMs": 80,
     "maxGapMs": 900,
     "tailMs": 500,
     "maxTailMs": 6000,
-    "memeSceneMs": 1300,
+    "memeSceneMs": 700,
     "pauseSceneMs": 700,
     "estimatedWordsPerSecond": 2.6,
     "minAvatarChangeIntervalMs": 1000,
@@ -102,14 +121,14 @@
       "gapMs": 150
     },
     "music": {
-      "lufs": -30,
-      "fadeInMs": 600,
-      "fadeOutMs": 2500,
+      "lufs": -31,
+      "fadeInMs": 400,
+      "fadeOutMs": 1500,
       "duck": {
-        "threshold": 0.02,
-        "ratio": 6,
-        "attackMs": 20,
-        "releaseMs": 400
+        "threshold": 0.015,
+        "ratio": 8,
+        "attackMs": 15,
+        "releaseMs": 350
       }
     },
     "sfxVolume": 0.55,
@@ -133,7 +152,9 @@
       "flashMs": 150,
       "punchScale": 1.15,
       "defaultMeme": "meme_boom",
-      "defaultSfx": "sfx_boom"
+      "defaultSfx": "sfx_boom",
+      "cutAtMs": 850,
+      "gifPlaybackRate": 1.7
     },
     "subtitleEmphasis": {
       "durationMs": 0

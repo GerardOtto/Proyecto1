@@ -3,6 +3,7 @@
   "version": 1,
   "meta": {
     "title": "Smoke test (8 s)",
+    "hookTitle": "¿*China* destruyo a ChatGPT?",
     "durationTargetSec": 8,
     "aspect": "9:16",
     "fps": 30,

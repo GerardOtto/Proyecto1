@@ -25,6 +25,9 @@ export const scriptMeta = (parsed: ParsedScript, project: ProjectContext, catalo
   }
   const music = resolveMusicId(fm.music, project, catalog);
   const broll = resolveBrollIds(fm.broll, project, catalog);
+  // Rotulo del gancho (ADR 0006): `hook_title:` o `titulo_gancho:`; "none" lo desactiva.
+  const rawTitle = (fm.hook_title ?? fm.titulo_gancho ?? "").trim();
+  const hookTitle = rawTitle && rawTitle.toLowerCase() !== "none" ? rawTitle : undefined;
   return {
     title: parsed.title ?? project.config.title ?? project.id,
     durationTargetSec: target,
@@ -32,6 +35,7 @@ export const scriptMeta = (parsed: ParsedScript, project: ProjectContext, catalo
     ...(background ? { background } : {}),
     ...(music ? { music } : {}),
     ...(broll.length ? { broll } : {}),
+    ...(hookTitle ? { hookTitle } : {}),
     project: project.id,
   };
 };

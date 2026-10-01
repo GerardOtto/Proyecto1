@@ -26,6 +26,8 @@ export interface DirectorScene {
 
 export interface DirectorOutput {
   title: string;
+  /** Rotulo del gancho con la palabra clave (`*palabra*` resalta); "" = sin rotulo. ADR 0006. */
+  hookTitle: string;
   scenes: DirectorScene[];
 }
 
@@ -47,9 +49,13 @@ export const buildDirectorSchema = (catalog: Catalog): Record<string, unknown> =
   return {
     type: "object",
     additionalProperties: false,
-    required: ["title", "scenes"],
+    required: ["title", "hookTitle", "scenes"],
     properties: {
       title: { type: "string" },
+      hookTitle: {
+        type: "string",
+        description: "Rotulo del gancho (<= 45 caracteres) con la palabra clave buscable al inicio, marcada con *asteriscos*. \"\" = sin rotulo.",
+      },
       scenes: {
         type: "array",
         minItems: 1,
@@ -218,7 +224,13 @@ export const llmDirector = async (
       const out = res.json as DirectorOutput;
       if (!out || !Array.isArray(out.scenes)) throw new LLMError("Respuesta sin scenes[]");
       const beats = directorOutputToBeats(out);
-      timeline = beatsToDraftTimeline(beats, { ...meta, title: meta.title || out.title, generator: `director:${opts.provider.name}:${model}` }, cfg);
+      // El rotulo del guion (hook_title) manda; si no hay, se usa el que propone el LLM.
+      const hookTitle = meta.hookTitle ?? (out.hookTitle?.trim() || undefined);
+      timeline = beatsToDraftTimeline(
+        beats,
+        { ...meta, title: meta.title || out.title, ...(hookTitle ? { hookTitle } : {}), generator: `director:${opts.provider.name}:${model}` },
+        cfg,
+      );
       issues = validateTimeline(timeline, catalog, cfg.render, { stage: "draft" }).issues;
     } catch (err) {
       issues = [{ level: "error", check: "contract", code: "LLM_OUTPUT", message: (err as Error).message }];

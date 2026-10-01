@@ -77,6 +77,12 @@ Directiva de bloque: los huecos del area de visuales durante ESE bloque se relle
 orden. Tiene prioridad sobre el `broll:` del front matter, que queda como pozo de respaldo. Para dar
 paso al relleno a mitad de bloque, oculta los visuales con `{HIDE:id}` en la palabra adecuada.
 
+## Rotulo del gancho (`hook_title:`)
+En el front matter: `hook_title: ¿*DeepSeek* destruyó a *ChatGPT*?` (o `titulo_gancho:`; `none` lo
+desactiva). Texto fijo desde el fotograma 0 hasta el fin del gancho, para la busqueda de TikTok e
+Instagram. Resalta con `*...*` la palabra clave y procura que al menos una se DIGA en los primeros
+3 s (si no, warning `HOOK_KEYWORD_LATE`). ADR 0006.
+
 ## Saludo recurrente
 Una linea que empieza con `¡Papu papu!` (texto en `render.json > audio.greeting.text`) usa el audio
 reutilizable del personaje (`assets/voice/<id>/papu_papu.mp3`) para el saludo; el archivo del bloque

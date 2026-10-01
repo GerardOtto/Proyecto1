@@ -6,6 +6,31 @@
   "required": ["video", "duration", "safeArea", "layout", "captions", "timing", "audio", "background", "events"],
   "properties": {
     "$schema": { "type": "string" },
+    "titleCard": {
+      "description": "Rotulo del gancho (meta.hookTitle): posicion y estilo. ADR 0006.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["y", "maxWidth", "fontSize", "maxLines", "lineHeight", "paddingX", "paddingY", "radius", "background", "textColor", "emphasisColor", "minMs", "maxMs", "popInMs", "fadeOutMs", "reserveVisualArea"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "y": { "type": "number", "minimum": 0 },
+        "maxWidth": { "type": "number", "exclusiveMinimum": 0 },
+        "fontSize": { "type": "number", "exclusiveMinimum": 0 },
+        "maxLines": { "type": "integer", "minimum": 1 },
+        "lineHeight": { "type": "number", "exclusiveMinimum": 0 },
+        "paddingX": { "type": "number", "minimum": 0 },
+        "paddingY": { "type": "number", "minimum": 0 },
+        "radius": { "type": "number", "minimum": 0 },
+        "background": { "type": "string" },
+        "textColor": { "type": "string" },
+        "emphasisColor": { "type": "string" },
+        "minMs": { "type": "integer", "minimum": 0 },
+        "maxMs": { "type": "integer", "minimum": 0 },
+        "popInMs": { "type": "integer", "minimum": 0 },
+        "fadeOutMs": { "type": "integer", "minimum": 0 },
+        "reserveVisualArea": { "type": "boolean" }
+      }
+    },
     "watermark": {
       "description": "Marca de agua rebotando estilo DVD; el handle depende del idioma del video.",
       "type": "object",

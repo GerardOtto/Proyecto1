@@ -26,6 +26,7 @@ por la validacion semantica de `src/validation/timeline.ts`.
 | fps | 24/25/30/60 | requerido (config: 30) |
 | language | "es" | idioma del guion / TTS / whisper |
 | background | id de asset | background_video o background_image |
+| hookTitle | string 1-60 | Rotulo del gancho con la palabra clave; `*palabra*` la resalta (ADR 0006) |
 | timingSource | estimated / audio / manual | `audio` = reajustado con el audio real |
 | audio | {master, durationMs} | pista maestra (ruta relativa al repo) |
 | project, generator | string | trazabilidad |

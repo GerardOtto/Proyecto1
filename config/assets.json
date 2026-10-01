@@ -85,10 +85,10 @@
         "clickbait"
       ],
       "safeArea": true,
-      "source": "Diseno propio: assets/visuals/src/headline_card.html (npm run graphics)",
-      "license": "Propio",
-      "license_status": "owned",
-      "notes": "Titular sensacionalista generico con sello EXAGERADO; no imita a ningun medio real."
+      "source": "https://www.lanacion.com.ar/tecnologia/deepseek-por-que-una-ia-china-desconocida-tiene-a-chatgpt-contra-las-cuerdas-nid27012025/ (captura) + sello propio; composicion: assets/visuals/src/headline_card.html",
+      "license": "Captura de La Nacion usada como cita informativa; sello 'EXAGERADO' propio",
+      "license_status": "unknown",
+      "notes": "Titular real (27 ene 2025): 'DeepSeek: por que una IA china desconocida tiene a ChatGPT contra las cuerdas'. El sello es comentario del canal."
     },
     {
       "id": "chart_benchmarks",
@@ -197,7 +197,7 @@
       "source": "Aportado por el usuario (Desktop/Proyecto vocaloid/Efectos). Pendiente: URL de origen para documentar la licencia.",
       "license": "Sin documentar",
       "license_status": "unknown",
-      "notes": "Sin silencio inicial, 2 s con fade out de 0,7 s, mono 48 kHz, pico -1 dBFS."
+      "notes": "Sin silencio inicial, 0.95 s con fade (explosion mas agil), mono 48 kHz, pico -1 dBFS."
     },
     {
       "id": "sfx_whoosh",
@@ -521,6 +521,74 @@
       "license_status": "unknown",
       "description": "RESERVADO para NERU (futuro personaje de comic relief): no usar en otros personajes",
       "notes": "Sin silencio inicial, 1.0 s, pico -3 dBFS. Reservado hasta implementar a NERU."
+    },
+    {
+      "id": "sfx_oohh",
+      "type": "sfx",
+      "path": "assets/sfx/sfx_oohh.wav",
+      "tags": [
+        "sfx",
+        "meme",
+        "china",
+        "humor",
+        "corto"
+      ],
+      "source": "Aportado por el usuario (Desktop/Proyecto vocaloid/SFX): oohh_chinese_man_sound_.mp3. Pendiente: URL de origen.",
+      "license": "Sin documentar",
+      "license_status": "unknown",
+      "description": "'Oohh' del meme chino (0.6 s): al mencionar China/chino",
+      "notes": "Recorte 0.24-0.84 s del original, mono 48 kHz, pico normalizado."
+    },
+    {
+      "id": "sfx_dramatic_boomer",
+      "type": "sfx",
+      "path": "assets/sfx/sfx_dramatic_boomer.wav",
+      "tags": [
+        "sfx",
+        "drama",
+        "golpe",
+        "hook",
+        "corto"
+      ],
+      "source": "Aportado por el usuario (Desktop/Proyecto vocaloid/SFX): dramatic-boomer.mp3. Pendiente: URL de origen.",
+      "license": "Sin documentar",
+      "license_status": "unknown",
+      "description": "Golpe dramatico corto (0.9 s): arranque del hook",
+      "notes": "Recorte 0-0.9 s con fade, mono 48 kHz, pico normalizado."
+    },
+    {
+      "id": "sfx_social_credit",
+      "type": "sfx",
+      "path": "assets/sfx/sfx_social_credit.wav",
+      "tags": [
+        "sfx",
+        "meme",
+        "china",
+        "humor",
+        "corto"
+      ],
+      "source": "Aportado por el usuario (Desktop/Proyecto vocaloid/SFX): chinese-social-credit-music.mp3. Pendiente: URL de origen.",
+      "license": "Sin documentar",
+      "license_status": "unknown",
+      "description": "Sting del meme 'social credit' (0.9 s)",
+      "notes": "Recorte 0.03-0.93 s del original, mono 48 kHz, pico -4 dBFS."
+    },
+    {
+      "id": "sfx_evil_laugh",
+      "type": "sfx",
+      "path": "assets/sfx/sfx_evil_laugh.wav",
+      "tags": [
+        "sfx",
+        "meme",
+        "gato",
+        "risa",
+        "corto"
+      ],
+      "source": "Aportado por el usuario (Desktop/Proyecto vocaloid/SFX): evil-cat-laugh.mp3. Pendiente: URL de origen.",
+      "license": "Sin documentar",
+      "license_status": "unknown",
+      "description": "Risa malvada de gato (0.8 s): remates",
+      "notes": "Recorte 0.2-1.0 s del original, mono 48 kHz, pico normalizado."
     }
   ]
 }

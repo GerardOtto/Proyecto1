@@ -22,6 +22,7 @@ export const EMPTY_PLAN: RenderPlan = {
   memes: [],
   broll: [],
   watermark: null,
+  titleCard: null,
   colors: {},
   names: {},
   style: {

@@ -49,6 +49,12 @@
           "type": "array",
           "items": { "type": "string", "minLength": 1 }
         },
+        "hookTitle": {
+          "description": "Rotulo del gancho con la palabra clave buscable (visible desde el fotograma 0 hasta el fin de la escena hook). *palabra* la resalta. ADR 0006.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        },
         "timingSource": {
           "description": "estimated: tiempos estimados por el director. audio: tiempos reajustados con el audio real (autoridad temporal).",
           "type": "string",

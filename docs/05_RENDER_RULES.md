@@ -22,12 +22,15 @@ el compilador, nunca hackear el timeline.
    azul). Posicion = funcion pura del frame (`src/timeline/watermark.ts`). El texto sale de
    `render.json > watermark.handles[<idioma del video>]` (o `default`): al traducir un video solo
    cambia el handle, no la estructura.
+   **TitleCard** encima de la marca de agua: rotulo del gancho (`meta.hookTitle`) desde el
+   fotograma 0 hasta el fin de la escena hook; con `reserveVisualArea` los visuales del gancho bajan
+   bajo el rotulo (ADR 0006).
    **Captions** encima (fuera de la camara: nunca salen de la safe area).
-4. **MemeLayer**: imagen o GIF meme con pop + flash blanco (`flashMs`). Por defecto dura
-   `durationMs` (1700 ms = el GIF completo) y se desvanece; la escena meme dura menos
-   (`timing.memeSceneMs`), asi el siguiente personaje empieza a hablar antes de que termine la
-   explosion. Opcional, estilo **corte** (`events.memeExplosion.cutAtMs`): imagen, sacudida y SFX se
-   cortan en seco en el mismo frame.
+4. **MemeLayer**: imagen o GIF meme con pop + flash blanco (`flashMs`). Config actual: GIF a
+   `gifPlaybackRate` 1.7x y **cortado** a los `cutAtMs` 850 ms (imagen, sacudida y SFX terminan en el
+   mismo frame). La escena meme dura `memeSceneMs` + la pausa entre bloques = 850 ms, asi el
+   siguiente personaje habla justo al terminar la explosion. Sin `cutAtMs`, dura `durationMs` y se
+   desvanece.
 5. **SafeAreaGuide** (solo con `--safe-area`).
 6. **Audio**: pista maestra + clips por escena (si no hay master) + SFX.
 

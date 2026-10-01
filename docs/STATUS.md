@@ -51,7 +51,7 @@ npm run generate -- --project projects/demo_001 --tts fish --repro
 ```
 
 ## Que falta / siguientes pasos sugeridos
-0. **[APROBADA] Rotulo de palabra clave en el gancho** (`meta.hookTitle` + `TitleCard`): especificacion
+0. **[HECHO] Rotulo de palabra clave en el gancho** (`meta.hookTitle` + `TitleCard`): especificacion
    completa, tests y criterios de aceptacion en `docs/10_DISTRIBUCION.md` §8. Requiere ADR 0006.
 1. **Assets reales**: reemplazar los placeholders de `assets/characters/*` (8 reacciones x 5
    personajes), logos y visuales por material con licencia documentada; actualizar `license_status`.

@@ -2,11 +2,13 @@
 import React from "react";
 import { AbsoluteFill } from "remotion";
 import type { RenderPlan } from "../timeline/plan";
+import type { Box } from "../timeline/types";
 
-export const SafeAreaGuide: React.FC<{ style: RenderPlan["style"]; width: number; height: number }> = ({
+export const SafeAreaGuide: React.FC<{ style: RenderPlan["style"]; width: number; height: number; titleBox?: Box | null }> = ({
   style,
   width,
   height,
+  titleBox,
 }) => {
   const { top, bottom, left, right } = style.safeArea;
   const red = "rgba(255,0,0,0.25)";
@@ -37,6 +39,18 @@ export const SafeAreaGuide: React.FC<{ style: RenderPlan["style"]; width: number
           border: "4px dashed rgba(255,220,0,0.9)",
         }}
       />
+      {titleBox ? (
+        <div
+          style={{
+            position: "absolute",
+            left: titleBox.x,
+            top: titleBox.y,
+            width: titleBox.width,
+            height: titleBox.height,
+            border: "4px dashed rgba(0,230,120,0.9)",
+          }}
+        />
+      ) : null}
     </AbsoluteFill>
   );
 };

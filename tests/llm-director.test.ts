@@ -15,6 +15,7 @@ const words = (n: number) => Array.from({ length: n }, (_, i) => `palabra${i}`).
 
 const validOutput: DirectorOutput = {
   title: "Prueba",
+  hookTitle: "",
   scenes: [
     scene({ id: "hook", section: "hook", avatar: "sorprendido", dialogue: "¿Sabias que esto es un hook?", visuals: ["chatgpt_logo"] }),
     scene({ id: "meme", section: "reaction", kind: "meme", character: "", avatar: "", events: [{ type: "meme_explosion", atWord: -1, character: "", avatar: "", target: "", words: [] }] }),
@@ -68,6 +69,16 @@ describe("director LLM (proveedor simulado)", async () => {
     const bad: DirectorOutput = { ...validOutput, scenes: [] };
     const provider = new MockLLMProvider([bad, bad]);
     await expect(llmDirector(project, catalog, cfg, { provider, maxAttempts: 2 })).rejects.toThrow(/2 intentos/);
+  });
+
+  it("el schema exige hookTitle y la conversion lo lleva a meta.hookTitle (\"\" = sin rotulo)", async () => {
+    const schema = buildDirectorSchema(catalog) as { required: string[]; properties: Record<string, unknown> };
+    expect(schema.required).toContain("hookTitle");
+    expect(schema.properties.hookTitle).toMatchObject({ type: "string" });
+    const withTitle = await llmDirector(project, catalog, cfg, { provider: new MockLLMProvider([{ ...validOutput, hookTitle: "¿*Esto* es un hook?" }]) });
+    expect(withTitle.timeline.meta.hookTitle).toBe("¿*Esto* es un hook?");
+    const without = await llmDirector(project, catalog, cfg, { provider: new MockLLMProvider([validOutput]) });
+    expect(without.timeline.meta.hookTitle).toBeUndefined();
   });
 
   it("incluye presupuesto de palabras y la instruccion de ajuste", async () => {

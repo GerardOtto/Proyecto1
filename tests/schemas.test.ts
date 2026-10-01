@@ -20,6 +20,14 @@ describe("JSON Schemas", () => {
     }
   });
 
+  it("acepta meta.hookTitle y rechaza rotulos de mas de 60 caracteres", () => {
+    const t = clone(fixture<Record<string, any>>("smoke.timeline.json"));
+    t.meta.hookTitle = "¿*DeepSeek* destruyo a ChatGPT?";
+    expect(validateSchema("timeline", t)).toEqual([]);
+    t.meta.hookTitle = "x".repeat(61);
+    expect(validateSchema("timeline", t).length).toBeGreaterThan(0);
+  });
+
   it("rechaza tipos de evento desconocidos", () => {
     const t = clone(fixture<Record<string, any>>("smoke.timeline.json"));
     t.scenes[0].events = [{ type: "explode_everything" }];

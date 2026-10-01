@@ -85,7 +85,7 @@ main(async () => {
   log.info(`Tiempo total: ${((Date.now() - t0) / 1000).toFixed(1)} s`);
   if (res.ok) {
     log.ok(`MP4: ${toRepoRel(project.paths.video)}`);
-    log.ok(`Entregables: ${toRepoRel(project.paths.outputDir)}/ (video.mp4, timeline.json, subtitles.srt, report.json)`);
+    log.ok(`Entregables: ${toRepoRel(project.paths.outputDir)}/ (video.mp4, timeline.json, subtitles.srt, report.json, cover.jpg si hay rotulo)`);
   }
   return res.ok ? 0 : 1;
 });

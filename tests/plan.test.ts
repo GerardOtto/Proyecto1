@@ -47,6 +47,7 @@ describe("compilador timeline -> RenderPlan", async () => {
     expect(meme.actors.map((a) => a.character)).toEqual(["teto"]);
     expect(p.memes).toHaveLength(1);
     expect(p.memes[0]!.src).toBe("assets/memes/meme_boom.gif");
+    expect(p.memes[0]!.playbackRate).toBe(cfg.render.events.memeExplosion.gifPlaybackRate ?? 1);
     expect(p.audio.sfx.some((x) => x.src === "assets/sfx/sfx_boom.wav" && x.from === p.memes[0]!.from)).toBe(true);
     expect(p.camera.some((c) => c.type === "shake")).toBe(true);
   });

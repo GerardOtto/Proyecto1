@@ -34,7 +34,7 @@ export const MemeLayer: React.FC<{ memes: PlanMeme[] }> = ({ memes }) => {
               <AbsoluteFill style={{ alignItems: "center", justifyContent: "center" }}>
                 {isGif ? (
                   <Sequence from={m.from} durationInFrames={total} layout="none">
-                    <Gif src={staticFile(m.src)} width={GIF_WIDTH} height={GIF_HEIGHT} fit="contain" loopBehavior="pause-after-finish" style={{ ...style, imageRendering: "pixelated" }} />
+                    <Gif src={staticFile(m.src)} width={GIF_WIDTH} height={GIF_HEIGHT} fit="contain" loopBehavior="pause-after-finish" playbackRate={m.playbackRate ?? 1} style={{ ...style, imageRendering: "pixelated" }} />
                   </Sequence>
                 ) : (
                   <Img src={staticFile(m.src)} style={{ ...style, width: MEME_WIDTH }} />

@@ -1,6 +1,23 @@
 # Changelog
 
 ## Sin publicar
+- Rotulo de palabra clave en el gancho (ADR 0006, `docs/10_DISTRIBUCION.md` §8): `meta.hookTitle`
+  (`hook_title:` en el guion), `titleCard` en render.json, `TitleCard.tsx`, visuales del gancho
+  desplazados bajo el rotulo, 5 validaciones (HOOK_TITLE_*), portada `cover.jpg` y tests.
+- Politica de musica final: el MP4 sale sin musica (se anade desde la biblioteca de cada
+  plataforma); el demo deja de usar `music:`. La explosion vuelve a 1.7x manteniendo el corte en
+  850 ms.
+- Explosion recortada a la mitad sin acelerar: GIF a velocidad normal cortado a los 850 ms
+  (`cutAtMs`), y la escena meme dura exactamente eso (Teto habla al terminar la explosion).
+- "Titular exagerado": captura real de La Nacion (27 ene 2025) con el sello "EXAGERADO" propio.
+- Musica de fondo activada en el demo ("Electric Angel", solo local): -31 LUFS, ducking mas marcado
+  bajo la voz. Se retiran los SFX descartados por el usuario (drama, scary, what cat) y
+  `sfx_social_credit` pasa a la version "chinese-social-credit-music".
+- Ritmo y humor: 7 SFX cortos (< 1 s) de memes de TikTok chino (oohh, social credit, dramatic
+  boomer/drama, what cat, evil laugh, scary); hook sobrecargado en los primeros 2 s (golpe + sacudida
+  al arrancar, sting en "China", "Oohh" + zoom en "destruyo"); lead-in 250 -> 60 ms.
+- Explosion mas agil: GIF a 1.7x (`memeExplosion.gifPlaybackRate`), 1 s en total, sonido de 2 s a
+  0.95 s y escena meme de 1.3 s a 0.8 s.
 - SFX: "pop" automatico al aparecer cada visual o captura (`events.visual.sfx`, espaciado minimo,
   no pisa otros SFX ni suena en memes); `{SFX:id:volumen}` en el guion; nuevos efectos (vine boom,
   bubble pop, teetoo y teto-wav de Teto). `sfx_neru_phone` reservado para el futuro personaje NERU
