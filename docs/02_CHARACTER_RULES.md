@@ -20,6 +20,13 @@ Campos por personaje: `displayName`, `subtitleColor`, `defaultScale` (alto del a
 `anchor` (lado preferido), `avatarDir`, `reactions` (reaccion canonica -> archivo), `voice`
 (`fish.referenceId`, `speed`; `flite.voice` para desarrollo) y `license`.
 
+## Audiencia y cierre (voz de la cuenta)
+- La audiencia son **"los Papus"** / **"el Papu"**. Cuando un personaje le habla directamente a quien
+  mira, abre con **"¡Papu papu!"**. Entre personajes se hablan normal.
+- Cierre de cada video: invitacion breve a dar **Me gusta** y a **seguir** la cuenta, apta para
+  YouTube, TikTok e Instagram (sin "suscribete", "campanita", "link en la bio"...), con el visual
+  `cta_follow_like`. Recogido tambien en `prompts/director.system.md`.
+
 ## Reacciones (8 estados)
 | Canonica | Uso narrativo | Prioridad | Alias aceptados (ejemplos) | Archivo (fem./masc.) |
 |---|---|---|---|---|

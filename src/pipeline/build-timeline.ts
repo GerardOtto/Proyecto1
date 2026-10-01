@@ -22,6 +22,8 @@ export interface AudioBlock {
   file: string; // ruta relativa al repo
   durationMs: number;
   cacheKey: string;
+  /** Silencio provisional: el archivo de voz de este bloque aun no existe (--allow-missing-audio). */
+  placeholder?: boolean;
 }
 
 export interface AudioIndex {

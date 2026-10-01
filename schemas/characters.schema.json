@@ -59,6 +59,11 @@
               "type": "object",
               "additionalProperties": false,
               "properties": { "voice": { "type": "string" } }
+            },
+            "greeting": {
+              "description": "Audio reutilizable del saludo recurrente (audio.greeting.text en render.json), ruta relativa al repo.",
+              "type": "string",
+              "pattern": "^[^\\\\]+\\.(wav|mp3|m4a|ogg|flac)$"
             }
           }
         },

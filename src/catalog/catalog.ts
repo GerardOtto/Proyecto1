@@ -150,7 +150,7 @@ const EXT_BY_TYPE: Record<AssetType, string[]> = {
   background_video: VIDEO_EXT,
   sfx: AUDIO_EXT,
   music: AUDIO_EXT,
-  broll: [...VIDEO_EXT, ".gif"],
+  broll: [...VIDEO_EXT, ...IMAGE_EXT],
 };
 
 /** Si el archivo exacto no existe, busca el mismo nombre con otra extension de imagen (documentado). */

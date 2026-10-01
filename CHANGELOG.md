@@ -1,6 +1,33 @@
 # Changelog
 
 ## Sin publicar
+- SFX: "pop" automatico al aparecer cada visual o captura (`events.visual.sfx`, espaciado minimo,
+  no pisa otros SFX ni suena en memes); `{SFX:id:volumen}` en el guion; nuevos efectos (vine boom,
+  bubble pop, teetoo y teto-wav de Teto). `sfx_neru_phone` reservado para el futuro personaje NERU
+  (aviso ASSET_RESERVED si se usa).
+- Limitador final (`audio.finalLimiterDb`, -1.5 dB) sobre el audio del MP4 tras el render: los SFX
+  que Remotion suma a la voz ya no pueden acercarse al clipping (el video se copia sin recodificar).
+- Ajustes tras revision: marca de agua 84 -> 56 px; cola final 1500 -> 500 ms (sin silencio largo
+  tras la despedida); la captura de Wikipedia (demasiado texto) se reemplaza por el titular de
+  Infobae sobre DeepSeek superando a ChatGPT en la App Store.
+- Marca de agua "@tetociencia" estilo salvapantallas de DVD: rebota en los bordes y cambia de color
+  en cada rebote (colores Vocaloid), cursiva gruesa semitransparente. Handle por idioma
+  (`render.json > watermark.handles`) para futuras traducciones.
+- B-roll contextual: `[BROLL: a, b]` por bloque (`scene.broll`) con prioridad sobre el pozo global;
+  soporte de capturas/imagenes con Ken Burns. Material nuevo: capturas de Infobae, El Financiero,
+  Wikipedia, DeepSeek (anuncio, benchmark, precios), OpenAI o1, Claude 3.5 Sonnet y LMArena, y 3
+  GIFs de gatos con gafas tecleando. Se retiran 8 clips CC0 genericos (se conserva el perro robot).
+- Demo: el logo de DeepSeek aparece al pronunciar "DeepSeek" (antes, al final de la frase).
+- Saludo recurrente "¡Papu papu!" con audio propio y reutilizable por personaje
+  (`characters.json > voice.greeting`, `render.json > audio.greeting`): el guion escribe la linea
+  completa; el motor genera/busca solo el resto y une saludo + pausa + resto. Audios en
+  `assets/voice/` (no versionados).
+- Subtitulos: `captions.keepTogether` evita partir expresiones entre paginas ("Me gusta", "Papu papu").
+- Cierre del video apto para YouTube/TikTok/Instagram (Me gusta + siguenos) con el visual propio
+  `cta_follow_like`. Voz de la cuenta: la audiencia son "los Papus"; al hablarle directamente se abre
+  con "¡Papu papu!" (docs/02_CHARACTER_RULES.md y prompt del director).
+- `generate --tts files --allow-missing-audio`: los bloques sin archivo de voz se previsualizan en
+  silencio con su duracion estimada y quedan listados en report.json (steps.voices.missingAudio).
 - B-roll (ADR 0005): el area de visuales nunca queda vacia. Asset `broll`, `meta.broll`
   (front matter `broll:`), relleno automatico de huecos en el plan; 9 clips CC0/dominio publico de
   Wikimedia Commons (informatica, IA, gatitos). Demo: 0 s de area vacia (antes ~25 s).

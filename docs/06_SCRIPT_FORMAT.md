@@ -64,10 +64,23 @@ a la ultima (excepto `[VISUAL]`, que cubre la escena, y `[PAUSE]` al final, que 
 
 ## Tags inline (dentro del texto)
 `{REACT:miku:shocked}`, `{SHOW:id}`, `{HIDE:id}`, `{ZOOM}`, `{SHAKE}`, `{MEME}`, `{SFX:id}`,
-`{PAUSE:500}`, `{EMPH}` se anclan a la palabra siguiente (`atWord`). Tras `build-timeline` se
+`{PAUSE:500}`, `{EMPH}` se anclan a la palabra siguiente (`atWord`). `{SFX:id:0.5}` acepta un
+volumen opcional (0-1). Al aparecer cada visual o captura suena un "pop" automatico
+(`render.json > events.visual.sfx`), asi que no hace falta marcarlo a mano. Tras `build-timeline` se
 convierten en milisegundos exactos segun el audio real.
 
 `*palabra*` marca la palabra para `subtitle_emphasis` (los asteriscos no se leen en el TTS).
+
+## Relleno contextual (`[BROLL: a, b]`)
+Directiva de bloque: los huecos del area de visuales durante ESE bloque se rellenan con estos assets
+`broll` (capturas de noticias/paginas oficiales, graficos, GIFs), repartidos a partes iguales y en
+orden. Tiene prioridad sobre el `broll:` del front matter, que queda como pozo de respaldo. Para dar
+paso al relleno a mitad de bloque, oculta los visuales con `{HIDE:id}` en la palabra adecuada.
+
+## Saludo recurrente
+Una linea que empieza con `¡Papu papu!` (texto en `render.json > audio.greeting.text`) usa el audio
+reutilizable del personaje (`assets/voice/<id>/papu_papu.mp3`) para el saludo; el archivo del bloque
+(`audio/input/<bloque>.mp3`) debe contener **solo el resto** de la frase. Ver `assets/voice/README.md`.
 
 ## Errores
 El parser reporta errores con numero de linea (reaccion/asset/personaje desconocido, etiqueta

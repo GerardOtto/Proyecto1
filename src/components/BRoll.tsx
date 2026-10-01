@@ -1,15 +1,31 @@
-// B-roll: clips (video/GIF) que rellenan el area de visuales cuando no hay visual ni meme.
-// Solo lee el plan (tramos, clip, frame inicial); el video va mudo y recortado tipo "cover".
+// B-roll: clips (video/GIF/captura) que rellenan el area de visuales cuando no hay visual ni meme.
+// Solo lee el plan (tramos, clip, frame inicial); el video va mudo, recortado tipo "cover", y las
+// capturas fijas llevan un zoom lento (Ken Burns).
 import { Gif } from "@remotion/gif";
 import React from "react";
-import { Easing, interpolate, Loop, OffthreadVideo, Sequence, staticFile, useCurrentFrame } from "remotion";
+import { Easing, Img, interpolate, Loop, OffthreadVideo, Sequence, staticFile, useCurrentFrame } from "remotion";
 import type { PlanBroll } from "../timeline/plan";
 import type { Box } from "../timeline/types";
 
 const FADE_FRAMES = 6;
 
+// Captura fija: zoom lento 1.0 -> 1.12 con un paneo vertical suave (de arriba hacia abajo), determinista.
+const KenBurns: React.FC<{ b: PlanBroll; width: number; height: number }> = ({ b, width, height }) => {
+  const t = useCurrentFrame();
+  const total = Math.max(1, b.to - b.from);
+  const scale = interpolate(t, [0, total], [1, 1.12], { extrapolateRight: "clamp" });
+  const y = interpolate(t, [0, total], [3, -3], { extrapolateRight: "clamp" });
+  return (
+    <Img
+      src={staticFile(b.src)}
+      style={{ width, height, objectFit: "cover", display: "block", transform: `scale(${scale}) translateY(${y}%)`, transformOrigin: "50% 30%" }}
+    />
+  );
+};
+
 const Clip: React.FC<{ b: PlanBroll; width: number; height: number }> = ({ b, width, height }) => {
   const style: React.CSSProperties = { width, height, objectFit: "cover", display: "block" };
+  if (b.kind === "image") return <KenBurns b={b} width={width} height={height} />;
   if (b.kind === "gif") return <Gif src={staticFile(b.src)} width={width} height={height} fit="cover" />;
   const video = <OffthreadVideo src={staticFile(b.src)} muted startFrom={b.startFrom} style={style} />;
   return b.loopFrames ? <Loop durationInFrames={b.loopFrames}>{video}</Loop> : video;

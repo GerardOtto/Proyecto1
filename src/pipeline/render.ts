@@ -5,6 +5,7 @@ import { renderMedia, renderStill, selectComposition } from "@remotion/renderer"
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { limitMp4Audio } from "../audio/ffmpeg";
 import { COMPOSITION_ID, FONT_FILES } from "../compositions/constants";
 import type { RenderPlan } from "../timeline/plan";
 import type { RenderConfig } from "../timeline/types";
@@ -103,6 +104,9 @@ export const renderVideo = async (opts: RenderVideoOptions): Promise<{ outFile: 
       }
     },
   });
+  // Los SFX se suman a la voz dentro de Remotion: un limitador final evita picos/clipping.
+  const limit = opts.cfg.audio.finalLimiterDb;
+  if (limit !== undefined) await limitMp4Audio(opts.outFile, limit, opts.cfg.video.audioCodec === "mp3" ? "libmp3lame" : "aac", opts.cfg.video.audioBitrate);
   return { outFile: opts.outFile, ms: Date.now() - t0 };
 };
 

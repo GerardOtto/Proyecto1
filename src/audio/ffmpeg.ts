@@ -108,6 +108,22 @@ export const applyTempo = async (file: string, tempo: number): Promise<void> => 
   fs.renameSync(tmp, file);
 };
 
+/**
+ * Limitador de picos sobre el audio de un MP4 ya renderizado (en sitio). El video se copia sin
+ * recodificar. Evita el clipping cuando los SFX (mezclados por Remotion) se suman a la voz.
+ */
+export const limitMp4Audio = async (mp4: string, limitDb: number, codec: string, bitrate: string): Promise<void> => {
+  const tmp = mp4.replace(/\.mp4$/i, "") + ".limited.mp4";
+  await run(FFMPEG, [
+    "-y", "-v", "error", "-i", mp4,
+    "-c:v", "copy",
+    "-af", `alimiter=limit=${dbToLinear(limitDb).toFixed(4)}:level=disabled:attack=5:release=50`,
+    "-c:a", codec, "-b:a", bitrate, "-movflags", "+faststart",
+    tmp,
+  ]);
+  fs.renameSync(tmp, mp4);
+};
+
 /** Aplica una ganancia fija (dB) a un WAV, en sitio. */
 export const applyGainDb = async (file: string, gainDb: number): Promise<void> => {
   const tmp = file + ".gain.wav";

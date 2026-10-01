@@ -47,7 +47,7 @@ describe("compilador timeline -> RenderPlan", async () => {
     expect(meme.actors.map((a) => a.character)).toEqual(["teto"]);
     expect(p.memes).toHaveLength(1);
     expect(p.memes[0]!.src).toBe("assets/memes/meme_boom.gif");
-    expect(p.audio.sfx[0]!.src).toBe("assets/sfx/sfx_boom.wav");
+    expect(p.audio.sfx.some((x) => x.src === "assets/sfx/sfx_boom.wav" && x.from === p.memes[0]!.from)).toBe(true);
     expect(p.camera.some((c) => c.type === "shake")).toBe(true);
   });
 
@@ -58,7 +58,7 @@ describe("compilador timeline -> RenderPlan", async () => {
     const m = p.memes[0]!;
     expect(m.cut).toBe(true);
     expect(m.to - m.from).toBe(21);
-    expect(p.audio.sfx[0]!.durationFrames).toBe(21);
+    expect(p.audio.sfx.find((x) => x.src.endsWith("sfx_boom.wav"))!.durationFrames).toBe(21);
     const shake = p.camera.find((c) => c.type === "shake" && c.from === m.from)!;
     expect(shake.to).toBeLessThanOrEqual(m.to);
   });
@@ -70,7 +70,7 @@ describe("compilador timeline -> RenderPlan", async () => {
     const p = buildRenderPlan(fixture("smoke.timeline.json"), catalog.resolved, render);
     expect(p.memes[0]!.cut).toBe(false);
     expect(p.memes[0]!.to - p.memes[0]!.from).toBe(51); // 1700 ms
-    expect(p.audio.sfx[0]!.durationFrames).toBeUndefined();
+    expect(p.audio.sfx.find((x) => x.src.endsWith("sfx_boom.wav"))!.durationFrames).toBeUndefined();
   });
 
   it("variantes: el que habla alterna imagenes de la misma reaccion cada intervalo; el que escucha no", () => {

@@ -23,7 +23,9 @@ script (para depurar por partes) y escribe en `projects/<id>/report.json > steps
   Seleccion: `--director` > `project.json > director` > `rules`.
 - **TTS** (`TTSProvider`): `fish` (Fish Audio, `FISH_AUDIO_API_KEY`, `reference_id` por personaje en
   characters.json o requested_voices.json) | `files` (WAV/MP3 ya generados en
-  `audio/input/<sceneId>.wav`; `npm run voices -- --list` muestra los ids) | `flite` (voz offline de
+  `audio/input/<sceneId>.wav`; `npm run voices -- --list` muestra los ids; con
+  `generate --allow-missing-audio` los que falten salen en silencio provisional y se listan en
+  report.json > steps.voices.missingAudio) | `flite` (voz offline de
   ffmpeg, solo desarrollo) | `silent` (silencio con duracion estimada, mock).
 - **Transcripcion**: `whisper-cpp` (local) | `estimate` (reparte el texto en la parte con voz) |
   `auto` (whisper si esta instalado; `estimate` con TTS `silent`).

@@ -2,7 +2,7 @@
 // `npm run generate` los encadena. Todos escriben su resultado en disco y en report.json.
 import fs from "node:fs";
 import path from "node:path";
-import { applyGainDb, applyTempo, blockGainDb, measureLoudnessLufs, probeDurationMs, toWav } from "../audio/ffmpeg";
+import { applyGainDb, applyTempo, blockGainDb, concatWavs, makeSilence, measureLoudnessLufs, probeDurationMs, toWav } from "../audio/ffmpeg";
 import { AnthropicProvider } from "../director/llm/anthropic";
 import { llmDirector } from "../director/llm/director";
 import type { LLMProvider } from "../director/llm/provider";
@@ -15,6 +15,9 @@ import { EstimateTranscriber } from "../transcribe/estimate";
 import type { Transcriber } from "../transcribe/transcriber";
 import { WhisperCppTranscriber } from "../transcribe/whisper-cpp";
 import { createTTSProvider, resolveVoice } from "../tts";
+import { FilesProvider } from "../tts/files";
+import { splitGreeting } from "../tts/greeting";
+import { estimateSpeechMs } from "../tts/silent";
 import { hashFile, hashJson, sha256 } from "../utils/hash";
 import { readJson, readJsonIfExists, writeJson } from "../utils/fs";
 import { log } from "../utils/log";
@@ -71,12 +74,17 @@ export const stepAnalyze = async (
 };
 
 // ------------------------------------------------------------------ 4. Generacion de voz
-export const stepVoices = async (ctx: EngineContext, opts: { tts?: string; force?: boolean } = {}): Promise<AudioIndex> => {
+export const stepVoices = async (
+  ctx: EngineContext,
+  opts: { tts?: string; force?: boolean; allowMissingAudio?: boolean } = {},
+): Promise<AudioIndex> => {
   const { cfg, project } = ctx;
   if (!fs.existsSync(project.paths.draft)) throw new Error("Falta timeline.draft.json (ejecuta npm run analyze)");
   const draft = readJson<Timeline>(project.paths.draft);
   const providerName = opts.tts ?? project.config.tts ?? "silent";
-  const provider = createTTSProvider(providerName, project, cfg.render.timing.estimatedWordsPerSecond);
+  const provider = createTTSProvider(providerName, project, cfg.render.timing.estimatedWordsPerSecond, {
+    allowMissingAudio: opts.allowMissingAudio,
+  });
   const check = await provider.check();
   if (!check.ok) throw new Error(`TTS ${providerName}: ${check.reason}`);
 
@@ -87,19 +95,28 @@ export const stepVoices = async (ctx: EngineContext, opts: { tts?: string; force
   let generated = 0;
   for (const scene of draft.scenes) {
     if (!scene.dialogue || !scene.character) continue;
-    const voice = resolveVoice(scene.character, cfg.characters.characters[scene.character], project);
+    const chCfg = cfg.characters.characters[scene.character];
+    const voice = resolveVoice(scene.character, chCfg, project);
+    // Saludo recurrente: la linea empieza con "¡Papu papu!" -> audio reutilizable + solo el resto al TTS.
+    const greeting = cfg.render.audio.greeting;
+    const split = greeting ? splitGreeting(scene.dialogue, greeting.text) : null;
+    const greetingFile = split && chCfg?.voice?.greeting ? fromRepo(chCfg.voice.greeting) : undefined;
+    const greetingTag = split
+      ? `greet=${greetingFile && fs.existsSync(greetingFile) ? `${fs.statSync(greetingFile).size}:${fs.statSync(greetingFile).mtimeMs}` : "missing"}:${greeting!.gapMs}`
+      : "";
     const req = {
       blockId: scene.id,
       character: scene.character,
-      text: scene.dialogue,
+      text: split ? split.rest : scene.dialogue,
       language: draft.meta.language ?? "es",
       voice,
       outBase: path.join(project.paths.blocksDir, `${scene.id}.raw`),
     };
     const blockLufs = cfg.render.audio.voiceBlockLufs;
     const tempo = cfg.render.audio.voiceTempo ?? 1;
+    const sr = cfg.render.audio.sampleRate;
     const cacheKey = sha256(
-      `${provider.cacheTag(req)}|${scene.character}|${scene.dialogue}|${cfg.render.audio.sampleRate}|lufs=${blockLufs ?? "off"}|tempo=${tempo}`,
+      `${split && !split.rest ? "greeting-only" : provider.cacheTag(req)}|${scene.character}|${scene.dialogue}|${sr}|lufs=${blockLufs ?? "off"}|tempo=${tempo}|${greetingTag}`,
     );
     const out = path.join(project.paths.blocksDir, `${scene.id}.wav`);
     const prev = prevByScene.get(scene.id);
@@ -107,9 +124,35 @@ export const stepVoices = async (ctx: EngineContext, opts: { tts?: string; force
       blocks.push(prev);
       continue;
     }
-    const res = await provider.synthesize(req);
-    await toWav(res.file, out, cfg.render.audio.sampleRate);
-    if (res.file.startsWith(project.paths.blocksDir) && res.file !== out) fs.rmSync(res.file, { force: true });
+    let greetingMissing = false;
+    if (split) {
+      // saludo + pausa + resto (el resto puede no existir si la linea es solo el saludo)
+      const g = `${out}.greet.wav`;
+      if (greetingFile && fs.existsSync(greetingFile)) await toWav(greetingFile, g, sr);
+      else if (opts.allowMissingAudio) {
+        greetingMissing = true;
+        log.warn(`${scene.character}: falta el audio del saludo (${chCfg?.voice?.greeting ?? "voice.greeting sin definir"}) -> silencio provisional`);
+        await makeSilence(g, estimateSpeechMs(greeting!.text, cfg.render.timing.estimatedWordsPerSecond), sr);
+      } else {
+        throw new Error(`${scene.character}: falta el audio del saludo "${greeting!.text}" (${chCfg?.voice?.greeting ?? "define voice.greeting en characters.json"})`);
+      }
+      const parts = [g];
+      if (split.rest) {
+        const res = await provider.synthesize(req);
+        const r = `${out}.rest.wav`;
+        const gap = `${out}.gap.wav`;
+        await toWav(res.file, r, sr);
+        if (res.file.startsWith(project.paths.blocksDir) && res.file !== out) fs.rmSync(res.file, { force: true });
+        await makeSilence(gap, greeting!.gapMs, sr);
+        parts.push(gap, r);
+      }
+      await concatWavs(parts, out);
+      for (const p of parts) fs.rmSync(p, { force: true });
+    } else {
+      const res = await provider.synthesize(req);
+      await toWav(res.file, out, sr);
+      if (res.file.startsWith(project.paths.blocksDir) && res.file !== out) fs.rmSync(res.file, { force: true });
+    }
     // Ritmo: acelera la voz sin cambiar el tono (el timeline se reajusta a la nueva duracion).
     if (tempo !== 1) await applyTempo(out, tempo);
     // Nivelado por bloque: voces de distinto origen (p. ej. audios descargados) suenan igual de fuertes.
@@ -123,14 +166,28 @@ export const stepVoices = async (ctx: EngineContext, opts: { tts?: string; force
     }
     const durationMs = await probeDurationMs(out);
     if (durationMs < 200) throw new Error(`Audio demasiado corto para ${scene.id} (${durationMs} ms)`);
-    blocks.push({ blockId: scene.id, sceneId: scene.id, character: scene.character, text: scene.dialogue, file: toRepoRel(out), durationMs, cacheKey });
+    const silentPlaceholder = greetingMissing || (provider instanceof FilesProvider && provider.missing.includes(scene.id));
+    blocks.push({
+      blockId: scene.id,
+      sceneId: scene.id,
+      character: scene.character,
+      text: scene.dialogue,
+      file: toRepoRel(out),
+      durationMs,
+      cacheKey,
+      ...(silentPlaceholder ? { placeholder: true } : {}),
+    });
     generated++;
-    log.ok(`${scene.id} (${scene.character}) ${durationMs} ms${gainNote}`);
+    log.ok(`${scene.id} (${scene.character}) ${durationMs} ms${gainNote}${silentPlaceholder ? " [SILENCIO: falta audio]" : ""}`);
   }
   const index: AudioIndex = { provider: provider.name, sampleRate: cfg.render.audio.sampleRate, blocks };
   writeJson(project.paths.audioIndex, index);
   const totalMs = blocks.reduce((a, b) => a + b.durationMs, 0);
-  updateReport(project, { steps: { voices: { provider: provider.name, blocks: blocks.length, generated, cached: blocks.length - generated, speechMs: totalMs } } });
+  const missingAudio = blocks.filter((b) => b.placeholder).map((b) => b.blockId);
+  if (missingAudio.length) log.warn(`Bloques sin voz (silencio provisional): ${missingAudio.join(", ")}`);
+  updateReport(project, {
+    steps: { voices: { provider: provider.name, blocks: blocks.length, generated, cached: blocks.length - generated, speechMs: totalMs, missingAudio } },
+  });
   return index;
 };
 

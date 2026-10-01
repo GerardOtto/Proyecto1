@@ -11,6 +11,7 @@ import { MemeLayer } from "../components/MemeLayer";
 import { SafeAreaGuide } from "../components/SafeAreaGuide";
 import { Stage } from "../components/Stage";
 import { Visuals } from "../components/Visuals";
+import { Watermark } from "../components/Watermark";
 import type { RenderPlan } from "../timeline/plan";
 import { FONT_FILES } from "./constants";
 
@@ -36,6 +37,8 @@ export const ShortVideo: React.FC<ShortVideoProps> = ({ plan }) => (
       />
       <Stage stage={plan.stage} margin={plan.style.characterMarginX} />
     </Camera>
+    {/* Fuera de la camara (no tiembla ni hace zoom) y debajo de los subtitulos (no los tapa). */}
+    <Watermark watermark={plan.watermark ?? null} />
     <Captions pages={plan.captions} style={plan.style.captions} centerX={plan.style.captionCenterX} names={plan.names} />
     <MemeLayer memes={plan.memes} />
     {plan.debug.showSafeArea ? <SafeAreaGuide style={plan.style} width={plan.width} height={plan.height} /> : null}

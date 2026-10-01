@@ -107,6 +107,11 @@
           "maxItems": 3,
           "items": { "$ref": "#/definitions/id" }
         },
+        "broll": {
+          "description": "Relleno contextual: assets broll (en orden) para los huecos del area de visuales de esta escena. Prioridad sobre meta.broll.",
+          "type": "array",
+          "items": { "$ref": "#/definitions/id" }
+        },
         "events": {
           "type": "array",
           "items": {

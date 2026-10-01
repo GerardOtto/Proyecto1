@@ -19,6 +19,16 @@ quedaba vacia.
 - Material: clips CC0/dominio publico de Wikimedia Commons, recortados a 4:3 y re-codificados
   (H.264, GOP corto, sin B-frames), con pagina de origen, autor y licencia en el catalogo.
 
+## Revision (relleno contextual)
+- Los clips genericos se sentian desconectados de lo que se dice. Ahora cada bloque puede declarar
+  su propio relleno (`[BROLL: a, b]` -> `scene.broll`): capturas de noticias, paginas y graficos
+  oficiales de las entidades mencionadas, y GIFs de gatos con gafas tecleando. `brollPieces` corta
+  los huecos por escena y `splitEven` reparte el tramo entre todos los elementos de la escena; el
+  `meta.broll` queda como pozo de respaldo (`fillBroll`).
+- `broll` admite imagenes (kind `image`), que se animan con un zoom lento (Ken Burns).
+- Las capturas y GIFs no son CC0: se registran con su URL de origen y `license_status: unknown`
+  (cita/uso informativo), por lo que el reporte los marca para revision antes de monetizar.
+
 ## Consecuencias
 - Los visuales y memes del guion siempre tienen prioridad: el b-roll nunca se superpone.
 - Agregar clips no cambia guiones existentes salvo los que usan el valor por defecto (todos).

@@ -92,6 +92,8 @@ export interface Scene {
   listeners?: OnScreenCharacter[];
   crowd?: boolean;
   visuals?: string[];
+  /** Relleno (assets broll) para los huecos del area de visuales en ESTA escena; tiene prioridad sobre meta.broll. */
+  broll?: string[];
   events?: Array<TimelineEvent | EventShorthand>;
   audio?: { src: string; offsetMs?: number; durationMs: number };
   notes?: string;
@@ -139,6 +141,8 @@ export interface CharacterConfig {
   voice?: {
     fish?: { referenceId?: string; speed?: number; volume?: number };
     flite?: { voice?: string };
+    /** Audio reutilizable del saludo recurrente (ruta relativa al repo). */
+    greeting?: string;
   };
   license?: LicenseInfo;
 }
@@ -240,6 +244,8 @@ export interface RenderConfig {
     combineTokensWithinMs: number;
     maxWordsPerPage: number;
     avgCharWidthEm: number;
+    /** Expresiones que nunca se parten entre paginas de subtitulos (p. ej. "Me gusta"). */
+    keepTogether?: string[];
   };
   timing: {
     leadInMs: number;
@@ -263,12 +269,32 @@ export interface RenderConfig {
     voiceBlockLufs?: number;
     /** Velocidad de la voz (atempo, conserva el tono). 1 = original; 1.1 = 10 % mas rapida. */
     voiceTempo?: number;
+    /** Techo de picos (dBFS) del audio final del MP4, tras mezclar voz + SFX. */
+    finalLimiterDb?: number;
+    /** Saludo recurrente: si una linea empieza con `text`, se usa el audio greeting del personaje. */
+    greeting?: { text: string; gapMs: number };
     /** Mezcla de la musica de fondo (si el timeline declara meta.music). */
     music?: MusicMixConfig;
     sfxVolume: number;
     backgroundVideoVolume: number;
   };
   background: { dim: number; fallbackColor: string };
+  /** Marca de agua rebotando (estilo DVD). El texto depende del idioma del video. */
+  watermark?: {
+    enabled?: boolean;
+    /** idioma -> handle ("es": "@tetociencia"); "default" si el idioma no esta. */
+    handles: Record<string, string>;
+    /** Color por rebote, en orden (cicla). */
+    colors: string[];
+    opacity: number;
+    fontSize: number;
+    /** Ancho medio por caracter (em) para estimar la caja del texto. */
+    charWidthEm: number;
+    speedPxPerSec: number;
+    margin: number;
+    /** Posicion inicial dentro del recorrido [x, y] (0-1). */
+    start: [number, number];
+  };
   events: {
     cameraZoom: { scale: number; durationMs: number };
     cameraShake: { intensity: number; durationMs: number };
@@ -285,7 +311,12 @@ export interface RenderConfig {
       defaultSfx: string;
     };
     subtitleEmphasis: { durationMs: number };
-    visual: { popInMs: number; popOutMs: number };
+    visual: {
+      popInMs: number;
+      popOutMs: number;
+      /** SFX automatico al aparecer un visual o un tramo de b-roll (ritmo en monologos largos). */
+      sfx?: { id: string; volume: number; minGapMs: number };
+    };
     /** B-roll: duracion de cada clip y hueco minimo que vale la pena rellenar. */
     broll?: { clipMs: number; minMs: number };
   };

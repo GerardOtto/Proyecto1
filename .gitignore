@@ -12,6 +12,10 @@ assets/music/*
 !assets/music/README.md
 config/assets.local.json
 
+# Saludo recurrente por personaje (voz generada en Fish Audio): solo en local.
+assets/voice/*
+!assets/voice/README.md
+
 # Binarios de whisper.cpp y modelos (se instalan con `npm run whisper:install`)
 tools/whisper.cpp/
 tools/models/

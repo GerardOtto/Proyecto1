@@ -97,10 +97,28 @@ export const layoutCaption = (words: string[], style: CaptionStyle): CaptionLayo
 const endsSentence = (w: string) => /[.!?…:;]$/.test(w) || /[.!?…]["»”)]$/.test(w);
 
 /**
+ * glued[i] = true si la palabra i va pegada a la anterior por formar parte de la misma aparicion de
+ * una expresion de `phrases` (misma escena). Pura.
+ */
+export const gluedWords = (words: Array<Pick<CaptionWord, "text" | "sceneId">>, phrases: string[] = []): boolean[] => {
+  const glued = words.map(() => false);
+  const targets = phrases.map((p) => splitWords(p).map(normalizeWord)).filter((p) => p.length > 1);
+  for (let s = 0; s < words.length; s++) {
+    for (const p of targets) {
+      if (s + p.length > words.length) continue;
+      const ok = p.every((t, k) => normalizeWord(words[s + k]!.text) === t && words[s + k]!.sceneId === words[s]!.sceneId);
+      if (ok) for (let k = 1; k < p.length; k++) glued[s + k] = true;
+    }
+  }
+  return glued;
+};
+
+/**
  * Agrupa palabras en paginas. Reglas (deterministas):
  * - nunca mezcla personajes ni escenas en la misma pagina
  * - maximo `maxWordsPerPage` palabras y `maxLines` lineas
  * - corta tras puntuacion final o si hay un silencio > combineTokensWithinMs
+ * - nunca parte una expresion de `keepTogether`: si no cabe, pasa entera a la pagina siguiente
  */
 export const buildCaptionPages = (
   words: CaptionWord[],
@@ -116,8 +134,15 @@ export const buildCaptionPages = (
     if (cur && cur.tokens.length > 0) pages.push(cur);
     cur = null;
   };
+  const glued = gluedWords(sorted, style.keepTogether);
+  // Cuantas palabras finales de la pagina actual forman la cadena pegada que termina en `i - 1`.
+  const chainLength = (i: number, onPage: number) => {
+    let n = 1;
+    while (n < onPage && glued[i - n]) n++;
+    return n;
+  };
 
-  for (const w of sorted) {
+  for (const [i, w] of sorted.entries()) {
     const emph = emphasisByScene.get(w.sceneId ?? "")?.find((e) => e.matches(w));
     const token: CaptionToken = {
       text: w.text,
@@ -135,7 +160,20 @@ export const buildCaptionPages = (
       const sentence = endsSentence(last.text);
       const wouldOverflow =
         layoutCaption([...c.tokens.map((t) => t.text), w.text], style).lines.length > style.maxLines;
-      if (tooMany || otherSpeaker || gap || sentence || wouldOverflow) flush();
+      if (glued[i] && (tooMany || wouldOverflow) && !otherSpeaker) {
+        // La expresion no cabe: se mueve completa a la pagina nueva.
+        const n = chainLength(i, c.tokens.length);
+        if (n < c.tokens.length) {
+          const moved = c.tokens.splice(c.tokens.length - n, n);
+          c.endMs = Math.max(...c.tokens.map((t) => t.endMs));
+          flush();
+          cur = { character: w.character, sceneId: w.sceneId, startMs: moved[0]!.startMs, endMs: moved[moved.length - 1]!.endMs, tokens: moved };
+        }
+      } else if (!glued[i] && (tooMany || otherSpeaker || gap || sentence || wouldOverflow)) {
+        flush();
+      } else if (glued[i] && (otherSpeaker || gap)) {
+        flush();
+      }
     }
     if (cur === null) {
       cur = { character: w.character, sceneId: w.sceneId, startMs: w.startMs, endMs: w.endMs, tokens: [] };

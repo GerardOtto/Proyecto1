@@ -4,6 +4,7 @@
 // Uso: npm run generate -- --project projects/demo_001
 //        [--director rules|anthropic] [--tts fish|files|flite|silent] [--transcriber auto|whisper-cpp|estimate]
 //        [--no-render] [--repro] [--safe-area] [--force-voices]
+//        [--allow-missing-audio]   con --tts files: bloques sin archivo -> silencio provisional (preview)
 import { loadContext, printIssues } from "../src/pipeline/context";
 import { DurationError } from "../src/pipeline/build-timeline";
 import { stepAnalyze, stepBuildTimeline, stepRender, stepTranscribe, stepVoices } from "../src/pipeline/steps";
@@ -22,6 +23,7 @@ const { values } = parseCli({
   repro: { type: "boolean" },
   "safe-area": { type: "boolean" },
   "force-voices": { type: "boolean" },
+  "allow-missing-audio": { type: "boolean" },
 });
 
 main(async () => {
@@ -48,7 +50,7 @@ main(async () => {
     if (!validation.ok) throw new Error("El borrador no es valido: corrige el guion (o el catalogo) y reintenta");
 
     log.step(4, "Generacion de voz");
-    await stepVoices(ctx, { tts, force: values["force-voices"] });
+    await stepVoices(ctx, { tts, force: values["force-voices"], allowMissingAudio: values["allow-missing-audio"] });
 
     log.step(6, "Transcripcion");
     await stepTranscribe(ctx, { transcriber: values.transcriber });

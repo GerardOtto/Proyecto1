@@ -48,7 +48,11 @@ export const parseScript = (source: string, catalog: Catalog): ParsedScript => {
   let section: Section | undefined;
   let open: OpenBlock | null = null;
   let paragraphHasBlock = false;
-  let pending: { visuals: string[]; events: TimelineEvent[]; listeners?: OnScreenCharacter[]; crowd?: boolean } = { visuals: [], events: [] };
+  let pending: { visuals: string[]; broll: string[]; events: TimelineEvent[]; listeners?: OnScreenCharacter[]; crowd?: boolean } = {
+    visuals: [],
+    broll: [],
+    events: [],
+  };
   let lastSpeaker: { character: string; avatar?: string } | null = null;
 
   const { characters, reactionAliases } = catalog.resolved;
@@ -109,6 +113,12 @@ export const parseScript = (source: string, catalog: Catalog): ParsedScript => {
       case "VISUALS": {
         const ids = args.join(":").split(",").map((s) => s.trim()).filter(Boolean);
         for (const id of ids) if (checkAsset(id, ["image", "logo", "diagram", "meme"], line)) (target ? (target.beat.visuals ??= []) : pending.visuals).push(id);
+        return true;
+      }
+      case "BROLL": {
+        // Relleno del area de visuales para ESTE bloque (en orden), en lugar del pozo global.
+        const ids = args.join(":").split(",").map((s) => s.trim()).filter(Boolean);
+        for (const id of ids) if (checkAsset(id, ["broll"], line)) (target ? (target.beat.broll ??= []) : pending.broll).push(id);
         return true;
       }
       case "SHOW": {
@@ -205,8 +215,14 @@ export const parseScript = (source: string, catalog: Catalog): ParsedScript => {
           push({ type: "camera_shake", ...anchor });
           return true;
         }
+        // {SFX:id} o {SFX:id:0.4} (volumen 0-1 opcional)
         const id = args[0] ?? "";
-        if (checkAsset(id, ["sfx"], line)) push({ type: "sfx", sfx: id, ...anchor });
+        const vol = args[1] !== undefined ? Number(args[1]) : undefined;
+        if (vol !== undefined && !(vol >= 0 && vol <= 1)) {
+          errors.push({ line, message: `Volumen de SFX invalido "${args[1]}" (usar 0-1)` });
+          return true;
+        }
+        if (checkAsset(id, ["sfx"], line)) push({ type: "sfx", sfx: id, ...(vol !== undefined ? { volume: vol } : {}), ...anchor });
         return true;
       }
       default:
@@ -259,11 +275,12 @@ export const parseScript = (source: string, catalog: Catalog): ParsedScript => {
           ...(avatar ? { avatar } : {}),
           events: pending.events.map((e) => ({ ...e, atWord: 0 })),
           ...(pending.visuals.length ? { visuals: [...pending.visuals] } : {}),
+          ...(pending.broll.length ? { broll: [...pending.broll] } : {}),
           ...(pending.listeners ? { listeners: pending.listeners } : {}),
           ...(pending.crowd ? { crowd: true } : {}),
           line: lineNo,
         };
-        pending = { visuals: [], events: [] };
+        pending = { visuals: [], broll: [], events: [] };
         open = { beat, words: 0, text: [], emphasis: [] };
         paragraphHasBlock = true;
         lastSpeaker = { character, ...(avatar ? { avatar } : {}) };

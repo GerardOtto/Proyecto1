@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="output" content="assets/visuals/cta_follow_like.png" data-width="1200" data-height="900">
+<link rel="stylesheet" href="style.css">
+<style>
+  /* Cierre apto para YouTube, TikTok e Instagram: sin logos ni terminos propios de una plataforma. */
+  .title { font-size: 76px; margin-top: 6px; }
+  .actions { flex: 1; display: flex; gap: 40px; align-items: center; justify-content: center; margin-top: 10px; }
+  .action { flex: 1; height: 420px; border-radius: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 26px; }
+  .like { background: linear-gradient(160deg, #ff5a7a, #e5322d); }
+  .follow { background: linear-gradient(160deg, #6d86ff, #4d6bfe); }
+  .action svg { width: 190px; height: 190px; }
+  .action b { font-weight: 900; font-size: 64px; }
+  .thanks { text-align: center; font-weight: 900; font-size: 46px; color: var(--gold); margin-top: 22px; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="title">¿Te sirvió, Papu?</div>
+    <div class="actions">
+      <div class="action like">
+        <svg viewBox="0 0 24 24" fill="#fff"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        <b>Me gusta</b>
+      </div>
+      <div class="action follow">
+        <svg viewBox="0 0 24 24" fill="#fff"><path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm-9-2V7H4v3H1v2h3v3h2v-3h3v-2H6zm9 4c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+        <b>Síguenos</b>
+      </div>
+    </div>
+    <div class="thanks">Más IA explicada sin drama</div>
+  </div>
+</body>
+</html>

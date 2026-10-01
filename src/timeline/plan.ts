@@ -6,6 +6,7 @@ import { buildCaptionPages, layoutCaption, timelineWords } from "./captions";
 import { msRangeToFrames, msToDurationInFrames, msToFrame } from "./frames";
 import { resolveReaction, sceneEvents, timelineDurationMs } from "./normalize";
 import type { RenderConfig, ResolvedCatalog, Timeline, VisualSlot } from "./types";
+import { buildWatermark, type PlanWatermark } from "./watermark";
 
 export type Side = "left" | "right" | "center";
 
@@ -106,7 +107,8 @@ export interface PlanBroll {
   from: number;
   to: number;
   src: string;
-  kind: "video" | "gif";
+  /** image: captura/imagen fija con zoom lento (Ken Burns) para que no quede estatica. */
+  kind: "video" | "gif" | "image";
   /** Frame del clip desde el que empieza (varia entre usos del mismo clip). */
   startFrom: number;
   /** Si el clip es mas corto que el tramo: se repite en loop cada N frames. */
@@ -131,9 +133,70 @@ export const brollGaps = (busy: Span[], total: number, minFrames: number): Span[
  * Rellena los huecos con clips en rotacion (orden dado, determinista), tramos de `clipFrames`.
  * Un resto menor que `minFrames` se suma al tramo anterior. Pura.
  */
+type BrollClip = { src: string; kind: PlanBroll["kind"]; frames: number | null };
+
+/**
+ * Corta los huecos por escena. Cada trozo lleva la lista de la escena (`list`) o null (= pozo
+ * global). Un trozo menor que `minFrames` se une al trozo vecino del mismo hueco. Pura.
+ */
+export const brollPieces = (
+  gaps: Span[],
+  scenes: Array<Span & { broll?: string[] }>,
+  minFrames: number,
+): Array<Span & { list: string[] | null }> => {
+  const out: Array<Span & { list: string[] | null }> = [];
+  for (const g of gaps) {
+    const pieces = scenes
+      .map((s) => ({ from: Math.max(g.from, s.from), to: Math.min(g.to, s.to), list: s.broll && s.broll.length ? s.broll : null }))
+      .filter((p) => p.to > p.from)
+      .sort((a, b) => a.from - b.from);
+    const merged: typeof pieces = [];
+    for (const p of pieces) {
+      const prev = merged[merged.length - 1];
+      if (prev && (p.to - p.from < minFrames || prev.to - prev.from < minFrames)) {
+        // el trozo corto hereda la lista del mas largo de los dos
+        const keep = p.to - p.from > prev.to - prev.from ? p.list : prev.list;
+        prev.to = p.to;
+        prev.list = keep;
+      } else merged.push({ ...p });
+    }
+    out.push(...merged.filter((p) => p.to - p.from >= minFrames));
+  }
+  return out;
+};
+
+/** Reparte un tramo a partes iguales entre los clips de la lista (todos se ven, en orden). Pura. */
+export const splitEven = (piece: Span, clips: BrollClip[], minFrames: number): PlanBroll[] => {
+  const len = piece.to - piece.from;
+  const k = Math.max(1, Math.min(clips.length, Math.floor(len / Math.max(1, minFrames))));
+  return Array.from({ length: k }, (_, i) => {
+    const from = piece.from + Math.round((len * i) / k);
+    const to = piece.from + Math.round((len * (i + 1)) / k);
+    const c = clips[i]!;
+    return { from, to, src: c.src, kind: c.kind, startFrom: 0, loopFrames: c.frames && c.frames < to - from ? c.frames : null };
+  });
+};
+
+/**
+ * Frames donde suena el "pop" automatico al aparecer visuales/b-roll. Respeta un espaciado minimo
+ * entre pops, no pisa SFX ya programados (explicitos o del meme) y calla durante los memes. Pura.
+ */
+export const autoPopFrames = (starts: number[], taken: number[], memes: Span[], minGap: number): number[] => {
+  const out: number[] = [];
+  let last = -Infinity;
+  for (const f of [...new Set(starts)].sort((a, b) => a - b)) {
+    if (f - last < minGap) continue;
+    if (taken.some((t) => Math.abs(t - f) < minGap)) continue;
+    if (memes.some((m) => f >= m.from && f < m.to)) continue;
+    out.push(f);
+    last = f;
+  }
+  return out;
+};
+
 export const fillBroll = (
   gaps: Span[],
-  clips: Array<{ src: string; kind: "video" | "gif"; frames: number | null }>,
+  clips: BrollClip[],
   clipFrames: number,
   minFrames: number,
 ): PlanBroll[] => {
@@ -191,6 +254,8 @@ export interface RenderPlan {
   memes: PlanMeme[];
   /** Relleno del area de visuales cuando no hay visual ni meme. */
   broll: PlanBroll[];
+  /** Marca de agua rebotando (handle segun idioma); null = sin marca. */
+  watermark: PlanWatermark | null;
   colors: Record<string, string>;
   names: Record<string, string>;
   style: {
@@ -422,22 +487,39 @@ export const buildRenderPlan = (
 
   // ---------------------------------------------------------------- b-roll
   // Estimulo constante en el area de visuales: los huecos sin visual ni meme se rellenan con clips.
+  // Cada escena puede traer su propio relleno contextual (scene.broll); si no, pozo global (meta.broll).
   const brollCfg = cfg.events.broll ?? { clipMs: 4000, minMs: 1000 };
-  const brollClips = (timeline.meta.broll ?? []).map((id) => {
+  const brollClip = (id: string): BrollClip => {
     const a = asset(id, ["broll"]);
-    return {
-      src: a.path,
-      kind: a.path.toLowerCase().endsWith(".gif") ? ("gif" as const) : ("video" as const),
-      frames: a.durationMs ? msToDurationInFrames(a.durationMs, fps) : null,
-    };
-  });
+    const p = a.path.toLowerCase();
+    const kind = p.endsWith(".gif") ? "gif" : /\.(png|jpe?g|webp|svg)$/.test(p) ? "image" : "video";
+    return { src: a.path, kind, frames: kind === "video" && a.durationMs ? msToDurationInFrames(a.durationMs, fps) : null };
+  };
+  const pool = (timeline.meta.broll ?? []).map(brollClip);
   const minBroll = msToDurationInFrames(brollCfg.minMs, fps);
-  const broll = fillBroll(
+  const pieces = brollPieces(
     brollGaps([...visuals, ...memes], durationInFrames, minBroll),
-    brollClips,
-    msToDurationInFrames(brollCfg.clipMs, fps),
+    scenes.map((s) => ({ ...msRangeToFrames(s.startMs, s.endMs, fps), ...(s.broll ? { broll: s.broll } : {}) })),
     minBroll,
   );
+  const broll = [
+    ...pieces.filter((p) => p.list).flatMap((p) => splitEven(p, p.list!.map(brollClip), minBroll)),
+    ...fillBroll(pieces.filter((p) => !p.list), pool, msToDurationInFrames(brollCfg.clipMs, fps), minBroll),
+  ].sort((a, b) => a.from - b.from);
+
+  // Pop automatico al aparecer cada visual o tramo de b-roll: da pulso a los monologos largos.
+  const pop = cfg.events.visual.sfx;
+  if (pop && catalog.assets[pop.id]) {
+    const src = asset(pop.id, ["sfx"]).path;
+    const frames = autoPopFrames(
+      [...visuals.map((v) => v.from), ...broll.map((b) => b.from)],
+      sfx.map((s) => s.from),
+      memes,
+      msToDurationInFrames(pop.minGapMs, fps),
+    );
+    for (const f of frames) sfx.push({ src, from: f, volume: pop.volume });
+    sfx.sort((a, b) => a.from - b.from);
+  }
 
   // ---------------------------------------------------------------- captions
   const colors: Record<string, string> = Object.fromEntries(
@@ -511,6 +593,7 @@ export const buildRenderPlan = (
     camera,
     memes,
     broll,
+    watermark: buildWatermark(cfg, timeline.meta.language, fps),
     colors,
     names: Object.fromEntries(Object.entries(catalog.characters).map(([id, c]) => [id, c.displayName])),
     style: {

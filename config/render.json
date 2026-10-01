@@ -1,5 +1,28 @@
 {
   "$schema": "../schemas/render.schema.json",
+  "watermark": {
+    "enabled": true,
+    "handles": {
+      "es": "@tetociencia",
+      "default": "@tetociencia"
+    },
+    "colors": [
+      "#E5323F",
+      "#E285B2",
+      "#39C5BB",
+      "#F6C744",
+      "#3D7BFF"
+    ],
+    "opacity": 0.6,
+    "fontSize": 56,
+    "charWidthEm": 0.58,
+    "speedPxPerSec": 210,
+    "margin": 12,
+    "start": [
+      0.15,
+      0.35
+    ]
+  },
   "video": {
     "width": 1080,
     "height": 1920,
@@ -48,14 +71,18 @@
     "emphasisScale": 1.18,
     "combineTokensWithinMs": 900,
     "maxWordsPerPage": 6,
-    "avgCharWidthEm": 0.62
+    "avgCharWidthEm": 0.62,
+    "keepTogether": [
+      "Me gusta",
+      "Papu papu"
+    ]
   },
   "timing": {
     "leadInMs": 250,
     "gapBetweenBlocksMs": 150,
     "minGapMs": 80,
     "maxGapMs": 900,
-    "tailMs": 1500,
+    "tailMs": 500,
     "maxTailMs": 6000,
     "memeSceneMs": 1300,
     "pauseSceneMs": 700,
@@ -67,8 +94,13 @@
     "sampleRate": 48000,
     "loudnessLufs": -14,
     "truePeakDb": -1.5,
+    "finalLimiterDb": -1.5,
     "voiceBlockLufs": -20,
     "voiceTempo": 1.1,
+    "greeting": {
+      "text": "¡Papu papu!",
+      "gapMs": 150
+    },
     "music": {
       "lufs": -30,
       "fadeInMs": 600,
@@ -108,7 +140,12 @@
     },
     "visual": {
       "popInMs": 250,
-      "popOutMs": 200
+      "popOutMs": 200,
+      "sfx": {
+        "id": "sfx_pop",
+        "volume": 0.35,
+        "minGapMs": 700
+      }
     },
     "broll": {
       "clipMs": 3500,

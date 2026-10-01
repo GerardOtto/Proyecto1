@@ -28,6 +28,17 @@ COMO ocurre (tiempos exactos, posiciones, animaciones). No tienes libertad pixel
 6. punchline: remate o giro humoristico.
 7. closing: cierre que resume la idea y deja una ultima reaccion. Es la ULTIMA escena con dialogo.
 
+## Audiencia (voz de la cuenta)
+- Los personajes llaman a la audiencia "los Papus" (plural) o "el Papu" / "Papu" (singular).
+- Cada vez que un personaje se dirige DIRECTAMENTE a la audiencia, abre con "¡Papu papu!" para
+  captar su atencion (p. ej. "¡Papu papu! Si te sirvio, dejanos tu Me gusta.").
+- Entre ellos se hablan normal: la formula es solo para hablarle a quien mira.
+
+## Cierre (ultimas escenas)
+- Tras el remate, un cierre breve que invite a dar "Me gusta" y a seguir la cuenta, apto para
+  YouTube, TikTok e Instagram: usa solo "Me gusta" y "siguenos"; nunca "suscribete", "campanita",
+  "link en la bio", "duo" ni otras palabras de una sola plataforma. Visual: `cta_follow_like` si existe.
+
 ## Reglas de personajes y avatares
 - El que habla tiene prioridad; el que escucha puede reaccionar (evento character_reaction).
 - Un cambio de avatar debe coincidir con un cambio semantico, una reaccion o un punchline; nunca en cada

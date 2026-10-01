@@ -6,6 +6,23 @@
   "required": ["video", "duration", "safeArea", "layout", "captions", "timing", "audio", "background", "events"],
   "properties": {
     "$schema": { "type": "string" },
+    "watermark": {
+      "description": "Marca de agua rebotando estilo DVD; el handle depende del idioma del video.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["handles", "colors", "opacity", "fontSize", "charWidthEm", "speedPxPerSec", "margin", "start"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "handles": { "type": "object", "minProperties": 1, "additionalProperties": { "type": "string", "minLength": 1 } },
+        "colors": { "type": "array", "minItems": 1, "items": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" } },
+        "opacity": { "type": "number", "minimum": 0, "maximum": 1 },
+        "fontSize": { "type": "number", "exclusiveMinimum": 0 },
+        "charWidthEm": { "type": "number", "exclusiveMinimum": 0 },
+        "speedPxPerSec": { "type": "number", "minimum": 0 },
+        "margin": { "type": "number", "minimum": 0 },
+        "start": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "type": "number", "minimum": 0, "maximum": 1 } }
+      }
+    },
     "video": {
       "type": "object",
       "required": ["width", "height", "fps", "aspect", "codec", "crf", "pixelFormat", "audioCodec", "audioBitrate"],

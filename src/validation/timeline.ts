@@ -204,6 +204,17 @@ export const validateTimeline = (
   else add("warning", "assets", "NO_BACKGROUND", "Sin fondo: se usara color solido");
   if (timeline.meta.music) checkAsset(timeline.meta.music, ["music"], "meta.music");
   for (const id of timeline.meta.broll ?? []) checkAsset(id, ["broll"], "meta.broll");
+  for (const s of scenes) for (const id of s.broll ?? []) checkAsset(id, ["broll"], `${s.id}.broll`);
+  // El "pop" automatico de visuales/b-roll tambien es un asset usado (licencia en el reporte).
+  const pop = cfg.events.visual.sfx;
+  const hasVisuals = scenes.some((s) => (s.visuals?.length ?? 0) > 0 || (s.broll?.length ?? 0) > 0) || (timeline.meta.broll?.length ?? 0) > 0;
+  if (pop && hasVisuals && catalog.entries[pop.id]) assetsUsed.add(pop.id);
+  // Assets reservados (p. ej. el telefono de NERU, hasta que exista el personaje).
+  for (const id of assetsUsed) {
+    if (catalog.entries[id]?.tags.includes("reservado")) {
+      add("warning", "assets", "ASSET_RESERVED", `"${id}" esta reservado (${catalog.entries[id]!.description ?? "ver catalogo"})`);
+    }
+  }
 
   if (opts.checkAudioFiles !== false) {
     const audioFiles = [timeline.meta.audio?.master, ...scenes.map((s) => s.audio?.src)].filter((x): x is string => !!x);

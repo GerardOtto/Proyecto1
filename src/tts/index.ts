@@ -10,12 +10,20 @@ import { SilentProvider } from "./silent";
 export type TTSProviderName = "fish" | "files" | "flite" | "silent";
 export const TTS_PROVIDERS: TTSProviderName[] = ["fish", "files", "flite", "silent"];
 
-export const createTTSProvider = (name: string, project: ProjectContext, wordsPerSecond: number): TTSProvider => {
+export const createTTSProvider = (
+  name: string,
+  project: ProjectContext,
+  wordsPerSecond: number,
+  opts: { allowMissingAudio?: boolean } = {},
+): TTSProvider => {
   switch (name) {
     case "fish":
       return new FishAudioProvider();
     case "files":
-      return new FilesProvider(path.join(project.paths.audioDir, "input"));
+      return new FilesProvider(
+        path.join(project.paths.audioDir, "input"),
+        opts.allowMissingAudio ? new SilentProvider(wordsPerSecond) : undefined,
+      );
     case "flite":
       return new FliteProvider();
     case "silent":
