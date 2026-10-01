@@ -2,6 +2,7 @@
 // normalizacion y chequeos; nunca como sustituto de la logica de escenas (que vive en Remotion).
 import fs from "node:fs";
 import path from "node:path";
+import type { MusicMixConfig } from "../timeline/types";
 import { CACHE_DIR } from "../utils/paths";
 import { run } from "../utils/exec";
 
@@ -111,22 +112,36 @@ export interface MasterPiece {
   offsetMs: number;
 }
 
-/**
- * Construye la pista maestra: cada bloque en su offset absoluto, silencio en el resto,
- * normalizacion de loudness (EBU R128) y limitador de pico.
- */
-export const buildMasterTrack = async (opts: {
+/** Musica de fondo para la pista maestra. */
+export interface MasterMusic {
+  file: string;
+  /** Ganancia fija (dB) que lleva el tema a la sonoridad configurada. */
+  gainDb: number;
+  /** Ms del tema desde los que empieza (saltar intro). */
+  startMs: number;
+  mix: MusicMixConfig;
+}
+
+export interface MasterTrackOptions {
   pieces: MasterPiece[];
   totalMs: number;
   out: string;
   sampleRate: number;
   loudnessLufs: number;
   truePeakDb: number;
-}): Promise<void> => {
-  const { pieces, totalMs, out, sampleRate } = opts;
-  const args: string[] = ["-y", "-v", "error"];
-  args.push("-f", "lavfi", "-t", (totalMs / 1000).toFixed(3), "-i", `anullsrc=r=${sampleRate}:cl=mono`);
-  for (const p of pieces) args.push("-i", p.file);
+  music?: MasterMusic;
+}
+
+const sec = (ms: number) => (ms / 1000).toFixed(3);
+
+/**
+ * Grafo de filtros de la pista maestra (pura, testeable). Entradas: 0 = silencio de la duracion
+ * total, 1..n = bloques de voz, n+1 = musica en loop (si hay).
+ * Voz: cada bloque en su offset. Musica: recorte + ganancia + fades + ducking sidechain con la voz.
+ * Salida: normalizacion EBU R128 + limitador de pico.
+ */
+export const masterFilterGraph = (opts: Omit<MasterTrackOptions, "out">): string => {
+  const { pieces, totalMs, sampleRate, music } = opts;
   const filters: string[] = [];
   const labels: string[] = ["[0:a]"];
   pieces.forEach((p, i) => {
@@ -134,11 +149,33 @@ export const buildMasterTrack = async (opts: {
     filters.push(`[${i + 1}:a]aresample=${sampleRate},aformat=channel_layouts=mono,adelay=${Math.max(0, Math.round(p.offsetMs))}:all=1${l}`);
     labels.push(l);
   });
+  filters.push(`${labels.join("")}amix=inputs=${labels.length}:duration=first:dropout_transition=0:normalize=0${music ? "[voices]" : "[mix]"}`);
+  if (music) {
+    const m = music.mix;
+    const fadeOut = Math.min(m.fadeOutMs, totalMs);
+    filters.push(
+      `[${pieces.length + 1}:a]aresample=${sampleRate},aformat=channel_layouts=mono,` +
+        `atrim=start=${sec(music.startMs)}:duration=${sec(totalMs)},asetpts=PTS-STARTPTS,volume=${music.gainDb.toFixed(2)}dB,` +
+        `afade=t=in:d=${sec(m.fadeInMs)},afade=t=out:st=${sec(totalMs - fadeOut)}:d=${sec(fadeOut)}[music]`,
+      `[voices]asplit=2[vmain][vkey]`,
+      `[music][vkey]sidechaincompress=threshold=${m.duck.threshold}:ratio=${m.duck.ratio}:attack=${m.duck.attackMs}:release=${m.duck.releaseMs}[ducked]`,
+      `[vmain][ducked]amix=inputs=2:duration=first:dropout_transition=0:normalize=0[mix]`,
+    );
+  }
   filters.push(
-    `${labels.join("")}amix=inputs=${labels.length}:duration=first:dropout_transition=0:normalize=0[mix]`,
-    `[mix]loudnorm=I=${opts.loudnessLufs}:TP=${opts.truePeakDb}:LRA=11,alimiter=limit=${dbToLinear(opts.truePeakDb).toFixed(3)},aresample=${sampleRate},atrim=0:${(totalMs / 1000).toFixed(3)}[out]`,
+    `[mix]loudnorm=I=${opts.loudnessLufs}:TP=${opts.truePeakDb}:LRA=11,alimiter=limit=${dbToLinear(opts.truePeakDb).toFixed(3)},aresample=${sampleRate},atrim=0:${sec(totalMs)}[out]`,
   );
-  args.push("-filter_complex", filters.join(";"), "-map", "[out]", "-ac", "1", "-c:a", "pcm_s16le", out);
+  return filters.join(";");
+};
+
+/** Construye la pista maestra (voz + musica opcional) con el grafo de masterFilterGraph. */
+export const buildMasterTrack = async (opts: MasterTrackOptions): Promise<void> => {
+  const { pieces, totalMs, out, sampleRate, music } = opts;
+  const args: string[] = ["-y", "-v", "error"];
+  args.push("-f", "lavfi", "-t", sec(totalMs), "-i", `anullsrc=r=${sampleRate}:cl=mono`);
+  for (const p of pieces) args.push("-i", p.file);
+  if (music) args.push("-stream_loop", "-1", "-i", music.file);
+  args.push("-filter_complex", masterFilterGraph(opts), "-map", "[out]", "-ac", "1", "-c:a", "pcm_s16le", out);
   await run(FFMPEG, args);
 };
 

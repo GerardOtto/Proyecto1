@@ -202,6 +202,7 @@ export const validateTimeline = (
   // ------------------------------------------------------------------ fondo y audio
   if (timeline.meta.background) checkAsset(timeline.meta.background, ["background_video", "background_image"], "meta.background");
   else add("warning", "assets", "NO_BACKGROUND", "Sin fondo: se usara color solido");
+  if (timeline.meta.music) checkAsset(timeline.meta.music, ["music"], "meta.music");
 
   if (opts.checkAudioFiles !== false) {
     const audioFiles = [timeline.meta.audio?.master, ...scenes.map((s) => s.audio?.src)].filter((x): x is string => !!x);

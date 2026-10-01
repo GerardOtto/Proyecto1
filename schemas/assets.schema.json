@@ -33,12 +33,13 @@
         "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_\\-]*$" },
         "type": {
           "type": "string",
-          "enum": ["image", "logo", "diagram", "meme", "background_video", "background_image", "sfx"]
+          "enum": ["image", "logo", "diagram", "meme", "background_video", "background_image", "sfx", "music"]
         },
         "path": { "type": "string", "pattern": "^[^\\\\]+\\.(png|jpg|jpeg|webp|svg|gif|mp4|webm|mov|wav|mp3|ogg|m4a)$" },
         "tags": { "type": "array", "items": { "type": "string" } },
         "safeArea": { "type": "boolean" },
         "loop": { "type": "boolean" },
+        "startMs": { "type": "integer", "minimum": 0, "description": "music: ms del tema desde los que empieza a sonar (saltar intros)." },
         "source": { "type": "string", "minLength": 1 },
         "license": { "type": "string" },
         "license_status": { "type": "string", "enum": ["documented", "owned", "placeholder", "unknown"] },

@@ -21,6 +21,12 @@ un plan de Claude. Los costos aparecen al pasar a produccion (voz, assets, licen
 - Kasane Teto: las guias oficiales permiten a particulares publicar videos y monetizarlos bajo
   determinadas condiciones; las reglas de voz y los usos comerciales deben revisarse por separado.
 - Voces TTS: la voz de un modelo de Fish Audio tiene sus propios terminos (y los del plan contratado).
+- Musica de fondo: **politica actual: los videos se exportan SIN musica** y la musica se anade al
+  publicar, desde la biblioteca de TikTok/Instagram (licenciada por la plataforma y enlazada a la
+  pagina del sonido, que ayuda al alcance). El motor conserva el soporte (`music:` en el guion,
+  ADR 0004) para pistas propias o libres de derechos. Las bandas sonoras comerciales tienen
+  copyright: en TikTok pueden provocar audio silenciado o exclusion de la monetizacion. El repo es
+  publico: la musica nunca se versiona (`assets/music/`, `config/assets.local.json`).
 - El MVP puede ser tecnico/local, pero **cualquier monetizacion debe pasar un chequeo de licencia de
   assets y voces concretos**.
 

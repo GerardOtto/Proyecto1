@@ -25,6 +25,7 @@ export interface BeatsMeta {
   durationTargetSec: number;
   language: string;
   background?: string;
+  music?: string;
   project?: string;
   generator: string;
 }
@@ -99,6 +100,7 @@ export const beatsToDraftTimeline = (beats: Beat[], meta: BeatsMeta, cfg: Engine
       fps: cfg.render.video.fps,
       language: meta.language,
       ...(meta.background ? { background: meta.background } : {}),
+      ...(meta.music ? { music: meta.music } : {}),
       timingSource: "estimated",
       ...(meta.project ? { project: meta.project } : {}),
       generator: meta.generator,

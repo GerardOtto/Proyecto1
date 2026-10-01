@@ -11,8 +11,10 @@ assets/visuals/                         imagenes y diagramas
 assets/logos/                           logos
 assets/memes/                           imagenes para meme_explosion
 assets/sfx/                             efectos de sonido WAV/MP3
+assets/music/                           musica de fondo (NO versionada; ver assets/music/README.md)
 assets/fonts/                           Montserrat 800/900 (OFL) para subtitulos
 config/assets.json                      catalogo global
+config/assets.local.json                catalogo local no versionado (musica con copyright)
 ```
 
 ## Entrada de catalogo (`schemas/assets.schema.json`)
@@ -28,7 +30,9 @@ config/assets.json                      catalogo global
   "license_status": "documented"
 }
 ```
-- `type`: image | logo | diagram | meme | background_video | background_image | sfx.
+- `type`: image | logo | diagram | meme | background_video | background_image | sfx | music.
+- `startMs` (solo music): salta la intro o el silencio inicial del tema. La mezcla (loop, nivel,
+  ducking bajo la voz, fades) esta en `config/render.json > audio.music` (ADR 0004).
 - `license_status`: `documented` (verificada) | `owned` (propia) | `placeholder` (generada para
   pruebas) | `unknown` (sin verificar).
 - **Regla**: toda imagen externa registra al menos `source` y `license_status`. Si es `unknown`, se

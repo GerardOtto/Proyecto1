@@ -26,18 +26,26 @@ export interface EngineConfig {
   render: RenderConfig;
 }
 
-export const loadEngineConfig = (): EngineConfig => ({
-  characters: assertSchema<CharactersFile>("characters", readJson(fromRepo("config/characters.json")), "config/characters.json"),
-  reactions: assertSchema<ReactionsFile>("reactions", readJson(fromRepo("config/reactions.json")), "config/reactions.json"),
-  assets: assertSchema<AssetsFile>("assets", readJson(fromRepo("config/assets.json")), "config/assets.json"),
-  render: assertSchema<RenderConfig>("render", readJson(fromRepo("config/render.json")), "config/render.json"),
-});
+export const loadEngineConfig = (): EngineConfig => {
+  const assets = assertSchema<AssetsFile>("assets", readJson(fromRepo("config/assets.json")), "config/assets.json");
+  // Catalogo local (no versionado): assets que no se pueden redistribuir, p. ej. musica con copyright.
+  const local = readJsonIfExists(fromRepo("config/assets.local.json"));
+  if (local) assets.assets.push(...assertSchema<AssetsFile>("assets", local, "config/assets.local.json").assets);
+  return {
+    characters: assertSchema<CharactersFile>("characters", readJson(fromRepo("config/characters.json")), "config/characters.json"),
+    reactions: assertSchema<ReactionsFile>("reactions", readJson(fromRepo("config/reactions.json")), "config/reactions.json"),
+    assets,
+    render: assertSchema<RenderConfig>("render", readJson(fromRepo("config/render.json")), "config/render.json"),
+  };
+};
 
 export interface ProjectConfig {
   title?: string;
   language?: string;
   durationTargetSec?: number;
   background?: string;
+  /** ID de asset music, o "none" para desactivar la musica. */
+  music?: string;
   director?: "rules" | "anthropic";
   tts?: "fish" | "files" | "flite" | "silent";
   transcriber?: "whisper-cpp" | "estimate" | "auto";
@@ -139,6 +147,7 @@ const EXT_BY_TYPE: Record<AssetType, string[]> = {
   background_image: IMAGE_EXT,
   background_video: VIDEO_EXT,
   sfx: AUDIO_EXT,
+  music: AUDIO_EXT,
 };
 
 /** Si el archivo exacto no existe, busca el mismo nombre con otra extension de imagen (documentado). */
@@ -300,7 +309,7 @@ export const buildCatalog = async (cfg: EngineConfig, project?: ProjectContext):
       return;
     }
     let durationMs: number | undefined;
-    if (a.type === "background_video" || a.type === "sfx") {
+    if (a.type === "background_video" || a.type === "sfx" || a.type === "music") {
       try {
         durationMs = await probeDurationMs(abs);
       } catch (err) {
@@ -336,4 +345,19 @@ export const projectBackgroundId = (project: ProjectContext, catalog: Catalog): 
   }
   if (catalog.entries["project_background"]) return "project_background";
   return undefined;
+};
+
+/**
+ * Resuelve la musica: front matter del guion > project.json > ninguna. "none" la desactiva.
+ * Falla si el ID no existe o no es de tipo music (no se inventan assets).
+ */
+export const resolveMusicId = (wanted: string | undefined, project: ProjectContext, catalog: Catalog): string | undefined => {
+  const id = wanted ?? project.config.music;
+  if (!id || id === "none") return undefined;
+  const entry = catalog.entries[id];
+  if (!entry) {
+    throw new Error(`music "${id}" no existe en el catalogo (la musica se registra en config/assets.local.json; ver assets/music/README.md)`);
+  }
+  if (entry.type !== "music") throw new Error(`music "${id}" es de tipo ${entry.type}, no music`);
+  return id;
 };

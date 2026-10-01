@@ -34,6 +34,8 @@ export interface TimelineMeta {
   fps: number;
   language?: string;
   background?: string;
+  /** ID de asset `music`: musica de fondo mezclada en la pista maestra (con ducking bajo la voz). */
+  music?: string;
   timingSource?: TimingSource;
   audio?: { master: string; durationMs: number };
   project?: string;
@@ -158,7 +160,17 @@ export type AssetType =
   | "meme"
   | "background_video"
   | "background_image"
-  | "sfx";
+  | "sfx"
+  | "music";
+
+export interface MusicMixConfig {
+  /** Sonoridad de la musica antes del ducking (la voz va a voiceBlockLufs). */
+  lufs: number;
+  fadeInMs: number;
+  fadeOutMs: number;
+  /** Ducking: compresor sidechain disparado por la voz (sidechaincompress de ffmpeg). */
+  duck: { threshold: number; ratio: number; attackMs: number; releaseMs: number };
+}
 
 export interface AssetEntry {
   id: string;
@@ -167,6 +179,8 @@ export interface AssetEntry {
   tags: string[];
   safeArea?: boolean;
   loop?: boolean;
+  /** music: ms del tema desde los que empieza a sonar (saltar intros). */
+  startMs?: number;
   source: string;
   license?: string;
   license_status: LicenseStatus;
@@ -240,6 +254,8 @@ export interface RenderConfig {
     truePeakDb: number;
     /** Sonoridad a la que se nivela cada bloque de voz antes de mezclar (iguala voces de distinto origen). */
     voiceBlockLufs?: number;
+    /** Mezcla de la musica de fondo (si el timeline declara meta.music). */
+    music?: MusicMixConfig;
     sfxVolume: number;
     backgroundVideoVolume: number;
   };

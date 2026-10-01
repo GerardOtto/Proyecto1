@@ -39,6 +39,11 @@
           "type": "string",
           "minLength": 1
         },
+        "music": {
+          "description": "ID de asset de tipo music. Se mezcla en la pista maestra, en loop, con ducking bajo la voz.",
+          "type": "string",
+          "minLength": 1
+        },
         "timingSource": {
           "description": "estimated: tiempos estimados por el director. audio: tiempos reajustados con el audio real (autoridad temporal).",
           "type": "string",

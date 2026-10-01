@@ -8,6 +8,7 @@ guiones libres (texto sin etiquetas) y los estructura el LLM.
 title: ¿China destruyó a ChatGPT?
 target: 85                 # duracion objetivo en segundos
 background: bg_tech_loop   # id de asset (opcional; si no, project.json o background.* del proyecto)
+music: dkc_bonus_room_blitz  # id de asset music (opcional; si no, project.json; "none" = sin musica)
 language: es
 ---
 

@@ -1,6 +1,10 @@
 # Changelog
 
 ## Sin publicar
+- Musica de fondo (ADR 0004): asset `music`, `meta.music` (front matter `music:` o project.json),
+  mezcla en la pista maestra con loop, nivel fijo, fades y ducking sidechain bajo la voz.
+  Catalogo local no versionado `config/assets.local.json` para musica con copyright.
+  Desactivada por defecto: los videos se exportan sin musica y se anade en TikTok/Instagram.
 - Avatares reales de Teto, Miku y Luka (renders MMD aportados por el usuario, `license_status: unknown`);
   fondo eliminado con `scripts/remove-bg.py`; origen de cada reaccion en `assets/characters/SOURCES.md`.
 - Voces de Fish Audio registradas por personaje (`voice.fish.referenceId`).

@@ -184,7 +184,10 @@ export const stepBuildTimeline = async (ctx: EngineContext): Promise<{ timeline:
   const index = readJsonIfExists<AudioIndex>(project.paths.audioIndex);
   const words = readJsonIfExists<WordsFile>(project.paths.words);
   if (!index || !words) throw new Error("Faltan audio/index.json o transcript/words.json");
-  const { timeline, duration, srt } = await buildFinalTimeline({ draft, index, words, project, cfg });
+  const musicEntry = draft.meta.music ? catalog.entries[draft.meta.music] : undefined;
+  if (draft.meta.music && musicEntry?.type !== "music") throw new Error(`meta.music "${draft.meta.music}" no es un asset music del catalogo`);
+  const music = musicEntry ? { file: musicEntry.absPath, startMs: musicEntry.startMs } : undefined;
+  const { timeline, duration, srt } = await buildFinalTimeline({ draft, index, words, project, cfg, music });
   writeJson(project.paths.timeline, timeline);
   fs.mkdirSync(path.dirname(project.paths.srt), { recursive: true });
   fs.writeFileSync(project.paths.srt, srt);
@@ -197,6 +200,7 @@ export const stepBuildTimeline = async (ctx: EngineContext): Promise<{ timeline:
         gapMs: duration.gapMs,
         tailMs: duration.tailMs,
         master: toRepoRel(project.paths.master),
+        music: draft.meta.music ?? null,
         output: toRepoRel(project.paths.timeline),
         timelineHash: hashJson(timeline),
       },

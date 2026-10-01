@@ -11,6 +11,7 @@
     "language": { "type": "string" },
     "durationTargetSec": { "type": "number", "minimum": 60, "maximum": 120 },
     "background": { "type": "string", "description": "ID de asset o ruta relativa al proyecto (p.ej. background.mp4)." },
+    "music": { "type": "string", "description": "ID de asset music para la musica de fondo, o \"none\" para desactivarla." },
     "director": { "type": "string", "enum": ["rules", "anthropic"] },
     "tts": { "type": "string", "enum": ["fish", "files", "flite", "silent"] },
     "transcriber": { "type": "string", "enum": ["whisper-cpp", "estimate", "auto"] },

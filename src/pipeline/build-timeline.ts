@@ -4,13 +4,13 @@
 import { serializeSrt } from "@remotion/captions";
 import fs from "node:fs";
 import path from "node:path";
-import { buildMasterTrack, makeSilence, trimAudio, type MasterPiece } from "../audio/ffmpeg";
+import { blockGainDb, buildMasterTrack, makeSilence, measureLoudnessLufs, trimAudio, type MasterMusic, type MasterPiece } from "../audio/ffmpeg";
 import type { EngineConfig, ProjectContext } from "../catalog/catalog";
 import { resolveEventAnchors } from "../timeline/anchors";
 import { buildCaptionPages } from "../timeline/captions";
 import { planDuration, type DurationPlan } from "../timeline/duration";
 import { sceneEvents } from "../timeline/normalize";
-import type { CaptionWord, Scene, Timeline } from "../timeline/types";
+import type { CaptionWord, MusicMixConfig, Scene, Timeline } from "../timeline/types";
 import type { TimedWord } from "../transcribe/align";
 import { fromRepo, toRepoRel } from "../utils/paths";
 
@@ -41,6 +41,14 @@ export interface BuildResult {
   srt: string;
 }
 
+/** Mezcla de musica por defecto si config/render.json no define audio.music. */
+export const DEFAULT_MUSIC_MIX: MusicMixConfig = {
+  lufs: -30,
+  fadeInMs: 600,
+  fadeOutMs: 2500,
+  duck: { threshold: 0.02, ratio: 6, attackMs: 20, releaseMs: 400 },
+};
+
 export class DurationError extends Error {
   constructor(
     message: string,
@@ -67,6 +75,8 @@ export const buildFinalTimeline = async (opts: {
   cfg: EngineConfig;
   /** Generar master.wav con ffmpeg (false en tests). */
   writeAudio?: boolean;
+  /** Archivo del asset de musica de draft.meta.music (resuelto contra el catalogo). */
+  music?: { file: string; startMs?: number };
 }): Promise<BuildResult> => {
   const { draft, index, words, project, cfg } = opts;
   const t = cfg.render.timing;
@@ -181,7 +191,14 @@ export const buildFinalTimeline = async (opts: {
   if (opts.writeAudio !== false) {
     if (master.length === 0) await makeSilence(project.paths.master, totalMs, cfg.render.audio.sampleRate);
     else {
+      let music: MasterMusic | undefined;
+      if (opts.music) {
+        const mix = cfg.render.audio.music ?? DEFAULT_MUSIC_MIX;
+        const gainDb = blockGainDb(await measureLoudnessLufs(opts.music.file), mix.lufs, 30, 40);
+        music = { file: opts.music.file, gainDb, startMs: opts.music.startMs ?? 0, mix };
+      }
       await buildMasterTrack({
+        music,
         pieces: master,
         totalMs,
         out: project.paths.master,
