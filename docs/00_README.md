@@ -13,6 +13,7 @@ Paquete inicial de la seccion 14 del plan, para retomar el desarrollo con Claude
 | [07_PIPELINE.md](07_PIPELINE.md) | Los 10 pasos, archivos que produce cada uno, cache, proveedores. |
 | [08_QA.md](08_QA.md) | Criterios de aceptacion (hard/soft fail), tests, validacion visual manual. |
 | [09_LICENSING.md](09_LICENSING.md) | Presupuesto y licencias (personajes, voces, assets, Remotion). |
+| [10_DISTRIBUCION.md](10_DISTRIBUCION.md) | Estudio de distribucion: horarios por plataforma, formato de descripciones, hashtags, etiqueta de IA. |
 | [STATUS.md](STATUS.md) | Estado de cada fase, como ejecutar, que falta. |
 | [adr/](adr/) | Decisiones de arquitectura. |
 | [plan/](plan/) | PDF original del plan (v1.0, 30-09-2026). |
