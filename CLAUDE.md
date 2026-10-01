@@ -6,6 +6,8 @@ Construir un motor local que transforme un guion en un video vertical educativo 
 por imagenes estaticas por emocion, subtitulos por color de personaje, recursos visuales y un fondo.
 Especificacion completa: `docs/01_PRODUCT_SPEC.md` (plan original en `docs/plan/`).
 Estado actual y pendientes: `docs/STATUS.md`.
+Distribucion (horarios, descripciones, etiqueta de IA): `docs/10_DISTRIBUCION.md`.
+**Tarea aprobada pendiente**: rotulo de palabra clave en el gancho (`docs/10_DISTRIBUCION.md` §8).
 
 ## Reglas (no negociables)
 1. No inventar paths de assets: todo se referencia por ID contra `config/*.json` (catalogo).

@@ -232,7 +232,7 @@ que manda es el de tu propia cuenta.**
 
 | Recomendación | Motivo | Dónde actuar |
 |---|---|---|
-| **Palabra clave en pantalla durante el gancho** (p. ej., "¿DeepSeek destruyó a ChatGPT?") | La búsqueda de TikTok lee el texto en pantalla y lo que se dice en los primeros 3 s. Hoy el saludo "¡Papu papu!" ocupa ~1 s antes de la palabra clave | Motor: rótulo de título en la escena `hook` |
+| **Palabra clave en pantalla durante el gancho** (p. ej., "¿DeepSeek destruyó a ChatGPT?") | La búsqueda de TikTok lee el texto en pantalla y lo que se dice en los primeros 3 s. Hoy el saludo "¡Papu papu!" ocupa ~1 s antes de la palabra clave | Motor: **tarea aprobada, especificada en §8** |
 | Duración por plataforma: **TikTok 61–90 s**; **Reels y Shorts 60–75 s** | Más de 60 s monetiza en TikTok. En Reels, el tramo de 45–60 s obtiene la mayor mediana de visualizaciones. En Shorts manda la retención, no la duración | Guion: `target` |
 | **Final que enlace con el inicio** (loop) | Las repeticiones elevan la retención por encima del 100 % en Shorts y TikTok | Guion/motor |
 | Variar temas, personajes y estructura entre episodios; comentario original | La política de **contenido no auténtico** de YouTube castiga el contenido masivo y con plantilla. El motor produce videos con plantilla, así que la variación editorial humana es obligatoria | Guion |
@@ -272,6 +272,136 @@ que manda es el de tu propia cuenta.**
       3 hashtags, contenido sintético declarado, video relacionado y playlist.
 - [ ] Primera hora tras publicar en TikTok: responder comentarios.
 - [ ] A las 48 h: anotar retención, envíos y % visto/deslizado en la hoja de seguimiento.
+
+## 8. Tarea de implementación para el agente: rótulo de palabra clave en el gancho
+
+> **Estado: APROBADA por el usuario (2026-10-01), pendiente de implementar.** Este apartado es una
+> especificación accionable para el agente de Claude Code local. Respeta las reglas de `CLAUDE.md`:
+> cambia el contrato del timeline, así que hay que **escribir el ADR 0006 y actualizar los schemas y
+> los tests antes que el render**.
+
+### 8.1 Problema
+La búsqueda de TikTok (y el OCR de Instagram) indexa lo que **se dice** y lo que **aparece escrito**
+en los primeros ~3 s. Hoy el gancho arranca con el saludo pregrabado "¡Papu papu!"
+(`audio.greeting`, `src/tts/greeting.ts`), y la palabra clave ("ChatGPT", "DeepSeek") no se oye
+hasta ~1 s después. Además, ningún elemento de texto fijo muestra el tema: los subtítulos van
+palabra por palabra y los logos son imágenes. El primer fotograma (miniatura y portada) no comunica
+de qué trata el video.
+
+### 8.2 Objetivo
+Un **rótulo de título** (title card) con la palabra clave del episodio, visible y legible **desde el
+fotograma 0 hasta el final de la escena `hook`**. Debe caber en la safe area y no tapar los
+subtítulos, que quedan por encima en el orden de capas. Así el saludo se mantiene (es identidad del
+canal) y la palabra clave aparece escrita desde el primer instante.
+
+### 8.3 Diseño
+Sigue el principio QUE/COMO: **el texto lo decide la narrativa; la posición y el estilo, el motor.**
+
+**Contrato (QUE)**
+- `schemas/timeline.schema.json > meta.hookTitle`: string opcional, 1–60 caracteres. Admite
+  `*palabra*` para resaltar la palabra clave (mismo convenio que `subtitle_emphasis`).
+- `src/timeline/types.ts > TimelineMeta.hookTitle?: string`.
+- Guion: clave de front matter `hook_title:` (también `titulo_gancho:`) en `src/director/script-parser.ts`
+  y en `scriptMeta` (`src/director/rules.ts`). El valor `none` desactiva el rótulo. Si la clave no
+  está, **no hay rótulo** (el cambio no altera los guiones existentes) y el validador emite un
+  warning (8.5).
+- Director LLM: añade `hookTitle` (string, requerido; `""` = sin rótulo) al schema de salida de
+  `src/director/llm/director.ts`. En `prompts/director.system.md`, pide un rótulo de ≤ 45 caracteres
+  con la entidad o palabra clave buscable al principio y marcada con `*…*`.
+- `projects/demo_001/script.md`: añadir `hook_title: ¿*DeepSeek* destruyó a ChatGPT?`.
+
+**Configuración (COMO)**: nuevo bloque `titleCard` en `config/render.json` (y en su schema y en
+`RenderConfig`):
+```json
+"titleCard": {
+  "enabled": true,
+  "y": 240,
+  "maxWidth": 860,
+  "fontSize": 64,
+  "maxLines": 2,
+  "lineHeight": 1.1,
+  "paddingX": 28,
+  "paddingY": 16,
+  "radius": 22,
+  "background": "rgba(17,17,17,0.72)",
+  "textColor": "#FFFFFF",
+  "emphasisColor": "#FFE14D",
+  "minMs": 1500,
+  "maxMs": 6000,
+  "popInMs": 200,
+  "fadeOutMs": 250,
+  "reserveVisualArea": true
+}
+```
+Los valores son puntos de partida: calibrar con `npm run render -- --safe-area`.
+
+**Compilador (`src/timeline/plan.ts`, puro)**
+- Nuevo campo `RenderPlan.titleCard: PlanTitleCard | null` con `{ text, tokens: [{text, emphasis}],
+  from: 0, to, fontSize, lines, box: {x, y, width, height}, popInFrames, fadeOutFrames, colors }`.
+- `to` = fin de la escena con `section: "hook"`, acotado a `[minMs, maxMs]`. Sin escena hook,
+  `to` = `minMs`.
+- Layout con la misma estimación de ancho que los subtítulos (`estimateTextWidth` / `wrapTokens` de
+  `src/timeline/captions.ts`). Si no cabe en `maxLines`, reduce la fuente; por debajo del 70 %, el
+  validador da error (8.5).
+- Si `reserveVisualArea`, los visuales y el b-roll que se solapen con `[from, to)` usan un área
+  desplazada hacia abajo (`visualArea.y + box.height + 12`, con la altura reducida en lo mismo).
+  Así los logos del gancho siguen visibles y no quedan tapados.
+- Centrado horizontal en `captionCenterX(cfg)` (centro de la safe area, como los subtítulos).
+- Planes antiguos sin `titleCard` deben seguir dibujándose (`plan.titleCard ?? null`, igual que
+  `broll` y `watermark`).
+
+**Render**
+- Nuevo `src/components/TitleCard.tsx`: solo lee el plan. Banda redondeada semitransparente, texto
+  Montserrat 900 blanco con contorno (reusar `outline` de `Captions.tsx` o extraerlo a un util
+  compartido) y palabras resaltadas en `emphasisColor`. Entrada pop/scale y salida fade, deterministas.
+- En `src/compositions/ShortVideo.tsx`: **fuera de `<Camera>`** (no tiembla ni hace zoom), **encima
+  de `<Watermark>`** y **debajo de `<Captions>`**.
+- `SafeAreaGuide.tsx`: dibujar también la caja del rótulo.
+- `planFiles` (`src/pipeline/render.ts`) no cambia: el rótulo no usa archivos nuevos.
+
+**Portada (opcional, recomendado)**: en `stepRender`, exportar `output/<id>/cover.jpg` con
+`renderStill` del fotograma `min(15, titleCard.to - 1)`, para usarlo como portada en Reels y
+Shorts (§3.2). Añadirlo a `copyToOutput`.
+
+### 8.4 Fuera de alcance
+- Generar automáticamente las descripciones o los hashtags por plataforma (sería otra tarea; las
+  plantillas de §3 sirven de base).
+- Cambiar el saludo "¡Papu papu!" o el audio del gancho.
+
+### 8.5 Validación (`src/validation/timeline.ts`, check `subtitles`/`narrative`)
+| Código | Nivel | Condición |
+|---|---|---|
+| `HOOK_TITLE_MISSING` | warning | Timeline final sin `meta.hookTitle` (perjudica el SEO) |
+| `HOOK_TITLE_TOO_LONG` | error | Más de `maxLines` líneas o fuente < 70 % |
+| `HOOK_TITLE_OUTSIDE_SAFE_AREA` | error | La caja del rótulo sale de la safe area |
+| `HOOK_TITLE_OVERLAPS_CAPTIONS` | error | La caja del rótulo se solapa con la caja máxima de subtítulos (`captions.centerY` ± alto) |
+| `HOOK_KEYWORD_LATE` | warning | Ninguna palabra resaltada del rótulo (o, si no hay resaltadas, ninguna palabra de ≥ 5 letras) se **dice** antes de los 3.000 ms según `captions` |
+
+### 8.6 Tests (añadir; no borrar ni desactivar ninguno existente)
+- `tests/schemas.test.ts`: acepta `meta.hookTitle`; rechaza > 60 caracteres.
+- `tests/script-parser.test.ts`: `hook_title:` y `titulo_gancho:` llegan a `meta.hookTitle`; `none` lo omite.
+- `tests/plan.test.ts`: `titleCard.from === 0`; `to` = fin del hook acotado a `[minMs, maxMs]`;
+  resaltado de `*palabra*`; los visuales del hook se desplazan con `reserveVisualArea`; sin
+  `hookTitle`, `titleCard === null`; determinismo (hash).
+- `tests/validation.test.ts`: un caso por cada código de 8.5.
+- `tests/llm-director.test.ts`: el schema incluye `hookTitle` y la conversión lo traslada a `meta`.
+- `tests/fixtures/smoke.timeline.json`: añadir `hookTitle` para que el smoke render lo cubra.
+
+### 8.7 Documentación
+- `docs/adr/0006-rotulo-palabra-clave-gancho.md`: contexto (§8.1), decisión (§8.3), consecuencias.
+- `docs/04_TIMELINE_SCHEMA.md` (campo `meta.hookTitle`), `docs/05_RENDER_RULES.md` (capa y layout),
+  `docs/06_SCRIPT_FORMAT.md` (`hook_title:`), `CHANGELOG.md`, y en `docs/STATUS.md` marcar la tarea
+  como hecha.
+
+### 8.8 Criterios de aceptación
+1. `npm run lint && npm test && npm run smoke` en verde.
+2. `npm run render -- --project projects/demo_001 --safe-area`: en el fotograma 0 se lee
+   "¿DeepSeek destruyó a ChatGPT?", con "DeepSeek" resaltado y dentro de la safe area; los logos
+   del gancho siguen visibles debajo; los subtítulos no quedan tapados.
+3. El rótulo desaparece con un fade al terminar la escena `hook` (≤ 6 s).
+4. `report.json` en PASS en todos los checks hard; `npm run render -- --repro` da fotogramas idénticos.
+5. Validación manual en el teléfono: el tema se entiende con el video en silencio y mirando solo el
+   primer fotograma.
 
 ## Fuentes
 
