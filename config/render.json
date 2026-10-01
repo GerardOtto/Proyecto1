@@ -61,6 +61,7 @@
     "sampleRate": 48000,
     "loudnessLufs": -14,
     "truePeakDb": -1.5,
+    "voiceBlockLufs": -20,
     "sfxVolume": 0.55,
     "backgroundVideoVolume": 0
   },

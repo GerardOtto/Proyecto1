@@ -216,12 +216,14 @@ main(async () => {
     const out = fromRepo("assets/backgrounds/bg_tech_loop.mp4");
     if (values.force || !fs.existsSync(out)) {
       // 10 s en loop: gradiente animado + rejilla tenue. Bajo bitrate (es un fondo atenuado).
+      // GOP corto y sin B-frames: con GOP largo el compositor de Remotion (Windows) falla al
+      // buscar frames ("No frame found at position").
       await run(FFMPEG, [
         "-y", "-v", "error",
         "-f", "lavfi", "-i",
         "gradients=s=540x960:c0=0x1b1f3b:c1=0x3a1c71:c2=0x0f4c5c:c3=0x2a0f3b:n=4:speed=0.015:d=10:r=30:seed=7",
         "-vf", "drawgrid=w=60:h=60:t=1:c=white@0.06,scale=1080:1920:flags=bicubic",
-        "-c:v", "libx264", "-preset", "slow", "-crf", "30", "-pix_fmt", "yuv420p", "-an", "-movflags", "+faststart",
+        "-c:v", "libx264", "-preset", "slow", "-crf", "30", "-g", "30", "-bf", "0", "-pix_fmt", "yuv420p", "-an", "-movflags", "+faststart",
         out,
       ]);
       count++;

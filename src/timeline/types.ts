@@ -238,6 +238,8 @@ export interface RenderConfig {
     sampleRate: number;
     loudnessLufs: number;
     truePeakDb: number;
+    /** Sonoridad a la que se nivela cada bloque de voz antes de mezclar (iguala voces de distinto origen). */
+    voiceBlockLufs?: number;
     sfxVolume: number;
     backgroundVideoVolume: number;
   };

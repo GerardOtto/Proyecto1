@@ -76,6 +76,36 @@ export const toWav = async (input: string, out: string, sampleRate: number): Pro
   await run(FFMPEG, ["-y", "-v", "error", "-i", input, "-ac", "1", "-ar", String(sampleRate), "-c:a", "pcm_s16le", out]);
 };
 
+/** Extrae `input_i` (LUFS integrados) del JSON que imprime `loudnorm=print_format=json`. */
+export const parseLoudnormInputI = (stderr: string): number => {
+  const m = stderr.match(/"input_i"\s*:\s*"([^"]+)"/);
+  return m ? Number(m[1]) : NaN;
+};
+
+/**
+ * Ganancia (dB) que lleva un bloque medido a `targetLufs`. Ganancia estatica (no compresion):
+ * conserva la dinamica de la voz. Acotada para no amplificar ruido; 0 si no hay medida (silencio).
+ */
+export const blockGainDb = (measuredLufs: number, targetLufs: number, maxBoostDb = 15, maxCutDb = 20): number => {
+  if (!Number.isFinite(measuredLufs)) return 0;
+  return Math.min(maxBoostDb, Math.max(-maxCutDb, targetLufs - measuredLufs));
+};
+
+/** Mide la sonoridad integrada (LUFS) de un audio. NaN si es silencio o no se puede medir. */
+export const measureLoudnessLufs = async (file: string): Promise<number> => {
+  const res = await run(FFMPEG, ["-hide_banner", "-nostats", "-i", file, "-af", "loudnorm=print_format=json", "-f", "null", "-"], {
+    allowFail: true,
+  });
+  return parseLoudnormInputI(res.stderr);
+};
+
+/** Aplica una ganancia fija (dB) a un WAV, en sitio. */
+export const applyGainDb = async (file: string, gainDb: number): Promise<void> => {
+  const tmp = file + ".gain.wav";
+  await run(FFMPEG, ["-y", "-v", "error", "-i", file, "-af", `volume=${gainDb.toFixed(2)}dB`, "-c:a", "pcm_s16le", tmp]);
+  fs.renameSync(tmp, file);
+};
+
 export interface MasterPiece {
   file: string;
   offsetMs: number;

@@ -2,7 +2,7 @@
 // `npm run generate` los encadena. Todos escriben su resultado en disco y en report.json.
 import fs from "node:fs";
 import path from "node:path";
-import { probeDurationMs, toWav } from "../audio/ffmpeg";
+import { applyGainDb, blockGainDb, measureLoudnessLufs, probeDurationMs, toWav } from "../audio/ffmpeg";
 import { AnthropicProvider } from "../director/llm/anthropic";
 import { llmDirector } from "../director/llm/director";
 import type { LLMProvider } from "../director/llm/provider";
@@ -96,7 +96,10 @@ export const stepVoices = async (ctx: EngineContext, opts: { tts?: string; force
       voice,
       outBase: path.join(project.paths.blocksDir, `${scene.id}.raw`),
     };
-    const cacheKey = sha256(`${provider.cacheTag(req)}|${scene.character}|${scene.dialogue}|${cfg.render.audio.sampleRate}`);
+    const blockLufs = cfg.render.audio.voiceBlockLufs;
+    const cacheKey = sha256(
+      `${provider.cacheTag(req)}|${scene.character}|${scene.dialogue}|${cfg.render.audio.sampleRate}|lufs=${blockLufs ?? "off"}`,
+    );
     const out = path.join(project.paths.blocksDir, `${scene.id}.wav`);
     const prev = prevByScene.get(scene.id);
     if (!opts.force && prev && prev.cacheKey === cacheKey && fs.existsSync(out)) {
@@ -106,11 +109,20 @@ export const stepVoices = async (ctx: EngineContext, opts: { tts?: string; force
     const res = await provider.synthesize(req);
     await toWav(res.file, out, cfg.render.audio.sampleRate);
     if (res.file.startsWith(project.paths.blocksDir) && res.file !== out) fs.rmSync(res.file, { force: true });
+    // Nivelado por bloque: voces de distinto origen (p. ej. audios descargados) suenan igual de fuertes.
+    let gainNote = "";
+    if (blockLufs !== undefined) {
+      const gain = blockGainDb(await measureLoudnessLufs(out), blockLufs);
+      if (Math.abs(gain) >= 0.5) {
+        await applyGainDb(out, gain);
+        gainNote = ` (${gain > 0 ? "+" : ""}${gain.toFixed(1)} dB)`;
+      }
+    }
     const durationMs = await probeDurationMs(out);
     if (durationMs < 200) throw new Error(`Audio demasiado corto para ${scene.id} (${durationMs} ms)`);
     blocks.push({ blockId: scene.id, sceneId: scene.id, character: scene.character, text: scene.dialogue, file: toRepoRel(out), durationMs, cacheKey });
     generated++;
-    log.ok(`${scene.id} (${scene.character}) ${durationMs} ms`);
+    log.ok(`${scene.id} (${scene.character}) ${durationMs} ms${gainNote}`);
   }
   const index: AudioIndex = { provider: provider.name, sampleRate: cfg.render.audio.sampleRate, blocks };
   writeJson(project.paths.audioIndex, index);

@@ -29,7 +29,8 @@ export const createTTSProvider = (name: string, project: ProjectContext, wordsPe
 export const resolveVoice = (character: string, ch: CharacterConfig | undefined, project: ProjectContext): VoiceSettings => {
   const override = project.voices.voices?.[character] ?? {};
   return {
-    fishReferenceId: override.fishReferenceId ?? ch?.voice?.fish?.referenceId ?? undefined,
+    // `||`: un id vacio ("") en requested_voices.json no debe tapar el id global del personaje.
+    fishReferenceId: override.fishReferenceId || ch?.voice?.fish?.referenceId || undefined,
     speed: override.speed ?? ch?.voice?.fish?.speed ?? 1,
     fliteVoice: override.fliteVoice ?? ch?.voice?.flite?.voice ?? "slt",
   };
