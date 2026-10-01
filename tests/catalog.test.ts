@@ -65,6 +65,18 @@ describe("catalogo y resolucion de assets por ID", async () => {
     expect(res.issues.some((i) => i.code === "REACTION_NOT_CANONICAL")).toBe(true);
   });
 
+  it("resuelve variantes como [principal, ...extra] y detecta variantes rotas", async () => {
+    const c = clone(loadEngineConfig());
+    c.characters.characters.teto!.variants = { nerd: ["feliz.png"], feliz: ["no_existe.png"], shock: ["feliz.png"] };
+    const res = await buildCatalog(c);
+    const teto = res.resolved.characters.teto!;
+    expect(teto.variants?.nerd).toEqual([teto.avatars.nerd, teto.avatars.feliz]);
+    expect(teto.variants?.feliz).toBeUndefined(); // solo la principal: sin variantes efectivas
+    const codes = res.issues.map((i) => i.code);
+    expect(codes).toContain("AVATAR_MISSING");
+    expect(codes).toContain("VARIANT_WITHOUT_MAIN"); // "shock" no es una reaccion con imagen principal
+  });
+
   it("detecta colisiones de alias", () => {
     const issues: Array<{ level: "error" | "warning"; code: string; message: string }> = [];
     buildReactionAliases({ reactions: { a: { use: "", priority: "alta", aliases: ["x"] }, b: { use: "", priority: "alta", aliases: ["x"] } } }, issues);

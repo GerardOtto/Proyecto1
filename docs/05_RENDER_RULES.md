@@ -16,7 +16,13 @@ el compilador, nunca hackear el timeline.
      columnas; slots explicitos left/right/top/bottom/full. Pop-in 250 ms, pop-out 200 ms.
    - **Stage**: personajes anclados abajo (ver 02_CHARACTER_RULES.md).
 3. **Captions** (fuera de la camara: nunca salen de la safe area).
-4. **MemeLayer**: imagen meme con pop/rotacion + flash blanco (180 ms).
+   - **BRoll** (debajo de Visuals): rellena con clips los huecos del area de visuales sin visual ni
+     meme (tramos de `events.broll.clipMs`, ADR 0005).
+4. **MemeLayer**: imagen o GIF meme con pop + flash blanco (`flashMs`). Por defecto dura
+   `durationMs` (1700 ms = el GIF completo) y se desvanece; la escena meme dura menos
+   (`timing.memeSceneMs`), asi el siguiente personaje empieza a hablar antes de que termine la
+   explosion. Opcional, estilo **corte** (`events.memeExplosion.cutAtMs`): imagen, sacudida y SFX se
+   cortan en seco en el mismo frame.
 5. **SafeAreaGuide** (solo con `--safe-area`).
 6. **Audio**: pista maestra + clips por escena (si no hay master) + SFX.
 

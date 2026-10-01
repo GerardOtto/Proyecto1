@@ -20,6 +20,7 @@ export const EMPTY_PLAN: RenderPlan = {
   captions: [],
   camera: [],
   memes: [],
+  broll: [],
   colors: {},
   names: {},
   style: {

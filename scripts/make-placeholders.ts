@@ -3,6 +3,7 @@
 // un fondo en loop y SFX sinteticos. Reemplazarlos por material con licencia verificada.
 //
 // Uso: npm run assets:placeholders [-- --force] [-- --only characters|visuals|background|sfx]
+// --force regenera placeholders, pero nunca toca assets cuyo license_status ya no es placeholder.
 // Requiere ffmpeg (con librsvg para rasterizar SVG -> PNG; si no, se dejan los .svg).
 import fs from "node:fs";
 import path from "node:path";
@@ -171,10 +172,20 @@ const svgToPng = async (svg: string, outPng: string): Promise<string> => {
   return outPng;
 };
 
-const shouldWrite = (p: string) => values.force || (!fs.existsSync(p) && !fs.existsSync(p.replace(/\.png$/, ".svg")));
+// Archivos que el catalogo ya no marca como placeholder (material real): nunca se sobrescriben,
+// ni con --force.
+let realAssets = new Set<string>();
+const isReal = (p: string) => realAssets.has(toRepoRel(p));
+const shouldWrite = (p: string) => !isReal(p) && (values.force || (!fs.existsSync(p) && !fs.existsSync(p.replace(/\.png$/, ".svg"))));
 
 main(async () => {
   const cfg = loadEngineConfig();
+  realAssets = new Set([
+    ...cfg.assets.assets.filter((a) => a.license_status !== "placeholder").map((a) => a.path),
+    ...Object.values(cfg.characters.characters)
+      .filter((ch) => ch.license && ch.license.license_status !== "placeholder")
+      .flatMap((ch) => Object.values(ch.reactions).map((f) => toRepoRel(fromRepo(ch.avatarDir, f)))),
+  ]);
   const only = values.only;
   let count = 0;
 
@@ -199,7 +210,6 @@ main(async () => {
       ["assets/visuals/chart_benchmarks.png", barsSvg("Benchmarks (ilustrativo)", ["A", "B", "C"], [82, 88, 85], ["#10A37F", "#D97757", "#4D6BFE"])],
       ["assets/visuals/diagram_competition.png", cardSvg("Competencia", "más modelos → mejores precios", "#5B3CC4")],
       ["assets/visuals/diagram_cost_down.png", barsSvg("Costo por consulta", ["2023", "2024", "2025"], [100, 45, 12], ["#E0503A", "#F2A93B", "#39C5BB"])],
-      ["assets/memes/meme_boom.png", memeSvg("BOOM!", "#FF7A1A")],
       ["assets/memes/meme_question.png", memeSvg("¿¡QUÉ!?", "#7A5CFF")],
       ["assets/backgrounds/bg_dark_gradient.png", gradientSvg()],
     ];
@@ -214,7 +224,7 @@ main(async () => {
 
   if (!only || only === "background") {
     const out = fromRepo("assets/backgrounds/bg_tech_loop.mp4");
-    if (values.force || !fs.existsSync(out)) {
+    if (!isReal(out) && (values.force || !fs.existsSync(out))) {
       // 10 s en loop: gradiente animado + rejilla tenue. Bajo bitrate (es un fondo atenuado).
       // GOP corto y sin B-frames: con GOP largo el compositor de Remotion (Windows) falla al
       // buscar frames ("No frame found at position").
@@ -240,7 +250,7 @@ main(async () => {
     ];
     for (const [rel, expr, d] of sfx) {
       const out = fromRepo(rel);
-      if (!values.force && fs.existsSync(out)) continue;
+      if (isReal(out) || (!values.force && fs.existsSync(out))) continue;
       fs.mkdirSync(path.dirname(out), { recursive: true });
       await run(FFMPEG, ["-y", "-v", "error", "-f", "lavfi", "-i", `aevalsrc='${expr}':s=48000:d=${d}`, "-af", "lowpass=f=9000", "-ac", "1", "-c:a", "pcm_s16le", out]);
       count++;

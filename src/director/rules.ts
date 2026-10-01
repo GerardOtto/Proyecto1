@@ -2,7 +2,7 @@
 // se infieren secciones faltantes y se estiman tiempos. Sin red, sin coste, reproducible.
 import fs from "node:fs";
 import type { Catalog, EngineConfig, ProjectContext } from "../catalog/catalog";
-import { projectBackgroundId, resolveMusicId } from "../catalog/catalog";
+import { projectBackgroundId, resolveBrollIds, resolveMusicId } from "../catalog/catalog";
 import type { Timeline } from "../timeline/types";
 import { beatsToDraftTimeline } from "./beats";
 import { parseScript, type ParsedScript } from "./script-parser";
@@ -24,12 +24,14 @@ export const scriptMeta = (parsed: ParsedScript, project: ProjectContext, catalo
     throw new Error(`background "${fm.background}" del front matter no existe en el catalogo`);
   }
   const music = resolveMusicId(fm.music, project, catalog);
+  const broll = resolveBrollIds(fm.broll, project, catalog);
   return {
     title: parsed.title ?? project.config.title ?? project.id,
     durationTargetSec: target,
     language: fm.language ?? project.config.language ?? "es",
     ...(background ? { background } : {}),
     ...(music ? { music } : {}),
+    ...(broll.length ? { broll } : {}),
     project: project.id,
   };
 };

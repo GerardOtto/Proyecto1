@@ -100,6 +100,14 @@ export const measureLoudnessLufs = async (file: string): Promise<number> => {
   return parseLoudnormInputI(res.stderr);
 };
 
+/** Cambia la velocidad de un WAV conservando el tono (atempo admite 0.5-2.0), en sitio. */
+export const applyTempo = async (file: string, tempo: number): Promise<void> => {
+  if (tempo < 0.5 || tempo > 2) throw new Error(`voiceTempo ${tempo} fuera de [0.5, 2]`);
+  const tmp = file + ".tempo.wav";
+  await run(FFMPEG, ["-y", "-v", "error", "-i", file, "-af", `atempo=${tempo}`, "-c:a", "pcm_s16le", tmp]);
+  fs.renameSync(tmp, file);
+};
+
 /** Aplica una ganancia fija (dB) a un WAV, en sitio. */
 export const applyGainDb = async (file: string, gainDb: number): Promise<void> => {
   const tmp = file + ".gain.wav";

@@ -17,11 +17,12 @@ const Actor: React.FC<{ actor: PlanActor; segFrom: number; margin: number }> = (
   }
   const current = actor.avatars[idx]!;
 
-  // Rebote breve al cambiar de reaccion dentro de la escena.
+  // Rebote breve al cambiar de reaccion dentro de la escena (mas suave si es solo otra variante).
   const sinceChange = frame - current.from;
+  const peak = current.variant ? 1.025 : 1.07;
   const bounce =
     idx > 0 && sinceChange < BOUNCE_FRAMES
-      ? interpolate(sinceChange, [0, 3, BOUNCE_FRAMES], [1, 1.07, 1], { extrapolateRight: "clamp" })
+      ? interpolate(sinceChange, [0, 3, BOUNCE_FRAMES], [1, peak, 1], { extrapolateRight: "clamp" })
       : 1;
 
   // Transicion de escala al cambiar de rol (speaker <-> listener).

@@ -2,7 +2,7 @@
 // `npm run generate` los encadena. Todos escriben su resultado en disco y en report.json.
 import fs from "node:fs";
 import path from "node:path";
-import { applyGainDb, blockGainDb, measureLoudnessLufs, probeDurationMs, toWav } from "../audio/ffmpeg";
+import { applyGainDb, applyTempo, blockGainDb, measureLoudnessLufs, probeDurationMs, toWav } from "../audio/ffmpeg";
 import { AnthropicProvider } from "../director/llm/anthropic";
 import { llmDirector } from "../director/llm/director";
 import type { LLMProvider } from "../director/llm/provider";
@@ -97,8 +97,9 @@ export const stepVoices = async (ctx: EngineContext, opts: { tts?: string; force
       outBase: path.join(project.paths.blocksDir, `${scene.id}.raw`),
     };
     const blockLufs = cfg.render.audio.voiceBlockLufs;
+    const tempo = cfg.render.audio.voiceTempo ?? 1;
     const cacheKey = sha256(
-      `${provider.cacheTag(req)}|${scene.character}|${scene.dialogue}|${cfg.render.audio.sampleRate}|lufs=${blockLufs ?? "off"}`,
+      `${provider.cacheTag(req)}|${scene.character}|${scene.dialogue}|${cfg.render.audio.sampleRate}|lufs=${blockLufs ?? "off"}|tempo=${tempo}`,
     );
     const out = path.join(project.paths.blocksDir, `${scene.id}.wav`);
     const prev = prevByScene.get(scene.id);
@@ -109,6 +110,8 @@ export const stepVoices = async (ctx: EngineContext, opts: { tts?: string; force
     const res = await provider.synthesize(req);
     await toWav(res.file, out, cfg.render.audio.sampleRate);
     if (res.file.startsWith(project.paths.blocksDir) && res.file !== out) fs.rmSync(res.file, { force: true });
+    // Ritmo: acelera la voz sin cambiar el tono (el timeline se reajusta a la nueva duracion).
+    if (tempo !== 1) await applyTempo(out, tempo);
     // Nivelado por bloque: voces de distinto origen (p. ej. audios descargados) suenan igual de fuertes.
     let gainNote = "";
     if (blockLufs !== undefined) {
@@ -268,7 +271,7 @@ export const stepRender = async (ctx: EngineContext, opts: RenderStepOptions = {
     inputsHash: hashJson({
       plan,
       files: Object.fromEntries(
-        [...new Set([plan.audio.master, ...plan.visuals.map((v) => v.src), ...plan.stage.flatMap((s) => s.actors.flatMap((a) => a.avatars.map((x) => x.src)))])]
+        [...new Set([plan.audio.master, ...plan.visuals.map((v) => v.src), ...plan.broll.map((b) => b.src), ...plan.stage.flatMap((s) => s.actors.flatMap((a) => a.avatars.map((x) => x.src)))])]
           .filter((x): x is string => !!x)
           .sort()
           .map((f) => [f, hashFile(fromRepo(f))]),

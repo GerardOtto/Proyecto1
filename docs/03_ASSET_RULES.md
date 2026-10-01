@@ -30,7 +30,7 @@ config/assets.local.json                catalogo local no versionado (musica con
   "license_status": "documented"
 }
 ```
-- `type`: image | logo | diagram | meme | background_video | background_image | sfx | music.
+- `type`: image | logo | diagram | meme | background_video | background_image | sfx | music | broll.
 - `startMs` (solo music): salta la intro o el silencio inicial del tema. La mezcla (loop, nivel,
   ducking bajo la voz, fades) esta en `config/render.json > audio.music` (ADR 0004).
 - `license_status`: `documented` (verificada) | `owned` (propia) | `placeholder` (generada para
@@ -54,7 +54,27 @@ Si `x.png` no existe pero si `x.jpg|jpeg|webp|svg|gif`, se usa ese archivo con w
 - `projects/<id>/background.mp4` (o .png/.jpg): se registra como `project_background`.
 - Un asset del proyecto con el mismo ID que uno global lo reemplaza (warning).
 
+## Graficos propios (`npm run graphics`)
+Logos, titulares y graficos se disenan en HTML/CSS en `assets/visuals/src/*.html` (estilo comun en
+`style.css`, fuente Montserrat del repo). Cada HTML declara su salida y tamano con
+`<meta name="output" content="assets/..png" data-width=".." data-height="..">`; `npm run graphics`
+los renderiza a PNG transparente con el Chrome Headless Shell de Remotion. Los graficos con datos
+llevan la fuente visible y en `notes` del catalogo. Los simbolos de marcas vienen de Wikimedia
+Commons (`assets/visuals/src/logos/`, licencia registrada en el catalogo).
+
+## B-roll (`assets/broll/`, ADR 0005)
+Clips de video (o GIF) sin audio que rellenan el area de visuales cuando no hay visual ni meme:
+informatica, IA, gatitos. Preparacion: recorte a 4:3 (852x640), H.264 con `-g 30 -bf 0`, sin audio,
+<= 12 s. Registrar `source` (pagina de Wikimedia Commons u origen), autor y licencia; solo CC0,
+dominio publico o licencias que permitan el uso.
+
+## Memes animados (GIF)
+Un meme puede ser `.gif`: se reproduce con `@remotion/gif` sincronizado con el video. Para quitar un
+fondo blanco y empezar en el cuadro del estallido:
+`python scripts/remove-bg.py --gif <original.gif> assets/memes/<id>.gif <cuadro_inicial>`.
+
 ## Placeholders
 `npm run assets:placeholders` genera de forma determinista avatares (SVG -> PNG con librsvg de
 ffmpeg), logos de texto, diagramas, memes, un fondo animado de 10 s y SFX sinteticos. Son solo para
 desarrollo: reemplazarlos por material con licencia verificada (ver `09_LICENSING.md`).
+`--force` nunca sobrescribe un asset cuyo `license_status` ya no es `placeholder`.

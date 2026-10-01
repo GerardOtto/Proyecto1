@@ -20,8 +20,41 @@ export interface PlanActor {
   /** true si el personaje no estaba en escena en el segmento anterior. */
   entering: boolean;
   /** Cambios de avatar dentro del segmento (frames absolutos). El primero = from del segmento. */
-  avatars: Array<{ from: number; src: string; reaction: string }>;
+  avatars: PlanAvatar[];
 }
+
+export interface PlanAvatar {
+  from: number;
+  src: string;
+  reaction: string;
+  /** true: otra imagen de la MISMA reaccion (variacion mientras habla), no un cambio semantico. */
+  variant?: boolean;
+}
+
+/**
+ * Intercala variantes de la misma reaccion cada `interval` frames dentro de cada tramo de avatar
+ * (pura). Cada imagen se mantiene al menos `interval` frames; no se agrega una variante si no
+ * queda un intervalo completo antes del siguiente cambio semantico o del fin del segmento.
+ */
+export const withAvatarVariants = (
+  changes: PlanAvatar[],
+  end: number,
+  variants: Record<string, string[]> | undefined,
+  interval: number,
+): PlanAvatar[] => {
+  if (!variants || interval <= 0) return changes;
+  const out: PlanAvatar[] = [];
+  changes.forEach((c, i) => {
+    out.push(c);
+    const list = variants[c.reaction];
+    if (!list || list.length < 2 || c.src !== list[0]) return;
+    const segEnd = i + 1 < changes.length ? changes[i + 1]!.from : end;
+    for (let f = c.from + interval, k = 1; f + interval <= segEnd; f += interval, k++) {
+      out.push({ from: f, src: list[k % list.length]!, reaction: c.reaction, variant: true });
+    }
+  });
+  return out;
+};
 
 export interface PlanStageSegment {
   sceneId: string;
@@ -65,12 +98,73 @@ export interface PlanMeme {
   flashFrames: number;
   punchScale: number;
   seed: string;
+  /** true: desaparece de golpe en `to` (estilo corte); false: se desvanece. */
+  cut: boolean;
 }
+
+export interface PlanBroll {
+  from: number;
+  to: number;
+  src: string;
+  kind: "video" | "gif";
+  /** Frame del clip desde el que empieza (varia entre usos del mismo clip). */
+  startFrom: number;
+  /** Si el clip es mas corto que el tramo: se repite en loop cada N frames. */
+  loopFrames: number | null;
+}
+
+type Span = { from: number; to: number };
+
+/** Huecos (>= minFrames) de [0, total) no cubiertos por `busy`. Pura. */
+export const brollGaps = (busy: Span[], total: number, minFrames: number): Span[] => {
+  const gaps: Span[] = [];
+  let cursor = 0;
+  for (const b of [...busy].filter((x) => x.to > x.from).sort((a, b) => a.from - b.from)) {
+    if (b.from > cursor) gaps.push({ from: cursor, to: Math.min(b.from, total) });
+    cursor = Math.max(cursor, b.to);
+  }
+  if (cursor < total) gaps.push({ from: cursor, to: total });
+  return gaps.filter((g) => g.to - g.from >= minFrames);
+};
+
+/**
+ * Rellena los huecos con clips en rotacion (orden dado, determinista), tramos de `clipFrames`.
+ * Un resto menor que `minFrames` se suma al tramo anterior. Pura.
+ */
+export const fillBroll = (
+  gaps: Span[],
+  clips: Array<{ src: string; kind: "video" | "gif"; frames: number | null }>,
+  clipFrames: number,
+  minFrames: number,
+): PlanBroll[] => {
+  const out: PlanBroll[] = [];
+  if (clips.length === 0 || clipFrames <= 0) return out;
+  const uses = new Map<string, number>();
+  let k = 0;
+  for (const g of gaps) {
+    for (let f = g.from; f < g.to; ) {
+      let end = Math.min(g.to, f + clipFrames);
+      if (g.to - end < minFrames) end = g.to;
+      const c = clips[k++ % clips.length]!;
+      const len = end - f;
+      const n = uses.get(c.src) ?? 0;
+      uses.set(c.src, n + 1);
+      // Cada reutilizacion del clip empieza en otro tramo (si el clip es mas largo que el hueco).
+      const startFrom = c.frames && c.frames > len ? (n * clipFrames) % (c.frames - len + 1) : 0;
+      const loopFrames = c.frames && c.frames < startFrom + len ? c.frames : null;
+      out.push({ from: f, to: end, src: c.src, kind: c.kind, startFrom, loopFrames });
+      f = end;
+    }
+  }
+  return out;
+};
 
 export interface PlanAudioClip {
   src: string;
   from: number;
   volume: number;
+  /** Si se define, el audio se corta en seco tras estos frames. */
+  durationFrames?: number;
 }
 
 export interface RenderPlan {
@@ -95,6 +189,8 @@ export interface RenderPlan {
   captions: PlanCaptionPage[];
   camera: PlanCamera[];
   memes: PlanMeme[];
+  /** Relleno del area de visuales cuando no hay visual ni meme. */
+  broll: PlanBroll[];
   colors: Record<string, string>;
   names: Record<string, string>;
   style: {
@@ -206,6 +302,9 @@ export const buildRenderPlan = (
         else changes.push({ from: at, ...next });
       }
       changes.sort((x, y) => x.from - y.from);
+      // Mientras habla, la imagen alterna entre variantes de la misma reaccion (da vida a turnos largos).
+      const variantInterval = msToDurationInFrames(cfg.timing.avatarVariantIntervalMs ?? 0, fps);
+      const avatars = a.role === "speaker" ? withAvatarVariants(changes, to, ch.variants, variantInterval) : changes;
       const scale = a.role === "speaker" ? ch.defaultScale : ch.defaultScale * cfg.layout.listenerScaleFactor;
       const prev = prevActors.get(a.character);
       return {
@@ -216,7 +315,7 @@ export const buildRenderPlan = (
         prevScale: prev ? prev.scale : null,
         dim: a.role === "listener" ? cfg.layout.listenerDim : 0,
         entering: prev === undefined,
-        avatars: changes,
+        avatars,
       };
     });
 
@@ -300,13 +399,16 @@ export const buildRenderPlan = (
         }
         case "meme_explosion": {
           const me = cfg.events.memeExplosion;
-          const d = msToDurationInFrames(e.durationMs ?? me.durationMs, fps);
+          const cut = me.cutAtMs !== undefined;
+          const d = msToDurationInFrames(e.durationMs ?? me.cutAtMs ?? me.durationMs, fps);
           const memeId = e.meme ?? me.defaultMeme;
           const memeAsset = catalog.assets[memeId] ? asset(memeId, ["meme", "image"]) : null;
-          memes.push({ from: at, to: at + d, src: memeAsset?.path ?? null, flashFrames: msToDurationInFrames(me.flashMs, fps), punchScale: me.punchScale, seed });
-          camera.push({ type: "shake", from: at, to: at + msToDurationInFrames(cfg.events.cameraShake.durationMs, fps), rampFrames: 0, scale: 1, intensity: cfg.events.cameraShake.intensity, seed });
+          memes.push({ from: at, to: at + d, src: memeAsset?.path ?? null, flashFrames: msToDurationInFrames(me.flashMs, fps), punchScale: me.punchScale, seed, cut });
+          // En estilo corte, la sacudida y el SFX terminan en el mismo frame que la imagen.
+          const shake = msToDurationInFrames(cfg.events.cameraShake.durationMs, fps);
+          camera.push({ type: "shake", from: at, to: at + (cut ? Math.min(shake, d) : shake), rampFrames: 0, scale: 1, intensity: cfg.events.cameraShake.intensity, seed });
           const sfxId = e.sfx ?? me.defaultSfx;
-          if (catalog.assets[sfxId]) sfx.push({ src: asset(sfxId, ["sfx"]).path, from: at, volume: cfg.audio.sfxVolume });
+          if (catalog.assets[sfxId]) sfx.push({ src: asset(sfxId, ["sfx"]).path, from: at, volume: cfg.audio.sfxVolume, ...(cut ? { durationFrames: d } : {}) });
           break;
         }
         case "sfx":
@@ -317,6 +419,25 @@ export const buildRenderPlan = (
       }
     });
   }
+
+  // ---------------------------------------------------------------- b-roll
+  // Estimulo constante en el area de visuales: los huecos sin visual ni meme se rellenan con clips.
+  const brollCfg = cfg.events.broll ?? { clipMs: 4000, minMs: 1000 };
+  const brollClips = (timeline.meta.broll ?? []).map((id) => {
+    const a = asset(id, ["broll"]);
+    return {
+      src: a.path,
+      kind: a.path.toLowerCase().endsWith(".gif") ? ("gif" as const) : ("video" as const),
+      frames: a.durationMs ? msToDurationInFrames(a.durationMs, fps) : null,
+    };
+  });
+  const minBroll = msToDurationInFrames(brollCfg.minMs, fps);
+  const broll = fillBroll(
+    brollGaps([...visuals, ...memes], durationInFrames, minBroll),
+    brollClips,
+    msToDurationInFrames(brollCfg.clipMs, fps),
+    minBroll,
+  );
 
   // ---------------------------------------------------------------- captions
   const colors: Record<string, string> = Object.fromEntries(
@@ -389,6 +510,7 @@ export const buildRenderPlan = (
     captions,
     camera,
     memes,
+    broll,
     colors,
     names: Object.fromEntries(Object.entries(catalog.characters).map(([id, c]) => [id, c.displayName])),
     style: {

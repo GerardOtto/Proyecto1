@@ -21,6 +21,7 @@ export const planFiles = (plan: RenderPlan): string[] => {
   for (const seg of plan.stage) for (const a of seg.actors) for (const av of a.avatars) files.add(av.src);
   for (const v of plan.visuals) files.add(v.src);
   for (const m of plan.memes) if (m.src) files.add(m.src);
+  for (const b of plan.broll ?? []) files.add(b.src);
   return [...files].sort();
 };
 

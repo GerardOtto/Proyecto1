@@ -59,7 +59,7 @@ del dialogo; `build-timeline` lo convierte a `atMs` con el audio real). Sin ancl
 | visual_hide | visual | Retira un recurso antes del fin de la escena |
 | camera_zoom | durationMs?, scale? (1-1.5) | Zoom suave para enfatizar (vuelve al cerrar la escena) |
 | camera_shake | durationMs?, intensity? | Sacudida breve para meme o shock |
-| meme_explosion | meme?, sfx?, durationMs? | Preset: flash + SFX + golpe de escala + imagen meme + sacudida |
+| meme_explosion | meme?, sfx?, durationMs? | Preset: flash + SFX + golpe de escala + imagen meme + sacudida; corte en seco a los `cutAtMs` (render.json) |
 | subtitle_emphasis | words?, color? | Resalta palabras (sin `words`: todo el dialogo desde el ancla) |
 | pause | durationMs? | Micro-pausa comica: inserta silencio en el audio (antes de `atWord` o al final) |
 | sfx | sfx, volume? | Efecto de sonido (extension del MVP) |

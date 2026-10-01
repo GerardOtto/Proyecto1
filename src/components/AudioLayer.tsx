@@ -11,7 +11,7 @@ export const AudioLayer: React.FC<{ audio: RenderPlan["audio"] }> = ({ audio }) 
       </Sequence>
     ))}
     {audio.sfx.map((c, i) => (
-      <Sequence key={`sfx-${i}`} from={c.from} layout="none">
+      <Sequence key={`sfx-${i}`} from={c.from} durationInFrames={c.durationFrames} layout="none">
         <Audio src={staticFile(c.src)} volume={c.volume} />
       </Sequence>
     ))}

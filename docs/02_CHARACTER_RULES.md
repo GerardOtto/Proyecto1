@@ -47,7 +47,11 @@ Campos por personaje: `displayName`, `subtitleColor`, `defaultScale` (alto del a
 - Escenas sin dialogo (meme, pausa) mantienen en pantalla a los personajes de la escena anterior.
 - Maximo `layout.maxCharactersOnScreen` (3) personajes; mas requiere `crowd: true`.
 - `character_reaction` solo para personajes en pantalla (si no, el plan falla).
-- Cambios de avatar del mismo personaje a menos de `timing.minAvatarChangeIntervalMs` (1200 ms) generan
+- Cambios de avatar del mismo personaje a menos de `timing.minAvatarChangeIntervalMs` (1000 ms) generan
   warning: deben responder a un cambio semantico.
+- **Variantes** (`characters.json > variants`): imagenes extra de la MISMA reaccion. Mientras un
+  personaje habla, el plan alterna principal y variantes cada `timing.avatarVariantIntervalMs`
+  (2000 ms); cada imagen dura al menos ese intervalo y nunca pisa un cambio semantico. El que escucha
+  no varia. Origen de cada variante: `assets/characters/SOURCES.md`.
 - Al cambiar de reaccion dentro de una escena: rebote breve (8 frames). Al cambiar de rol: transicion
   de escala (8 frames). Al entrar a escena por primera vez: entrada desde abajo (10 frames).

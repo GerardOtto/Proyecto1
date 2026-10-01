@@ -1,6 +1,6 @@
 // Parser determinista del formato de guion (docs/06_SCRIPT_FORMAT.md).
 //
-//   ---                         front matter opcional (title, target, background, music, language)
+//   ---                         front matter opcional (title, target, background, music, broll, language)
 //   ## hook                     seccion (hook, reaction, context, development, visual, punchline, closing)
 //   [TETO:sorprendida]          bloque de dialogo: personaje + reaccion (alias aceptados)
 //   ¿China destruyo a *ChatGPT*?    texto (*palabra* = subtitle_emphasis; {TAG} = evento anclado a palabra)

@@ -99,7 +99,7 @@ export const buildCatalogBrief = (catalog: Catalog, cfg: EngineConfig): string =
   for (const [id, r] of Object.entries(cfg.reactions.reactions)) lines.push(`- ${id}: ${r.use}`);
   lines.push("", "## Assets (id | tipo | tags)");
   for (const e of Object.values(catalog.entries).sort((a, b) => a.id.localeCompare(b.id))) {
-    if (e.type.startsWith("background") || e.type === "music") continue; // los decide el proyecto, no el LLM
+    if (e.type.startsWith("background") || e.type === "music" || e.type === "broll") continue; // los decide el proyecto, no el LLM
     lines.push(`- ${e.id} | ${e.type} | ${e.tags.join(", ")}${e.description ? ` | ${e.description}` : ""}`);
   }
   return lines.join("\n");

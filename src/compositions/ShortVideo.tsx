@@ -4,6 +4,7 @@ import React from "react";
 import { AbsoluteFill, staticFile } from "remotion";
 import { AudioLayer } from "../components/AudioLayer";
 import { Background } from "../components/Background";
+import { BRoll } from "../components/BRoll";
 import { Camera } from "../components/Camera";
 import { Captions } from "../components/Captions";
 import { MemeLayer } from "../components/MemeLayer";
@@ -26,6 +27,7 @@ export const ShortVideo: React.FC<ShortVideoProps> = ({ plan }) => (
   <AbsoluteFill style={{ backgroundColor: plan.fallbackColor, overflow: "hidden" }}>
     <Background background={plan.background} fallbackColor={plan.fallbackColor} />
     <Camera camera={plan.camera} memes={plan.memes}>
+      <BRoll broll={plan.broll ?? []} area={plan.style.visualArea} />
       <Visuals
         visuals={plan.visuals}
         area={plan.style.visualArea}

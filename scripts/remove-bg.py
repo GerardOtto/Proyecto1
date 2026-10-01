@@ -10,13 +10,14 @@ Metodo determinista (sin IA):
 
 Uso: python scripts/remove-bg.py <entrada> <salida.png>
      python scripts/remove-bg.py --dir <carpeta_in> <carpeta_out>
+     python scripts/remove-bg.py --gif <entrada.gif> <salida.gif> [cuadro_inicial]
 Requiere Pillow, numpy y scipy. Herramienta de preparacion de assets (no forma parte del pipeline).
 """
 import os
 import sys
 
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageSequence
 from scipy import ndimage
 
 T_LO = 16.0  # distancia (max por canal) bajo la cual un pixel puede ser fondo
@@ -33,7 +34,7 @@ def estimate_bg(a: np.ndarray) -> np.ndarray:
     return np.median(light, 0)
 
 
-def remove_bg(img: Image.Image) -> Image.Image:
+def remove_bg(img: Image.Image, trim: bool = True, holes_ok: bool = True) -> Image.Image:
     a = np.asarray(img.convert("RGB")).astype(np.float32)
     h, w, _ = a.shape
     bg = estimate_bg(a)
@@ -46,7 +47,7 @@ def remove_bg(img: Image.Image) -> Image.Image:
 
     # huecos interiores (entre brazos, manos en corazon...)
     holes, nh = ndimage.label((dist < HOLE_T) & ~bgmask)
-    if nh:
+    if nh and holes_ok:
         idx = np.arange(1, nh + 1)
         areas = ndimage.sum(np.ones_like(dist), holes, index=idx)
         # el gris del fondo no tiene tinte azul; los brillos de la camisa plateada (Miku) si
@@ -74,7 +75,7 @@ def remove_bg(img: Image.Image) -> Image.Image:
 
     # recorte de margenes transparentes (conserva el borde inferior)
     ys, xs = np.nonzero(out[..., 3] > 8)
-    if len(ys):
+    if trim and len(ys):
         pad = 6
         x0, x1 = max(xs.min() - pad, 0), min(xs.max() + pad + 1, w)
         y0 = max(ys.min() - pad, 0)
@@ -88,7 +89,31 @@ def ends_transparent(im: Image.Image) -> bool:
     return int(max(al[0, 0], al[0, -1], al[-1, 0], al[-1, -1])) == 0 and (al > 0).mean() < 0.9
 
 
+def remove_bg_gif(src: str, dst: str, start: int = 0) -> None:
+    """GIF animado: quita el fondo de cada cuadro (mismo lienzo, sin rellenar huecos), rota el orden
+    para empezar en el cuadro `start` y guarda un GIF con transparencia binaria."""
+    im = Image.open(src)
+    frames, durations = [], []
+    for f in ImageSequence.Iterator(im):
+        durations.append(f.info.get("duration", 100))
+        cut = np.asarray(remove_bg(f.convert("RGB"), trim=False, holes_ok=False))
+        # GIF: paleta de 255 colores + indice 255 reservado para lo transparente (alfa binario).
+        p = Image.fromarray(np.ascontiguousarray(cut[..., :3])).quantize(colors=255, dither=Image.Dither.NONE)
+        idx = np.asarray(p).copy()
+        idx[cut[..., 3] < 128] = 255
+        q = Image.fromarray(idx, "P")
+        pal = p.getpalette()[: 255 * 3]
+        q.putpalette(pal + [0] * (768 - len(pal)))
+        frames.append(q)
+    frames = frames[start:] + frames[:start]
+    durations = durations[start:] + durations[:start]
+    frames[0].save(dst, save_all=True, append_images=frames[1:], duration=durations, loop=0, disposal=2, transparency=255, optimize=False)
+
+
 def main() -> None:
+    if sys.argv[1] == "--gif":
+        remove_bg_gif(sys.argv[2], sys.argv[3], int(sys.argv[4]) if len(sys.argv) > 4 else 0)
+        return
     if sys.argv[1] == "--dir":
         src, dst = sys.argv[2], sys.argv[3]
         os.makedirs(dst, exist_ok=True)

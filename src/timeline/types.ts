@@ -36,6 +36,8 @@ export interface TimelineMeta {
   background?: string;
   /** ID de asset `music`: musica de fondo mezclada en la pista maestra (con ducking bajo la voz). */
   music?: string;
+  /** IDs de assets `broll` que rellenan el area de visuales cuando no hay ningun visual. */
+  broll?: string[];
   timingSource?: TimingSource;
   audio?: { master: string; durationMs: number };
   project?: string;
@@ -132,6 +134,8 @@ export interface CharacterConfig {
   anchor: "bottom-left" | "bottom-right";
   avatarDir: string;
   reactions: Record<string, string>;
+  /** Imagenes extra de la misma reaccion (se alternan mientras el personaje habla). */
+  variants?: Record<string, string[]>;
   voice?: {
     fish?: { referenceId?: string; speed?: number; volume?: number };
     flite?: { voice?: string };
@@ -161,7 +165,8 @@ export type AssetType =
   | "background_video"
   | "background_image"
   | "sfx"
-  | "music";
+  | "music"
+  | "broll";
 
 export interface MusicMixConfig {
   /** Sonoridad de la musica antes del ducking (la voz va a voiceBlockLufs). */
@@ -247,6 +252,8 @@ export interface RenderConfig {
     pauseSceneMs: number;
     estimatedWordsPerSecond: number;
     minAvatarChangeIntervalMs: number;
+    /** Cada cuanto se alterna la imagen del que habla entre las variantes de su reaccion (0/ausente = nunca). */
+    avatarVariantIntervalMs?: number;
   };
   audio: {
     sampleRate: number;
@@ -254,6 +261,8 @@ export interface RenderConfig {
     truePeakDb: number;
     /** Sonoridad a la que se nivela cada bloque de voz antes de mezclar (iguala voces de distinto origen). */
     voiceBlockLufs?: number;
+    /** Velocidad de la voz (atempo, conserva el tono). 1 = original; 1.1 = 10 % mas rapida. */
+    voiceTempo?: number;
     /** Mezcla de la musica de fondo (si el timeline declara meta.music). */
     music?: MusicMixConfig;
     sfxVolume: number;
@@ -265,6 +274,11 @@ export interface RenderConfig {
     cameraShake: { intensity: number; durationMs: number };
     memeExplosion: {
       durationMs: number;
+      /**
+       * Estilo "corte" de los memes actuales: a los cutAtMs la imagen, la sacudida y el SFX se cortan
+       * en seco (sin fade) y el video sigue. Si no se define, el meme dura durationMs y se desvanece.
+       */
+      cutAtMs?: number;
       flashMs: number;
       punchScale: number;
       defaultMeme: string;
@@ -272,6 +286,8 @@ export interface RenderConfig {
     };
     subtitleEmphasis: { durationMs: number };
     visual: { popInMs: number; popOutMs: number };
+    /** B-roll: duracion de cada clip y hueco minimo que vale la pena rellenar. */
+    broll?: { clipMs: number; minMs: number };
   };
 }
 
@@ -289,6 +305,8 @@ export interface ResolvedCatalog {
       anchor: "bottom-left" | "bottom-right";
       /** reaccion canonica -> ruta relativa al repo */
       avatars: Record<string, string>;
+      /** reaccion -> [principal, ...variantes] (solo reacciones con variantes). */
+      variants?: Record<string, string[]>;
     }
   >;
   /** alias o canonica -> canonica */

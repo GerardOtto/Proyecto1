@@ -46,6 +46,8 @@ export interface ProjectConfig {
   background?: string;
   /** ID de asset music, o "none" para desactivar la musica. */
   music?: string;
+  /** IDs de assets broll, o "none". Si falta: todos los broll del catalogo. */
+  broll?: string[] | "none";
   director?: "rules" | "anthropic";
   tts?: "fish" | "files" | "flite" | "silent";
   transcriber?: "whisper-cpp" | "estimate" | "auto";
@@ -148,6 +150,7 @@ const EXT_BY_TYPE: Record<AssetType, string[]> = {
   background_video: VIDEO_EXT,
   sfx: AUDIO_EXT,
   music: AUDIO_EXT,
+  broll: [...VIDEO_EXT, ".gif"],
 };
 
 /** Si el archivo exacto no existe, busca el mismo nombre con otra extension de imagen (documentado). */
@@ -268,12 +271,31 @@ export const buildCatalog = async (cfg: EngineConfig, project?: ProjectContext):
         issues.push({ level: "warning", code: "AVATAR_REACTION_UNDEFINED", message: `${id}: sin imagen para la reaccion "${r}"` });
       }
     }
+    // Variantes de la misma reaccion: [principal, ...extra]. Solo si la principal existe.
+    const variants: Record<string, string[]> = {};
+    for (const [reaction, files] of Object.entries(ch.variants ?? {})) {
+      if (!avatars[reaction]) {
+        issues.push({ level: "error", code: "VARIANT_WITHOUT_MAIN", message: `${id}: variantes para "${reaction}" sin imagen principal valida en reactions` });
+        continue;
+      }
+      const list = [avatars[reaction]];
+      for (const file of files) {
+        const abs = fromRepo(ch.avatarDir, file);
+        if (!exists(abs)) {
+          issues.push({ level: "error", code: "AVATAR_MISSING", message: `${id}/${reaction} (variante): falta ${toRepoRel(abs)}` });
+          continue;
+        }
+        if (checkImage(abs, `${id}/${reaction} (variante)`, issues)) list.push(toRepoRel(abs));
+      }
+      if (list.length > 1) variants[reaction] = list;
+    }
     characters[id] = {
       displayName: ch.displayName,
       color: ch.subtitleColor.toUpperCase(),
       defaultScale: ch.defaultScale,
       anchor: ch.anchor,
       avatars,
+      ...(Object.keys(variants).length ? { variants } : {}),
     };
     characterLicenses[id] = ch.license?.license_status ?? "unknown";
     if (characterLicenses[id] === "unknown") {
@@ -309,7 +331,7 @@ export const buildCatalog = async (cfg: EngineConfig, project?: ProjectContext):
       return;
     }
     let durationMs: number | undefined;
-    if (a.type === "background_video" || a.type === "sfx" || a.type === "music") {
+    if (a.type === "background_video" || a.type === "sfx" || a.type === "music" || (a.type === "broll" && VIDEO_EXT.includes(ext))) {
       try {
         durationMs = await probeDurationMs(abs);
       } catch (err) {
@@ -345,6 +367,28 @@ export const projectBackgroundId = (project: ProjectContext, catalog: Catalog): 
   }
   if (catalog.entries["project_background"]) return "project_background";
   return undefined;
+};
+
+/**
+ * Resuelve el B-roll: front matter (`broll: a, b` o `none`) > project.json > todos los broll del
+ * catalogo (orden por ID, determinista). Falla con IDs inexistentes o de otro tipo.
+ */
+export const resolveBrollIds = (wanted: string | undefined, project: ProjectContext, catalog: Catalog): string[] => {
+  const raw = wanted !== undefined ? wanted.trim() : project.config.broll;
+  if (raw === "none" || raw === "") return [];
+  if (raw === undefined) {
+    return Object.values(catalog.entries)
+      .filter((e) => e.type === "broll")
+      .map((e) => e.id)
+      .sort();
+  }
+  const ids = Array.isArray(raw) ? raw : raw.split(",").map((s) => s.trim()).filter(Boolean);
+  for (const id of ids) {
+    const e = catalog.entries[id];
+    if (!e) throw new Error(`broll "${id}" no existe en el catalogo`);
+    if (e.type !== "broll") throw new Error(`broll "${id}" es de tipo ${e.type}, no broll`);
+  }
+  return ids;
 };
 
 /**

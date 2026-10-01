@@ -33,6 +33,15 @@
           "required": ["neutral"],
           "additionalProperties": { "type": "string", "pattern": "^[^/\\\\]+\\.(png|jpg|jpeg|webp|svg)$" }
         },
+        "variants": {
+          "description": "Imagenes extra de la MISMA reaccion (reaccion canonica -> archivos). Mientras el personaje habla, el plan alterna la imagen principal y sus variantes cada timing.avatarVariantIntervalMs.",
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "pattern": "^[^/\\\\]+\\.(png|jpg|jpeg|webp|svg)$" }
+          }
+        },
         "voice": {
           "type": "object",
           "additionalProperties": false,

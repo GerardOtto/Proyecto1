@@ -44,6 +44,11 @@
           "type": "string",
           "minLength": 1
         },
+        "broll": {
+          "description": "IDs de assets broll (videos/GIF) que rellenan el area de visuales cuando no hay ningun visual ni meme. Lista vacia = sin relleno.",
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        },
         "timingSource": {
           "description": "estimated: tiempos estimados por el director. audio: tiempos reajustados con el audio real (autoridad temporal).",
           "type": "string",

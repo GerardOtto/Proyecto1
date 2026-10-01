@@ -12,6 +12,10 @@
     "durationTargetSec": { "type": "number", "minimum": 60, "maximum": 120 },
     "background": { "type": "string", "description": "ID de asset o ruta relativa al proyecto (p.ej. background.mp4)." },
     "music": { "type": "string", "description": "ID de asset music para la musica de fondo, o \"none\" para desactivarla." },
+    "broll": {
+      "description": "IDs de assets broll para rellenar el area de visuales, o \"none\". Si falta: todos los broll del catalogo.",
+      "oneOf": [{ "type": "array", "items": { "type": "string" } }, { "const": "none" }]
+    },
     "director": { "type": "string", "enum": ["rules", "anthropic"] },
     "tts": { "type": "string", "enum": ["fish", "files", "flite", "silent"] },
     "transcriber": { "type": "string", "enum": ["whisper-cpp", "estimate", "auto"] },

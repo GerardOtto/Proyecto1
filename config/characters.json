@@ -17,6 +17,24 @@
         "nerd": "nerd.png",
         "shocked": "shocked.png"
       },
+      "variants": {
+        "nerd": [
+          "nerd_2.png",
+          "nerd_3.png",
+          "nerd_4.png"
+        ],
+        "feliz": [
+          "feliz_2.png",
+          "feliz_3.png",
+          "feliz_4.png"
+        ],
+        "riendo": [
+          "riendo_2.png"
+        ],
+        "enojado": [
+          "enojada_2.png"
+        ]
+      },
       "voice": {
         "fish": {
           "referenceId": "0118a35dcb604837abe7961a43e13ba8",
@@ -48,6 +66,28 @@
         "nerd": "nerd.png",
         "shocked": "shocked.png"
       },
+      "variants": {
+        "nerd": [
+          "nerd_2.png",
+          "nerd_3.png"
+        ],
+        "feliz": [
+          "feliz_2.png",
+          "feliz_3.png"
+        ],
+        "shocked": [
+          "shocked_2.png"
+        ],
+        "riendo": [
+          "riendo_2.png"
+        ],
+        "confundido": [
+          "confundida_2.png"
+        ],
+        "enojado": [
+          "enojada_2.png"
+        ]
+      },
       "voice": {
         "fish": {
           "referenceId": "1ab6c3c810f64cd38536b4f7fb47b840",
@@ -78,6 +118,23 @@
         "riendo": "riendo.png",
         "nerd": "nerd.png",
         "shocked": "shocked.png"
+      },
+      "variants": {
+        "feliz": [
+          "feliz_2.png",
+          "feliz_3.png",
+          "feliz_4.png"
+        ],
+        "nerd": [
+          "nerd_2.png"
+        ],
+        "riendo": [
+          "riendo_2.png",
+          "riendo_3.png"
+        ],
+        "sorprendido": [
+          "sorprendida_2.png"
+        ]
       },
       "voice": {
         "fish": {

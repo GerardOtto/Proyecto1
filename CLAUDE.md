@@ -26,6 +26,7 @@ El LLM no tiene libertad pixel a pixel. El AUDIO es la autoridad temporal (build
 ```bash
 npm run doctor                     # entorno (node, ffmpeg, git, whisper, claves)
 npm run catalog                    # valida config/*.json y que cada asset exista y no este vacio
+npm run graphics                   # assets/visuals/src/*.html -> PNG (logos, titulares, graficos)
 npm run smoke                      # render de humo 8 s (tests/fixtures/smoke.timeline.json)
 npm test                           # vitest (rapido, sin render)
 npm run test:render                # smoke render via vitest (lento)

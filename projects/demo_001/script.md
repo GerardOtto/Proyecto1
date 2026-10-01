@@ -2,6 +2,7 @@
 title: ¿China destruyó a ChatGPT?
 target: 85
 background: bg_tech_loop
+broll: broll_typing, broll_hackathon, broll_kittens, broll_robot, broll_perceptron, broll_cat_grooming, broll_binary_counter, broll_laptop, broll_ai_llama
 language: es
 ---
 

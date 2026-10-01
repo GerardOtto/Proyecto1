@@ -33,6 +33,26 @@ Rin y Len siguen siendo placeholders.
 | luka | nerd | Luka_nerd_2.jpg |
 | luka | shocked | Luka_sorprendida.jpg |
 
+## Variantes (`characters.json > variants`)
+Misma emocion que la principal; se alternan mientras el personaje habla.
+
+| Personaje | Archivo | Original |
+|---|---|---|
+| teto | nerd_2 / nerd_3 / nerd_4 | Teto_nerd_2 / Teto_nerd_3 / Teto_nerd_4 |
+| teto | feliz_2 / feliz_3 / feliz_4 | Teto_feliz / Teto_feliz_2 / Teto_saludando_2 |
+| teto | riendo_2 | Teto_emocionada |
+| teto | enojada_2 | Teto_decepcionada |
+| miku | nerd_2 / nerd_3 | Miku_nerd_2 / Miku_nerd_3 |
+| miku | feliz_2 / feliz_3 | Miku_feliz_3 / Miku_saludando |
+| miku | shocked_2 | Miku_gritando_2 |
+| miku | riendo_2 | Miku_maldiciendo |
+| miku | confundida_2 | Miku_disgustada |
+| miku | enojada_2 | Miku_decepcionada |
+| luka | feliz_2 / feliz_3 / feliz_4 | Luka_feliz / Luka_feliz_6 / Luka_saludando |
+| luka | nerd_2 | Luka_nerd |
+| luka | riendo_2 / riendo_3 | Luka_maldiciendo / Luka_emocionada |
+| luka | sorprendida_2 | Luka_feliz_4 |
+
 Regenerar un avatar:
 ```bash
 python scripts/remove-bg.py "<original>.jpg" assets/characters/<id>/<reaccion>.png

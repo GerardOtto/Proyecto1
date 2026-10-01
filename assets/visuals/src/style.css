@@ -1,0 +1,33 @@
+/* Estilo comun de los graficos propios (npm run graphics). Fondo transparente fuera de la tarjeta. */
+@font-face { font-family: "Montserrat"; font-weight: 800; src: url("../../fonts/montserrat-latin-800-normal.woff2") format("woff2"); }
+@font-face { font-family: "Montserrat"; font-weight: 900; src: url("../../fonts/montserrat-latin-900-normal.woff2") format("woff2"); }
+
+:root {
+  --navy: #1b1f3b;
+  --navy-2: #262b52;
+  --ink: #ffffff;
+  --muted: #b9bfe6;
+  --chatgpt: #10a37f;
+  --claude: #d97757;
+  --deepseek: #4d6bfe;
+  --red: #e5322d;
+  --gold: #ffc83d;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: transparent; width: 100%; height: 100%; overflow: hidden; }
+body { font-family: "Montserrat", sans-serif; font-weight: 800; color: var(--ink); padding: 14px; }
+
+.card {
+  width: 100%;
+  height: 100%;
+  border-radius: 48px;
+  border: 10px solid #fff;
+  background: linear-gradient(160deg, var(--navy-2), var(--navy));
+  display: flex;
+  flex-direction: column;
+  padding: 48px 56px 34px;
+}
+.title { font-weight: 900; font-size: 64px; line-height: 1.05; text-align: center; }
+.subtitle { font-size: 32px; color: var(--muted); text-align: center; margin-top: 10px; }
+.source { font-size: 21px; color: var(--muted); text-align: center; margin-top: auto; opacity: 0.85; }

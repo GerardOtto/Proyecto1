@@ -1,6 +1,22 @@
 # Changelog
 
 ## Sin publicar
+- B-roll (ADR 0005): el area de visuales nunca queda vacia. Asset `broll`, `meta.broll`
+  (front matter `broll:`), relleno automatico de huecos en el plan; 9 clips CC0/dominio publico de
+  Wikimedia Commons (informatica, IA, gatitos). Demo: 0 s de area vacia (antes ~25 s).
+- Variantes de avatar: intervalo de 1 s a 2 s.
+- Graficos propios versionados como HTML (`assets/visuals/src/`) y `npm run graphics` (Chrome
+  headless de Remotion -> PNG transparente): logos (simbolos de Wikimedia Commons), titular y
+  graficos con datos reales y fuente (DeepSeek-R1 arXiv:2501.12948; precios de lanzamiento de API).
+- Memes GIF animados con `@remotion/gif` (sincronizados con los frames, deterministas);
+  `scripts/remove-bg.py --gif` quita el fondo cuadro a cuadro y elige el cuadro inicial.
+- SFX reales (explosion y ding) aportados por el usuario; meme_boom ahora es un GIF.
+- `make-placeholders --force` ya no sobrescribe assets cuyo license_status no es placeholder.
+- Ritmo: voz a 1.1x (`audio.voiceTempo`, atempo conserva el tono) y pausas entre turnos de 280 a
+  150 ms. Explosion completa (1.7 s) que se solapa con el inicio del siguiente dialogo (escena meme
+  1.3 s). El estilo "corte" (`cutAtMs`) queda disponible pero desactivado.
+- Variantes de avatar por reaccion (`characters.json > variants`): el que habla alterna imagenes de la
+  misma emocion cada `timing.avatarVariantIntervalMs` (1 s). Aviso de cambio rapido: 1200 -> 1000 ms.
 - Musica de fondo (ADR 0004): asset `music`, `meta.music` (front matter `music:` o project.json),
   mezcla en la pista maestra con loop, nivel fijo, fades y ducking sidechain bajo la voz.
   Catalogo local no versionado `config/assets.local.json` para musica con copyright.

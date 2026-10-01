@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="output" content="assets/visuals/headline_card.png" data-width="1200" data-height="900">
+<link rel="stylesheet" href="style.css">
+<style>
+  /* Titular sensacionalista generico (no imita a ningun medio real) + sello "EXAGERADO". */
+  .news { width: 100%; height: 100%; border-radius: 48px; border: 10px solid #fff; background: #f4f1ea; color: #15161f; overflow: hidden; display: flex; flex-direction: column; position: relative; }
+  .bar { background: var(--red); color: #fff; font-weight: 900; font-size: 48px; padding: 24px 50px; letter-spacing: 2px; display: flex; align-items: center; gap: 22px; }
+  .bar .dot { width: 26px; height: 26px; background: #fff; border-radius: 50%; }
+  .body { flex: 1; padding: 50px 56px; display: flex; flex-direction: column; }
+  .headline { font-weight: 900; font-size: 98px; line-height: 1.02; text-transform: uppercase; letter-spacing: -1px; }
+  .lines { margin-top: auto; display: flex; flex-direction: column; gap: 18px; }
+  .lines div { height: 22px; background: #d8d3c7; border-radius: 11px; }
+  .stamp {
+    position: absolute; right: 50px; bottom: 120px; transform: rotate(-14deg);
+    border: 12px solid var(--red); color: var(--red); font-weight: 900; font-size: 84px;
+    padding: 6px 30px; border-radius: 20px; letter-spacing: 4px; background: rgba(244,241,234,.85);
+  }
+</style>
+</head>
+<body>
+  <div class="news">
+    <div class="bar"><span class="dot"></span>ÚLTIMA HORA</div>
+    <div class="body">
+      <div class="headline">China destruye a ChatGPT y Claude</div>
+      <div class="lines"><div style="width: 92%"></div><div style="width: 78%"></div><div style="width: 54%"></div></div>
+    </div>
+    <div class="stamp">EXAGERADO</div>
+  </div>
+</body>
+</html>

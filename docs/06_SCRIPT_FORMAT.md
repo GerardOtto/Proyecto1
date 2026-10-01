@@ -9,6 +9,7 @@ title: ¿China destruyó a ChatGPT?
 target: 85                 # duracion objetivo en segundos
 background: bg_tech_loop   # id de asset (opcional; si no, project.json o background.* del proyecto)
 music: dkc_bonus_room_blitz  # id de asset music (opcional; si no, project.json; "none" = sin musica)
+broll: broll_typing, broll_kittens  # clips de relleno en orden (opcional; si no, todos; "none" = sin relleno)
 language: es
 ---
 
@@ -57,7 +58,7 @@ La posicion importa: una directiva antes del texto se ancla a la primera palabra
 a la ultima (excepto `[VISUAL]`, que cubre la escena, y `[PAUSE]` al final, que va tras el bloque).
 
 ## Parrafos sueltos (entre lineas en blanco, fuera de un bloque)
-- `[MEME...]` o `[SFX:meme_explosion]` -> **escena meme** sin dialogo (seccion reaction, 2.2 s).
+- `[MEME...]` o `[SFX:meme_explosion]` -> **escena meme** sin dialogo (seccion reaction, 1.3 s; la explosion dura 1.7 s y se solapa con el inicio del siguiente dialogo).
 - `[PAUSE:800]` -> escena de pausa.
 - Otras directivas (`[VISUAL]`, `[LISTEN]`, `[SFX:id]`, `[ZOOM]`...) se aplican al **siguiente** bloque.
 

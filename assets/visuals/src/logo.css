@@ -1,0 +1,15 @@
+/* Tarjeta de logo: simbolo oficial (Wikimedia Commons, ver SOURCES.md) + nombre. */
+.logo-card {
+  width: 100%;
+  height: 100%;
+  border-radius: 64px;
+  background: #fff;
+  border: 14px solid var(--brand);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 44px;
+}
+.logo-card img { width: 400px; height: 400px; object-fit: contain; }
+.logo-card .name { font-weight: 900; font-size: 104px; color: #14162b; letter-spacing: -1px; }

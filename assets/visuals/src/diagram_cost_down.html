@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="output" content="assets/visuals/diagram_cost_down.png" data-width="1200" data-height="900">
+<link rel="stylesheet" href="style.css">
+<style>
+  /* Precios de lanzamiento por millon de tokens de entrada (USD): GPT-4 (mar 2023) $30,
+     GPT-4o (may 2024) $5, DeepSeek-R1 (ene 2025) $0,55. */
+  .chart { flex: 1; display: flex; gap: 60px; margin: 70px 30px 10px; align-items: stretch; position: relative; }
+  .col { flex: 1; display: flex; flex-direction: column; }
+  .bars { flex: 1; display: flex; align-items: flex-end; border-bottom: 4px solid rgba(255,255,255,.55); }
+  .bar { width: 100%; border-radius: 16px 16px 4px 4px; position: relative; min-height: 8px; }
+  .bar b { position: absolute; top: -56px; left: 50%; transform: translateX(-50%); font-size: 44px; font-weight: 900; white-space: nowrap; }
+  .year { text-align: center; font-size: 40px; font-weight: 900; margin-top: 14px; }
+  .model { text-align: center; font-size: 25px; color: var(--muted); margin-top: 2px; }
+  .badge {
+    position: absolute; right: 10px; top: 0; background: var(--gold); color: #1b1f3b;
+    font-weight: 900; font-size: 46px; padding: 10px 26px; border-radius: 999px; transform: rotate(-6deg);
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="title">El precio no para de bajar</div>
+    <div class="subtitle">USD por millón de tokens · precio de lanzamiento</div>
+    <div class="chart">
+      <div class="badge">−98 %</div>
+      <div class="col">
+        <div class="bars"><div class="bar" style="height: 100%; background: #e5534b"><b>$30</b></div></div>
+        <div class="year">2023</div>
+        <div class="model">GPT-4</div>
+      </div>
+      <div class="col">
+        <div class="bars"><div class="bar" style="height: 16.7%; background: #f0a83a"><b>$5</b></div></div>
+        <div class="year">2024</div>
+        <div class="model">GPT-4o</div>
+      </div>
+      <div class="col">
+        <div class="bars"><div class="bar" style="height: 1.8%; background: #3ccbb4"><b>$0,55</b></div></div>
+        <div class="year">2025</div>
+        <div class="model">DeepSeek-R1</div>
+      </div>
+    </div>
+    <div class="source">Fuente: precios publicados por OpenAI (mar 2023, may 2024) y DeepSeek (ene 2025)</div>
+  </div>
+</body>
+</html>
