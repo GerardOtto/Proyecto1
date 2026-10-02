@@ -2,6 +2,15 @@
 
 ## Sin publicar
 
+### Fondo de paleta de personajes, sin fotos (ADR 0014)
+- `background: palette`: degradado animado aesthetic / kawaii-core con la paleta del elenco
+  (`characters.json > palette`) que transiciona hacia quien habla; brillos, cuadricula de los fondos de
+  tema originales y particulas kawaii, deterministas.
+- `background_style: analitico | suave` (planificador: noticias y formatos de datos = analitico en el
+  estudio; conceptos e historias = suave). Marcos de b-roll y brillo de visuales con la paleta de quien
+  habla; graficos del episodio con el tema del elenco (`castTheme`).
+- Fotos de fondo retiradas (`bg_foto_*`); escenarios con sus ilustraciones, ya no por defecto.
+
 ### Orquestacion: reutilizar voces, pronunciacion y biblioteca de assets (ADR 0013)
 - Voces reutilizadas por contenido (no por id de escena) y cache global de clips del proveedor
   (`.cache/tts/`): rehacer un video solo paga las lineas nuevas o cambiadas (`report.json > voices.reused`).

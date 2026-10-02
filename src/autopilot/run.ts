@@ -9,7 +9,9 @@ import { stepAnalyze } from "../pipeline/steps";
 import { writeJson } from "../utils/fs";
 import { log } from "../utils/log";
 import { fromRepo, toRepoRel } from "../utils/paths";
+import { PALETTE_BACKGROUND } from "../timeline/types";
 import { castOf, characterBroll, pickBroll } from "./broll-picker";
+import { castTheme } from "./cast-theme";
 import type { AutopilotConfig } from "./config";
 import { generateEpisodeGraphics } from "./graphics";
 import { loadHistory, recordPlan, saveHistory, type History } from "./history";
@@ -84,7 +86,7 @@ export const refreshEpisodeVisuals = async (
   const apFile = path.join(projectDir, "autopilot.json");
   const state = JSON.parse(fs.readFileSync(apFile, "utf8")) as { plan: EpisodePlan } & Record<string, unknown>;
   const plan: EpisodePlan = opts.brief ? { ...state.plan, topic: opts.brief } : state.plan;
-  const theme = ap.themes.themes[plan.theme]!;
+  const theme = castTheme(ap.themes.themes[plan.theme]!, castOf(plan), engine.characters.characters);
   const graphics = await generateEpisodeGraphics(plan, theme, projectDir);
   const news = plan.topic.kind === "news" ? await generateNewsVisuals(plan, theme, projectDir, { capture: !opts.offline }) : { assets: [], visuals: [] };
   const projFile = path.join(projectDir, "project.json");
@@ -144,14 +146,10 @@ export const runAutopilotEpisode = async (
   // Proyecto
   const projectDir = fromRepo("projects", plan.episodeId);
   fs.mkdirSync(projectDir, { recursive: true });
-  const theme = ap.themes.themes[plan.theme]!;
-  const baseCatalog = await buildCatalog(engine);
-  // El escenario (ADR 0012) manda sobre el fondo del tema visual; si su fondo no existe, el del tema.
-  const settingBg = plan.setting ? ap.settings.settings[plan.setting]?.background : undefined;
-  const wanted = settingBg && baseCatalog.entries[settingBg] ? settingBg : theme.background;
-  if (settingBg && wanted !== settingBg) log.warn(`fondo del escenario ${settingBg} no existe (npm run graphics); se usa el del tema`);
-  const background = baseCatalog.entries[wanted] ? wanted : "bg_tech_loop";
-  if (background !== wanted) log.warn(`fondo ${wanted} no existe (npm run autopilot -- --make-backgrounds); se usa bg_tech_loop`);
+  // Fondo de paleta de personajes y graficos con la misma paleta (ADR 0014; sin fotos de fondo). El
+  // escenario (ADR 0012) queda como contexto narrativo: los personajes saben donde estan.
+  const theme = castTheme(ap.themes.themes[plan.theme]!, castOf(plan), engine.characters.characters);
+  const background = PALETTE_BACKGROUND;
 
   const graphics = opts.graphics === false ? { assets: [], files: [] } : await generateEpisodeGraphics(plan, theme, projectDir);
   const news =
@@ -191,6 +189,7 @@ export const runAutopilotEpisode = async (
       hook_title: plan.topic.hookTitle,
       target: plan.targetSec,
       background,
+      ...(plan.backgroundStyle ? { background_style: plan.backgroundStyle } : {}),
       broll: assets.broll,
       language: "es",
     })}<!-- autopilot ${plan.episodeId} | formato ${plan.format} | escritor manual | brief: writer-brief.md | fuentes: ${plan.topic.sources.join(" ")} -->\n<!-- PENDIENTE: escribir el guion siguiendo writer-brief.md y prompts/writer.system.md -->\n`;

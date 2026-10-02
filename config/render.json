@@ -137,7 +137,20 @@
   },
   "background": {
     "dim": 0.35,
-    "fallbackColor": "#141420"
+    "fallbackColor": "#141420",
+    "styles": {
+      "analitico": {
+        "dim": 0.35,
+        "palette": { "darken": 0.66, "glow": 0.32, "grid": 0.09, "particles": 6, "particleOpacity": 0.2, "particleBlur": 1, "transitionMs": 1000 }
+      },
+      "suave": {
+        "dim": 0.2,
+        "blurPx": 9,
+        "saturate": 1.12,
+        "motion": { "zoomFrom": 1.08, "zoomTo": 1.16, "driftPx": 30, "periodSec": 16 },
+        "palette": { "darken": 0.5, "glow": 0.55, "grid": 0.05, "particles": 16, "particleOpacity": 0.34, "particleBlur": 2.5, "transitionMs": 800 }
+      }
+    }
   },
   "events": {
     "cameraZoom": {

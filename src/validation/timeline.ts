@@ -6,7 +6,7 @@ import { buildCaptionPages, layoutCaption, timelineWords } from "../timeline/cap
 import { normalizeWord, resolveReaction, sceneEvents, splitWords, timelineDurationMs } from "../timeline/normalize";
 import { buildRenderPlan, captionCenterX, PlanError } from "../timeline/plan";
 import { layoutTitle, titleKeywords } from "../timeline/titlecard";
-import type { RenderConfig, Timeline } from "../timeline/types";
+import { PALETTE_BACKGROUND, type RenderConfig, type Timeline } from "../timeline/types";
 import { fromRepo } from "../utils/paths";
 import { validateSchema } from "./schemas";
 
@@ -241,7 +241,9 @@ export const validateTimeline = (
   }
 
   // ------------------------------------------------------------------ fondo y audio
-  if (timeline.meta.background) checkAsset(timeline.meta.background, ["background_video", "background_image"], "meta.background");
+  if (timeline.meta.background === PALETTE_BACKGROUND) {
+    /* fondo de paleta de personajes (ADR 0014): no es un asset */
+  } else if (timeline.meta.background) checkAsset(timeline.meta.background, ["background_video", "background_image"], "meta.background");
   else add("warning", "assets", "NO_BACKGROUND", "Sin fondo: se usara color solido");
   if (timeline.meta.music) checkAsset(timeline.meta.music, ["music"], "meta.music");
   for (const id of timeline.meta.broll ?? []) checkAsset(id, ["broll"], "meta.broll");

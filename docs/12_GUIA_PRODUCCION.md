@@ -79,8 +79,18 @@ producir o revisar un episodio.
   - Gatos genéricos (solo con lentes y tecleando, y como último recurso).
 - **GIF a b-roll:** MP4 4:3 con el GIF completo sobre su versión difuminada (nunca recortado), H.264
   GOP 30 sin B-frames. Revisa que no tenga tramos negros (el GIF de Teto pera tenía 1,2 s oscuro).
-- **Fondos:** fotos del usuario por escenario (`bg_foto_cafeteria_miku`, `bg_foto_parque_neru`,
-  `bg_foto_oficina`; `config/autopilot/settings.json`).
+- **Fondos: SIN FOTOS.** Siempre `background: palette` ([ADR 0014](adr/0014-fondo-paleta-personajes.md)):
+  - es un degradado oscuro aesthetic / kawaii-core con la paleta de los personajes del video;
+  - pasa suavemente a los colores de quien habla;
+  - lleva brillos, la cuadrícula de los primeros fondos (China, Astra) y partículas kawaii.
+  - **Estilos:**
+    - `background_style: analitico`: noticias y temas con muchos gráficos o tablas; más sobrio, en el
+      "estudio".
+    - `background_style: suave`: conceptos, historias y humor; más vivo, con bokeh.
+  - **Armonía:** los marcos de los clips y el brillo de los gráficos toman la misma paleta; las tarjetas
+    generadas usan la del elenco.
+  - **Paletas:** se ajustan en `characters.json > palette`. Ojo con los amarillos: llevan un profundo
+    ciruela o índigo para no verse oliva.
 
 ## 5. SFX
 - **Cortos (<1 s, recortados al golpe) y al mismo volumen:** ~-16 LUFS, pico ≤ -1 dB. El tubo de metal

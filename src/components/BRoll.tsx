@@ -5,6 +5,7 @@ import { Gif } from "@remotion/gif";
 import React from "react";
 import { Easing, Img, interpolate, Loop, OffthreadVideo, Sequence, staticFile, useCurrentFrame } from "remotion";
 import type { PlanBroll } from "../timeline/plan";
+import { paletteAt, type PaletteTint } from "../timeline/palette";
 import type { Box } from "../timeline/types";
 
 const FADE_FRAMES = 6;
@@ -31,8 +32,10 @@ const Clip: React.FC<{ b: PlanBroll; width: number; height: number }> = ({ b, wi
   return b.loopFrames ? <Loop durationInFrames={b.loopFrames}>{video}</Loop> : video;
 };
 
-export const BRoll: React.FC<{ broll: PlanBroll[]; area: Box }> = ({ broll, area }) => {
+export const BRoll: React.FC<{ broll: PlanBroll[]; area: Box; tint?: PaletteTint | null }> = ({ broll, area, tint }) => {
   const frame = useCurrentFrame();
+  // Con fondo de paleta (ADR 0014) el marco toma el tono claro de quien habla y un brillo del tono medio.
+  const [, tintMid, tintLight] = tint ? paletteAt(tint.segments, frame, tint.transitionFrames) : ["", "", ""];
   const active = broll.filter((b) => frame >= b.from && frame < b.to);
   const pad = 16;
   return (
@@ -58,12 +61,12 @@ export const BRoll: React.FC<{ broll: PlanBroll[]; area: Box }> = ({ broll, area
               width: w,
               height: h,
               borderRadius: 36,
-              border: "8px solid #fff",
+              border: `8px solid ${tint ? tintLight : "#fff"}`,
               overflow: "hidden",
               background: "#000",
               opacity,
               transform: `scale(${pop})`,
-              boxShadow: "0 12px 24px rgba(0,0,0,0.45)",
+              boxShadow: tint ? `0 12px 24px rgba(0,0,0,0.45), 0 0 34px ${tintMid}aa` : "0 12px 24px rgba(0,0,0,0.45)",
             }}
           >
             <Sequence from={b.from} durationInFrames={b.to - b.from} layout="none">

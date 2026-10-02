@@ -3,7 +3,7 @@
   "title": "La caída de CrowdStrike",
   "language": "es",
   "durationTargetSec": 85,
-  "background": "bg_place_servidores",
+  "background": "palette",
   "director": "rules",
   "tts": "files",
   "transcriber": "auto",

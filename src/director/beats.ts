@@ -2,7 +2,7 @@
 // tiempos ESTIMADOS para el borrador; los tiempos reales llegan despues con el audio.
 import { estimateSpeechMs } from "../tts/silent";
 import type { EngineConfig } from "../catalog/catalog";
-import type { OnScreenCharacter, Section, Timeline, TimelineEvent } from "../timeline/types";
+import type { BackgroundStyleId, OnScreenCharacter, Section, Timeline, TimelineEvent } from "../timeline/types";
 
 export interface Beat {
   kind: "dialogue" | "meme" | "pause";
@@ -32,6 +32,7 @@ export interface BeatsMeta {
   music?: string;
   broll?: string[];
   hookTitle?: string;
+  backgroundStyle?: BackgroundStyleId;
   project?: string;
   generator: string;
 }
@@ -111,6 +112,7 @@ export const beatsToDraftTimeline = (beats: Beat[], meta: BeatsMeta, cfg: Engine
       ...(meta.music ? { music: meta.music } : {}),
       ...(meta.broll && meta.broll.length ? { broll: meta.broll } : {}),
       ...(meta.hookTitle ? { hookTitle: meta.hookTitle } : {}),
+      ...(meta.backgroundStyle ? { backgroundStyle: meta.backgroundStyle } : {}),
       timingSource: "estimated",
       ...(meta.project ? { project: meta.project } : {}),
       generator: meta.generator,

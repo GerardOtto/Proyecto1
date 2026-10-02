@@ -2,7 +2,8 @@
 title: La IA de Meta dio la dirección de un vendedor
 hook_title: *Meta*: su IA dio la dirección de un vendedor
 target: 75
-background: bg_place_konbini
+background: palette
+background_style: analitico
 broll: broll_cat_keyboard, broll_cat_laptop, broll_cat_tap, broll_robot
 language: es
 ---

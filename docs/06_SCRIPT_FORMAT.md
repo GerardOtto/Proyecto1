@@ -7,7 +7,8 @@ guiones libres (texto sin etiquetas) y los estructura el LLM.
 ---
 title: ¿China destruyó a ChatGPT?
 target: 85                 # duracion objetivo en segundos
-background: bg_tech_loop   # id de asset (opcional; si no, project.json o background.* del proyecto)
+background: palette        # "palette" = fondo de paleta de personajes (ADR 0014, recomendado), o un id de asset
+background_style: suave    # analitico (graficos/tablas) | suave (humor); aspecto en render.json > background.styles
 music: dkc_bonus_room_blitz  # id de asset music (opcional; si no, project.json; "none" = sin musica)
 broll: broll_typing, broll_kittens  # clips de relleno en orden (opcional; si no, todos; "none" = sin relleno)
 language: es

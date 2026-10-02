@@ -49,6 +49,11 @@
           "type": "array",
           "items": { "type": "string", "minLength": 1 }
         },
+        "backgroundStyle": {
+          "description": "Tratamiento del fondo (render.json > background.styles): analitico = fondo de tema nitido para videos con muchos graficos; suave = escenario desenfocado y en movimiento lento para videos ligeros/de humor. ADR 0014.",
+          "type": "string",
+          "enum": ["analitico", "suave"]
+        },
         "hookTitle": {
           "description": "Rotulo del gancho con la palabra clave buscable (visible desde el fotograma 0 hasta el fin de la escena hook). *palabra* la resalta. ADR 0006.",
           "type": "string",

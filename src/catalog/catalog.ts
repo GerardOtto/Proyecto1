@@ -17,6 +17,8 @@ import type {
 import { exists, readJson, readJsonIfExists } from "../utils/fs";
 import { readImageInfo } from "../utils/image";
 import { fromRepo, toRepoRel } from "../utils/paths";
+import { characterPalette } from "../timeline/palette";
+import { PALETTE_BACKGROUND } from "../timeline/types";
 import type { PronunciationRule } from "../tts/pronounce";
 import { assertSchema } from "../validation/schemas";
 
@@ -330,6 +332,7 @@ export const buildCatalog = async (cfg: EngineConfig, project?: ProjectContext):
     characters[id] = {
       displayName: ch.displayName,
       color: ch.subtitleColor.toUpperCase(),
+      palette: characterPalette(ch),
       defaultScale: ch.defaultScale,
       anchor: ch.anchor,
       avatars,
@@ -402,7 +405,7 @@ export const buildCatalog = async (cfg: EngineConfig, project?: ProjectContext):
 /** Resuelve el fondo de un proyecto: project.json > background.* del proyecto > ninguno. */
 export const projectBackgroundId = (project: ProjectContext, catalog: Catalog): string | undefined => {
   if (project.config.background) {
-    if (catalog.entries[project.config.background]) return project.config.background;
+    if (project.config.background === PALETTE_BACKGROUND || catalog.entries[project.config.background]) return project.config.background;
     throw new Error(`project.json background "${project.config.background}" no existe en el catalogo`);
   }
   if (catalog.entries["project_background"]) return "project_background";

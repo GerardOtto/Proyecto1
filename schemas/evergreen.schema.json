@@ -100,6 +100,11 @@
             "pattern": "^https?://"
           }
         },
+        "backgroundStyle": {
+          "description": "Fuerza el estilo de fondo (ADR 0014): analitico si el tema pide muchos graficos/tablas.",
+          "type": "string",
+          "enum": ["analitico", "suave"]
+        },
         "entities": {
           "type": "array",
           "items": {

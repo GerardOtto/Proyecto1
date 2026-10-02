@@ -2,6 +2,7 @@
 import React from "react";
 import { Easing, Img, interpolate, staticFile, useCurrentFrame } from "remotion";
 import type { PlanVisual } from "../timeline/plan";
+import { paletteAt, type PaletteTint } from "../timeline/palette";
 import type { Box, VisualSlot } from "../timeline/types";
 
 const slotBox = (area: Box, slot: VisualSlot, autoIndex: number, autoCount: number): Box => {
@@ -34,8 +35,10 @@ export const Visuals: React.FC<{
   area: Box;
   popIn: number;
   popOut: number;
-}> = ({ visuals, area, popIn, popOut }) => {
+  tint?: PaletteTint | null;
+}> = ({ visuals, area, popIn, popOut, tint }) => {
   const frame = useCurrentFrame();
+  const glow = tint ? paletteAt(tint.segments, frame, tint.transitionFrames)[1] : null;
   const active = visuals.filter((v) => frame >= v.from && frame < v.to);
   const autos = active.filter((v) => v.slot === "auto");
   return (
@@ -73,7 +76,7 @@ export const Visuals: React.FC<{
                 maxWidth: "100%",
                 maxHeight: "100%",
                 objectFit: "contain",
-                filter: "drop-shadow(0 12px 24px rgba(0,0,0,0.45))",
+                filter: glow ? `drop-shadow(0 12px 24px rgba(0,0,0,0.45)) drop-shadow(0 0 22px ${glow}99)` : "drop-shadow(0 12px 24px rgba(0,0,0,0.45))",
               }}
             />
           </div>

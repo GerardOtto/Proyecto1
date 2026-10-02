@@ -30,7 +30,7 @@ const baseCss = (theme: ThemeDef, fontBase?: string) => `${fontFace(fontBase)}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:transparent;width:100%;height:100%;overflow:hidden}
 body{font-family:"Montserrat",sans-serif;font-weight:800;color:#fff;padding:14px}
-.card{width:100%;height:100%;border-radius:48px;border:10px solid #fff;background:linear-gradient(160deg,${theme.card[0]},${theme.card[1]});display:flex;flex-direction:column;padding:56px 64px 40px}
+.card{width:100%;height:100%;border-radius:48px;border:10px solid ${theme.border ?? "#fff"};background:linear-gradient(160deg,${theme.card[0]},${theme.card[1]});display:flex;flex-direction:column;padding:56px 64px 40px}
 .title{font-weight:900;font-size:62px;line-height:1.08;text-align:center}
 .accent{color:${theme.accent}}
 .muted{color:${theme.muted}}

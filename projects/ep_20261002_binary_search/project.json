@@ -3,7 +3,7 @@
   "title": "Búsqueda binaria",
   "language": "es",
   "durationTargetSec": 85,
-  "background": "bg_foto_parque_neru",
+  "background": "palette",
   "director": "rules",
   "tts": "fish",
   "transcriber": "auto",

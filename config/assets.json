@@ -2596,56 +2596,6 @@
       "license": "Sin documentar (fan art en Tenor)",
       "license_status": "unknown",
       "description": "Miku chibi celebrando con confeti"
-    },
-    {
-      "id": "bg_foto_cafeteria_miku",
-      "type": "background_image",
-      "path": "assets/backgrounds/bg_foto_cafeteria_miku.jpg",
-      "tags": [
-        "background",
-        "escenario",
-        "cafeteria",
-        "foto",
-        "miku"
-      ],
-      "source": "Aportado por el usuario (1. Videos finales/2026-10-02 Docker y los contenedores/Historial de revision/Fondo aportado.jpg)",
-      "license": "Sin documentar (foto aportada por el usuario)",
-      "license_status": "unknown",
-      "description": "Foto: cafe con latte art y figura de Miku asomandose",
-      "notes": "Recorte 9:16 (x=60) y escalado a 1080x1920."
-    },
-    {
-      "id": "bg_foto_parque_neru",
-      "type": "background_image",
-      "path": "assets/backgrounds/bg_foto_parque_neru.jpg",
-      "tags": [
-        "background",
-        "escenario",
-        "parque",
-        "foto",
-        "neru"
-      ],
-      "source": "Aportado por el usuario (1. Videos finales/2026-10-02 Busqueda binaria/Historial de revision/Fondo aportado.jpg)",
-      "license": "Sin documentar (foto aportada por el usuario)",
-      "license_status": "unknown",
-      "description": "Foto: parque con Neru (AR) y un gato",
-      "notes": "Escalado a 1080x1920."
-    },
-    {
-      "id": "bg_foto_oficina",
-      "type": "background_image",
-      "path": "assets/backgrounds/bg_foto_oficina.jpg",
-      "tags": [
-        "background",
-        "escenario",
-        "oficina",
-        "foto"
-      ],
-      "source": "Aportado por el usuario (1. Videos finales/2026-10-02 Log4Shell/Historial de revision/Fondo aportado.jpg)",
-      "license": "Sin documentar (foto aportada por el usuario)",
-      "license_status": "unknown",
-      "description": "Foto: oficina con cubiculos y computadora vieja",
-      "notes": "Recorte 9:16 centrado y escalado a 1080x1920."
     }
   ]
 }

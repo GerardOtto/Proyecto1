@@ -1,3 +1,4 @@
+import type { PaletteLook } from "./palette";
 // Tipos compartidos entre el pipeline (Node) y el renderizador (Remotion/navegador).
 // Este archivo NO debe importar modulos de Node.
 
@@ -26,6 +27,25 @@ export const SECTIONS = [
 ] as const;
 export type Section = (typeof SECTIONS)[number];
 
+/** analitico: fondo de tema nitido (graficos y tablas); suave: escenario desenfocado y en movimiento (humor). ADR 0014. */
+export const BACKGROUND_STYLES = ["analitico", "suave"] as const;
+export type BackgroundStyleId = (typeof BACKGROUND_STYLES)[number];
+
+export interface BackgroundStyleConfig {
+  dim: number;
+  /** Desenfoque del fondo en px (0 = nitido). */
+  blurPx?: number;
+  /** Saturacion (1 = original). */
+  saturate?: number;
+  /** Movimiento lento y determinista (zoom de ida y vuelta + deriva lateral), en ciclos de periodSec. */
+  motion?: { zoomFrom: number; zoomTo: number; driftPx: number; periodSec: number };
+  /** Aspecto del fondo de paleta de personajes (`background: palette`). */
+  palette?: PaletteLook;
+}
+
+/** Palabra clave de fondo: degradado animado con la paleta de los personajes del video (ADR 0014). */
+export const PALETTE_BACKGROUND = "palette";
+
 export type TimingSource = "estimated" | "audio" | "manual";
 
 export interface TimelineMeta {
@@ -41,6 +61,8 @@ export interface TimelineMeta {
   broll?: string[];
   /** Rotulo del gancho con la palabra clave (SEO); `*palabra*` la resalta. ADR 0006. */
   hookTitle?: string;
+  /** Tratamiento del fondo (render.json > background.styles). ADR 0014. */
+  backgroundStyle?: BackgroundStyleId;
   timingSource?: TimingSource;
   audio?: { master: string; durationMs: number };
   project?: string;
@@ -139,6 +161,8 @@ export interface LicenseInfo {
 export interface CharacterConfig {
   displayName: string;
   subtitleColor: string;
+  /** Paleta [profundo, medio, claro] del fondo kawaii y los recuadros (ADR 0014); si falta, se deriva de subtitleColor. */
+  palette?: string[];
   defaultScale: number;
   anchor: "bottom-left" | "bottom-right";
   avatarDir: string;
@@ -303,7 +327,12 @@ export interface RenderConfig {
     sfxVolume: number;
     backgroundVideoVolume: number;
   };
-  background: { dim: number; fallbackColor: string };
+  background: {
+    dim: number;
+    fallbackColor: string;
+    /** Estilos de fondo por tipo de video (ADR 0014). Sin estilo = dim por defecto, nitido y fijo. */
+    styles?: Partial<Record<BackgroundStyleId, BackgroundStyleConfig>>;
+  };
   /** Marca de agua rebotando (estilo DVD). El texto depende del idioma del video. */
   /** Rotulo del gancho (meta.hookTitle): posicion y estilo los decide el motor. ADR 0006. */
   titleCard?: {
@@ -405,6 +434,8 @@ export interface ResolvedCatalog {
       mute?: boolean;
       /** SFX de firma (su "voz" si es mudo). */
       signatureSfx?: string;
+      /** Paleta [profundo, medio, claro] para fondo y recuadros (ADR 0014). */
+      palette: [string, string, string];
     }
   >;
   /** alias o canonica -> canonica */

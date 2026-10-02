@@ -3,7 +3,7 @@
   "title": "La IA de Meta dio la dirección de un vendedor",
   "language": "es",
   "durationTargetSec": 75,
-  "background": "bg_place_konbini",
+  "background": "palette",
   "director": "rules",
   "tts": "fish",
   "transcriber": "auto",

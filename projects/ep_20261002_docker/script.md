@@ -2,7 +2,8 @@
 title: Docker y los contenedores
 hook_title: ¿Qué es *Docker*? Adiós a 'en mi máquina funciona'
 target: 75
-background: bg_foto_cafeteria_miku
+background: palette
+background_style: suave
 broll: broll_docker_whale, broll_v_teto_laptop, broll_v_miku_typing
 language: es
 ---
@@ -10,8 +11,9 @@ language: es
 // v2 (orquestador Claude, 2026-10-02): correcciones del usuario en Prototipos/1 - Docker/Correcciones.txt.
 // Lineas sin cambios = mismo audio (ADR 0013). Nuevas: gancho (pausa antes de la cita), apisonadora de Rin,
 // cafe para llevar, baguette de Teto, Luka (Docker con mayuscula), beat de Neru y su traduccion.
-// v3 (2026-10-02): fondo del usuario (bg_foto_cafeteria_miku), gato nerd en lugar de "it works on my machine",
+// v3 (2026-10-02): fondo foto del usuario (retirado en v4), gato nerd en lugar de "it works on my machine",
 // foto real del portacontenedores, tubo de metal mas bajo y GIF de Vocaloid arriba. Textos iguales = mismo audio.
+// v4 (2026-10-02): fondo de paleta de personajes (background: palette, estilo suave; ADR 0014), sin fotos.
 
 ## hook
 [TETO:sorprendido]

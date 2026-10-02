@@ -2,7 +2,8 @@
 title: La caída de CrowdStrike
 hook_title: *CrowdStrike*: el fallo que tumbó aeropuertos
 target: 85
-background: bg_place_servidores
+background: palette
+background_style: suave
 broll: broll_cat_keyboard, broll_cat_laptop, broll_cat_tap, broll_robot
 language: es
 ---

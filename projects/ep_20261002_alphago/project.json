@@ -3,7 +3,7 @@
   "title": "AlphaGo vs Lee Sedol",
   "language": "es",
   "durationTargetSec": 85,
-  "background": "bg_place_parque",
+  "background": "palette",
   "director": "rules",
   "tts": "files",
   "transcriber": "auto",

@@ -3,7 +3,7 @@
   "title": "Modelos abiertos vs cerrados",
   "language": "es",
   "durationTargetSec": 75,
-  "background": "bg_place_habitacion",
+  "background": "palette",
   "director": "rules",
   "tts": "files",
   "transcriber": "auto",

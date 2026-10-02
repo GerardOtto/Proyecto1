@@ -1,5 +1,5 @@
 // Tipos del autopiloto (produccion automatica de episodios). Ver docs/11_AUTOPILOT.md y ADR 0007.
-import type { Section } from "../timeline/types";
+import type { BackgroundStyleId, Section } from "../timeline/types";
 
 export type TopicCategory = "news" | "cs_concept" | "ai_concept" | "programming" | "controversy" | "history";
 
@@ -37,6 +37,8 @@ export interface TopicBrief {
   entities: string[];
   /** Solo noticias: articulos agrupados (misma historia en varias fuentes). */
   articles?: NewsItem[];
+  /** Fuerza el estilo de fondo (ADR 0014). */
+  backgroundStyle?: BackgroundStyleId;
 }
 
 export interface NewsItem {
@@ -86,8 +88,10 @@ export interface EpisodePlan {
   targetSec: number;
   casting: Casting;
   theme: string;
-  /** Escenario (settings.json): fondo y lugar del que los personajes son conscientes (ADR 0012). */
+  /** Escenario (settings.json): lugar del que los personajes son conscientes (ADR 0012). */
   setting?: string;
+  /** Estilo del fondo de paleta (ADR 0014): analitico (graficos/tablas) o suave (humor). */
+  backgroundStyle?: BackgroundStyleId;
   /** Etapa de las narrativas secundarias activas en este episodio (p. ej. la voz de Neru). */
   arcs?: ArcBeat[];
   seed: string;

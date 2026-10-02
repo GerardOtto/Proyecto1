@@ -5,8 +5,9 @@ import { resolveEventAnchors } from "./anchors";
 import { buildCaptionPages, layoutCaption, timelineWords } from "./captions";
 import { msRangeToFrames, msToDurationInFrames, msToFrame } from "./frames";
 import { resolveReaction, sceneEvents, timelineDurationMs } from "./normalize";
-import type { Box, RenderConfig, ResolvedCatalog, Timeline, VisualSlot } from "./types";
+import { PALETTE_BACKGROUND, type BackgroundStyleConfig, type Box, type RenderConfig, type ResolvedCatalog, type Timeline, type VisualSlot } from "./types";
 import { buildWatermark, type PlanWatermark } from "./watermark";
+import { characterPalette, DEFAULT_PALETTE_LOOK, paletteSegments, type PaletteLook, type PaletteSegment } from "./palette";
 import { captionCenterXFor } from "./layout";
 import { areaBelowTitle, layoutTitle, titleEndMs, type PlanTitleCard } from "./titlecard";
 
@@ -287,10 +288,12 @@ export interface RenderPlan {
   height: number;
   fps: number;
   durationInFrames: number;
-  background:
+  background: (
     | { kind: "video"; src: string; loopFrames: number | null; dim: number; volume: number }
     | { kind: "image"; src: string; dim: number }
-    | { kind: "color"; color: string };
+    | { kind: "color"; color: string }
+    | { kind: "palette"; segments: PaletteSegment[]; transitionFrames: number; look: PaletteLook; seed: string }
+  ) & { blurPx?: number; saturate?: number; motion?: BackgroundStyleConfig["motion"] };
   fallbackColor: string;
   audio: {
     master: string | null;
@@ -659,19 +662,40 @@ export const buildRenderPlan = (
 
   // ---------------------------------------------------------------- background & audio
   let background: RenderPlan["background"] = { kind: "color", color: cfg.background.fallbackColor };
-  if (timeline.meta.background) {
+  if (timeline.meta.background === PALETTE_BACKGROUND) {
+    // Fondo de paleta (ADR 0014): la paleta de quien habla en cada escena, con transicion suave.
+    const style = cfg.background.styles?.[timeline.meta.backgroundStyle ?? "analitico"] ?? cfg.background.styles?.analitico;
+    const look: PaletteLook = style?.palette ?? DEFAULT_PALETTE_LOOK;
+    const palettes = Object.fromEntries(Object.entries(catalog.characters).map(([id, c]) => [id, c.palette]));
+    const cast = timeline.scenes.map((s) => s.character).filter((c): c is string => !!c && !!palettes[c]);
+    const segments = paletteSegments(
+      timeline.scenes.map((s) => ({ fromFrame: msToFrame(s.startMs, fps), ...(s.character ? { character: s.character } : {}) })),
+      palettes,
+      (cast[0] && palettes[cast[0]]) || characterPalette(undefined),
+    );
+    background = { kind: "palette", segments, transitionFrames: msToDurationInFrames(look.transitionMs, fps), look, seed: timeline.meta.title ?? "palette" };
+  } else if (timeline.meta.background) {
     const bg = catalog.assets[timeline.meta.background];
     if (!bg) throw new PlanError(`Fondo desconocido: ${timeline.meta.background}`);
+    // Estilo del fondo (ADR 0014): analitico = nitido; suave = desenfocado y en movimiento lento.
+    const style = timeline.meta.backgroundStyle ? cfg.background.styles?.[timeline.meta.backgroundStyle] : undefined;
+    const dim = style?.dim ?? cfg.background.dim;
+    const treatment = {
+      ...(style?.blurPx ? { blurPx: style.blurPx } : {}),
+      ...(style?.saturate && style.saturate !== 1 ? { saturate: style.saturate } : {}),
+      ...(style?.motion ? { motion: style.motion } : {}),
+    };
     if (bg.type === "background_video") {
       background = {
         kind: "video",
         src: bg.path,
         loopFrames: bg.durationMs ? msToDurationInFrames(bg.durationMs, fps) : null,
-        dim: cfg.background.dim,
+        dim,
         volume: cfg.audio.backgroundVideoVolume,
+        ...treatment,
       };
     } else if (bg.type === "background_image") {
-      background = { kind: "image", src: bg.path, dim: cfg.background.dim };
+      background = { kind: "image", src: bg.path, dim, ...treatment };
     } else {
       throw new PlanError(`El asset ${bg.path} no es un fondo (tipo ${bg.type})`);
     }

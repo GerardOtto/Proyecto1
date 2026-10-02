@@ -3,7 +3,7 @@
   "title": "OpenAI canceló GPT-6.1 Astra por seguridad",
   "language": "es",
   "durationTargetSec": 80,
-  "background": "bg_theme_ocean",
+  "background": "palette",
   "director": "rules",
   "tts": "fish",
   "transcriber": "auto",

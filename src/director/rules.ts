@@ -3,7 +3,7 @@
 import fs from "node:fs";
 import type { Catalog, EngineConfig, ProjectContext } from "../catalog/catalog";
 import { projectBackgroundId, resolveBrollIds, resolveMusicId } from "../catalog/catalog";
-import type { Timeline } from "../timeline/types";
+import { BACKGROUND_STYLES, PALETTE_BACKGROUND, type BackgroundStyleId, type Timeline } from "../timeline/types";
 import { beatsToDraftTimeline } from "./beats";
 import { parseScript, type ParsedScript } from "./script-parser";
 
@@ -20,7 +20,7 @@ export const scriptMeta = (parsed: ParsedScript, project: ProjectContext, catalo
   const fm = parsed.frontMatter;
   const target = Number(fm.target ?? fm.targetsec ?? fm.duration ?? project.config.durationTargetSec ?? cfg.render.duration.targetMs / 1000);
   const background = fm.background ?? projectBackgroundId(project, catalog);
-  if (fm.background && !catalog.entries[fm.background]) {
+  if (fm.background && fm.background !== PALETTE_BACKGROUND && !catalog.entries[fm.background]) {
     throw new Error(`background "${fm.background}" del front matter no existe en el catalogo`);
   }
   const music = resolveMusicId(fm.music, project, catalog);
@@ -28,6 +28,12 @@ export const scriptMeta = (parsed: ParsedScript, project: ProjectContext, catalo
   // Rotulo del gancho (ADR 0006): `hook_title:` o `titulo_gancho:`; "none" lo desactiva.
   const rawTitle = (fm.hook_title ?? fm.titulo_gancho ?? "").trim();
   const hookTitle = rawTitle && rawTitle.toLowerCase() !== "none" ? rawTitle : undefined;
+  // Estilo del fondo (ADR 0014): `background_style:` o `estilo_fondo:` = analitico | suave.
+  const rawStyle = (fm.background_style ?? fm.estilo_fondo ?? "").trim().toLowerCase();
+  if (rawStyle && !(BACKGROUND_STYLES as readonly string[]).includes(rawStyle)) {
+    throw new Error(`background_style "${rawStyle}" no existe (${BACKGROUND_STYLES.join(" | ")})`);
+  }
+  const backgroundStyle = rawStyle ? (rawStyle as BackgroundStyleId) : undefined;
   return {
     title: parsed.title ?? project.config.title ?? project.id,
     durationTargetSec: target,
@@ -36,6 +42,7 @@ export const scriptMeta = (parsed: ParsedScript, project: ProjectContext, catalo
     ...(music ? { music } : {}),
     ...(broll.length ? { broll } : {}),
     ...(hookTitle ? { hookTitle } : {}),
+    ...(backgroundStyle ? { backgroundStyle } : {}),
     project: project.id,
   };
 };

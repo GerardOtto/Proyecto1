@@ -172,6 +172,7 @@ export const writeTemplateScript = (
     hook_title: hookTitle,
     target: plan.targetSec,
     ...(assets.background ? { background: assets.background } : {}),
+    ...(plan.backgroundStyle ? { background_style: plan.backgroundStyle } : {}),
     broll: assets.broll,
     language: "es",
   });

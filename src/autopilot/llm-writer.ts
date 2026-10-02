@@ -187,6 +187,7 @@ export const writeLLMScript = async (
       hook_title: (out.hookTitle || plan.topic.hookTitle).slice(0, 60),
       target: plan.targetSec,
       ...(assets.background ? { background: assets.background } : {}),
+      ...(plan.backgroundStyle ? { background_style: plan.backgroundStyle } : {}),
       broll: assets.broll,
       language: "es",
     });

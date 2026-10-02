@@ -32,6 +32,7 @@ export const topicFromEvergreen = (t: EvergreenTopic): TopicBrief => ({
   visual: t.visual,
   sources: t.sources,
   entities: t.entities,
+  ...(t.backgroundStyle ? { backgroundStyle: t.backgroundStyle } : {}),
 });
 
 export const topicFromCluster = (c: NewsCluster, cfg: SourcesConfig): TopicBrief => {
@@ -224,7 +225,10 @@ export const planEpisode = (input: PlanInput): EpisodePlan => {
   if (!ap.formats.formats[format]) throw new Error(`Formato desconocido: ${format}`);
   const f = ap.formats.formats[format];
   const casting = chooseCasting(ap, readyCharacters(input.engine, input.allowPlaceholder), history, seed, silentCharacters(input.engine, input.allowPlaceholder), topicTags(topic));
-  const setting = chooseSetting(ap, topic, history, seed);
+  // Estilo del fondo de paleta (ADR 0014): analitico para noticias y formatos de datos (graficos/tablas,
+  // ambientado en el estudio del canal); suave para conceptos e historias con mas humor.
+  const backgroundStyle = topic.backgroundStyle ?? (topic.kind === "news" ? "analitico" : f.backgroundStyle ?? "suave");
+  const setting = backgroundStyle === "analitico" && ap.settings?.settings?.estudio ? "estudio" : chooseSetting(ap, topic, history, seed);
   const arcs = arcBeats(ap, history, casting);
   return {
     episodeId: `ep_${date.replace(/-/g, "")}_${slugify(topic.kind === "news" ? topic.keyword + "_" + topic.title : topic.id).slice(0, 32)}`,
@@ -236,6 +240,7 @@ export const planEpisode = (input: PlanInput): EpisodePlan => {
     casting,
     theme: chooseTheme(ap, topic.category, history, seed),
     ...(setting ? { setting } : {}),
+    backgroundStyle,
     ...(arcs.length ? { arcs } : {}),
     seed,
   };

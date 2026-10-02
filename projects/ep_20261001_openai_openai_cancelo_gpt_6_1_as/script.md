@@ -2,7 +2,8 @@
 title: OpenAI canceló GPT-6.1 Astra por seguridad
 hook_title: *OpenAI* canceló su nueva IA: ¿por qué?
 target: 80
-background: bg_theme_ocean
+background: palette
+background_style: analitico
 broll: broll_cat_laptop, broll_cat_keyboard, broll_robot
 language: es
 ---

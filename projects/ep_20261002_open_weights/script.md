@@ -2,7 +2,8 @@
 title: Modelos abiertos vs cerrados
 hook_title: ¿*IA abierta* o cerrada? Cuál es la diferencia
 target: 75
-background: bg_place_habitacion
+background: palette
+background_style: analitico
 broll: broll_cat_keyboard, broll_cat_laptop, broll_cat_tap, broll_robot
 language: es
 ---

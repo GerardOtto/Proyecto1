@@ -2,7 +2,8 @@
 title: Agentes de IA filtraron 13.000 capturas en GitHub
 hook_title: *GitHub*: agentes de IA filtraron capturas
 target: 85
-background: bg_place_oficina
+background: palette
+background_style: analitico
 broll: broll_cat_keyboard, broll_cat_laptop, broll_cat_tap, broll_robot
 language: es
 ---

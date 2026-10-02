@@ -2,7 +2,8 @@
 title: AlphaGo vs Lee Sedol
 hook_title: *AlphaGo*: la IA que venció al campeón de Go
 target: 85
-background: bg_place_parque
+background: palette
+background_style: suave
 broll: broll_cat_keyboard, broll_cat_laptop, broll_cat_tap, broll_robot
 language: es
 ---

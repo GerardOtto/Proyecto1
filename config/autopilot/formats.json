@@ -1,28 +1,32 @@
 {
-  "$comment": "Formatos de episodio. structure = secuencia de beats que siguen los escritores (plantilla y LLM).",
+  "$comment": "Formatos de episodio. structure = secuencia de beats que siguen los escritores (plantilla y LLM). backgroundStyle (ADR 0014): analitico = fondo del tema visual, nitido, en el estudio (mucho grafico/tabla); suave = escenario desenfocado y en movimiento (humor). Las noticias siempre son analitico.",
   "formats": {
     "news_explainer": {
       "label": "Noticia explicada sin drama",
       "for": ["news"],
       "targetSec": 85,
+      "backgroundStyle": "analitico",
       "structure": ["hook", "meme", "context", "question", "explain", "visual", "punchline", "takeaway", "cta"]
     },
     "concept_lesson": {
       "label": "Concepto de Computer Science en 80 s",
       "for": ["cs_concept", "ai_concept", "programming"],
       "targetSec": 85,
+      "backgroundStyle": "suave",
       "structure": ["hook", "meme", "question", "explain", "example", "visual", "punchline", "takeaway", "cta"]
     },
     "controversy_story": {
       "label": "La historia de una polemica",
       "for": ["controversy", "history"],
       "targetSec": 90,
+      "backgroundStyle": "suave",
       "structure": ["hook", "meme", "context", "explain", "twist", "punchline", "takeaway", "cta"]
     },
     "myth_vs_fact": {
       "label": "Mito o realidad",
       "for": ["ai_concept", "cs_concept", "news"],
       "targetSec": 80,
+      "backgroundStyle": "analitico",
       "structure": ["hook", "meme", "question", "explain", "visual", "punchline", "takeaway", "cta"]
     }
   },

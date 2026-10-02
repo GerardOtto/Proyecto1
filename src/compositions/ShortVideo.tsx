@@ -30,12 +30,13 @@ export const ShortVideo: React.FC<ShortVideoProps> = ({ plan }) => (
   <AbsoluteFill style={{ backgroundColor: plan.fallbackColor, overflow: "hidden" }}>
     <Background background={plan.background} fallbackColor={plan.fallbackColor} />
     <Camera camera={plan.camera} memes={plan.memes}>
-      <BRoll broll={plan.broll ?? []} area={plan.style.visualArea} />
+      <BRoll broll={plan.broll ?? []} area={plan.style.visualArea} tint={plan.background.kind === "palette" ? plan.background : null} />
       <Visuals
         visuals={plan.visuals}
         area={plan.style.visualArea}
         popIn={plan.style.visualPopInFrames}
         popOut={plan.style.visualPopOutFrames}
+        tint={plan.background.kind === "palette" ? plan.background : null}
       />
       <Stage stage={plan.stage} margin={plan.style.characterMarginX} />
     </Camera>

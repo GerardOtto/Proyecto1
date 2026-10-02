@@ -3,7 +3,7 @@
   "title": "Log4Shell",
   "language": "es",
   "durationTargetSec": 90,
-  "background": "bg_foto_oficina",
+  "background": "palette",
   "director": "rules",
   "tts": "fish",
   "transcriber": "auto",

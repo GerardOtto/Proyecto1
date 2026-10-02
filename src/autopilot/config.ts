@@ -3,6 +3,7 @@ import { readJson } from "../utils/fs";
 import { fromRepo } from "../utils/paths";
 import { assertSchema } from "../validation/schemas";
 import type { SourcesConfig } from "./news";
+import type { BackgroundStyleId } from "../timeline/types";
 import type { BeatKind, FormatId, TopicCategory, VisualSpec } from "./types";
 
 export interface EvergreenTopic {
@@ -20,10 +21,12 @@ export interface EvergreenTopic {
   visual: VisualSpec;
   sources: string[];
   entities: string[];
+  /** Fuerza el estilo de fondo (ADR 0014): analitico si el tema pide muchos graficos/tablas. */
+  backgroundStyle?: BackgroundStyleId;
 }
 
 export interface FormatsConfig {
-  formats: Record<FormatId, { label: string; for: TopicCategory[]; targetSec: number; structure: BeatKind[] }>;
+  formats: Record<FormatId, { label: string; for: TopicCategory[]; targetSec: number; structure: BeatKind[]; backgroundStyle?: BackgroundStyleId }>;
   mix: { news: number; evergreen: number };
 }
 
@@ -80,6 +83,8 @@ export interface ThemeDef {
   card: [string, string];
   accent: string;
   muted: string;
+  /** Borde de las tarjetas (por defecto blanco; el tema del elenco usa el tono claro del host). */
+  border?: string;
 }
 
 export interface ThemesConfig {

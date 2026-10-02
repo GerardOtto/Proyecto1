@@ -4,6 +4,11 @@
     "teto": {
       "displayName": "Teto",
       "subtitleColor": "#E58FB5",
+      "palette": [
+        "#4a1530",
+        "#e0587f",
+        "#ffc2d6"
+      ],
       "defaultScale": 0.42,
       "anchor": "bottom-left",
       "avatarDir": "assets/characters/teto",
@@ -74,6 +79,11 @@
     "miku": {
       "displayName": "Miku",
       "subtitleColor": "#39C5BB",
+      "palette": [
+        "#0a3a3e",
+        "#39c5bb",
+        "#b8f5ee"
+      ],
       "defaultScale": 0.42,
       "anchor": "bottom-left",
       "avatarDir": "assets/characters/miku",
@@ -147,6 +157,11 @@
     "luka": {
       "displayName": "Luka",
       "subtitleColor": "#E285B2",
+      "palette": [
+        "#3e1738",
+        "#e285b2",
+        "#ffd6ea"
+      ],
       "defaultScale": 0.42,
       "anchor": "bottom-left",
       "avatarDir": "assets/characters/luka",
@@ -256,6 +271,11 @@
     "rin": {
       "displayName": "Rin",
       "subtitleColor": "#F6C744",
+      "palette": [
+        "#3b1f3a",
+        "#f6c744",
+        "#fff2b8"
+      ],
       "defaultScale": 0.42,
       "anchor": "bottom-left",
       "avatarDir": "assets/characters/rin",
@@ -321,6 +341,11 @@
     "len": {
       "displayName": "Len",
       "subtitleColor": "#F2B544",
+      "palette": [
+        "#2a2448",
+        "#f2b544",
+        "#fff3cc"
+      ],
       "defaultScale": 0.42,
       "anchor": "bottom-left",
       "avatarDir": "assets/characters/len",
@@ -380,6 +405,11 @@
     "kaito": {
       "displayName": "Kaito",
       "subtitleColor": "#3D6BFF",
+      "palette": [
+        "#0f1d52",
+        "#3d6bff",
+        "#bfd0ff"
+      ],
       "defaultScale": 0.42,
       "anchor": "bottom-left",
       "avatarDir": "assets/characters/kaito",
@@ -463,6 +493,11 @@
     "neru": {
       "displayName": "Neru",
       "subtitleColor": "#E8D44D",
+      "palette": [
+        "#352544",
+        "#e8d44d",
+        "#fff8bf"
+      ],
       "defaultScale": 0.42,
       "anchor": "bottom-left",
       "avatarDir": "assets/characters/neru",

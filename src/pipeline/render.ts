@@ -16,7 +16,7 @@ import { CACHE_DIR, fromRepo } from "../utils/paths";
 /** Todas las rutas (relativas al repo) que el plan necesita en el navegador. */
 export const planFiles = (plan: RenderPlan): string[] => {
   const files = new Set<string>(FONT_FILES.map((f) => f.path));
-  if (plan.background.kind !== "color") files.add(plan.background.src);
+  if (plan.background.kind === "video" || plan.background.kind === "image") files.add(plan.background.src);
   if (plan.audio.master) files.add(plan.audio.master);
   for (const c of [...plan.audio.clips, ...plan.audio.sfx]) files.add(c.src);
   for (const seg of plan.stage) for (const a of seg.actors) for (const av of a.avatars) files.add(av.src);

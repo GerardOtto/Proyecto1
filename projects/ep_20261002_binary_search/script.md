@@ -2,7 +2,8 @@
 title: Búsqueda binaria
 hook_title: *Búsqueda binaria*: un millón de datos en 20 pasos
 target: 75
-background: bg_foto_parque_neru
+background: palette
+background_style: suave
 broll: broll_binary_vs_sequential, broll_v_miku_dance
 language: es
 ---
@@ -11,7 +12,8 @@ language: es
 // Luka con voice.tempo 1.2 (sus audios previos se aceleran en local, sin regenerar). Regenerados: gancho
 // (no sonaba a Luka), Big O explicado sin jerga, despedida (se entrecortaba). Nuevas: puerro de Miku en el
 // parque, "cero trampa", atun de Luka. "¿Y si la lista esta desordenada?" va justo antes de su respuesta.
-// v3 (2026-10-02): fondo del usuario (bg_foto_parque_neru), "Cada paso tira..." x1.5 ([TEMPO:1.5], en local) y GIF de Vocaloid.
+// v3 (2026-10-02): fondo foto del usuario (retirado en v4), "Cada paso tira..." x1.5 ([TEMPO:1.5], en local) y GIF de Vocaloid.
+// v4 (2026-10-02): fondo de paleta de personajes (background: palette, estilo suave; ADR 0014), sin fotos.
 
 ## hook
 [LUKA:sorprendido]

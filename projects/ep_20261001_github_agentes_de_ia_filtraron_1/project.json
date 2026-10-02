@@ -3,7 +3,7 @@
   "title": "Agentes de IA filtraron 13.000 capturas en GitHub",
   "language": "es",
   "durationTargetSec": 85,
-  "background": "bg_place_oficina",
+  "background": "palette",
   "director": "rules",
   "tts": "fish",
   "transcriber": "auto",

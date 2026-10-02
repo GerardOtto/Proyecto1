@@ -9,6 +9,8 @@ export interface FrontMatter {
   hook_title?: string;
   target: number;
   background?: string;
+  /** analitico | suave (ADR 0014). */
+  background_style?: string;
   broll?: string[];
   music?: string;
   language: string;
@@ -19,6 +21,7 @@ export const renderFrontMatter = (fm: FrontMatter): string => {
   if (fm.hook_title) lines.push(`hook_title: ${fm.hook_title}`);
   lines.push(`target: ${fm.target}`);
   if (fm.background) lines.push(`background: ${fm.background}`);
+  if (fm.background_style) lines.push(`background_style: ${fm.background_style}`);
   if (fm.broll) lines.push(`broll: ${fm.broll.length ? fm.broll.join(", ") : "none"}`);
   if (fm.music) lines.push(`music: ${fm.music}`);
   lines.push(`language: ${fm.language}`, "---", "");

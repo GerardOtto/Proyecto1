@@ -23,6 +23,13 @@
       "properties": {
         "displayName": { "type": "string", "minLength": 1 },
         "subtitleColor": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+        "palette": {
+          "description": "Paleta [profundo, medio, claro] para el fondo kawaii y los recuadros (ADR 0014). Si falta, se deriva de subtitleColor.",
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" }
+        },
         "defaultScale": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
         "anchor": { "type": "string", "enum": ["bottom-left", "bottom-right"] },
         "avatarDir": { "type": "string", "minLength": 1 },

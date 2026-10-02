@@ -3,7 +3,7 @@
   "title": "Docker y los contenedores",
   "language": "es",
   "durationTargetSec": 85,
-  "background": "bg_foto_cafeteria_miku",
+  "background": "palette",
   "director": "rules",
   "tts": "fish",
   "transcriber": "auto",

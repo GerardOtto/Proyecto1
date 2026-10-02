@@ -2,7 +2,8 @@
 title: Log4Shell
 hook_title: *Log4Shell*: hackear un servidor con un mensaje
 target: 85
-background: bg_foto_oficina
+background: palette
+background_style: suave
 broll: broll_hacker_typing, broll_v_teto_laptop, broll_it_crowd_fire, broll_this_is_fine
 language: es
 ---
@@ -11,8 +12,9 @@ language: es
 // Pronunciacion (config/pronunciations.json): Log4Shell -> "Log four shell", Log4j -> "Log four jay"; solo se
 // regeneran las lineas que los contienen. Nuevo: caso Minecraft (hecho verificado), cuaderno del jefe (oficina),
 // orden pregunta -> respuesta en dependencias, muñecas rusas y beat propio de Neru.
-// v3 (2026-10-02): fondo del usuario (bg_foto_oficina), muñecas rusas (Matryoshka de Hachi/GUMI), GIF de Vocaloid;
+// v3 (2026-10-02): fondo foto del usuario (retirado en v4), muñecas rusas (Matryoshka de Hachi/GUMI), GIF de Vocaloid;
 // la pausa larga de Len ("¿En Minecraft? ... Ahora si es personal") la acorta el motor (render.audio.voicePauseCap).
+// v4 (2026-10-02): fondo de paleta de personajes (background: palette, estilo suave; ADR 0014), sin fotos.
 
 ## hook
 [TETO:shocked]
