@@ -17,6 +17,7 @@ import type {
 import { exists, readJson, readJsonIfExists } from "../utils/fs";
 import { readImageInfo } from "../utils/image";
 import { fromRepo, toRepoRel } from "../utils/paths";
+import type { PronunciationRule } from "../tts/pronounce";
 import { assertSchema } from "../validation/schemas";
 
 export interface EngineConfig {
@@ -24,9 +25,12 @@ export interface EngineConfig {
   reactions: ReactionsFile;
   assets: AssetsFile;
   render: RenderConfig;
+  /** Diccionario de pronunciacion del TTS (config/pronunciations.json, opcional; ADR 0013). */
+  pronunciations?: PronunciationRule[];
 }
 
 export const loadEngineConfig = (): EngineConfig => {
+  const pron = readJsonIfExists(fromRepo("config/pronunciations.json"));
   const assets = assertSchema<AssetsFile>("assets", readJson(fromRepo("config/assets.json")), "config/assets.json");
   // Catalogo local (no versionado): assets que no se pueden redistribuir, p. ej. musica con copyright.
   const local = readJsonIfExists(fromRepo("config/assets.local.json"));
@@ -36,6 +40,7 @@ export const loadEngineConfig = (): EngineConfig => {
     reactions: assertSchema<ReactionsFile>("reactions", readJson(fromRepo("config/reactions.json")), "config/reactions.json"),
     assets,
     render: assertSchema<RenderConfig>("render", readJson(fromRepo("config/render.json")), "config/render.json"),
+    ...(pron ? { pronunciations: assertSchema<{ rules: PronunciationRule[] }>("pronunciations", pron, "config/pronunciations.json").rules } : {}),
   };
 };
 
@@ -55,7 +60,7 @@ export interface ProjectConfig {
 }
 
 export interface RequestedVoices {
-  voices?: Record<string, { fishReferenceId?: string; speed?: number; fliteVoice?: string }>;
+  voices?: Record<string, { fishReferenceId?: string; speed?: number; fliteVoice?: string; tempo?: number }>;
 }
 
 export interface ProjectContext {

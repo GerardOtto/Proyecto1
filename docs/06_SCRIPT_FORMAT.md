@@ -37,7 +37,8 @@ Espera. ¿Entonces ChatGPT ya no sirve? {REACT:teto:enojada}¿Tengo que borrar t
   siguientes: hook/gancho, reaction/reaccion/meme, context/contexto, development/desarrollo,
   visual, punchline/remate/giro, closing/cierre. Sin secciones, se infieren (primer bloque = hook,
   ultimo = cierre, memes = reaction, segundo = context, penultimo con risa/shock = punchline).
-- Comentarios: `<!-- ... -->` o lineas que empiezan con `//`.
+- Comentarios: `<!-- ... -->` en UNA linea, o lineas que empiezan con `//` (un `<!--` de varias
+  lineas no se admite: las lineas intermedias se leerian como dialogo).
 
 ## Directivas de bloque (linea propia, dentro del bloque)
 | Directiva | Efecto |
@@ -53,9 +54,30 @@ Espera. ¿Entonces ChatGPT ya no sirve? {REACT:teto:enojada}¿Tengo que borrar t
 | `[PAUSE:600]` | micro-pausa (inserta silencio en el audio) |
 | `[SECTION:punchline]` | seccion de este bloque |
 | `[CROWD]` | permite mas de 3 personajes en pantalla |
+| `[TEMPO:1.5]` | acelera (o frena, <1) la voz de ESTE bloque; se aplica en local, sin regenerar (0.7-1.8) |
 
 La posicion importa: una directiva antes del texto se ancla a la primera palabra; despues del texto,
 a la ultima (excepto `[VISUAL]`, que cubre la escena, y `[PAUSE]` al final, que va tras el bloque).
+
+## Beat de personaje mudo (ADR 0013)
+Un bloque de un personaje mudo (`voice.mute`, p. ej. Neru) **sin texto** es su propio momento: ocupa
+el lugar de quien habla, con sus oyentes, durante su `[PAUSE:ms]` (por defecto 1000 ms). Sus eventos se
+anclan al inicio de la escena. Usarlo en lugar de sumarla como tercer listener:
+```markdown
+[NERU:feliz]
+[LISTEN: teto:sorprendido]
+[SFX:sfx_neru_phone]
+[PAUSE:1000]
+```
+
+## Pronunciacion (ADR 0013)
+`config/pronunciations.json` cambia como DICE la voz un termino (`Log4Shell` -> "Log four shell") sin
+tocar el subtitulo. Solo se regeneran las lineas que contienen el termino. `{PAUSE:ms}` dentro de una
+linea corta el audio en el silencio real mas cercano; unos puntos suspensivos antes ("Adios a...
+{PAUSE:300}'en mi maquina'") aseguran que lo haya.
+
+Pausas raras del TTS dentro de una linea (p. ej. 1.6 s de silencio tras una pregunta) se acortan solas:
+`render.json > audio.voicePauseCap` (`maxMs` 600 -> `keepMs` 250). No hace falta tocar el guion.
 
 ## Parrafos sueltos (entre lineas en blanco, fuera de un bloque)
 - `[MEME...]` o `[SFX:meme_explosion]` -> **escena meme** sin dialogo (seccion reaction, 1.3 s; la explosion dura 1.7 s y se solapa con el inicio del siguiente dialogo).

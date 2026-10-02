@@ -3,6 +3,7 @@
 // el foil pregunta o reacciona), visual del episodio, remate propio del tema y CTA.
 // No usa red ni LLM. Para noticias se necesita el escritor LLM (los resumenes de feeds no bastan).
 import type { Catalog, EngineConfig } from "../catalog/catalog";
+import { MUTE_BEAT_MS } from "../director/script-parser";
 import { normalizeWord, splitWords } from "../timeline/normalize";
 import { layoutTitle } from "../timeline/titlecard";
 import type { AutopilotConfig } from "./config";
@@ -19,6 +20,8 @@ export interface WriterAssets {
   background?: string;
   /** Capturas y tarjetas de titular (noticias): relleno contextual para la linea que cita cada fuente. */
   newsBroll?: Array<{ id: string; description: string }>;
+  /** GIF de Vocaloid por personaje del elenco (broll-picker.ts): relleno de las lineas de cada uno. */
+  characterBroll?: Record<string, string[]>;
 }
 
 export interface WrittenScript {
@@ -115,14 +118,14 @@ export const writeTemplateScript = (
   }
   const punch = topic.punchline ?? { line: fill(pick(humor.punchlines, s("punch")), vars), reply: pick(humor.punchlineReplies, s("reply")) };
   blocks.push(say("punchline", foil, "shocked", punch.line, [listen(host)]));
-  // Cameo mudo (ADR 0011): escucha el remate y "contesta" con su SFX de firma al final.
+  blocks.push(say("punchline", host, "riendo", punch.reply, [listen(foil, "riendo")]));
+  // Cameo mudo (ADR 0011/0013): "contesta" el remate en SU PROPIO beat (ella + un oyente, lo que dura
+  // su SFX de firma), en lugar de sumarse como tercer personaje en la escena de otro.
   const cameo = casting.cameo;
   const cameoSfx = cameo ? engine.characters.characters[cameo]?.voice?.signatureSfx : undefined;
   if (cameo && cameoSfx && catalog.entries[cameoSfx]) {
-    blocks.push(say("punchline", host, "riendo", `${punch.reply} {REACT:${cameo}:broma}{SFX:${cameoSfx}}`, [`[LISTEN: ${foil}:riendo, ${cameo}:neutral]`]));
+    blocks.push({ kind: "punchline", lines: [`[${cameo.toUpperCase()}:feliz]`, listen(host, "riendo"), `[SFX:${cameoSfx}]`, `[PAUSE:${MUTE_BEAT_MS}]`] });
     notes.push(`cameo mudo: ${cameo}`);
-  } else {
-    blocks.push(say("punchline", host, "riendo", punch.reply, [listen(foil, "riendo")]));
   }
   if (!casting.guest) blocks.push(say("takeaway", host, "feliz", topic.takeaway, [listen(foil, "feliz")]));
   for (const [who, line] of humor.ctaLines) {
@@ -132,7 +135,25 @@ export const writeTemplateScript = (
     blocks.push(say("cta", id, "feliz", line, extra));
   }
 
-  const render = (bs: Block[]) => {
+  // Relleno con GIF de Vocaloid del personaje que habla (docs/12_GUIA_PRODUCCION.md): en las lineas sin
+  // visual del foil, invitado y cameo, y en una de cada dos del host (sin repetir el mismo GIF seguido).
+  const withCharacterBroll = (bs: Block[]): Block[] => {
+    const used = new Map<string, number>();
+    let hostTurn = 0;
+    return bs.map((b) => {
+      if (b.kind === "meme" || b.kind === "cta" || b.lines.some((l) => l.startsWith("[VISUAL") || l.startsWith("[BROLL"))) return b;
+      const who = /^\[([A-Z]+):/.exec(b.lines[0] ?? "")?.[1]?.toLowerCase();
+      const list = who ? assets.characterBroll?.[who] : undefined;
+      if (!who || !list?.length) return b;
+      if (who === host && hostTurn++ % 2 === 1) return b;
+      const i = used.get(who) ?? 0;
+      used.set(who, i + 1);
+      return { ...b, lines: [b.lines[0]!, `[BROLL: ${list[i % list.length]}]`, ...b.lines.slice(1)] };
+    });
+  };
+
+  const render = (raw: Block[]) => {
+    const bs = withCharacterBroll(raw);
     const out: string[] = [];
     let lastSection = "";
     for (const b of bs) {

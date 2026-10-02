@@ -12,7 +12,8 @@ import { CountingProvider, costUSD, parseVariant, renderCompareReport, type Comp
 import { loadAutopilotConfig } from "../src/autopilot/config";
 import { lintScript } from "../src/autopilot/lint";
 import { writeLLMScript } from "../src/autopilot/llm-writer";
-import { genericBroll, newsBrollOf } from "../src/autopilot/run";
+import { castOf, characterBroll, pickBroll } from "../src/autopilot/broll-picker";
+import { newsBrollOf } from "../src/autopilot/run";
 import type { EpisodePlan } from "../src/autopilot/types";
 import { buildCatalog, loadEngineConfig, loadProject } from "../src/catalog/catalog";
 import { AnthropicProvider } from "../src/director/llm/anthropic";
@@ -56,7 +57,8 @@ main(async () => {
     const assets = {
       ...(ids.has("ep_main") ? { mainVisual: "ep_main" } : {}),
       ...(ids.has("ep_headline") ? { headlineVisual: "ep_headline" } : {}),
-      broll: genericBroll(catalog),
+      broll: pickBroll(catalog, plan),
+      characterBroll: characterBroll(catalog, castOf(plan)),
       ...(project.config.background ? { background: project.config.background } : {}),
       newsBroll: newsBrollOf(project.config.assets ?? []),
     };

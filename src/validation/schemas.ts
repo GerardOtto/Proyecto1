@@ -3,9 +3,19 @@ import { Ajv, type ErrorObject, type ValidateFunction } from "ajv";
 import fs from "node:fs";
 import { fromRepo } from "../utils/paths";
 
-export type SchemaName = "timeline" | "characters" | "assets" | "reactions" | "render" | "project" | "requested-voices" | "evergreen";
+export type SchemaName =
+  | "timeline"
+  | "characters"
+  | "assets"
+  | "reactions"
+  | "render"
+  | "project"
+  | "requested-voices"
+  | "evergreen"
+  | "pronunciations";
 
 const SCHEMA_FILES: Record<SchemaName, string> = {
+  pronunciations: "pronunciations.schema.json",
   timeline: "timeline.schema.json",
   characters: "characters.schema.json",
   assets: "assets.schema.json",

@@ -60,15 +60,23 @@ describe("personajes mudos, pares y contexto (ADR 0011)", async () => {
     expect(none.cameo).toBeUndefined();
   });
 
-  it("plantilla con cameo: Neru escucha el remate y contesta con su celular; borrador valido", () => {
+  it("plantilla con cameo: Neru contesta el remate en su propio beat (sin dialogo, 2 en pantalla); borrador valido", () => {
     const plan = planEpisode({ ap, engine: cfg, history: { episodes: [] }, clusters: [], mode: "evergreen", forceTopic: "big_o", canWriteNews: false, date: "2026-10-02" });
     const withCameo = { ...plan, casting: { ...plan.casting, cameo: "neru" } };
     const w = writeTemplateScript(withCameo, ap, { broll: ["broll_cat_laptop"], background: "bg_tech_loop" }, catalog, cfg);
-    expect(w.source).toContain("{SFX:sfx_neru_phone}");
-    expect(w.source).not.toMatch(/^\[NERU:/m);
+    expect(w.source).toMatch(/^\[NERU:feliz\]$/m);
+    expect(w.source).toContain("[SFX:sfx_neru_phone]");
+    expect(w.source).not.toContain("neru:broma");
     const { parsed } = estimateScript(w.source, catalog, cfg);
     expect(parsed.errors).toEqual([]);
     const draft = beatsToDraftTimeline(parsed.beats, { title: "t", durationTargetSec: 80, language: "es", generator: "test" }, cfg);
+    const beat = draft.scenes.find((s) => s.character === "neru")!;
+    expect(beat.dialogue).toBeUndefined();
+    expect(beat.endMs - beat.startMs).toBeGreaterThanOrEqual(1000);
+    expect(1 + (beat.listeners?.length ?? 0)).toBeLessThanOrEqual(2);
+    expect(beat.events).toContainEqual(expect.objectContaining({ type: "sfx", sfx: "sfx_neru_phone", atMs: 0 }));
+    // Nunca como tercer personaje en la escena de otro.
+    expect(draft.scenes.some((s) => s.character !== "neru" && s.listeners?.some((l) => l.character === "neru"))).toBe(false);
     const issues = validateTimeline(draft, catalog, cfg.render, { stage: "draft" }).issues;
     expect(issues.filter((i) => i.level === "error")).toEqual([]);
     expect(issues.some((i) => i.code === "SIGNATURE_SFX_WITHOUT_OWNER")).toBe(false);

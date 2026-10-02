@@ -41,5 +41,6 @@ export const resolveVoice = (character: string, ch: CharacterConfig | undefined,
     fishReferenceId: override.fishReferenceId || ch?.voice?.fish?.referenceId || undefined,
     speed: override.speed ?? ch?.voice?.fish?.speed ?? 1,
     fliteVoice: override.fliteVoice ?? ch?.voice?.flite?.voice ?? "slt",
+    tempo: override.tempo ?? ch?.voice?.tempo ?? 1,
   };
 };

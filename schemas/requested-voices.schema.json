@@ -28,6 +28,12 @@
           },
           "fliteVoice": {
             "type": "string"
+          },
+          "tempo": {
+            "description": "Ritmo propio de la voz en este proyecto (gana sobre voice.tempo de characters.json; ADR 0013).",
+            "type": "number",
+            "minimum": 0.7,
+            "maximum": 1.5
           }
         }
       }

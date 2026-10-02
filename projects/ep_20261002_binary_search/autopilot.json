@@ -1,0 +1,110 @@
+{
+  "plan": {
+    "episodeId": "ep_20261002_binary_search",
+    "date": "2026-10-02",
+    "topic": {
+      "id": "binary_search",
+      "kind": "evergreen",
+      "category": "cs_concept",
+      "keyword": "búsqueda binaria",
+      "title": "Búsqueda binaria",
+      "hookTitle": "*Búsqueda binaria*: un millón de datos en 20 pasos",
+      "points": [
+        "La búsqueda binaria encuentra un valor en una lista ordenada partiéndola a la mitad en cada paso.",
+        "Miras el elemento del medio: si lo que buscas es menor, descartas toda la mitad derecha; si es mayor, la izquierda.",
+        "Cada paso elimina la mitad de los candidatos, así que el trabajo crece muy despacio. En Big O es O de logaritmo de n.",
+        "Con mil elementos bastan unas diez comparaciones, y con un millón, unas veinte.",
+        "La condición es que los datos estén ordenados. Por eso las bases de datos usan índices ordenados para buscar rápido."
+      ],
+      "questions": [
+        "¿Y si la lista está desordenada?",
+        "¿Veinte pasos? ¿No será trampa?"
+      ],
+      "punchline": {
+        "line": "Ok, aplicaré búsqueda binaria para encontrar mis calcetines.",
+        "reply": "Primero tendrías que ordenarlos, papu."
+      },
+      "takeaway": "Ordenar primero te permite buscar muchísimo más rápido.",
+      "visual": {
+        "type": "stat",
+        "value": "20",
+        "caption": "comparaciones para 1.000.000 de elementos"
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Binary_search"
+      ],
+      "entities": [
+        "algoritmos"
+      ]
+    },
+    "format": "concept_lesson",
+    "structure": [
+      "hook",
+      "meme",
+      "question",
+      "explain",
+      "example",
+      "visual",
+      "punchline",
+      "takeaway",
+      "cta"
+    ],
+    "targetSec": 85,
+    "casting": {
+      "host": "luka",
+      "foil": "miku"
+    },
+    "theme": "ocean",
+    "setting": "parque",
+    "seed": "2026-10-02:7:binary_search"
+  },
+  "writer": "template",
+  "estimatedMs": 72205,
+  "lint": [],
+  "sfx": [
+    {
+      "line": 12,
+      "character": "luka",
+      "rule": "hook_drama",
+      "sfx": "sfx_dramatic_boomer",
+      "anchor": "end"
+    },
+    {
+      "line": 24,
+      "character": "miku",
+      "rule": "confused_humor",
+      "sfx": "sfx_oohh",
+      "anchor": "end"
+    },
+    {
+      "line": 32,
+      "character": "miku",
+      "rule": "surprise",
+      "sfx": "sfx_vine_boom",
+      "anchor": "start"
+    },
+    {
+      "line": 51,
+      "character": "miku",
+      "rule": "confused_humor",
+      "sfx": "sfx_oohh",
+      "anchor": "end"
+    },
+    {
+      "line": 60,
+      "character": "miku",
+      "rule": "shock",
+      "sfx": "sfx_dramatic_boomer",
+      "anchor": "start"
+    },
+    {
+      "line": 69,
+      "character": "luka",
+      "rule": "insight",
+      "sfx": "sfx_ding",
+      "anchor": "end"
+    }
+  ],
+  "notes": [],
+  "status": "final"
+}

@@ -67,6 +67,20 @@ describe("reajuste con audio real (build-timeline)", async () => {
     expect(v.issues.filter((i) => i.level === "error")).toEqual([]);
   });
 
+  it("la palabra tras una pausa interna empieza despues del silencio insertado (ADR 0013)", async () => {
+    const { index, words } = mk([3000, 55_000, 4000]);
+    const { timeline } = await buildFinalTimeline({ draft, index, words, project, cfg, writeAudio: false });
+    const caps = timeline.captions!.filter((c) => c.sceneId === ids[2]);
+    // pausa de 500 ms en atWord 10: entre la palabra 9 y la 10 hay al menos ese hueco
+    expect(caps[10]!.startMs - caps[9]!.endMs).toBeGreaterThanOrEqual(500);
+    for (let i = 1; i < caps.length; i++) expect(caps[i]!.startMs).toBeGreaterThanOrEqual(caps[i - 1]!.endMs);
+    // Con tiempos estimados se reparte cada tramo: ninguna palabra queda "aplastada" junto a la pausa.
+    const est = await buildFinalTimeline({ draft, index, words: { ...words, transcriber: "estimate" }, project, cfg, writeAudio: false });
+    const ec = est.timeline.captions!.filter((c) => c.sceneId === ids[2]);
+    expect(ec[10]!.startMs - ec[9]!.endMs).toBeGreaterThanOrEqual(500);
+    for (const c of ec) expect(c.endMs - c.startMs).toBeGreaterThan(100);
+  });
+
   it("lanza DurationError con la accion requerida si el audio es demasiado corto", async () => {
     const { index, words } = mk([2000, 8000, 2000]);
     await expect(buildFinalTimeline({ draft, index, words, project, cfg, writeAudio: false })).rejects.toBeInstanceOf(DurationError);

@@ -99,6 +99,8 @@ export interface Scene {
   visuals?: string[];
   /** Relleno (assets broll) para los huecos del area de visuales en ESTA escena; tiene prioridad sobre meta.broll. */
   broll?: string[];
+  /** Ritmo extra de la voz de ESTA linea ([TEMPO:x] en el guion); multiplica voiceTempo x voice.tempo (ADR 0013). */
+  voiceTempo?: number;
   events?: Array<TimelineEvent | EventShorthand>;
   audio?: { src: string; offsetMs?: number; durationMs: number };
   notes?: string;
@@ -146,6 +148,11 @@ export interface CharacterConfig {
   voice?: {
     fish?: { referenceId?: string; speed?: number; volume?: number };
     flite?: { voice?: string };
+    /**
+     * Ritmo propio de la voz, multiplicado por render.audio.voiceTempo (ADR 0013). Se aplica en
+     * local (atempo) sobre el audio ya generado: cambiarlo NO vuelve a llamar al proveedor de TTS.
+     */
+    tempo?: number;
     /** Audio reutilizable del saludo recurrente (ruta relativa al repo). */
     greeting?: string;
     /** Personaje mudo: nunca tiene dialogo; aparece como listener y "habla" con su SFX de firma (ADR 0011). */
@@ -282,6 +289,11 @@ export interface RenderConfig {
     voiceBlockLufs?: number;
     /** Velocidad de la voz (atempo, conserva el tono). 1 = original; 1.1 = 10 % mas rapida. */
     voiceTempo?: number;
+    /**
+     * Tope de silencios DENTRO de una linea de voz (pausas raras del TTS): los mas largos que `maxMs`
+     * se acortan a `keepMs`. Se aplica tambien al audio reutilizado; no cambia la clave de cache (ADR 0013).
+     */
+    voicePauseCap?: { maxMs: number; keepMs: number; noiseDb?: number };
     /** Techo de picos (dBFS) del audio final del MP4, tras mezclar voz + SFX. */
     finalLimiterDb?: number;
     /** Saludo recurrente: si una linea empieza con `text`, se usa el audio greeting del personaje. */

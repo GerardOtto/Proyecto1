@@ -116,6 +116,7 @@
     "finalLimiterDb": -1.5,
     "voiceBlockLufs": -20,
     "voiceTempo": 1.1,
+    "voicePauseCap": { "maxMs": 600, "keepMs": 250, "noiseDb": -40 },
     "greeting": {
       "text": "¡Papu papu!",
       "gapMs": 150

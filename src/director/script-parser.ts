@@ -30,6 +30,9 @@ const SECTION_ALIASES: Record<string, Section> = {
   closing: "closing", cierre: "closing", outro: "closing",
 };
 
+/** Duracion por defecto del beat de un personaje mudo sin [PAUSE:ms] (ADR 0013). */
+export const MUTE_BEAT_MS = 1000;
+
 const slug = (s: string) => s.trim().toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
 
 interface OpenBlock {
@@ -81,7 +84,19 @@ export const parseScript = (source: string, catalog: Catalog): ParsedScript => {
     if (!open) return;
     const b = open.beat;
     const text = open.text.join(" ").replace(/\s+/g, " ").trim();
-    if (!text) {
+    if (!text && b.character && characters[b.character]?.mute) {
+      // Beat de un personaje mudo (ADR 0013): ocupa el lugar de quien habla, sin dialogo, durante su
+      // [PAUSE:ms] (por defecto MUTE_BEAT_MS, ~ lo que dura su SFX de firma).
+      const ms = b.events.filter((e) => e.type === "pause").reduce((a, e) => a + ((e as { durationMs?: number }).durationMs ?? 0), 0);
+      // Sin palabras: los eventos se anclan al inicio de la escena (atMs 0) en lugar de a una palabra.
+      const events = b.events
+        .filter((e) => e.type !== "pause")
+        .map((e) => {
+          const { atWord: _drop, ...rest } = e;
+          return { ...rest, atMs: e.atMs ?? 0 } as TimelineEvent;
+        });
+      beats.push({ ...b, kind: "pause", events, durationMs: ms || MUTE_BEAT_MS });
+    } else if (!text) {
       errors.push({ line: b.line ?? 0, message: `Bloque de ${b.character} sin dialogo` });
     } else {
       b.dialogue = text;
@@ -198,6 +213,15 @@ export const parseScript = (source: string, catalog: Catalog): ParsedScript => {
       case "EMPH": {
         const words = args.join(":").split(",").map((s) => s.trim()).filter(Boolean);
         push({ type: "subtitle_emphasis", ...(words.length ? { words } : {}), ...anchor });
+        return true;
+      }
+      case "TEMPO":
+      case "RITMO": {
+        // Ritmo extra de la voz de ESTE bloque (ADR 0013): [TEMPO:1.5]
+        const t = Number(args[0]);
+        if (!target) errors.push({ line, message: "TEMPO va dentro de un bloque de dialogo" });
+        else if (!Number.isFinite(t) || t < 0.7 || t > 1.8) errors.push({ line, message: "TEMPO espera un factor entre 0.7 y 1.8 (p. ej. [TEMPO:1.5])" });
+        else target.beat.voiceTempo = t;
         return true;
       }
       case "CROWD":

@@ -40,9 +40,9 @@ describe("autopiloto: planificador", async () => {
 
   it("solo elige personajes listos (avatares no placeholder + voz de Fish Audio)", () => {
     const ready = readyCharacters(cfg);
-    // rin/len/kaito/neru ya tienen avatares reales pero aun no tienen referenceId de Fish Audio
-    for (const id of ["rin", "len", "kaito", "neru"]) expect(ready).not.toContain(id);
-    expect(ready).toEqual(["luka", "miku", "teto"]);
+    // neru tiene avatares reales pero es muda (ADR 0011): nunca entra como personaje con voz
+    expect(ready).not.toContain("neru");
+    expect(ready).toEqual(["kaito", "len", "luka", "miku", "rin", "teto"]);
     const p = planEpisode({ ...base, date: "2026-10-02", history: empty });
     expect(ready).toContain(p.casting.host);
     expect(ready).toContain(p.casting.foil);

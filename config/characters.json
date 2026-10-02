@@ -96,7 +96,7 @@
       },
       "voice": {
         "fish": {
-          "referenceId": "1ab6c3c810f64cd38536b4f7fb47b840",
+          "referenceId": "70d4df5aeec945d39faa29447252fee5",
           "speed": 1
         },
         "flite": {
@@ -179,6 +179,7 @@
         "flite": {
           "voice": "slt"
         },
+        "tempo": 1.2,
         "greeting": "assets/voice/luka/papu_papu.mp3"
       },
       "license": {
@@ -276,7 +277,7 @@
       },
       "voice": {
         "fish": {
-          "referenceId": "",
+          "referenceId": "6370f5a58cea4ef29dd7869b2ed1e170",
           "speed": 1
         },
         "flite": {
@@ -338,7 +339,7 @@
       },
       "voice": {
         "fish": {
-          "referenceId": "",
+          "referenceId": "9a99bcb13c614185b5f30f215cfb4226",
           "speed": 1
         },
         "flite": {
@@ -403,12 +404,13 @@
       },
       "voice": {
         "fish": {
-          "referenceId": "",
+          "referenceId": "f0167fa671ff43f09f49e76cdbd2f9ca",
           "speed": 1
         },
         "flite": {
           "voice": "kal"
-        }
+        },
+        "greeting": "assets/voice/kaito/papu_papu.mp3"
       },
       "license": {
         "source": "Pinterest (pinterest.com/chaewonjames, tableros por personaje): renders MMD de terceros; fondo eliminado con scripts/remove-bg.py (T_LO=7)",

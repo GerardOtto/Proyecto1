@@ -60,6 +60,12 @@
               "additionalProperties": false,
               "properties": { "voice": { "type": "string" } }
             },
+            "tempo": {
+              "description": "Ritmo propio de la voz (multiplica render.audio.voiceTempo). Se aplica en local sobre el audio ya generado (ADR 0013).",
+              "type": "number",
+              "minimum": 0.7,
+              "maximum": 1.5
+            },
             "greeting": {
               "description": "Audio reutilizable del saludo recurrente (audio.greeting.text en render.json), ruta relativa al repo.",
               "type": "string",

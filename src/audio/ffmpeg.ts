@@ -92,6 +92,72 @@ export const blockGainDb = (measuredLufs: number, targetLufs: number, maxBoostDb
   return Math.min(maxBoostDb, Math.max(-maxCutDb, targetLufs - measuredLufs));
 };
 
+/** Intervalos de silencio (ms) de la salida de `silencedetect`. */
+export const parseSilenceDetect = (stderr: string): Array<{ startMs: number; endMs: number }> => {
+  const out: Array<{ startMs: number; endMs: number }> = [];
+  let start: number | null = null;
+  for (const m of stderr.matchAll(/silence_(start|end):\s*(-?[\d.]+)/g)) {
+    const ms = Math.round(Number(m[2]) * 1000);
+    if (m[1] === "start") start = Math.max(0, ms);
+    else if (start !== null) {
+      out.push({ startMs: start, endMs: ms });
+      start = null;
+    }
+  }
+  return out;
+};
+
+/** Silencios internos de un audio (huecos entre palabras), para cortar sin partir una palabra. */
+export const detectSilences = async (file: string, noiseDb = -38, minMs = 40): Promise<Array<{ startMs: number; endMs: number }>> => {
+  const res = await run(FFMPEG, ["-hide_banner", "-nostats", "-i", file, "-af", `silencedetect=noise=${noiseDb}dB:d=${minMs / 1000}`, "-f", "null", "-"], {
+    allowFail: true,
+  });
+  return parseSilenceDetect(res.stderr);
+};
+
+/**
+ * Acorta en sitio los silencios INTERNOS mas largos que `maxMs` a `keepMs` (pausas raras del TTS).
+ * Respeta el inicio y el final del audio. Idempotente: si no hay silencios largos no toca el archivo.
+ * Devuelve cuantos ms se quitaron.
+ */
+export const capInternalSilences = async (file: string, maxMs: number, keepMs: number, noiseDb = -40): Promise<number> => {
+  const total = await probeDurationMs(file);
+  const long = (await detectSilences(file, noiseDb, maxMs)).filter((s) => s.startMs > 0 && s.endMs < total - 5 && s.endMs - s.startMs > maxMs);
+  if (long.length === 0) return 0;
+  // Tramos a conservar: todo menos el centro de cada silencio largo (quedan keepMs repartidos a cada lado).
+  const keep: Array<[number, number]> = [];
+  let from = 0;
+  for (const s of long) {
+    keep.push([from, s.startMs + keepMs / 2]);
+    from = s.endMs - keepMs / 2;
+  }
+  keep.push([from, total]);
+  const parts = keep.map(([a, b], i) => `[0:a]atrim=start=${(a / 1000).toFixed(4)}:end=${(b / 1000).toFixed(4)},asetpts=PTS-STARTPTS[p${i}]`);
+  const graph = `${parts.join(";")};${keep.map((_, i) => `[p${i}]`).join("")}concat=n=${keep.length}:v=0:a=1[out]`;
+  const tmp = file + ".cap.wav";
+  await run(FFMPEG, ["-y", "-v", "error", "-i", file, "-filter_complex", graph, "-map", "[out]", "-c:a", "pcm_s16le", tmp]);
+  fs.renameSync(tmp, file);
+  return long.reduce((a, s) => a + (s.endMs - s.startMs - keepMs), 0);
+};
+
+/**
+ * Punto de corte: el centro del silencio mas cercano a `estimateMs` dentro de `windowMs`; si no hay
+ * ninguno, la estimacion. Pura.
+ */
+export const snapToSilence = (estimateMs: number, silences: Array<{ startMs: number; endMs: number }>, windowMs = 450): number => {
+  let best = estimateMs;
+  let bestDist = Infinity;
+  for (const s of silences) {
+    const mid = Math.round((s.startMs + s.endMs) / 2);
+    const dist = estimateMs < s.startMs ? s.startMs - estimateMs : estimateMs > s.endMs ? estimateMs - s.endMs : 0;
+    if (dist <= windowMs && dist < bestDist) {
+      best = mid;
+      bestDist = dist;
+    }
+  }
+  return best;
+};
+
 /** Mide la sonoridad integrada (LUFS) de un audio. NaN si es silencio o no se puede medir. */
 export const measureLoudnessLufs = async (file: string): Promise<number> => {
   const res = await run(FFMPEG, ["-hide_banner", "-nostats", "-i", file, "-af", "loudnorm=print_format=json", "-f", "null", "-"], {

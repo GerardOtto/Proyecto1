@@ -2,6 +2,22 @@
 
 ## Sin publicar
 
+### Orquestacion: reutilizar voces, pronunciacion y biblioteca de assets (ADR 0013)
+- Voces reutilizadas por contenido (no por id de escena) y cache global de clips del proveedor
+  (`.cache/tts/`): rehacer un video solo paga las lineas nuevas o cambiadas (`report.json > voices.reused`).
+- `voice.tempo` por personaje (Luka 1.2): se aplica en local; cambiarlo no regenera audio.
+- `config/pronunciations.json`: Log4Shell -> "Log four shell", Log4j -> "Log four jay" (solo TTS).
+- `{PAUSE:ms}` corta en el silencio real mas cercano (`silencedetect`), no a mitad de palabra.
+- Beat propio de personaje mudo: `[NERU:x]` sin texto + `[PAUSE:ms]`; escritores actualizados (sin
+  tercer listener ni avatar `broma`).
+- Biblioteca: 15 SFX virales, 13 clips contextuales (GIF -> MP4), 6 stickers animados, logos de
+  Docker/Log4j/Minecraft, graficos VM vs contenedor, lineal vs binaria y chat de Log4Shell, captura
+  oficial de Minecraft.net. Rin, Len y Kaito con voz de Fish Audio y saludo.
+- Prototipos v2 (Docker, Busqueda binaria, Log4Shell) reescritos por el orquestador Claude.
+- v3: `[TEMPO:x]` por linea, `audio.voicePauseCap` (pausas del TTS > 600 ms), SFX nivelados a ~-16 LUFS,
+  21 GIF de Vocaloid (4:3 sin recortes), Matryoshka/muñecas rusas, foto CC0 de portacontenedores, fondos
+  foto del usuario para cafeteria/parque/oficina; fuera "it works on my machine" y el barco con texto.
+
 ### Mundo del canal (ADR 0012)
 - Lore ampliado: trasfondos, dinamicas (trio baka, Teto comilona, duo de Mesmerizer, Kagamine espejo,
   Kaito hermano mayor) y memes de la comunidad (Teto pera, Gumi, Mesmerizer, Rabbit Hole, Ievan Polkka,

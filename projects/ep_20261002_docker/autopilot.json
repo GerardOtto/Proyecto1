@@ -1,0 +1,124 @@
+{
+  "plan": {
+    "episodeId": "ep_20261002_docker",
+    "date": "2026-10-02",
+    "topic": {
+      "id": "docker",
+      "kind": "evergreen",
+      "category": "programming",
+      "keyword": "Docker",
+      "title": "Docker y los contenedores",
+      "hookTitle": "¿Qué es *Docker*? Adiós a 'en mi máquina funciona'",
+      "points": [
+        "Un clásico de la programación: el código funciona en tu computadora, pero falla en la del compañero o en el servidor.",
+        "Suele pasar por diferencias de versiones, librerías o configuración entre máquinas.",
+        "Un contenedor empaqueta la aplicación junto con todas sus dependencias y configuración, como una caja cerrada.",
+        "Docker popularizó los contenedores a partir de 2013, y hoy son la base de buena parte de la nube.",
+        "Son más ligeros que una máquina virtual completa, porque comparten el núcleo del sistema operativo."
+      ],
+      "questions": [
+        "¿Por qué funciona en mi máquina y en la tuya no?",
+        "¿Una caja con mi programa adentro?"
+      ],
+      "punchline": {
+        "line": "Entonces le pondré Docker a mi vida para que funcione igual en todas partes.",
+        "reply": "Ni Docker puede contenerte, papu."
+      },
+      "takeaway": "Docker no elimina los bugs, pero sí la excusa de 'en mi máquina funciona'.",
+      "visual": {
+        "type": "keypoints",
+        "title": "Un contenedor incluye",
+        "items": [
+          "Tu aplicación",
+          "Sus dependencias",
+          "Su configuración"
+        ]
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Docker_(software)"
+      ],
+      "entities": [
+        "docker",
+        "devops"
+      ]
+    },
+    "format": "concept_lesson",
+    "structure": [
+      "hook",
+      "meme",
+      "question",
+      "explain",
+      "example",
+      "visual",
+      "punchline",
+      "takeaway",
+      "cta"
+    ],
+    "targetSec": 85,
+    "casting": {
+      "host": "teto",
+      "foil": "rin",
+      "guest": "luka",
+      "cameo": "neru"
+    },
+    "theme": "matrix",
+    "setting": "cafeteria",
+    "arcs": [
+      {
+        "id": "neru_voice",
+        "label": "Neru consigue su voz",
+        "appearances": 2,
+        "stage": "Solo celular",
+        "beat": "Neru responde solo con su celular; nadie espera que hable. Un personaje traduce su 'mensaje' a su manera.",
+        "finaleAvailable": false,
+        "finale": "Capitulo especial: Neru obtiene su propia voz. Solo cuando el usuario lo decida, con su voz configurada en characters.json y al menos 10 videos del arco."
+      }
+    ],
+    "seed": "2026-10-02:6:docker"
+  },
+  "writer": "template",
+  "estimatedMs": 75308,
+  "lint": [],
+  "sfx": [
+    {
+      "line": 12,
+      "character": "teto",
+      "rule": "hook_drama",
+      "sfx": "sfx_dramatic_boomer",
+      "anchor": "end"
+    },
+    {
+      "line": 24,
+      "character": "rin",
+      "rule": "confused_humor",
+      "sfx": "sfx_oohh",
+      "anchor": "end"
+    },
+    {
+      "line": 32,
+      "character": "rin",
+      "rule": "surprise",
+      "sfx": "sfx_vine_boom",
+      "anchor": "start"
+    },
+    {
+      "line": 43,
+      "character": "rin",
+      "rule": "confused_humor",
+      "sfx": "sfx_oohh",
+      "anchor": "end"
+    },
+    {
+      "line": 64,
+      "character": "rin",
+      "rule": "shock",
+      "sfx": "sfx_dramatic_boomer",
+      "anchor": "start"
+    }
+  ],
+  "notes": [
+    "invitado: luka",
+    "cameo mudo: neru"
+  ],
+  "status": "final"
+}

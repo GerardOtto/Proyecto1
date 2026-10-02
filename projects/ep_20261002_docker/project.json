@@ -1,0 +1,27 @@
+{
+  "$schema": "../../schemas/project.schema.json",
+  "title": "Docker y los contenedores",
+  "language": "es",
+  "durationTargetSec": 85,
+  "background": "bg_foto_cafeteria_miku",
+  "director": "rules",
+  "tts": "fish",
+  "transcriber": "auto",
+  "assets": [
+    {
+      "id": "ep_main",
+      "type": "image",
+      "path": "visuals/ep_main.png",
+      "tags": [
+        "autopilot",
+        "programming",
+        "docker",
+        "devops"
+      ],
+      "safeArea": true,
+      "source": "generado por src/autopilot/graphics.ts (ep_20261002_docker)",
+      "license": "propio",
+      "license_status": "owned"
+    }
+  ]
+}

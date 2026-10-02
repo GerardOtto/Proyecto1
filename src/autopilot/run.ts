@@ -9,6 +9,7 @@ import { stepAnalyze } from "../pipeline/steps";
 import { writeJson } from "../utils/fs";
 import { log } from "../utils/log";
 import { fromRepo, toRepoRel } from "../utils/paths";
+import { castOf, characterBroll, pickBroll } from "./broll-picker";
 import type { AutopilotConfig } from "./config";
 import { generateEpisodeGraphics } from "./graphics";
 import { loadHistory, recordPlan, saveHistory, type History } from "./history";
@@ -98,7 +99,8 @@ export const refreshEpisodeVisuals = async (
   const assets: WriterAssets = {
     ...(graphics.mainVisual ? { mainVisual: graphics.mainVisual } : {}),
     ...(graphics.headlineVisual ? { headlineVisual: graphics.headlineVisual } : {}),
-    broll: genericBroll(catalog),
+    broll: pickBroll(catalog, plan),
+    characterBroll: characterBroll(catalog, castOf(plan)),
     ...(project.config.background ? { background: project.config.background } : {}),
     ...(news.visuals.length ? { newsBroll: news.visuals } : {}),
   };
@@ -174,7 +176,8 @@ export const runAutopilotEpisode = async (
   const assets: WriterAssets = {
     ...("mainVisual" in graphics && graphics.mainVisual ? { mainVisual: graphics.mainVisual } : {}),
     ...("headlineVisual" in graphics && graphics.headlineVisual ? { headlineVisual: graphics.headlineVisual } : {}),
-    broll: genericBroll(catalog),
+    broll: pickBroll(catalog, plan),
+    characterBroll: characterBroll(catalog, castOf(plan)),
     background,
     ...(news.visuals.length ? { newsBroll: news.visuals } : {}),
   };

@@ -6,6 +6,8 @@ export interface VoiceSettings {
   speed?: number;
   /** flite (solo desarrollo): nombre de voz (slt, kal, awb, rms...). */
   fliteVoice?: string;
+  /** Ritmo propio (atempo local, no se envia al proveedor; ADR 0013). */
+  tempo?: number;
 }
 
 export interface TTSRequest {

@@ -9,6 +9,9 @@ Estado actual y pendientes: `docs/STATUS.md`.
 Distribucion (horarios, descripciones, etiqueta de IA): `docs/10_DISTRIBUCION.md`.
 Rotulo de palabra clave en el gancho: implementado (`meta.hookTitle`, ADR 0006; `docs/10_DISTRIBUCION.md` §8).
 Autopiloto de produccion: `docs/11_AUTOPILOT.md` (ADR 0007; revision humana obligatoria antes de producir/publicar).
+**Estandar de calidad: `docs/12_GUIA_PRODUCCION.md`** (leer antes de escribir, producir o revisar un episodio;
+guiones de referencia aprobados en `projects/ep_20261002_*`; ADR 0013). Al rehacer un video, reutilizar voces
+(lineas identicas = mismo audio) y responder cada punto de `Correcciones.txt` del usuario.
 
 ## Reglas (no negociables)
 1. No inventar paths de assets: todo se referencia por ID contra `config/*.json` (catalogo).

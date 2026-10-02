@@ -2,7 +2,7 @@
 // `npm run generate` los encadena. Todos escriben su resultado en disco y en report.json.
 import fs from "node:fs";
 import path from "node:path";
-import { applyGainDb, applyTempo, blockGainDb, concatWavs, imageToJpeg, makeSilence, measureLoudnessLufs, probeDurationMs, toWav } from "../audio/ffmpeg";
+import { applyGainDb, applyTempo, blockGainDb, capInternalSilences, concatWavs, imageToJpeg, makeSilence, measureLoudnessLufs, probeDurationMs, toWav } from "../audio/ffmpeg";
 import { AnthropicProvider } from "../director/llm/anthropic";
 import { llmDirector } from "../director/llm/director";
 import type { LLMProvider } from "../director/llm/provider";
@@ -17,6 +17,8 @@ import { WhisperCppTranscriber } from "../transcribe/whisper-cpp";
 import { createTTSProvider, resolveVoice } from "../tts";
 import { FilesProvider } from "../tts/files";
 import { splitGreeting } from "../tts/greeting";
+import { applyPronunciations } from "../tts/pronounce";
+import type { TTSRequest } from "../tts/provider";
 import { estimateSpeechMs } from "../tts/silent";
 import { hashFile, hashJson, sha256 } from "../utils/hash";
 import { readJson, readJsonIfExists, writeJson } from "../utils/fs";
@@ -89,10 +91,45 @@ export const stepVoices = async (
   if (!check.ok) throw new Error(`TTS ${providerName}: ${check.reason}`);
 
   const previous = readJsonIfExists<AudioIndex>(project.paths.audioIndex);
-  const prevByScene = new Map((previous?.blocks ?? []).map((b) => [b.sceneId, b]));
   fs.mkdirSync(project.paths.blocksDir, { recursive: true });
+  const globalTempo = cfg.render.audio.voiceTempo ?? 1;
+  // Reutilizacion por CONTENIDO (ADR 0013): al reordenar o insertar escenas cambian los ids (s05 -> s07),
+  // pero una linea identica conserva su audio. Instantanea previa porque un bloque nuevo puede pisar el
+  // archivo de otro que se reutiliza mas abajo.
+  const snapDir = path.join(project.paths.blocksDir, ".prev");
+  fs.rmSync(snapDir, { recursive: true, force: true });
+  const prevByKey = new Map<string, { block: AudioBlock; file: string }>();
+  if (!opts.force) {
+    for (const b of previous?.blocks ?? []) {
+      const src = fromRepo(b.file);
+      if (b.placeholder || prevByKey.has(b.cacheKey) || !fs.existsSync(src)) continue;
+      fs.mkdirSync(snapDir, { recursive: true });
+      const snap = path.join(snapDir, `${b.cacheKey}.wav`);
+      fs.copyFileSync(src, snap);
+      prevByKey.set(b.cacheKey, { block: b, file: snap });
+    }
+  }
+  const prevTempos = [...new Set((previous?.blocks ?? []).map((b) => b.tempo ?? globalTempo))];
+  // Cache global de clips del proveedor (texto hablado + voz): nunca se paga dos veces la misma linea.
+  const clipCacheDir = path.join(CACHE_DIR, "tts");
+  const clipCacheable = !(provider instanceof FilesProvider) && provider.name !== "silent";
+  const synthesizeCached = async (req: TTSRequest): Promise<{ file: string }> => {
+    if (!clipCacheable) return provider.synthesize(req);
+    const key = sha256(`${provider.cacheTag(req)}|${req.language}|${req.text}`);
+    const hit = ["wav", "mp3"].map((ext) => path.join(clipCacheDir, `${key}.${ext}`)).find((f) => fs.existsSync(f));
+    if (hit) return { file: hit };
+    const res = await provider.synthesize(req);
+    fs.mkdirSync(clipCacheDir, { recursive: true });
+    const cached = path.join(clipCacheDir, `${key}${path.extname(res.file) || ".wav"}`);
+    fs.copyFileSync(res.file, cached);
+    return res;
+  };
+  // Pausas raras del TTS dentro de una linea: se acortan en local, tambien en audio reutilizado (idempotente).
+  const pauseCap = cfg.render.audio.voicePauseCap;
+  const capPauses = (file: string) => (pauseCap ? capInternalSilences(file, pauseCap.maxMs, pauseCap.keepMs, pauseCap.noiseDb) : Promise.resolve(0));
   const blocks: AudioBlock[] = [];
   let generated = 0;
+  let reused = 0;
   for (const scene of draft.scenes) {
     if (!scene.dialogue || !scene.character) continue;
     const chCfg = cfg.characters.characters[scene.character];
@@ -104,24 +141,47 @@ export const stepVoices = async (
     const greetingTag = split
       ? `greet=${greetingFile && fs.existsSync(greetingFile) ? `${fs.statSync(greetingFile).size}:${fs.statSync(greetingFile).mtimeMs}` : "missing"}:${greeting!.gapMs}`
       : "";
-    const req = {
+    const written = split ? split.rest : scene.dialogue;
+    // Pronunciacion: solo cambia lo que oye el TTS; el subtitulo conserva el texto del guion.
+    const spoken = applyPronunciations(written, cfg.pronunciations ?? []);
+    const req: TTSRequest = {
       blockId: scene.id,
       character: scene.character,
-      text: split ? split.rest : scene.dialogue,
+      text: spoken,
       language: draft.meta.language ?? "es",
       voice,
       outBase: path.join(project.paths.blocksDir, `${scene.id}.raw`),
     };
     const blockLufs = cfg.render.audio.voiceBlockLufs;
-    const tempo = cfg.render.audio.voiceTempo ?? 1;
+    const tempo = globalTempo * (voice.tempo ?? 1) * (scene.voiceTempo ?? 1);
     const sr = cfg.render.audio.sampleRate;
-    const cacheKey = sha256(
-      `${split && !split.rest ? "greeting-only" : provider.cacheTag(req)}|${scene.character}|${scene.dialogue}|${sr}|lufs=${blockLufs ?? "off"}|tempo=${tempo}|${greetingTag}`,
-    );
+    // Misma forma de clave que antes de ADR 0013 cuando no hay pronunciacion (los indices previos siguen valiendo).
+    const keyFor = (t: number) =>
+      sha256(
+        `${split && !split.rest ? "greeting-only" : provider.cacheTag(req)}|${scene.character}|${scene.dialogue}|${sr}|lufs=${blockLufs ?? "off"}|tempo=${t}|${greetingTag}${spoken !== written ? `|say=${spoken}` : ""}`,
+      );
+    const cacheKey = keyFor(tempo);
     const out = path.join(project.paths.blocksDir, `${scene.id}.wav`);
-    const prev = prevByScene.get(scene.id);
-    if (!opts.force && prev && prev.cacheKey === cacheKey && fs.existsSync(out)) {
-      blocks.push(prev);
+    const exact = prevByKey.get(cacheKey);
+    if (exact) {
+      if (path.resolve(exact.file) !== path.resolve(out)) fs.copyFileSync(exact.file, out);
+      const cut = await capPauses(out);
+      const durationMs = cut ? await probeDurationMs(out) : exact.block.durationMs;
+      blocks.push({ ...exact.block, blockId: scene.id, sceneId: scene.id, file: toRepoRel(out), durationMs, tempo });
+      reused++;
+      if (cut) log.ok(`${scene.id} (${scene.character}) ${durationMs} ms [reutilizado, pausa interna -${cut} ms]`);
+      continue;
+    }
+    // Mismo audio con otro ritmo: se reajusta en local (sin volver a llamar al proveedor).
+    const retempo = prevTempos.map((t) => ({ t, p: prevByKey.get(keyFor(t)) })).find((x) => x.p);
+    if (retempo?.p) {
+      fs.copyFileSync(retempo.p.file, out);
+      await applyTempo(out, tempo / retempo.t);
+      const cut = await capPauses(out);
+      const durationMs = await probeDurationMs(out);
+      blocks.push({ ...retempo.p.block, blockId: scene.id, sceneId: scene.id, file: toRepoRel(out), durationMs, cacheKey, tempo });
+      reused++;
+      log.ok(`${scene.id} (${scene.character}) ${durationMs} ms [reutilizado, ritmo x${(tempo / retempo.t).toFixed(2)}${cut ? `, pausa interna -${cut} ms` : ""}]`);
       continue;
     }
     let greetingMissing = false;
@@ -138,7 +198,7 @@ export const stepVoices = async (
       }
       const parts = [g];
       if (split.rest) {
-        const res = await provider.synthesize(req);
+        const res = await synthesizeCached(req);
         const r = `${out}.rest.wav`;
         const gap = `${out}.gap.wav`;
         await toWav(res.file, r, sr);
@@ -149,19 +209,20 @@ export const stepVoices = async (
       await concatWavs(parts, out);
       for (const p of parts) fs.rmSync(p, { force: true });
     } else {
-      const res = await provider.synthesize(req);
+      const res = await synthesizeCached(req);
       await toWav(res.file, out, sr);
       if (res.file.startsWith(project.paths.blocksDir) && res.file !== out) fs.rmSync(res.file, { force: true });
     }
     // Ritmo: acelera la voz sin cambiar el tono (el timeline se reajusta a la nueva duracion).
     if (tempo !== 1) await applyTempo(out, tempo);
+    const cut = await capPauses(out);
     // Nivelado por bloque: voces de distinto origen (p. ej. audios descargados) suenan igual de fuertes.
-    let gainNote = "";
+    let gainNote = cut ? ` (pausa interna -${cut} ms)` : "";
     if (blockLufs !== undefined) {
       const gain = blockGainDb(await measureLoudnessLufs(out), blockLufs);
       if (Math.abs(gain) >= 0.5) {
         await applyGainDb(out, gain);
-        gainNote = ` (${gain > 0 ? "+" : ""}${gain.toFixed(1)} dB)`;
+        gainNote += ` (${gain > 0 ? "+" : ""}${gain.toFixed(1)} dB)`;
       }
     }
     const durationMs = await probeDurationMs(out);
@@ -175,18 +236,21 @@ export const stepVoices = async (
       file: toRepoRel(out),
       durationMs,
       cacheKey,
+      tempo,
       ...(silentPlaceholder ? { placeholder: true } : {}),
     });
     generated++;
     log.ok(`${scene.id} (${scene.character}) ${durationMs} ms${gainNote}${silentPlaceholder ? " [SILENCIO: falta audio]" : ""}`);
   }
+  fs.rmSync(snapDir, { recursive: true, force: true });
   const index: AudioIndex = { provider: provider.name, sampleRate: cfg.render.audio.sampleRate, blocks };
   writeJson(project.paths.audioIndex, index);
+  if (reused) log.info(`${reused} bloque(s) reutilizados del audio previo (sin llamar al proveedor)`);
   const totalMs = blocks.reduce((a, b) => a + b.durationMs, 0);
   const missingAudio = blocks.filter((b) => b.placeholder).map((b) => b.blockId);
   if (missingAudio.length) log.warn(`Bloques sin voz (silencio provisional): ${missingAudio.join(", ")}`);
   updateReport(project, {
-    steps: { voices: { provider: provider.name, blocks: blocks.length, generated, cached: blocks.length - generated, speechMs: totalMs, missingAudio } },
+    steps: { voices: { provider: provider.name, blocks: blocks.length, generated, cached: blocks.length - generated, reused, speechMs: totalMs, missingAudio } },
   });
   return index;
 };

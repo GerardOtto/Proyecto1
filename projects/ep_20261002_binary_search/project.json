@@ -1,0 +1,26 @@
+{
+  "$schema": "../../schemas/project.schema.json",
+  "title": "Búsqueda binaria",
+  "language": "es",
+  "durationTargetSec": 85,
+  "background": "bg_foto_parque_neru",
+  "director": "rules",
+  "tts": "fish",
+  "transcriber": "auto",
+  "assets": [
+    {
+      "id": "ep_main",
+      "type": "diagram",
+      "path": "visuals/ep_main.png",
+      "tags": [
+        "autopilot",
+        "cs_concept",
+        "algoritmos"
+      ],
+      "safeArea": true,
+      "source": "generado por src/autopilot/graphics.ts (ep_20261002_binary_search)",
+      "license": "propio",
+      "license_status": "owned"
+    }
+  ]
+}

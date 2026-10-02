@@ -107,6 +107,12 @@
           "description": "Permite mas personajes en pantalla que layout.maxCharactersOnScreen. Solo si el evento lo justifica.",
           "type": "boolean"
         },
+        "voiceTempo": {
+          "description": "Ritmo extra de la voz de esta linea ([TEMPO:x]); multiplica render.audio.voiceTempo y voice.tempo (ADR 0013).",
+          "type": "number",
+          "minimum": 0.7,
+          "maximum": 1.8
+        },
         "visuals": {
           "description": "Atajo: muestra estos visuales durante toda la escena.",
           "type": "array",

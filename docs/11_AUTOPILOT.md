@@ -99,6 +99,11 @@ Regenerar en un episodio existente: `npm run autopilot -- --episode <id> --refre
 Version simple de cada episodio fuera del repo (`REVIEW_DIR` en `.env`, p. ej. el escritorio), para
 revisar guiones y hacer control de calidad de imagenes y audios sin abrir el proyecto. El autopiloto la
 actualiza al escribir o producir; tras editar un `script.md` a mano, correr `npm run review`.
+- Episodio aprobado: `status: "final"` en `projects/<id>/autopilot.json`. Sale de la carpeta de revision
+  (se borra su copia) y se entrega en `Desktop/Proyecto vocaloid/1. Videos finales/` (ver
+  docs/12_GUIA_PRODUCCION.md). Asi no quedan videos duplicados.
+- Relleno: `src/autopilot/broll-picker.ts` ordena el b-roll por elenco (GIF de Vocaloid) y tema; la
+  plantilla pone un GIF del personaje que habla y el escritor LLM recibe la lista ordenada.
 - `<fecha> <titulo>/Guion.txt`: dialogo limpio (sin etiquetas), quien habla y con que emocion, imagen o
   relleno en pantalla y estado del audio de cada linea (nombre de archivo esperado en `audio/input/`).
 - `Imagenes/`, `Personajes/` (avatares usados), `Audios/` (grabados) y `Video final.mp4` si existe.

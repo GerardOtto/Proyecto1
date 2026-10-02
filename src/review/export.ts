@@ -253,9 +253,32 @@ export const writeReviewIndex = (reviewDir: string, eps: ReviewEpisode[]): strin
   return file;
 };
 
-/** Episodios del proyecto que se exportan con --all: los del autopiloto (tienen autopilot.json). */
+/** Estado del episodio en projects/<id>/autopilot.json (needs_review, final...). */
+export const episodeStatus = (id: string): string | undefined =>
+  readJsonIfExists<{ status?: string }>(fromRepo("projects", id, "autopilot.json"))?.status;
+
+/**
+ * Episodios del proyecto que se exportan con --all: los del autopiloto (tienen autopilot.json). Los
+ * marcados como "final" ya se entregaron en la carpeta de videos finales y salen de la revision
+ * (asi no quedan duplicados).
+ */
 export const listEpisodes = (): string[] =>
   fs
     .readdirSync(fromRepo("projects"))
     .filter((d) => d.startsWith("ep_") && fs.existsSync(fromRepo("projects", d, "autopilot.json")) && fs.existsSync(fromRepo("projects", d, "script.md")))
+    .filter((d) => episodeStatus(d) !== "final")
     .sort();
+
+/** Borra de la carpeta de revision las carpetas de episodios marcados como "final". Devuelve cuantas. */
+export const removeFinalEpisodes = (reviewDir: string): number => {
+  if (!fs.existsSync(reviewDir)) return 0;
+  let n = 0;
+  for (const d of fs.readdirSync(reviewDir)) {
+    const marker = path.join(reviewDir, d, ".episodio");
+    if (fs.existsSync(marker) && episodeStatus(fs.readFileSync(marker, "utf8").trim()) === "final") {
+      fs.rmSync(path.join(reviewDir, d), { recursive: true, force: true });
+      n++;
+    }
+  }
+  return n;
+};

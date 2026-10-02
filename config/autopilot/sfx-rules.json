@@ -1,6 +1,6 @@
 {
   "$comment": "Director de SFX automatico. Solo actua en bloques SIN efectos marcados a mano. Elige por TAGS del catalogo (config/assets.json), no por id, para que los SFX nuevos se usen solos. anchor: start = primera palabra, end = ultima.",
-  "maxPerVideo": 7,
+  "maxPerVideo": 10,
   "minBlocksBetween": 1,
   "excludeTags": ["reservado", "solo_personaje"],
   "rules": [
@@ -10,6 +10,8 @@
     { "id": "laugh", "when": { "reaction": ["riendo", "broma"] }, "pickTags": ["risa"], "volume": 0.5, "anchor": "end" },
     { "id": "teto_signature", "when": { "character": ["teto"], "section": ["punchline", "closing"] }, "pickTags": ["teto", "firma"], "volume": 0.55, "anchor": "end" },
     { "id": "insight", "when": { "reaction": ["feliz", "nerd"], "section": ["takeaway", "closing", "visual"] }, "pickTags": ["acierto", "idea"], "volume": 0.45, "anchor": "end" },
-    { "id": "confused_humor", "when": { "reaction": ["confundido", "decepcionado"] }, "pickTags": ["humor"], "avoidTags": ["china"], "volume": 0.5, "anchor": "end" }
-  ]
+    { "id": "confused_humor", "when": { "reaction": ["confundido", "pensando"] }, "pickTags": ["confusion", "humor"], "avoidTags": ["china"], "volume": 0.5, "anchor": "end" },
+    { "id": "smug", "when": { "reaction": ["presumido"] }, "pickTags": ["presumir"], "volume": 0.45, "anchor": "end" },
+    { "id": "fail", "when": { "reaction": ["decepcionado", "triste"] }, "pickTags": ["fallo"], "volume": 0.45, "anchor": "end" },
+    { "id": "wow_fact", "when": { "reaction": ["sorprendido", "emocionado"], "section": ["development", "visual", "context"] }, "pickTags": ["asombro"], "volume": 0.4, "anchor": "end" }  ]
 }

@@ -12,6 +12,8 @@ export interface Beat {
   dialogue?: string;
   listeners?: OnScreenCharacter[];
   crowd?: boolean;
+  /** Ritmo extra de la voz de esta linea ([TEMPO:x]). */
+  voiceTempo?: number;
   visuals?: string[];
   /** Relleno del area de visuales para esta escena (en orden). */
   broll?: string[];
@@ -90,6 +92,7 @@ export const beatsToDraftTimeline = (beats: Beat[], meta: BeatsMeta, cfg: Engine
       ...(b.dialogue ? { dialogue: b.dialogue } : {}),
       ...(b.listeners ? { listeners: b.listeners } : {}),
       ...(b.crowd ? { crowd: true } : {}),
+      ...(b.voiceTempo ? { voiceTempo: b.voiceTempo } : {}),
       ...(b.visuals && b.visuals.length > 0 ? { visuals: b.visuals } : {}),
       ...(b.broll && b.broll.length > 0 ? { broll: b.broll } : {}),
       ...(b.events.length > 0 ? { events: b.events } : {}),

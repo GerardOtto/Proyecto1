@@ -8,11 +8,14 @@ import { buildCatalogBrief } from "../director/llm/director";
 import { LLMError, type LLMMessage, type LLMProvider } from "../director/llm/provider";
 import { fromRepo } from "../utils/paths";
 import { validateTimeline } from "../validation/timeline";
+import { castOf, rankBroll, topicTagsOf } from "./broll-picker";
 import type { AutopilotConfig } from "./config";
 import { lintScript } from "./lint";
 import { estimateScript, renderFrontMatter } from "./script-doc";
 import type { WriterAssets, WrittenScript } from "./template-writer";
 import type { EpisodePlan } from "./types";
+
+export { castOf };
 
 export interface LLMScriptOutput {
   title: string;
@@ -37,9 +40,6 @@ export const WRITER_SCHEMA: Record<string, unknown> = {
   },
 };
 
-/** Todos los personajes del episodio (con dialogo + cameo mudo). */
-export const castOf = (plan: EpisodePlan): string[] =>
-  [plan.casting.host, plan.casting.foil, plan.casting.guest, plan.casting.cameo].filter((c): c is string => !!c);
 
 /** Contexto (lore) de los personajes presentes + el compartido que aplica (ADR 0011). Pura. */
 export const loreBrief = (cast: string[], lore: AutopilotConfig["lore"]): string[] => {
@@ -146,6 +146,12 @@ export const buildWriterBrief = (plan: EpisodePlan, ap: AutopilotConfig, assets:
     ...Object.values(catalog.entries)
       .filter((e) => e.type === "meme" && e.tags.includes("sticker"))
       .map((e) => `- ${e.id}: ${e.description ?? e.tags.join(", ")}`),
+    "",
+    "Relleno de la parte superior (B-roll, docs/12_GUIA_PRODUCCION.md): pon [BROLL: id] (1-2 ids) en casi todos los bloques sin [VISUAL], ilustrando ESA linea. Prioriza los GIF de Vocaloid del elenco; si la linea nombra un objeto, lugar o meme, muestralo. Ordenados de mas a menos afines a este episodio:",
+    ...rankBroll(catalog, castOf(plan), topicTagsOf(plan))
+      .slice(0, 30)
+      .map((r) => `- ${r.id}: ${r.description}`),
+    "",
     `CTA (dos bloques finales, con [VISUAL: ${ap.humor.ctaVisual}]): ${ap.humor.ctaLines.map(([w, l]) => `${w.replace("{host}", plan.casting.host).replace("{foil}", plan.casting.foil)}: "${l}"`).join(" | ")}`,
     "",
     buildCatalogBrief(catalog, engine),
@@ -168,6 +174,8 @@ export const writeLLMScript = async (
     fs.readFileSync(fromRepo("docs/06_SCRIPT_FORMAT.md"), "utf8"),
     "\n\n# Guion de ejemplo (formato de la casa)\n",
     fs.readFileSync(fromRepo("projects/demo_001/script.md"), "utf8"),
+    "\n\n# Guion de referencia aprobado (estandar de calidad actual: 3 rondas de correcciones del usuario)\n",
+    fs.readFileSync(fromRepo("projects/ep_20261002_log4shell/script.md"), "utf8"),
   ].join("");
   const messages: LLMMessage[] = [{ role: "user", content: buildWriterBrief(plan, ap, assets, catalog, engine) }];
   let lastErrors: string[] = [];

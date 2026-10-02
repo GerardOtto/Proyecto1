@@ -106,6 +106,57 @@
       "theme": "sunset",
       "status": "planned",
       "setting": "konbini"
+    },
+    {
+      "episodeId": "ep_20261002_docker",
+      "date": "2026-10-02",
+      "kind": "evergreen",
+      "topicId": "docker",
+      "title": "Docker y los contenedores",
+      "urls": [],
+      "format": "concept_lesson",
+      "casting": {
+        "host": "teto",
+        "foil": "rin",
+        "guest": "luka",
+        "cameo": "neru"
+      },
+      "theme": "matrix",
+      "setting": "cafeteria",
+      "status": "produced"
+    },
+    {
+      "episodeId": "ep_20261002_binary_search",
+      "date": "2026-10-02",
+      "kind": "evergreen",
+      "topicId": "binary_search",
+      "title": "Búsqueda binaria",
+      "urls": [],
+      "format": "concept_lesson",
+      "casting": {
+        "host": "luka",
+        "foil": "miku"
+      },
+      "theme": "ocean",
+      "setting": "parque",
+      "status": "produced"
+    },
+    {
+      "episodeId": "ep_20261002_log4shell",
+      "date": "2026-10-02",
+      "kind": "evergreen",
+      "topicId": "log4shell",
+      "title": "Log4Shell",
+      "urls": [],
+      "format": "controversy_story",
+      "casting": {
+        "host": "teto",
+        "foil": "len",
+        "cameo": "neru"
+      },
+      "theme": "sakura",
+      "setting": "oficina",
+      "status": "produced"
     }
   ]
 }

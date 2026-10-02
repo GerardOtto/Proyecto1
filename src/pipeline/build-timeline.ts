@@ -4,7 +4,7 @@
 import { serializeSrt } from "@remotion/captions";
 import fs from "node:fs";
 import path from "node:path";
-import { blockGainDb, buildMasterTrack, makeSilence, measureLoudnessLufs, trimAudio, type MasterMusic, type MasterPiece } from "../audio/ffmpeg";
+import { blockGainDb, buildMasterTrack, detectSilences, makeSilence, snapToSilence, measureLoudnessLufs, trimAudio, type MasterMusic, type MasterPiece } from "../audio/ffmpeg";
 import type { EngineConfig, ProjectContext } from "../catalog/catalog";
 import { resolveEventAnchors } from "../timeline/anchors";
 import { buildCaptionPages } from "../timeline/captions";
@@ -12,6 +12,7 @@ import { planDuration, type DurationPlan } from "../timeline/duration";
 import { sceneEvents } from "../timeline/normalize";
 import type { CaptionWord, MusicMixConfig, Scene, Timeline } from "../timeline/types";
 import type { TimedWord } from "../transcribe/align";
+import { distributeWords } from "../transcribe/estimate";
 import { fromRepo, toRepoRel } from "../utils/paths";
 
 export interface AudioBlock {
@@ -22,6 +23,8 @@ export interface AudioBlock {
   file: string; // ruta relativa al repo
   durationMs: number;
   cacheKey: string;
+  /** Ritmo aplicado (voiceTempo x voice.tempo); sin el campo = voiceTempo de entonces (ADR 0013). */
+  tempo?: number;
   /** Silencio provisional: el archivo de voz de este bloque aun no existe (--allow-missing-audio). */
   placeholder?: boolean;
 }
@@ -98,12 +101,15 @@ export const buildFinalTimeline = async (opts: {
       const pauses = events
         .filter((e): e is Extract<typeof e, { type: "pause" }> => e.type === "pause")
         .map((e) => ({ atWord: e.atWord, ms: e.durationMs ?? t.pauseSceneMs }));
-      const cuts = pauses
-        .filter((p) => p.atWord !== undefined && p.atWord > 0 && p.atWord < w.words.length)
+      const inner = pauses.filter((p) => p.atWord !== undefined && p.atWord > 0 && p.atWord < w.words.length);
+      // Con tiempos estimados (sin whisper) el limite entre palabras es aproximado: el corte se lleva
+      // al silencio real mas cercano para no partir una palabra (ADR 0013).
+      const silences = inner.length && fs.existsSync(fromRepo(block.file)) ? await detectSilences(fromRepo(block.file)) : [];
+      const cuts = inner
         .map((p) => {
           const prev = w.words[p.atWord! - 1]!;
           const next = w.words[p.atWord!]!;
-          return { atMs: Math.round((prev.endMs + next.startMs) / 2), ms: p.ms };
+          return { atWord: p.atWord!, atMs: snapToSilence(Math.round((prev.endMs + next.startMs) / 2), silences), ms: p.ms };
         })
         .sort((a, b) => a.atMs - b.atMs);
       const endPause = pauses.filter((p) => p.atWord === undefined || p.atWord <= 0 || p.atWord >= w.words.length).reduce((a, p) => a + p.ms, 0);
@@ -116,12 +122,44 @@ export const buildFinalTimeline = async (opts: {
         shift += c.ms;
       }
       pieces.push({ file: block.file, atMs: from + shift, fromMs: from, toMs: null });
-      const shiftAt = (ms: number) => cuts.filter((c) => c.atMs <= ms).reduce((a, c) => a + c.ms, 0);
+      // Desplazamiento por POSICION de palabra (no por tiempo estimado): si el corte se movio al silencio
+      // real, la palabra que sigue a la pausa no puede empezar antes de que termine el silencio insertado,
+      // y la anterior no puede pasar del corte.
+      // Sin transcripcion real (estimate) los tiempos son un reparto uniforme: con cortes, se reparte de
+      // nuevo dentro de cada tramo de audio [inicio, corte1], [corte1, corte2]... para que cada palabra
+      // caiga en el lado correcto de la pausa.
+      let base = w.words;
+      if (words.transcriber === "estimate" && cuts.length && w.words.length) {
+        const bounds = [...cuts].sort((a, b) => a.atWord - b.atWord);
+        base = [];
+        let fromWord = 0;
+        let fromMs = w.words[0]!.startMs;
+        for (const seg of [...bounds, { atWord: w.words.length, atMs: w.words.at(-1)!.endMs }]) {
+          const segWords = w.words.slice(fromWord, seg.atWord);
+          if (segWords.length) {
+            const redistributed = distributeWords(segWords.map((x) => x.text).join(" "), fromMs, Math.max(fromMs + segWords.length, seg.atMs));
+            base.push(...segWords.map((x, k) => ({ ...x, startMs: redistributed[k]?.startMs ?? x.startMs, endMs: redistributed[k]?.endMs ?? x.endMs })));
+          }
+          fromWord = seg.atWord;
+          fromMs = seg.atMs;
+        }
+      }
+      const shifted = base.map((x, i) => {
+        const before = cuts.filter((c) => c.atWord <= i);
+        const shift = before.reduce((a, c) => a + c.ms, 0);
+        const lastCut = before.at(-1);
+        const next = cuts.find((c) => c.atWord > i);
+        let start = x.startMs;
+        let end = x.endMs;
+        if (lastCut && lastCut.atWord === i) start = Math.max(start, lastCut.atMs);
+        if (next && next.atWord === i + 1) end = Math.min(end, next.atMs);
+        return { ...x, shiftedStartMs: start + shift, shiftedEndMs: Math.max(start, end) + shift };
+      });
       layouts.push({
         scene,
         contentMs: block.durationMs + cuts.reduce((a, c) => a + c.ms, 0) + endPause,
         pieces,
-        words: w.words.map((x) => ({ ...x, shiftedStartMs: x.startMs + shiftAt(x.startMs), shiftedEndMs: x.endMs + shiftAt(x.startMs) })),
+        words: shifted,
       });
     } else {
       // Escenas sin dialogo conservan la duracion decidida por el director (meme/pausa).

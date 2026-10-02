@@ -1,0 +1,117 @@
+{
+  "plan": {
+    "episodeId": "ep_20261002_log4shell",
+    "date": "2026-10-02",
+    "topic": {
+      "id": "log4shell",
+      "kind": "evergreen",
+      "category": "controversy",
+      "keyword": "Log4Shell",
+      "title": "Log4Shell",
+      "hookTitle": "*Log4Shell*: hackear un servidor con un mensaje",
+      "points": [
+        "Log4j es una librería de Java para registrar mensajes, los famosos logs. La usan millones de aplicaciones.",
+        "En diciembre de 2021 se descubrió Log4Shell, un fallo gravísimo en esa librería.",
+        "Bastaba con que la aplicación registrara un texto especial, por ejemplo escrito en un chat, para ejecutar código remoto.",
+        "Recibió la puntuación máxima de gravedad, diez sobre diez, y equipos de todo el mundo trabajaron días para parchear.",
+        "Muchas empresas ni sabían que usaban Log4j, porque venía escondida dentro de otras dependencias."
+      ],
+      "questions": [
+        "¿Un mensaje en un chat podía hackear un servidor?",
+        "¿Cómo no sabes qué librerías usas?"
+      ],
+      "punchline": {
+        "line": "Entonces los logs, que eran para encontrar errores, eran el error.",
+        "reply": "Ironía nivel diez de diez."
+      },
+      "takeaway": "Revisa tus dependencias: una librería pequeña puede abrir la puerta grande.",
+      "visual": {
+        "type": "stat",
+        "value": "10/10",
+        "caption": "gravedad CVSS de Log4Shell (2021)"
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Log4Shell"
+      ],
+      "entities": [
+        "ciberseguridad",
+        "java"
+      ]
+    },
+    "format": "controversy_story",
+    "structure": [
+      "hook",
+      "meme",
+      "context",
+      "explain",
+      "twist",
+      "punchline",
+      "takeaway",
+      "cta"
+    ],
+    "targetSec": 90,
+    "casting": {
+      "host": "teto",
+      "foil": "len",
+      "cameo": "neru"
+    },
+    "theme": "sakura",
+    "setting": "oficina",
+    "arcs": [
+      {
+        "id": "neru_voice",
+        "label": "Neru consigue su voz",
+        "appearances": 3,
+        "stage": "Intentos",
+        "beat": "Neru abre la boca como si fuera a hablar y solo suena el celular; alguien lo nota ('¿Neru... intentó decir algo?') y se distrae con el tema.",
+        "finaleAvailable": false,
+        "finale": "Capitulo especial: Neru obtiene su propia voz. Solo cuando el usuario lo decida, con su voz configurada en characters.json y al menos 10 videos del arco."
+      }
+    ],
+    "seed": "2026-10-02:8:log4shell"
+  },
+  "writer": "template",
+  "estimatedMs": 69660,
+  "lint": [],
+  "sfx": [
+    {
+      "line": 12,
+      "character": "teto",
+      "rule": "hook_drama",
+      "sfx": "sfx_dramatic_boomer",
+      "anchor": "end"
+    },
+    {
+      "line": 24,
+      "character": "len",
+      "rule": "confused_humor",
+      "sfx": "sfx_oohh",
+      "anchor": "end"
+    },
+    {
+      "line": 32,
+      "character": "len",
+      "rule": "surprise",
+      "sfx": "sfx_vine_boom",
+      "anchor": "start"
+    },
+    {
+      "line": 43,
+      "character": "len",
+      "rule": "confused_humor",
+      "sfx": "sfx_oohh",
+      "anchor": "end"
+    },
+    {
+      "line": 55,
+      "character": "teto",
+      "rule": "surprise",
+      "sfx": "sfx_vine_boom",
+      "anchor": "start"
+    }
+  ],
+  "notes": [
+    "cameo mudo: neru"
+  ],
+  "status": "final"
+}

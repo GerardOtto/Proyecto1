@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://short-video-engine.local/schemas/pronunciations.schema.json",
+  "title": "Diccionario de pronunciacion para el TTS (ADR 0013)",
+  "type": "object",
+  "required": ["rules"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "$comment": { "type": "string" },
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["term", "say"],
+        "properties": {
+          "term": { "type": "string", "minLength": 1 },
+          "say": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

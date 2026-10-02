@@ -1,7 +1,7 @@
 // Orquestacion de la carpeta de revision: exporta episodios y regenera Resumen.txt.
 import type { EngineConfig } from "../catalog/catalog";
 import { log } from "../utils/log";
-import { exportEpisodeReview, listEpisodes, loadReviewEpisode, writeReviewIndex, type ReviewEpisode } from "./export";
+import { episodeStatus, exportEpisodeReview, listEpisodes, loadReviewEpisode, removeFinalEpisodes, writeReviewIndex, type ReviewEpisode } from "./export";
 
 export const exportReview = async (
   engine: EngineConfig,
@@ -10,7 +10,9 @@ export const exportReview = async (
 ): Promise<{ folders: string[]; index: string; failed: string[] }> => {
   const folders: string[] = [];
   const failed: string[] = [];
-  for (const id of episodes) {
+  const finals = removeFinalEpisodes(reviewDir);
+  if (finals) log.info(`revision: ${finals} episodio(s) final(es) retirados (estan en la carpeta de videos finales)`);
+  for (const id of episodes.filter((e) => episodeStatus(e) !== "final")) {
     try {
       folders.push((await exportEpisodeReview(engine, id, reviewDir)).folder);
     } catch (err) {

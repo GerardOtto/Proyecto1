@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="output" content="assets/visuals/chart_linear_vs_binary.png" data-width="1200" data-height="900">
+<link rel="stylesheet" href="style.css">
+<style>
+  /* Peor caso: lineal = n comparaciones; binaria = ceil(log2(n + 1)): 1.000 -> 10, 1.000.000 -> 20. */
+  .rows { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 46px; margin-top: 20px; }
+  .n { font-size: 34px; color: var(--muted); margin-bottom: 12px; }
+  .line { display: flex; align-items: center; gap: 18px; margin: 8px 0; }
+  .who { width: 190px; font-size: 30px; font-weight: 900; text-align: right; }
+  .bar { height: 54px; border-radius: 12px; }
+  .lin { background: #e5322d; }
+  .bin { background: #7ef0a8; }
+  .val { font-size: 34px; font-weight: 900; white-space: nowrap; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="title">¿Cuántos pasos para encontrarlo?</div>
+    <div class="subtitle">en el peor caso</div>
+    <div class="rows">
+      <div>
+        <div class="n">1.000 datos</div>
+        <div class="line"><div class="who">Uno por uno</div><div class="bar lin" style="width: 520px"></div><div class="val">1.000</div></div>
+        <div class="line"><div class="who">Binaria</div><div class="bar bin" style="width: 26px"></div><div class="val">10</div></div>
+      </div>
+      <div>
+        <div class="n">1.000.000 datos</div>
+        <div class="line"><div class="who">Uno por uno</div><div class="bar lin" style="width: 700px"></div><div class="val">1.000.000</div></div>
+        <div class="line"><div class="who">Binaria</div><div class="bar bin" style="width: 34px"></div><div class="val">20 😎</div></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

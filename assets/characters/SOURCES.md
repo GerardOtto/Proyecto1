@@ -3,7 +3,7 @@
 Todos los personajes salen de los tableros de Pinterest de `chaewonjames` (un tablero por personaje,
 descargados el 2026-10-01): renders MMD de terceros, con el fondo eliminado por `scripts/remove-bg.py`
 (`T_LO=7`; sin relleno de huecos en Luka/Neru con fondo blanco puro) y revisados a mano. Copia de trabajo
-con nombres por emocion: `Desktop/Proyecto Vocaloid/Pinterest/<Personaje>/<Personaje>_<emocion>[_n].png`
+con nombres por emocion: `Desktop/Proyecto vocaloid/3. Recursos/Pinterest (procesado)/<Personaje>/<Personaje>_<emocion>[_n].png`
 (`manifest.csv` en esa carpeta: archivo -> pin -> notas). Ingesta:
 
 ```bash

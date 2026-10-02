@@ -165,7 +165,7 @@
         "boom"
       ],
       "safeArea": true,
-      "source": "Aportado por el usuario (Desktop/Proyecto vocaloid/Efectos). Pendiente: URL de origen para documentar la licencia.",
+      "source": "Aportado por el usuario (Desktop/Proyecto vocaloid/3. Recursos/SFX aportados). Pendiente: URL de origen para documentar la licencia.",
       "license": "Sin documentar",
       "license_status": "unknown",
       "description": "Explosion pixel art animada (GIF transparente, empieza en el estallido).",
@@ -513,7 +513,7 @@
         "explosion",
         "meme"
       ],
-      "source": "Aportado por el usuario (Desktop/Proyecto vocaloid/Efectos). Pendiente: URL de origen para documentar la licencia.",
+      "source": "Aportado por el usuario (Desktop/Proyecto vocaloid/3. Recursos/SFX aportados). Pendiente: URL de origen para documentar la licencia.",
       "license": "Sin documentar",
       "license_status": "unknown",
       "notes": "Sin silencio inicial, 0.95 s con fade (explosion mas agil), mono 48 kHz, pico -1 dBFS."
@@ -539,7 +539,7 @@
         "acierto",
         "idea"
       ],
-      "source": "Aportado por el usuario (Desktop/Proyecto vocaloid/Efectos). Pendiente: URL de origen para documentar la licencia.",
+      "source": "Aportado por el usuario (Desktop/Proyecto vocaloid/3. Recursos/SFX aportados). Pendiente: URL de origen para documentar la licencia.",
       "license": "Sin documentar",
       "license_status": "unknown",
       "notes": "Sin silencio inicial, mono 48 kHz, pico normalizado (boom -1 dBFS, ding -3 dBFS)."
@@ -554,7 +554,7 @@
         "visual",
         "pop"
       ],
-      "source": "Aportado por el usuario (Desktop/Proyecto vocaloid/SFX): universfield-bubble-pop-06-351337.mp3 (probablemente Pixabay, autor universfield). Pendiente: URL.",
+      "source": "Aportado por el usuario (Desktop/Proyecto vocaloid/3. Recursos/SFX aportados): universfield-bubble-pop-06-351337.mp3 (probablemente Pixabay, autor universfield). Pendiente: URL.",
       "license": "Sin documentar",
       "license_status": "unknown",
       "description": "Bubble pop: suena al aparecer cada visual/captura (automatico)",
@@ -788,7 +788,7 @@
         "meme",
         "enfasis"
       ],
-      "source": "Aportado por el usuario (Desktop/Proyecto vocaloid/SFX): chillbroo-vine-boom-sound-123-412318.mp3 (probablemente Pixabay, autor chillbroo). Pendiente: URL.",
+      "source": "Aportado por el usuario (Desktop/Proyecto vocaloid/3. Recursos/SFX aportados): chillbroo-vine-boom-sound-123-412318.mp3 (probablemente Pixabay, autor chillbroo). Pendiente: URL.",
       "license": "Sin documentar",
       "license_status": "unknown",
       "description": "Vine boom: golpe dramatico/comico para remates y preguntas exageradas",
@@ -804,7 +804,7 @@
         "personaje",
         "firma"
       ],
-      "source": "Aportado por el usuario (Desktop/Proyecto vocaloid/SFX): teetoo.mp3. Pendiente: URL de origen.",
+      "source": "Aportado por el usuario (Desktop/Proyecto vocaloid/3. Recursos/SFX aportados): teetoo.mp3. Pendiente: URL de origen.",
       "license": "Sin documentar",
       "license_status": "unknown",
       "description": "Sonido caracteristico de Teto (teetoo)",
@@ -819,7 +819,7 @@
         "teto",
         "personaje"
       ],
-      "source": "Aportado por el usuario (Desktop/Proyecto vocaloid/SFX): teto-wav.mp3. Pendiente: URL de origen.",
+      "source": "Aportado por el usuario (Desktop/Proyecto vocaloid/3. Recursos/SFX aportados): teto-wav.mp3. Pendiente: URL de origen.",
       "license": "Sin documentar",
       "license_status": "unknown",
       "description": "Sonido de Teto (teto-wav)",
@@ -835,7 +835,7 @@
         "solo_personaje",
         "personaje"
       ],
-      "source": "Aportado por el usuario (Desktop/Proyecto vocaloid/SFX): neru-phone.mp3. Pendiente: URL de origen.",
+      "source": "Aportado por el usuario (Desktop/Proyecto vocaloid/3. Recursos/SFX aportados): neru-phone.mp3. Pendiente: URL de origen.",
       "license": "Sin documentar",
       "license_status": "unknown",
       "description": "Voz de NERU (personaje mudo, ADR 0011): su unica forma de 'hablar'. Solo con Neru en pantalla.",
@@ -854,7 +854,7 @@
         "favorito",
         "corto"
       ],
-      "source": "Aportado por el usuario (Desktop/Proyecto vocaloid/SFX): oohh_chinese_man_sound_.mp3. Pendiente: URL de origen.",
+      "source": "Aportado por el usuario (Desktop/Proyecto vocaloid/3. Recursos/SFX aportados): oohh_chinese_man_sound_.mp3. Pendiente: URL de origen.",
       "license": "Sin documentar",
       "license_status": "unknown",
       "description": "'Oohh' (0.6 s): reaccion chistosa general (sorpresa, dato fuerte, burla, sticker); favorito del canal, no solo para temas de China",
@@ -871,7 +871,7 @@
         "hook",
         "corto"
       ],
-      "source": "Aportado por el usuario (Desktop/Proyecto vocaloid/SFX): dramatic-boomer.mp3. Pendiente: URL de origen.",
+      "source": "Aportado por el usuario (Desktop/Proyecto vocaloid/3. Recursos/SFX aportados): dramatic-boomer.mp3. Pendiente: URL de origen.",
       "license": "Sin documentar",
       "license_status": "unknown",
       "description": "Golpe dramatico corto (0.9 s): arranque del hook",
@@ -888,7 +888,7 @@
         "humor",
         "corto"
       ],
-      "source": "Aportado por el usuario (Desktop/Proyecto vocaloid/SFX): chinese-social-credit-music.mp3. Pendiente: URL de origen.",
+      "source": "Aportado por el usuario (Desktop/Proyecto vocaloid/3. Recursos/SFX aportados): chinese-social-credit-music.mp3. Pendiente: URL de origen.",
       "license": "Sin documentar",
       "license_status": "unknown",
       "description": "Sting del meme 'social credit' (0.9 s)",
@@ -905,7 +905,7 @@
         "risa",
         "corto"
       ],
-      "source": "Aportado por el usuario (Desktop/Proyecto vocaloid/SFX): evil-cat-laugh.mp3. Pendiente: URL de origen.",
+      "source": "Aportado por el usuario (Desktop/Proyecto vocaloid/3. Recursos/SFX aportados): evil-cat-laugh.mp3. Pendiente: URL de origen.",
       "license": "Sin documentar",
       "license_status": "unknown",
       "description": "Risa malvada de gato (0.8 s): remates",
@@ -1442,6 +1442,1210 @@
       "license": "propio",
       "license_status": "owned",
       "description": "Escenario: Tienda de conveniencia (ADR 0012). Los personajes saben que estan aqui."
+    },
+    {
+      "id": "sfx_fahh",
+      "type": "sfx",
+      "path": "assets/sfx/sfx_fahh.wav",
+      "tags": [
+        "sfx",
+        "meme",
+        "viral",
+        "fallo",
+        "shock",
+        "drama",
+        "corto"
+      ],
+      "source": "https://www.myinstants.com/media/sounds/faaah.mp3",
+      "license": "Sin documentar (meme viral)",
+      "license_status": "unknown",
+      "description": "'FAAAH' (1.0 s): grito viral de fallo/shock (tendencia MX 2026)",
+      "notes": "Recorte 0.10-1.10 s, fade out, mono 48 kHz, nivelado a ~-16 LUFS (pico <= -1 dB) para sonar parejo con vine boom / dramatic boomer."
+    },
+    {
+      "id": "sfx_anime_wow",
+      "type": "sfx",
+      "path": "assets/sfx/sfx_anime_wow.wav",
+      "tags": [
+        "sfx",
+        "meme",
+        "viral",
+        "asombro",
+        "wow",
+        "dato",
+        "corto"
+      ],
+      "source": "https://www.myinstants.com/media/sounds/anime-wow-sound-effect.mp3",
+      "license": "Sin documentar (meme viral)",
+      "license_status": "unknown",
+      "description": "'Wow' de anime (1.15 s): asombro ante un dato impresionante",
+      "notes": "Recorte 0.15-1.30 s, fade out, mono 48 kHz, nivelado a ~-16 LUFS (pico <= -1 dB) para sonar parejo con vine boom / dramatic boomer."
+    },
+    {
+      "id": "sfx_rizz",
+      "type": "sfx",
+      "path": "assets/sfx/sfx_rizz.wav",
+      "tags": [
+        "sfx",
+        "meme",
+        "viral",
+        "presumir",
+        "smug",
+        "carisma",
+        "corto"
+      ],
+      "source": "https://www.myinstants.com/media/sounds/rizz-sound-effect.mp3",
+      "license": "Sin documentar (meme viral)",
+      "license_status": "unknown",
+      "description": "'Rizz' (1.0 s): momento presumido/carismatico",
+      "notes": "Recorte 0.20-1.20 s, fade out, mono 48 kHz, nivelado a ~-16 LUFS (pico <= -1 dB) para sonar parejo con vine boom / dramatic boomer."
+    },
+    {
+      "id": "sfx_spongebob_fail",
+      "type": "sfx",
+      "path": "assets/sfx/sfx_spongebob_fail.wav",
+      "tags": [
+        "sfx",
+        "meme",
+        "viral",
+        "fallo",
+        "error",
+        "decepcion"
+      ],
+      "source": "https://www.myinstants.com/media/sounds/spongebob-fail.mp3",
+      "license": "Sin documentar (meme viral)",
+      "license_status": "unknown",
+      "description": "Trombon de fallo de Bob Esponja (1.2 s): algo sale mal",
+      "notes": "Recorte 0-1.2 s, fade out, mono 48 kHz, nivelado a ~-16 LUFS (pico <= -1 dB) para sonar parejo con vine boom / dramatic boomer."
+    },
+    {
+      "id": "sfx_among_us_reveal",
+      "type": "sfx",
+      "path": "assets/sfx/sfx_among_us_reveal.wav",
+      "tags": [
+        "sfx",
+        "meme",
+        "viral",
+        "revelacion",
+        "giro",
+        "impostor",
+        "drama"
+      ],
+      "source": "https://www.myinstants.com/media/sounds/among-us-role-reveal-sound.mp3",
+      "license": "Sin documentar (meme viral)",
+      "license_status": "unknown",
+      "description": "Revelacion de rol de Among Us (1.2 s): giro, culpable descubierto",
+      "notes": "Recorte 0.22-1.42 s (golpe inicial), fade out, mono 48 kHz, nivelado a ~-16 LUFS (pico <= -1 dB) para sonar parejo con vine boom / dramatic boomer."
+    },
+    {
+      "id": "sfx_gato_riendo",
+      "type": "sfx",
+      "path": "assets/sfx/sfx_gato_riendo.wav",
+      "tags": [
+        "sfx",
+        "meme",
+        "viral",
+        "risa",
+        "gato",
+        "remate",
+        "corto"
+      ],
+      "source": "https://www.myinstants.com/media/sounds/gato-riendo_6bOc2ur.mp3",
+      "license": "Sin documentar (meme viral)",
+      "license_status": "unknown",
+      "description": "Gato riendo (1.0 s): remate, burla ligera (tendencia MX)",
+      "notes": "Recorte 0.13-1.13 s, fade out, mono 48 kHz, nivelado a ~-16 LUFS (pico <= -1 dB) para sonar parejo con vine boom / dramatic boomer."
+    },
+    {
+      "id": "sfx_bruh",
+      "type": "sfx",
+      "path": "assets/sfx/sfx_bruh.wav",
+      "tags": [
+        "sfx",
+        "meme",
+        "viral",
+        "bruh",
+        "decepcion",
+        "remate",
+        "corto"
+      ],
+      "source": "https://www.myinstants.com/media/sounds/bruh.mp3",
+      "license": "Sin documentar (meme viral)",
+      "license_status": "unknown",
+      "description": "'Bruh' (0.5 s): reaccion seca ante algo absurdo",
+      "notes": "Recorte 0.20-0.70 s, mono 48 kHz, nivelado a ~-16 LUFS (pico <= -1 dB) para sonar parejo con vine boom / dramatic boomer."
+    },
+    {
+      "id": "sfx_windows_error",
+      "type": "sfx",
+      "path": "assets/sfx/sfx_windows_error.wav",
+      "tags": [
+        "sfx",
+        "meme",
+        "error",
+        "falla",
+        "computadora",
+        "windows",
+        "corto"
+      ],
+      "source": "https://www.myinstants.com/media/sounds/erro.mp3",
+      "license": "Sin documentar (sonido de sistema, meme)",
+      "license_status": "unknown",
+      "description": "Error de Windows (0.8 s): algo falla en la computadora o el servidor",
+      "notes": "Recorte 0.08-0.88 s, mono 48 kHz, nivelado a ~-16 LUFS (pico <= -1 dB) para sonar parejo con vine boom / dramatic boomer."
+    },
+    {
+      "id": "sfx_record_scratch",
+      "type": "sfx",
+      "path": "assets/sfx/sfx_record_scratch.wav",
+      "tags": [
+        "sfx",
+        "meme",
+        "interrupcion",
+        "espera",
+        "pregunta",
+        "corto"
+      ],
+      "source": "https://www.myinstants.com/media/sounds/record-scratch.mp3",
+      "license": "Sin documentar",
+      "license_status": "unknown",
+      "description": "Rayon de disco (0.7 s): '¿espera, que?', interrupcion",
+      "notes": "Recorte 0-0.70 s, mono 48 kHz, nivelado a ~-16 LUFS (pico <= -1 dB) para sonar parejo con vine boom / dramatic boomer."
+    },
+    {
+      "id": "sfx_metal_pipe",
+      "type": "sfx",
+      "path": "assets/sfx/sfx_metal_pipe.wav",
+      "tags": [
+        "sfx",
+        "meme",
+        "viral",
+        "golpe",
+        "impacto",
+        "drama"
+      ],
+      "source": "https://www.myinstants.com/media/sounds/metal-pipe-clang.mp3",
+      "license": "Sin documentar (meme viral)",
+      "license_status": "unknown",
+      "description": "Tubo de metal cayendo (1.0 s): golpe absurdo, dato que cae de golpe",
+      "notes": "Recorte 0.17-1.17 s, fade out, mono 48 kHz, nivelado a ~-16 LUFS (pico <= -1 dB) para sonar parejo con vine boom / dramatic boomer."
+    },
+    {
+      "id": "sfx_villager_hmm",
+      "type": "sfx",
+      "path": "assets/sfx/sfx_villager_hmm.wav",
+      "tags": [
+        "sfx",
+        "meme",
+        "minecraft",
+        "duda",
+        "hmm",
+        "corto"
+      ],
+      "source": "https://www.myinstants.com/media/sounds/minecraft-villager-sound-effect.mp3",
+      "license": "Sin documentar (sonido de Minecraft, Mojang)",
+      "license_status": "unknown",
+      "description": "'Hmm' del aldeano de Minecraft (0.67 s): duda; temas de Minecraft",
+      "notes": "Recorte 0.26-0.93 s, mono 48 kHz, nivelado a ~-16 LUFS (pico <= -1 dB) para sonar parejo con vine boom / dramatic boomer."
+    },
+    {
+      "id": "sfx_yippee",
+      "type": "sfx",
+      "path": "assets/sfx/sfx_yippee.wav",
+      "tags": [
+        "sfx",
+        "meme",
+        "viral",
+        "celebracion",
+        "alegria",
+        "exito",
+        "corto"
+      ],
+      "source": "https://www.myinstants.com/media/sounds/yippee-meme-sound-effect.mp3",
+      "license": "Sin documentar (meme viral)",
+      "license_status": "unknown",
+      "description": "'Yippee' (1.0 s): celebracion, algo funciona",
+      "notes": "Recorte 0.31-1.31 s, fade out, mono 48 kHz, nivelado a ~-16 LUFS (pico <= -1 dB) para sonar parejo con vine boom / dramatic boomer."
+    },
+    {
+      "id": "sfx_typing",
+      "type": "sfx",
+      "path": "assets/sfx/sfx_typing.wav",
+      "tags": [
+        "sfx",
+        "teclado",
+        "hacker",
+        "programar",
+        "computadora"
+      ],
+      "source": "https://www.myinstants.com/media/sounds/keyboard-typing.mp3",
+      "license": "Sin documentar",
+      "license_status": "unknown",
+      "description": "Tecleo rapido (1.0 s): hacker, programando",
+      "notes": "Recorte 0.16-1.16 s, fade out, mono 48 kHz, nivelado a ~-16 LUFS (pico <= -1 dB) para sonar parejo con vine boom / dramatic boomer."
+    },
+    {
+      "id": "sfx_rimshot",
+      "type": "sfx",
+      "path": "assets/sfx/sfx_rimshot.wav",
+      "tags": [
+        "sfx",
+        "meme",
+        "chiste",
+        "remate",
+        "ba_dum_tss"
+      ],
+      "source": "https://www.myinstants.com/media/sounds/rimshot.mp3",
+      "license": "Sin documentar",
+      "license_status": "unknown",
+      "description": "'Ba dum tss' (1.2 s): despues de un chiste malo",
+      "notes": "Recorte 0-1.2 s, fade out, mono 48 kHz, nivelado a ~-16 LUFS (pico <= -1 dB) para sonar parejo con vine boom / dramatic boomer."
+    },
+    {
+      "id": "sfx_huh_cat",
+      "type": "sfx",
+      "path": "assets/sfx/sfx_huh_cat.wav",
+      "tags": [
+        "sfx",
+        "meme",
+        "viral",
+        "gato",
+        "confusion",
+        "huh",
+        "corto"
+      ],
+      "source": "https://www.myinstants.com/media/sounds/huh-cat.mp3",
+      "license": "Sin documentar (meme viral)",
+      "license_status": "unknown",
+      "description": "'Huh?' del gato (0.45 s): confusion",
+      "notes": "Recorte 1.28-1.73 s, mono 48 kHz, nivelado a ~-16 LUFS (pico <= -1 dB) para sonar parejo con vine boom / dramatic boomer."
+    },
+    {
+      "id": "docker_logo",
+      "type": "logo",
+      "path": "assets/logos/docker_logo.png",
+      "tags": [
+        "logo",
+        "docker",
+        "contenedores",
+        "devops",
+        "programacion"
+      ],
+      "safeArea": true,
+      "source": "Diseno propio: assets/visuals/src/logo_docker.html (npm run graphics); logo: https://commons.wikimedia.org/wiki/File:Docker_(container_engine)_logo.svg",
+      "license": "Logo: Apache 2.0 en Wikimedia Commons; marca de Docker, Inc. (uso informativo). Tarjeta: propia.",
+      "license_status": "documented",
+      "notes": "Uso nominativo/editorial de la marca en contenido informativo."
+    },
+    {
+      "id": "log4j_logo",
+      "type": "logo",
+      "path": "assets/logos/log4j_logo.png",
+      "tags": [
+        "logo",
+        "log4j",
+        "java",
+        "apache",
+        "ciberseguridad"
+      ],
+      "safeArea": true,
+      "source": "Diseno propio: assets/visuals/src/logo_log4j.html (npm run graphics); logo: https://commons.wikimedia.org/wiki/File:Apache_Log4j_Logo.png",
+      "license": "Logo: Apache 2.0 en Wikimedia Commons; marca de The Apache Software Foundation (uso informativo). Tarjeta: propia.",
+      "license_status": "documented",
+      "notes": "Uso nominativo/editorial de la marca en contenido informativo."
+    },
+    {
+      "id": "minecraft_logo",
+      "type": "logo",
+      "path": "assets/logos/minecraft_logo.png",
+      "tags": [
+        "logo",
+        "minecraft",
+        "videojuegos",
+        "java"
+      ],
+      "safeArea": true,
+      "source": "Diseno propio: assets/visuals/src/logo_minecraft.html (npm run graphics); bloque: https://commons.wikimedia.org/wiki/File:Minecraft_cube.svg",
+      "license": "Bloque: dominio publico (Wikimedia Commons); Minecraft es marca de Mojang/Microsoft (uso informativo). Tarjeta: propia.",
+      "license_status": "documented",
+      "notes": "Uso nominativo/editorial de la marca en contenido informativo."
+    },
+    {
+      "id": "diagram_vm_vs_container",
+      "type": "diagram",
+      "path": "assets/visuals/diagram_vm_vs_container.png",
+      "tags": [
+        "diagrama",
+        "docker",
+        "contenedores",
+        "maquina_virtual",
+        "devops"
+      ],
+      "safeArea": true,
+      "source": "Diseno propio: assets/visuals/src/diagram_vm_vs_container.html (npm run graphics)",
+      "license": "Propio",
+      "license_status": "owned",
+      "description": "Maquina virtual (SO completo por app) vs contenedor (nucleo compartido)"
+    },
+    {
+      "id": "chart_linear_vs_binary",
+      "type": "diagram",
+      "path": "assets/visuals/chart_linear_vs_binary.png",
+      "tags": [
+        "grafico",
+        "algoritmos",
+        "busqueda_binaria",
+        "big_o",
+        "logaritmo"
+      ],
+      "safeArea": true,
+      "source": "Diseno propio: assets/visuals/src/chart_linear_vs_binary.html (npm run graphics)",
+      "license": "Propio",
+      "license_status": "owned",
+      "description": "Pasos en el peor caso: uno por uno (1.000 / 1.000.000) vs binaria (10 / 20)"
+    },
+    {
+      "id": "diagram_log4shell_chat",
+      "type": "diagram",
+      "path": "assets/visuals/diagram_log4shell_chat.png",
+      "tags": [
+        "diagrama",
+        "log4j",
+        "log4shell",
+        "ciberseguridad",
+        "chat",
+        "minecraft"
+      ],
+      "safeArea": true,
+      "source": "Diseno propio: assets/visuals/src/diagram_log4shell_chat.html (npm run graphics)",
+      "license": "Propio",
+      "license_status": "owned",
+      "description": "Un mensaje de chat con ${jndi:...} que el servidor registra y ejecuta (dominio de ejemplo)"
+    },
+    {
+      "id": "broll_minecraft_advisory",
+      "type": "broll",
+      "path": "assets/broll/broll_minecraft_advisory.png",
+      "tags": [
+        "broll",
+        "captura",
+        "oficial",
+        "minecraft",
+        "log4j",
+        "log4shell",
+        "ciberseguridad"
+      ],
+      "source": "https://www.minecraft.net/en-us/article/important-message--security-vulnerability-java-edition",
+      "license": "Contenido de Mojang/Microsoft; captura del titular usada como cita en contenido informativo",
+      "license_status": "unknown",
+      "description": "Minecraft.net (10 dic 2021): 'Important Message: Security vulnerability in Java Edition'",
+      "notes": "Captura automatica (navegador movil, 2x) del titular + bajada, sin imagenes; 824x618."
+    },
+    {
+      "id": "broll_docker_whale",
+      "type": "broll",
+      "path": "assets/broll/broll_docker_whale.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "docker",
+        "ballena",
+        "contenedores"
+      ],
+      "source": "https://tenor.com/view/whale-docker-gif-z3Vqx6hmE5Q",
+      "license": "Sin documentar (GIF de Tenor; ballena de Docker, marca de Docker, Inc.)",
+      "license_status": "unknown",
+      "description": "La ballena de Docker animada cargando contenedores",
+      "notes": "GIF -> MP4 800x800, 1.4 s (se repite)."
+    },
+    {
+      "id": "broll_road_roller",
+      "type": "broll",
+      "path": "assets/broll/broll_road_roller.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "meme",
+        "rin",
+        "apisonadora",
+        "road_roller",
+        "jojo",
+        "exagerado"
+      ],
+      "source": "https://tenor.com/view/road-roller-da-jojos-bizarre-adventure-gif-ghe1o5v2_W0",
+      "license": "Sin documentar (GIF de Tenor; JoJo's Bizarre Adventure)",
+      "license_status": "unknown",
+      "description": "'ROAD ROLLER DA' (apisonadora de JoJo): guiño a la apisonadora de Rin",
+      "notes": "GIF -> MP4 852x476, primeros 6 s."
+    },
+    {
+      "id": "broll_teto_baguette",
+      "type": "broll",
+      "path": "assets/broll/broll_teto_baguette.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "teto",
+        "baguette",
+        "pan",
+        "comida",
+        "pera",
+        "konbini"
+      ],
+      "source": "https://tenor.com/view/baguette-teto-gif-03lmxuXcKz8",
+      "license": "Sin documentar (GIF de fans en Tenor)",
+      "license_status": "unknown",
+      "description": "Teto pera persiguiendo una baguette en una tienda",
+      "notes": "GIF -> MP4 852x852 sin el tramo oscuro 0.95-2.2 s (transicion del GIF), 3.4 s."
+    },
+    {
+      "id": "broll_binary_vs_sequential",
+      "type": "broll",
+      "path": "assets/broll/broll_binary_vs_sequential.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "animacion",
+        "algoritmos",
+        "busqueda_binaria",
+        "busqueda_lineal",
+        "big_o"
+      ],
+      "source": "https://tenor.com/view/binary-search-sequence-search-gif-Jl0YrqxnHmA (animacion de penjee.com)",
+      "license": "Sin documentar (animacion de penjee.com en Tenor)",
+      "license_status": "unknown",
+      "description": "Animacion: busqueda binaria encuentra el 37 en 3 pasos; la secuencial tarda 11",
+      "notes": "GIF 13.5 s -> MP4 a 2x (6.8 s), con relleno blanco a 852x640 (4:3) para que el recuadro no recorte los lados."
+    },
+    {
+      "id": "broll_math_lady",
+      "type": "broll",
+      "path": "assets/broll/broll_math_lady.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "meme",
+        "matematicas",
+        "confusion",
+        "calculo"
+      ],
+      "source": "https://tenor.com/view/puzzled-calculating-gif-niLRVAuJe4I",
+      "license": "Sin documentar (GIF de Tenor; meme 'math lady')",
+      "license_status": "unknown",
+      "description": "'Math lady': confusion calculando formulas",
+      "notes": "GIF -> MP4 852x852, primeros 6 s."
+    },
+    {
+      "id": "broll_this_is_fine",
+      "type": "broll",
+      "path": "assets/broll/broll_this_is_fine.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "meme",
+        "fuego",
+        "crisis",
+        "parche",
+        "todo_bien"
+      ],
+      "source": "https://tenor.com/view/this-is-fine-gif-tU9-0t-rp7g (KC Green)",
+      "license": "Sin documentar (meme 'This is fine' de KC Green, GIF de Tenor)",
+      "license_status": "unknown",
+      "description": "'This is fine': el perro en la habitacion en llamas",
+      "notes": "GIF -> MP4 852x480, 3.3 s."
+    },
+    {
+      "id": "broll_it_crowd_fire",
+      "type": "broll",
+      "path": "assets/broll/broll_it_crowd_fire.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "meme",
+        "oficina",
+        "fuego",
+        "informatica",
+        "crisis",
+        "it_crowd"
+      ],
+      "source": "https://tenor.com/view/this-is-fine-it-crowd-gif-Wm4dRBIB4js",
+      "license": "Sin documentar (The IT Crowd, GIF de Tenor)",
+      "license_status": "unknown",
+      "description": "The IT Crowd: Moss con la oficina en llamas",
+      "notes": "GIF -> MP4 640x352, 1.6 s (se repite)."
+    },
+    {
+      "id": "broll_hacker_typing",
+      "type": "broll",
+      "path": "assets/broll/broll_hacker_typing.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "hacker",
+        "teclado",
+        "ciberseguridad"
+      ],
+      "source": "https://tenor.com/view/hacker-hackerman-gif-TbTe1Nc6j34",
+      "license": "Sin documentar (GIF de Tenor)",
+      "license_status": "unknown",
+      "description": "Manos tecleando en una computadora retro (hacker)",
+      "notes": "GIF -> MP4 852x480, 1.8 s (se repite)."
+    },
+    {
+      "id": "broll_hackerman",
+      "type": "broll",
+      "path": "assets/broll/broll_hackerman.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "meme",
+        "hacker",
+        "hackerman",
+        "ciberseguridad"
+      ],
+      "source": "https://tenor.com/view/hackerman-gif-JDj399_J4fw (Kung Fury)",
+      "license": "Sin documentar (Kung Fury, GIF de Tenor)",
+      "license_status": "unknown",
+      "description": "'HACKERMAN' (Kung Fury)",
+      "notes": "GIF -> MP4 852x478, 1.7 s (se repite)."
+    },
+    {
+      "id": "broll_xkcd_dependency",
+      "type": "broll",
+      "path": "assets/broll/broll_xkcd_dependency.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "xkcd",
+        "dependencias",
+        "open_source",
+        "librerias",
+        "ciberseguridad"
+      ],
+      "source": "https://xkcd.com/2347/ (via https://tenor.com/view/xkcd-dependency-xkcd-gif-rJwSGrPHEMI)",
+      "license": "xkcd: CC BY-NC 2.5 (no comercial); animacion de terceros en Tenor",
+      "license_status": "unknown",
+      "description": "xkcd 2347 'Dependency': toda la infraestructura apoyada en un proyecto pequeño",
+      "notes": "GIF -> MP4 720x720, 4.7 s. CC BY-NC: no apto para monetizar."
+    },
+    {
+      "id": "broll_spongebob_panic",
+      "type": "broll",
+      "path": "assets/broll/broll_spongebob_panic.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "meme",
+        "panico",
+        "caos",
+        "fuego",
+        "bob_esponja"
+      ],
+      "source": "https://tenor.com/view/spongebob-panic-gif-P_RevRsvfww",
+      "license": "Sin documentar (Bob Esponja, GIF de Tenor)",
+      "license_status": "unknown",
+      "description": "Bob Esponja: panico general con fuego",
+      "notes": "GIF -> MP4 852x638, 1.1 s (se repite)."
+    },
+    {
+      "id": "meme_neru_phone",
+      "type": "meme",
+      "path": "assets/memes/meme_neru_phone.gif",
+      "tags": [
+        "meme",
+        "sticker",
+        "neru",
+        "celular",
+        "mensaje"
+      ],
+      "safeArea": true,
+      "source": "https://tenor.com/view/neru-phone-gif-XJgnoWs8x5I",
+      "license": "Sin documentar (fan art en Tenor)",
+      "license_status": "unknown",
+      "description": "Neru escribiendo en el celular (GIF animado)"
+    },
+    {
+      "id": "meme_miku_puerro",
+      "type": "meme",
+      "path": "assets/memes/meme_miku_puerro.gif",
+      "tags": [
+        "meme",
+        "sticker",
+        "miku",
+        "puerro",
+        "ievan_polkka",
+        "baile"
+      ],
+      "safeArea": true,
+      "source": "https://tenor.com/view/miku-gif-ucCTKwIxBDc",
+      "license": "Sin documentar (fan art en Tenor)",
+      "license_status": "unknown",
+      "description": "Miku chibi girando el puerro (Ievan Polkka)"
+    },
+    {
+      "id": "meme_luka_cheer",
+      "type": "meme",
+      "path": "assets/memes/meme_luka_cheer.gif",
+      "tags": [
+        "meme",
+        "sticker",
+        "luka",
+        "celebracion",
+        "exito",
+        "presumir"
+      ],
+      "safeArea": true,
+      "source": "https://tenor.com/view/luka-megurine-cheering-gif-QcKEuJxbmPE",
+      "license": "Sin documentar (MMD de fans en Tenor)",
+      "license_status": "unknown",
+      "description": "Luka celebrando con el puño en alto",
+      "notes": "Recortado a 2 s, 360 px, 15 fps."
+    },
+    {
+      "id": "meme_len_banana",
+      "type": "meme",
+      "path": "assets/memes/meme_len_banana.gif",
+      "tags": [
+        "meme",
+        "sticker",
+        "len",
+        "platano",
+        "banana"
+      ],
+      "safeArea": true,
+      "source": "https://tenor.com/view/banana-len-gif-QkgPk3ZyxoA",
+      "license": "Sin documentar (MMD de fans en Tenor)",
+      "license_status": "unknown",
+      "description": "Len (guiño a sus platanos)",
+      "notes": "Recortado a 2 s, 360 px, 15 fps."
+    },
+    {
+      "id": "meme_rin_fist_pump",
+      "type": "meme",
+      "path": "assets/memes/meme_rin_fist_pump.gif",
+      "tags": [
+        "meme",
+        "sticker",
+        "rin",
+        "decidida",
+        "puño",
+        "energia"
+      ],
+      "safeArea": true,
+      "source": "https://tenor.com/view/kagamine-rin-fist-pump-kagamine-rin-gif--NpLU9uib54",
+      "license": "Sin documentar (fan art en Tenor)",
+      "license_status": "unknown",
+      "description": "Rin levantando el puño, decidida"
+    },
+    {
+      "id": "broll_v_miku_typing",
+      "type": "broll",
+      "path": "assets/broll/broll_v_miku_typing.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "vocaloid",
+        "miku",
+        "computadora",
+        "teclado",
+        "programar"
+      ],
+      "source": "https://tenor.com/view/miku-typing-gif-uAiVFIrMFeM",
+      "license": "Sin documentar (fan art / MMD de la comunidad Vocaloid en Tenor)",
+      "license_status": "unknown",
+      "description": "Miku (MMD) tecleando en su computadora",
+      "notes": "GIF -> MP4 852x640 (4:3) con el GIF completo sobre su version difuminada (sin recortes)."
+    },
+    {
+      "id": "broll_v_miku_bluescreen",
+      "type": "broll",
+      "path": "assets/broll/broll_v_miku_bluescreen.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "vocaloid",
+        "miku",
+        "computadora",
+        "error",
+        "falla",
+        "pantalla_azul"
+      ],
+      "source": "https://tenor.com/view/hatsune-miku-bluescreen-gif-BQ5qLEfhiQY",
+      "license": "Sin documentar (fan art / MMD de la comunidad Vocaloid en Tenor)",
+      "license_status": "unknown",
+      "description": "Miku frente a una computadora vieja con error (ilustrado)",
+      "notes": "GIF -> MP4 852x640 (4:3) con el GIF completo sobre su version difuminada (sin recortes)."
+    },
+    {
+      "id": "broll_v_teto_pc_glasses",
+      "type": "broll",
+      "path": "assets/broll/broll_v_teto_pc_glasses.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "vocaloid",
+        "teto",
+        "computadora",
+        "nerd",
+        "lentes"
+      ],
+      "source": "https://tenor.com/view/teto-kasane-teto-gif-JwgTwhfZYME",
+      "license": "Sin documentar (fan art / MMD de la comunidad Vocaloid en Tenor)",
+      "license_status": "unknown",
+      "description": "Teto con lentes en la computadora",
+      "notes": "GIF -> MP4 852x640 (4:3) con el GIF completo sobre su version difuminada (sin recortes)."
+    },
+    {
+      "id": "broll_v_teto_baguettes",
+      "type": "broll",
+      "path": "assets/broll/broll_v_teto_baguettes.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "vocaloid",
+        "teto",
+        "baguette",
+        "pan",
+        "comida",
+        "baile"
+      ],
+      "source": "https://tenor.com/view/teto-kasane-teto-gif-UK48Ib0OivA",
+      "license": "Sin documentar (fan art / MMD de la comunidad Vocaloid en Tenor)",
+      "license_status": "unknown",
+      "description": "Teto chibi bailando con fondo de baguettes",
+      "notes": "GIF -> MP4 852x640 (4:3) con el GIF completo sobre su version difuminada (sin recortes)."
+    },
+    {
+      "id": "broll_v_teto_dance",
+      "type": "broll",
+      "path": "assets/broll/broll_v_teto_dance.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "vocaloid",
+        "teto",
+        "baile",
+        "celebracion",
+        "chibi"
+      ],
+      "source": "https://tenor.com/view/teto-kasane-gif-v9M6SPJ60cg",
+      "license": "Sin documentar (fan art / MMD de la comunidad Vocaloid en Tenor)",
+      "license_status": "unknown",
+      "description": "Teto chibi bailando",
+      "notes": "GIF -> MP4 852x640 (4:3) con el GIF completo sobre su version difuminada (sin recortes)."
+    },
+    {
+      "id": "broll_v_teto_laptop",
+      "type": "broll",
+      "path": "assets/broll/broll_v_teto_laptop.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "vocaloid",
+        "teto",
+        "computadora",
+        "laptop",
+        "programar",
+        "trabajo"
+      ],
+      "source": "https://tenor.com/view/teto-kasane-gif-VBdK9_m4Sb4",
+      "license": "Sin documentar (fan art / MMD de la comunidad Vocaloid en Tenor)",
+      "license_status": "unknown",
+      "description": "Teto chibi trabajando en la laptop",
+      "notes": "GIF -> MP4 852x640 (4:3) con el GIF completo sobre su version difuminada (sin recortes)."
+    },
+    {
+      "id": "broll_v_rinlen_road_roller",
+      "type": "broll",
+      "path": "assets/broll/broll_v_rinlen_road_roller.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "vocaloid",
+        "rin",
+        "len",
+        "apisonadora",
+        "road_roller",
+        "pixel"
+      ],
+      "source": "https://tenor.com/view/kagamine-road-roller-gif-d1eADl8wAfA",
+      "license": "Sin documentar (fan art / MMD de la comunidad Vocaloid en Tenor)",
+      "license_status": "unknown",
+      "description": "Rin y Len en la apisonadora (pixel art)",
+      "notes": "GIF -> MP4 852x640 (4:3) con el GIF completo sobre su version difuminada (sin recortes)."
+    },
+    {
+      "id": "broll_v_rin_road_roller",
+      "type": "broll",
+      "path": "assets/broll/broll_v_rin_road_roller.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "vocaloid",
+        "rin",
+        "apisonadora",
+        "road_roller",
+        "kaito",
+        "exagerado"
+      ],
+      "source": "https://tenor.com/view/kagamine-kagamine-rin-gif-PyEsDZ8nxRk",
+      "license": "Sin documentar (fan art / MMD de la comunidad Vocaloid en Tenor)",
+      "license_status": "unknown",
+      "description": "Rin en la apisonadora persiguiendo a Kaito",
+      "notes": "GIF -> MP4 852x640 (4:3) con el GIF completo sobre su version difuminada (sin recortes)."
+    },
+    {
+      "id": "broll_v_rinlen_dance",
+      "type": "broll",
+      "path": "assets/broll/broll_v_rinlen_dance.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "vocaloid",
+        "rin",
+        "len",
+        "baile",
+        "chibi",
+        "celebracion"
+      ],
+      "source": "https://tenor.com/view/kagamine-len-gif-Ct0eNrWAmro",
+      "license": "Sin documentar (fan art / MMD de la comunidad Vocaloid en Tenor)",
+      "license_status": "unknown",
+      "description": "Rin y Len chibi bailando",
+      "notes": "GIF -> MP4 852x640 (4:3) con el GIF completo sobre su version difuminada (sin recortes)."
+    },
+    {
+      "id": "broll_v_len_shocked",
+      "type": "broll",
+      "path": "assets/broll/broll_v_len_shocked.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "vocaloid",
+        "len",
+        "sorpresa",
+        "shock",
+        "mmd"
+      ],
+      "source": "https://tenor.com/view/len-kagamine-vocaloid-gif-8TZhB0sQrtY",
+      "license": "Sin documentar (fan art / MMD de la comunidad Vocaloid en Tenor)",
+      "license_status": "unknown",
+      "description": "Len (MMD) sorprendido",
+      "notes": "GIF -> MP4 852x640 (4:3) con el GIF completo sobre su version difuminada (sin recortes)."
+    },
+    {
+      "id": "broll_v_len_shocked_chibi",
+      "type": "broll",
+      "path": "assets/broll/broll_v_len_shocked_chibi.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "vocaloid",
+        "len",
+        "sorpresa",
+        "shock",
+        "chibi",
+        "panico"
+      ],
+      "source": "https://tenor.com/view/len-kagamine-gif-1FpbcYhfzdQ",
+      "license": "Sin documentar (fan art / MMD de la comunidad Vocaloid en Tenor)",
+      "license_status": "unknown",
+      "description": "Len chibi con los ojos en blanco del susto",
+      "notes": "GIF -> MP4 852x640 (4:3) con el GIF completo sobre su version difuminada (sin recortes)."
+    },
+    {
+      "id": "broll_v_luka_tuna",
+      "type": "broll",
+      "path": "assets/broll/broll_v_luka_tuna.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "vocaloid",
+        "luka",
+        "atun",
+        "maguro",
+        "comida"
+      ],
+      "source": "https://tenor.com/view/luka-tuna-gif-5eETJS3C9n8",
+      "license": "Sin documentar (fan art / MMD de la comunidad Vocaloid en Tenor)",
+      "license_status": "unknown",
+      "description": "Luka chibi con fondo LUKA TUNA (su atun)",
+      "notes": "GIF -> MP4 852x640 (4:3) con el GIF completo sobre su version difuminada (sin recortes)."
+    },
+    {
+      "id": "broll_v_luka_smug",
+      "type": "broll",
+      "path": "assets/broll/broll_v_luka_smug.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "vocaloid",
+        "luka",
+        "presumida",
+        "smug",
+        "chibi"
+      ],
+      "source": "https://tenor.com/view/megurine-luka-luka-gif-mmtx0P6XFZo",
+      "license": "Sin documentar (fan art / MMD de la comunidad Vocaloid en Tenor)",
+      "license_status": "unknown",
+      "description": "Luka chibi presumida",
+      "notes": "GIF -> MP4 852x640 (4:3) con el GIF completo sobre su version difuminada (sin recortes)."
+    },
+    {
+      "id": "broll_v_neru_phone",
+      "type": "broll",
+      "path": "assets/broll/broll_v_neru_phone.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "vocaloid",
+        "neru",
+        "celular",
+        "mensaje",
+        "chibi"
+      ],
+      "source": "https://tenor.com/view/neru-akita-neru-gif-TTnyy1hJ-qI",
+      "license": "Sin documentar (fan art / MMD de la comunidad Vocaloid en Tenor)",
+      "license_status": "unknown",
+      "description": "Neru chibi con su celular",
+      "notes": "GIF -> MP4 852x640 (4:3) con el GIF completo sobre su version difuminada (sin recortes)."
+    },
+    {
+      "id": "broll_v_triple_baka",
+      "type": "broll",
+      "path": "assets/broll/broll_v_triple_baka.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "vocaloid",
+        "neru",
+        "miku",
+        "teto",
+        "triple_baka",
+        "trio"
+      ],
+      "source": "https://tenor.com/view/hatsunemiku-triplebaka-gif-rzildnqQ9b0",
+      "license": "Sin documentar (fan art / MMD de la comunidad Vocaloid en Tenor)",
+      "license_status": "unknown",
+      "description": "Triple Baka: Neru, Miku y Teto",
+      "notes": "GIF -> MP4 852x640 (4:3) con el GIF completo sobre su version difuminada (sin recortes)."
+    },
+    {
+      "id": "broll_v_miku_thinking",
+      "type": "broll",
+      "path": "assets/broll/broll_v_miku_thinking.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "vocaloid",
+        "miku",
+        "pensando",
+        "duda",
+        "idea"
+      ],
+      "source": "https://tenor.com/view/hatsune-miku-thinking-gif-rDCvsy8ntd0",
+      "license": "Sin documentar (fan art / MMD de la comunidad Vocaloid en Tenor)",
+      "license_status": "unknown",
+      "description": "Miku (MMD) pensando",
+      "notes": "GIF -> MP4 852x640 (4:3) con el GIF completo sobre su version difuminada (sin recortes)."
+    },
+    {
+      "id": "broll_v_miku_dance",
+      "type": "broll",
+      "path": "assets/broll/broll_v_miku_dance.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "vocaloid",
+        "miku",
+        "baile",
+        "celebracion",
+        "mmd"
+      ],
+      "source": "https://tenor.com/view/hatsune-miku-dance-gif-8JhcC4OtwC8",
+      "license": "Sin documentar (fan art / MMD de la comunidad Vocaloid en Tenor)",
+      "license_status": "unknown",
+      "description": "Miku (MMD) bailando",
+      "notes": "GIF -> MP4 852x640 (4:3) con el GIF completo sobre su version difuminada (sin recortes)."
+    },
+    {
+      "id": "broll_v_miku_surprised",
+      "type": "broll",
+      "path": "assets/broll/broll_v_miku_surprised.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "vocaloid",
+        "miku",
+        "sorpresa",
+        "shock"
+      ],
+      "source": "https://tenor.com/view/hatsune-miku-surprised-gif-EDgdQ1a1Ies",
+      "license": "Sin documentar (fan art / MMD de la comunidad Vocaloid en Tenor)",
+      "license_status": "unknown",
+      "description": "Miku sorprendida (primer plano)",
+      "notes": "GIF -> MP4 852x640 (4:3) con el GIF completo sobre su version difuminada (sin recortes)."
+    },
+    {
+      "id": "broll_v_miku_confused",
+      "type": "broll",
+      "path": "assets/broll/broll_v_miku_confused.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "vocaloid",
+        "miku",
+        "confusion",
+        "duda",
+        "mmd"
+      ],
+      "source": "https://tenor.com/view/mikuconfused-gif-Hzdph3i_DWM",
+      "license": "Sin documentar (fan art / MMD de la comunidad Vocaloid en Tenor)",
+      "license_status": "unknown",
+      "description": "Miku (MMD) confundida",
+      "notes": "GIF -> MP4 852x640 (4:3) con el GIF completo sobre su version difuminada (sin recortes)."
+    },
+    {
+      "id": "broll_v_matryoshka_gumi",
+      "type": "broll",
+      "path": "assets/broll/broll_v_matryoshka_gumi.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "vocaloid",
+        "gumi",
+        "rin",
+        "matryoshka",
+        "munecas_rusas",
+        "cancion"
+      ],
+      "source": "https://tenor.com/view/gumi-kagamine-rin-gif-7J7pLQ_Ooms",
+      "license": "Sin documentar (fan art / MMD de la comunidad Vocaloid en Tenor)",
+      "license_status": "unknown",
+      "description": "PV de Matryoshka (Hachi): GUMI con las muñecas rusas",
+      "notes": "GIF -> MP4 852x640 (4:3) con fondo difuminado. Matryoshka es una cancion Vocaloid de Hachi (Miku y GUMI)."
+    },
+    {
+      "id": "broll_russian_dolls",
+      "type": "broll",
+      "path": "assets/broll/broll_russian_dolls.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "matryoshka",
+        "munecas_rusas",
+        "anidado",
+        "dependencias"
+      ],
+      "source": "https://tenor.com/view/matryoshka-hachi-gif-dXkAhEa9Yd8",
+      "license": "Sin documentar (GIF de Tenor)",
+      "license_status": "unknown",
+      "description": "Muñeca rusa (matrioska) abriendose: una dentro de otra",
+      "notes": "GIF -> MP4 852x640 (4:3) con fondo difuminado."
+    },
+    {
+      "id": "broll_container_ship_photo",
+      "type": "broll",
+      "path": "assets/broll/broll_container_ship_photo.jpg",
+      "tags": [
+        "broll",
+        "foto",
+        "contenedores",
+        "barco",
+        "envio",
+        "docker"
+      ],
+      "source": "https://commons.wikimedia.org/wiki/File:CMA_CGM_Seine_au_port_du_Havre.jpg",
+      "license": "CC0 (Wikimedia Commons)",
+      "license_status": "documented",
+      "description": "Foto: portacontenedores CMA CGM Seine saliendo del puerto de El Havre",
+      "notes": "Recorte 4:3 centrado en el barco, 852x640."
+    },
+    {
+      "id": "meme_teto_risa",
+      "type": "meme",
+      "path": "assets/memes/meme_teto_risa.gif",
+      "tags": [
+        "meme",
+        "sticker",
+        "teto",
+        "risa",
+        "burla",
+        "senalar"
+      ],
+      "safeArea": true,
+      "source": "https://tenor.com/view/laughing-teto-gif-7rkbrVEswIY",
+      "license": "Sin documentar (fan art en Tenor)",
+      "license_status": "unknown",
+      "description": "Teto riendose y señalando (imagen fija)"
+    },
+    {
+      "id": "meme_miku_yippee",
+      "type": "meme",
+      "path": "assets/memes/meme_miku_yippee.gif",
+      "tags": [
+        "meme",
+        "sticker",
+        "miku",
+        "celebracion",
+        "yippee",
+        "chibi"
+      ],
+      "safeArea": true,
+      "source": "https://tenor.com/view/yippee-yippie-gif-lA50EMmBfw4",
+      "license": "Sin documentar (fan art en Tenor)",
+      "license_status": "unknown",
+      "description": "Miku chibi celebrando con confeti"
+    },
+    {
+      "id": "bg_foto_cafeteria_miku",
+      "type": "background_image",
+      "path": "assets/backgrounds/bg_foto_cafeteria_miku.jpg",
+      "tags": [
+        "background",
+        "escenario",
+        "cafeteria",
+        "foto",
+        "miku"
+      ],
+      "source": "Aportado por el usuario (1. Videos finales/2026-10-02 Docker y los contenedores/Historial de revision/Fondo aportado.jpg)",
+      "license": "Sin documentar (foto aportada por el usuario)",
+      "license_status": "unknown",
+      "description": "Foto: cafe con latte art y figura de Miku asomandose",
+      "notes": "Recorte 9:16 (x=60) y escalado a 1080x1920."
+    },
+    {
+      "id": "bg_foto_parque_neru",
+      "type": "background_image",
+      "path": "assets/backgrounds/bg_foto_parque_neru.jpg",
+      "tags": [
+        "background",
+        "escenario",
+        "parque",
+        "foto",
+        "neru"
+      ],
+      "source": "Aportado por el usuario (1. Videos finales/2026-10-02 Busqueda binaria/Historial de revision/Fondo aportado.jpg)",
+      "license": "Sin documentar (foto aportada por el usuario)",
+      "license_status": "unknown",
+      "description": "Foto: parque con Neru (AR) y un gato",
+      "notes": "Escalado a 1080x1920."
+    },
+    {
+      "id": "bg_foto_oficina",
+      "type": "background_image",
+      "path": "assets/backgrounds/bg_foto_oficina.jpg",
+      "tags": [
+        "background",
+        "escenario",
+        "oficina",
+        "foto"
+      ],
+      "source": "Aportado por el usuario (1. Videos finales/2026-10-02 Log4Shell/Historial de revision/Fondo aportado.jpg)",
+      "license": "Sin documentar (foto aportada por el usuario)",
+      "license_status": "unknown",
+      "description": "Foto: oficina con cubiculos y computadora vieja",
+      "notes": "Recorte 9:16 centrado y escalado a 1080x1920."
     }
   ]
 }
