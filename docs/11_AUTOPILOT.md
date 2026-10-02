@@ -24,6 +24,9 @@ polemicas e historia). Decision de arquitectura: [ADR 0007](adr/0007-autopiloto.
                 schedule.json (siguiente franja, hora CDMX), checklist.md
 9. Produccion   --produce: voces -> transcripcion -> reajuste -> render -> QA (npm run generate)
 ```
+Despues del guion: prototipo de revision (`npm run generate -- --project projects/<id> --tts espeak
+--preview`, ADR 0013), planilla de produccion que coordina varios episodios (`npm run planilla`) y
+subida a las tres plataformas (`npm run upload`). Ver [12_PUBLICACION.md](12_PUBLICACION.md).
 
 ## Comandos
 | Comando | Que hace |

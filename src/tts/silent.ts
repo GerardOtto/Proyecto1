@@ -12,6 +12,7 @@ export const estimateSpeechMs = (text: string, wordsPerSecond: number): number =
 
 export class SilentProvider implements TTSProvider {
   readonly name = "silent";
+  readonly draft = true;
   constructor(private readonly wordsPerSecond: number) {}
 
   async check() {

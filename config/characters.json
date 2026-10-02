@@ -31,6 +31,11 @@
         "flite": {
           "voice": "slt"
         },
+        "espeak": {
+          "voice": "mb-es3",
+          "pitch": 62,
+          "speed": 138
+        },
         "greeting": "assets/voice/teto/papu_papu.mp3"
       },
       "license": {
@@ -101,6 +106,11 @@
         },
         "flite": {
           "voice": "slt"
+        },
+        "espeak": {
+          "voice": "mb-es3",
+          "pitch": 84,
+          "speed": 142
         },
         "greeting": "assets/voice/miku/papu_papu.mp3"
       },
@@ -178,6 +188,11 @@
         },
         "flite": {
           "voice": "slt"
+        },
+        "espeak": {
+          "voice": "mb-es3",
+          "pitch": 40,
+          "speed": 134
         },
         "greeting": "assets/voice/luka/papu_papu.mp3"
       },
@@ -282,6 +297,11 @@
         "flite": {
           "voice": "slt"
         },
+        "espeak": {
+          "voice": "mb-es3",
+          "pitch": 78,
+          "speed": 146
+        },
         "greeting": "assets/voice/rin/papu_papu.mp3"
       },
       "license": {
@@ -343,6 +363,11 @@
         },
         "flite": {
           "voice": "kal"
+        },
+        "espeak": {
+          "voice": "mb-mx2",
+          "pitch": 70,
+          "speed": 146
         },
         "greeting": "assets/voice/len/papu_papu.mp3"
       },
@@ -408,6 +433,11 @@
         },
         "flite": {
           "voice": "kal"
+        },
+        "espeak": {
+          "voice": "mb-mx2",
+          "pitch": 38,
+          "speed": 134
         }
       },
       "license": {

@@ -6,6 +6,7 @@ import { TTSError, type TTSProvider, type TTSRequest } from "./provider";
 
 export class FliteProvider implements TTSProvider {
   readonly name = "flite";
+  readonly draft = true;
 
   async check() {
     const res = await run(FFMPEG, ["-hide_banner", "-filters"], { allowFail: true });

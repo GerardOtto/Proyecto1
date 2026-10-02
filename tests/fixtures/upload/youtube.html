@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>YouTube Studio (simulado)</title></head>
+<body>
+<!-- Pagina SIMULADA para probar src/upload/platforms.ts (SITES.youtube) sin cuenta ni red. -->
+<input type="file" name="Filedata" id="file" style="display:none">
+<div id="details" hidden>
+  <div id="title-textarea"><div id="textbox" contenteditable="true">mi-video</div></div>
+  <div id="description-textarea"><div id="textbox" contenteditable="true"></div></div>
+  <div class="audience"><span>¿Es contenido creado para niños?</span>
+    <div role="radio" name="VIDEO_MADE_FOR_KIDS_MFK" aria-checked="false">Sí, es contenido creado para niños</div>
+    <div role="radio" name="VIDEO_MADE_FOR_KIDS_NOT_MFK" aria-checked="false">No, no es contenido creado para niños</div>
+  </div>
+  <button id="toggle-button">Mostrar más</button>
+  <div id="more" hidden>
+    <div class="altered"><span>Contenido alterado</span><div role="radio" aria-checked="false" id="alt-yes">Sí</div><div role="radio" aria-checked="false" id="alt-no">No</div></div>
+  </div>
+  <span class="video-url-fadeable"><a href="https://youtube.com/shorts/abc123XYZ">https://youtube.com/shorts/abc123XYZ</a></span>
+  <span class="progress-label" id="progress">Subiendo 12 %...</span>
+  <button id="next-button">Siguiente</button>
+</div>
+<div id="visibility" hidden>
+  <div role="radio" name="PRIVATE" aria-checked="true">Privado</div>
+  <div role="radio" name="PUBLIC" aria-checked="false">Público</div>
+  <button id="done-button" aria-disabled="true">Publicar</button>
+</div>
+<div id="published" hidden>Video publicado</div>
+<script>
+  const $ = (id) => document.getElementById(id);
+  const radios = (sel) => [...document.querySelectorAll(sel)];
+  const group = (els) => els.forEach((r) => (r.onclick = () => els.forEach((o) => o.setAttribute("aria-checked", String(o === r)))));
+  group(radios(".audience [role=radio]"));
+  group(radios(".altered [role=radio]"));
+  group(radios("#visibility [role=radio]"));
+  let step = 0;
+  $("file").addEventListener("change", () => {
+    window.__file = $("file").files[0].name;
+    $("details").hidden = false;
+    setTimeout(() => $("done-button").setAttribute("aria-disabled", "false"), 300); // Publicar se habilita antes de terminar
+    setTimeout(() => ($("progress").textContent = "Carga completa"), 1500); // subida simulada
+  });
+  $("toggle-button").onclick = () => ($("more").hidden = false);
+  $("next-button").onclick = () => {
+    if (++step < 3) return;
+    // innerText solo conserva los saltos de linea mientras el campo es visible: se captura antes de ocultarlo.
+    window.__details = { title: document.querySelector("#title-textarea #textbox").innerText, description: document.querySelector("#description-textarea #textbox").innerText };
+    $("details").hidden = true;
+    $("visibility").hidden = false;
+  };
+  $("done-button").onclick = () => {
+    if ($("done-button").getAttribute("aria-disabled") === "true") return;
+    const checked = (sel) => radios(sel).find((r) => r.getAttribute("aria-checked") === "true")?.textContent.trim();
+    window.__posted = {
+      file: window.__file,
+      title: window.__details.title,
+      description: window.__details.description,
+      kids: checked(".audience [role=radio]"),
+      altered: checked(".altered [role=radio]"),
+      visibility: checked("#visibility [role=radio]"),
+      steps: step,
+      uploadDone: $("progress").textContent === "Carga completa",
+    };
+    $("visibility").hidden = true;
+    $("published").hidden = false;
+  };
+</script>
+</body>
+</html>

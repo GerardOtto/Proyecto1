@@ -50,6 +50,15 @@ npm run whisper:install                               # opcional, recomendado
 npm run generate -- --project projects/demo_001 --tts fish --repro
 ```
 
+## Publicacion y prototipos (2026-10-02, ADR 0013 y 0014)
+- **Prototipos**: los 5 episodios pendientes tienen `preview.mp4` (540x960, voz de borrador espeak) para
+  revision; todos los checks hard en PASS. Falta la revision humana y luego voces Fish Audio + render final.
+- **Planilla**: `projects/_autopilot/planillas/planilla_produccion_2026-10-05.xlsx` (4 semanas, 12
+  episodios: 6 existentes + 6 temas sugeridos; 36 publicaciones sin avisos de separacion).
+- **Subida** (`npm run upload`): probada contra paginas simuladas de TikTok, Instagram y YouTube con
+  Chromium 141 + chromedriver. **Pendiente**: primera corrida real con `--login` y el modo con
+  confirmacion; ajustar `src/upload/platforms.ts > SITES` si alguna pantalla no coincide.
+
 ## Que falta / siguientes pasos sugeridos
 - **Autopiloto (v0.3.0)**: implementado y testeado offline (docs/11_AUTOPILOT.md). Pendiente en local:
   verificar feeds (`npm run autopilot -- --check-feeds`), primera corrida del escritor LLM con noticias,

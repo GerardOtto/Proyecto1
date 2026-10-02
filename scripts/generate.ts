@@ -2,9 +2,11 @@
 // subtitles.srt + report.json.
 //
 // Uso: npm run generate -- --project projects/demo_001
-//        [--director rules|anthropic] [--tts fish|files|flite|silent] [--transcriber auto|whisper-cpp|estimate]
+//        [--director rules|anthropic] [--tts fish|files|espeak|flite|silent] [--transcriber auto|whisper-cpp|estimate]
 //        [--no-render] [--repro] [--safe-area] [--force-voices]
 //        [--allow-missing-audio]   con --tts files: bloques sin archivo -> silencio provisional (preview)
+//        [--preview]               prototipo de baja resolucion en output/<id>/preview.mp4 (ADR 0013)
+//   Prototipo sin claves: --tts espeak --preview (voz de borrador en espanol, nunca se publica)
 import { loadContext, printIssues } from "../src/pipeline/context";
 import { DurationError } from "../src/pipeline/build-timeline";
 import { stepAnalyze, stepBuildTimeline, stepRender, stepTranscribe, stepVoices } from "../src/pipeline/steps";
@@ -24,6 +26,7 @@ const { values } = parseCli({
   "safe-area": { type: "boolean" },
   "force-voices": { type: "boolean" },
   "allow-missing-audio": { type: "boolean" },
+  preview: { type: "boolean" },
 });
 
 main(async () => {
@@ -81,9 +84,11 @@ main(async () => {
     log.ok(`Timeline listo sin render (${((Date.now() - t0) / 1000).toFixed(1)} s). Render: npm run render -- --project ${project.rel}`);
     return;
   }
-  const res = await stepRender(ctx, { safeArea: values["safe-area"], checkRepro: values.repro });
+  const res = await stepRender(ctx, { safeArea: values["safe-area"], checkRepro: values.repro, preview: values.preview });
   log.info(`Tiempo total: ${((Date.now() - t0) / 1000).toFixed(1)} s`);
-  if (res.ok) {
+  if (res.ok && values.preview) {
+    log.ok(`Prototipo: ${toRepoRel(project.paths.preview)} (baja resolucion, solo para revision)`);
+  } else if (res.ok) {
     log.ok(`MP4: ${toRepoRel(project.paths.video)}`);
     log.ok(`Entregables: ${toRepoRel(project.paths.outputDir)}/ (video.mp4, timeline.json, subtitles.srt, report.json, cover.jpg si hay rotulo)`);
   }

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>Instagram (simulado)</title></head>
+<body>
+<!-- Pagina SIMULADA para probar src/upload/platforms.ts (SITES.instagram) sin cuenta ni red. -->
+<nav><a href="#" id="create"><svg aria-label="Nueva publicación" width="24" height="24"><rect width="24" height="24"></rect></svg><span>Crear</span></a></nav>
+<div id="menu" hidden><a href="#" id="menu-post"><span>Publicación</span></a></div>
+<div role="dialog" id="pick" hidden>
+  <form><input type="file" accept="image/jpeg,image/png,image/heic,video/mp4,video/quicktime" id="file" style="display:none"></form>
+  <button type="button">Seleccionar de la computadora</button>
+</div>
+<div role="dialog" id="notice" hidden><p>Las publicaciones de video ahora se comparten como reels</p><button id="ok">Aceptar</button></div>
+<div role="dialog" id="crop-step" hidden>
+  <button id="crop"><svg aria-label="Seleccionar recorte" width="20" height="20"><rect width="20" height="20"></rect></svg></button>
+  <div id="crop-options" hidden><span id="original">Original</span><span>1:1</span></div>
+  <div role="button" id="next-1">Siguiente</div>
+</div>
+<div role="dialog" id="edit-step" hidden>
+  <p>Foto de portada</p><input type="file" accept="image/jpeg,image/png" id="cover" style="display:none">
+  <div role="button" id="next-2">Siguiente</div>
+</div>
+<div role="dialog" id="caption-step" hidden>
+  <div contenteditable="true" role="textbox" aria-label="Escribe un pie de foto o leyenda..." id="caption"></div>
+  <div role="button" id="advanced-btn"><span>Configuración avanzada</span></div>
+  <div id="advanced" hidden><div><span>Agregar etiqueta de IA</span><input type="checkbox" id="ai"></div><div><span>Desactivar comentarios</span><input type="checkbox" id="nocomments"></div></div>
+  <div role="button" id="share">Compartir</div>
+</div>
+<div id="done" hidden>Se compartió tu reel</div>
+<script>
+  const $ = (id) => document.getElementById(id);
+  const show = (id) => { for (const d of ["pick", "notice", "crop-step", "edit-step", "caption-step"]) $(d).hidden = d !== id; };
+  $("create").onclick = (e) => { e.preventDefault(); $("menu").hidden = false; };
+  $("menu-post").onclick = (e) => { e.preventDefault(); $("menu").hidden = true; show("pick"); };
+  $("file").addEventListener("change", () => { window.__file = $("file").files[0].name; show("notice"); });
+  $("ok").onclick = () => show("crop-step");
+  $("crop").onclick = () => ($("crop-options").hidden = false);
+  $("original").onclick = () => { window.__crop = "original"; $("crop-options").hidden = true; };
+  $("next-1").onclick = () => show("edit-step");
+  $("cover").addEventListener("change", () => (window.__cover = $("cover").files[0].name));
+  $("next-2").onclick = () => show("caption-step");
+  $("advanced-btn").onclick = () => ($("advanced").hidden = false);
+  $("share").onclick = () => {
+    window.__posted = { file: window.__file, cover: window.__cover || null, crop: window.__crop || null, caption: $("caption").innerText, ai: $("ai").checked, noComments: $("nocomments").checked };
+    show(null);
+    $("done").hidden = false;
+  };
+</script>
+</body>
+</html>

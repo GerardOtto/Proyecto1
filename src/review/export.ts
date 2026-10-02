@@ -54,6 +54,8 @@ const FORMAT_LABEL: Record<string, string> = {
 const AUDIO_EXT = [".wav", ".mp3", ".m4a", ".ogg"];
 const LEEME = `Esta carpeta se regenera desde el proyecto (npm run review). No edites Guion.txt aqui: los cambios
 no llegan al video. Escribe tus observaciones en Notas.txt (nunca se sobrescribe) o pasaselas a Claude.
+Prototipo.mp4 (si existe): version de revision en baja resolucion con voz de borrador (robotica). Sirve
+para juzgar ritmo, chistes, imagenes y efectos; la voz final la pone Fish Audio.
 `;
 
 export const characterName = (id: string): string => id.charAt(0).toUpperCase() + id.slice(1);
@@ -83,7 +85,12 @@ export interface ReviewEpisode {
   audioInputDir?: string;
   greetingText: string | null;
   videoFile: string | null;
+  /** Prototipo de baja resolucion con voz de borrador (output/<id>/preview.mp4, ADR 0013). */
+  previewFile?: string | null;
 }
+
+const stateLabel = (ep: ReviewEpisode): string =>
+  ep.videoFile ? "Video listo" : ep.previewFile ? "Prototipo listo (voz de borrador, baja resolucion)" : (STATUS_LABEL[ep.status] ?? ep.status);
 
 /** Guion simplificado: sin etiquetas, una entrada por linea de dialogo. */
 export const renderReviewScript = (ep: ReviewEpisode): string => {
@@ -100,7 +107,7 @@ export const renderReviewScript = (ep: ReviewEpisode): string => {
   );
   const dialogueScenes = ep.timeline.scenes.filter((s) => s.dialogue);
   const recorded = dialogueScenes.filter((s) => ep.audio[s.id]).length;
-  lines.push(`Estado: ${ep.videoFile ? "Video listo" : STATUS_LABEL[ep.status] ?? ep.status}  |  Audios grabados: ${recorded}/${dialogueScenes.length}`);
+  lines.push(`Estado: ${stateLabel(ep)}  |  Audios grabados: ${recorded}/${dialogueScenes.length}`);
   if (ep.sources.length) lines.push("", "Fuentes:", ...ep.sources.map((s) => `  - ${s}`));
   if (recorded < dialogueScenes.length && ep.audioInputDir) lines.push("", `Audios: guarda cada linea con el nombre indicado en ${ep.audioInputDir}`);
   lines.push("Imagenes: los nombres corresponden a los archivos de la carpeta Imagenes (personajes en Personajes).");
@@ -166,6 +173,7 @@ export const loadReviewEpisode = async (engine: EngineConfig, episodeId: string)
     if (f) audio[s.id] = f;
   }
   const video = fromRepo("output", episodeId, "video.mp4");
+  const preview = fromRepo("output", episodeId, "preview.mp4");
   const dateFromId = /^ep_(\d{4})(\d{2})(\d{2})_/.exec(episodeId);
   return {
     catalog,
@@ -184,6 +192,7 @@ export const loadReviewEpisode = async (engine: EngineConfig, episodeId: string)
       audioInputDir: audioDir,
       greetingText: engine.render.audio.greeting?.text ?? null,
       videoFile: fs.existsSync(video) ? video : null,
+      previewFile: fs.existsSync(preview) ? preview : null,
     },
   };
 };
@@ -235,6 +244,9 @@ export const exportEpisodeReview = async (engine: EngineConfig, episodeId: strin
   const videoOut = path.join(folder, "Video final.mp4");
   if (ep.videoFile) fs.copyFileSync(ep.videoFile, videoOut);
   else fs.rmSync(videoOut, { force: true });
+  const previewOut = path.join(folder, "Prototipo.mp4");
+  if (ep.previewFile && !ep.videoFile) fs.copyFileSync(ep.previewFile, previewOut);
+  else fs.rmSync(previewOut, { force: true });
   return { folder, ep };
 };
 
@@ -246,7 +258,7 @@ export const writeReviewIndex = (reviewDir: string, eps: ReviewEpisode[]): strin
     const total = ep.timeline.scenes.filter((s) => s.dialogue).length;
     const rec = Object.keys(ep.audio).length;
     lines.push(`${ep.date}  ${ep.title}`);
-    lines.push(`            ${ep.videoFile ? "Video listo" : STATUS_LABEL[ep.status] ?? ep.status}  |  audios ${rec}/${total}  |  ~${Math.round(ep.estimatedSec)} s`);
+    lines.push(`            ${stateLabel(ep)}  |  audios ${rec}/${total}  |  ~${Math.round(ep.estimatedSec)} s`);
   }
   const file = path.join(reviewDir, "Resumen.txt");
   fs.writeFileSync(file, `${lines.join("\n")}\n`);

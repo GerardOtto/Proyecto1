@@ -2,6 +2,35 @@
 
 ## Sin publicar
 
+### Planilla de produccion y subida con Selenium + Chromium (ADR 0014)
+- `npm run planilla`: planilla .xlsx por periodo (`projects/_autopilot/planillas/`) con Resumen,
+  Calendario (una fila por publicacion, hora CDMX y equivalencias en Bogota, Buenos Aires y Madrid),
+  Produccion (plazos T-4 guion, T-3 voces, T-2 render final, T-1 aprobacion, T+2 metricas; vencidos en
+  rojo), Seguimiento (metricas 1 h / 48 h) y Reglas (parametros). Formulas en vez de valores: si se
+  mueve una fecha, la columna Regla avisa si se rompe la separacion (>= 24 h por plataforma, Reels
+  12-48 h y Shorts 36-96 h despues de TikTok). Noticias primero; huecos con temas sugeridos por el
+  planificador (simulado, sin tocar el historial); prueba A/B de horario desde la semana 3.
+- Semana tipo unica (`publish.ts > WEEKLY`): el kit por episodio ahora sigue la tabla de docs/10 §2.3
+  (antes el Reel del bloque B caia el lunes siguiente; Reels lun/mie/vie y Shorts mie/vie/sab).
+- `npm run upload`: Selenium + Chromium con perfil persistente (`--login` a mano, sin contrasenas),
+  TikTok Studio, Instagram (Reels) y YouTube Studio (Shorts); solo el `video.mp4` final (1080x1920,
+  60-120 s); etiqueta de IA obligatoria; pregunta antes de publicar (`--publicar` solo si todo se
+  confirmo); `--due` publica las filas "Aprobado" de la planilla cuya hora llego; `--simular`;
+  registro en `projects/_autopilot/subidas.json`. Pruebas contra paginas simuladas (`npm run test:upload`).
+- Dependencias: `exceljs` 4.4.0 (`uuid` forzado a 11.1.1, `npm audit` limpio) y `selenium-webdriver` 4.50.0.
+- Historial: OpenAI Astra pasa a `produced` (producido en local, commit 96d7093).
+- `npm run doctor` detecta espeak-ng y el navegador para subir; `.env.example` con `UPLOAD_*` y `ESPEAK_NG_PATH`.
+
+### Prototipos de baja resolucion con voz de borrador (ADR 0013)
+- TTS `espeak` (espeak-ng + MBROLA `mb-es3`, respaldo `es-419`): voz en espanol por personaje
+  (`characters.json > voice.espeak`), calibrada a ~2,6 palabras/s como la estimacion del motor.
+- Voces de borrador (`espeak`, `flite`, `silent`) dicen el saludo si falta su audio grabado.
+- `generate`/`render --preview`: `render.json > preview` (escala 0.5 -> 540x960, CRF 28) en
+  `output/<id>/preview.mp4`; validacion y QA con el tamano del prototipo; `npm run review` lo copia como
+  `Prototipo.mp4`.
+- Prototipos de los 5 episodios pendientes (GitHub, Meta, CrowdStrike, AlphaGo, pesos abiertos):
+  73-87 s, todos los checks hard en PASS (el aviso de licencias sigue: avatares `unknown`).
+
 ### Mundo del canal (ADR 0012)
 - Lore ampliado: trasfondos, dinamicas (trio baka, Teto comilona, duo de Mesmerizer, Kagamine espejo,
   Kaito hermano mayor) y memes de la comunidad (Teto pera, Gumi, Mesmerizer, Rabbit Hole, Ievan Polkka,

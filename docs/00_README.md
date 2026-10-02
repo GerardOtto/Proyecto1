@@ -15,6 +15,7 @@ Paquete inicial de la seccion 14 del plan, para retomar el desarrollo con Claude
 | [09_LICENSING.md](09_LICENSING.md) | Presupuesto y licencias (personajes, voces, assets, Remotion). |
 | [11_AUTOPILOT.md](11_AUTOPILOT.md) | Autopiloto: noticias/evergreen -> guion -> SFX -> graficos -> publicacion. |
 | [10_DISTRIBUCION.md](10_DISTRIBUCION.md) | Estudio de distribucion: horarios por plataforma, formato de descripciones, hashtags, etiqueta de IA. |
+| [12_PUBLICACION.md](12_PUBLICACION.md) | Planilla de produccion (calendario TikTok/Reels/Shorts, plazos, seguimiento), prototipos y subida con Selenium + Chromium. |
 | [STATUS.md](STATUS.md) | Estado de cada fase, como ejecutar, que falta. |
 | [adr/](adr/) | Decisiones de arquitectura. |
 | [plan/](plan/) | PDF original del plan (v1.0, 30-09-2026). |

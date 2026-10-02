@@ -25,7 +25,7 @@ export interface OutputCheck {
 export const validateOutput = async (
   file: string,
   cfg: RenderConfig,
-  opts: { durationPolicy?: "enforce" | "ignore"; expectedDurationMs?: number; fullDecode?: boolean } = {},
+  opts: { durationPolicy?: "enforce" | "ignore"; expectedDurationMs?: number; fullDecode?: boolean; expectedSize?: { width: number; height: number } } = {},
 ): Promise<OutputCheck> => {
   const issues: ValidationIssue[] = [];
   const add = (level: "error" | "warning", check: string, code: string, message: string) => issues.push({ level, check, code, message });
@@ -60,7 +60,8 @@ export const validateOutput = async (
   }
   if (!v) add("error", "format", "NO_VIDEO", "El MP4 no tiene pista de video");
   else {
-    if (v.width !== cfg.video.width || v.height !== cfg.video.height) add("error", "format", "RESOLUTION", `Resolucion ${v.width}x${v.height}; se esperaba ${cfg.video.width}x${cfg.video.height}`);
+    const size = opts.expectedSize ?? { width: cfg.video.width, height: cfg.video.height };
+    if (v.width !== size.width || v.height !== size.height) add("error", "format", "RESOLUTION", `Resolucion ${v.width}x${v.height}; se esperaba ${size.width}x${size.height}`);
     if (v.codec_name !== cfg.video.codec && !(cfg.video.codec === "h265" && v.codec_name === "hevc")) add("error", "format", "VIDEO_CODEC", `Codec ${v.codec_name}; se esperaba ${cfg.video.codec}`);
     if (Math.abs(fps - cfg.video.fps) > 0.01) add("error", "format", "FPS", `FPS ${fps}; se esperaba ${cfg.video.fps}`);
     if (v.pix_fmt !== "yuv420p") add("warning", "format", "PIX_FMT", `pix_fmt ${v.pix_fmt} (yuv420p es el mas compatible)`);

@@ -27,7 +27,7 @@ import { validateTimeline, type ValidationResult } from "../validation/timeline"
 import { buildFinalTimeline, type AudioBlock, type AudioIndex, type WordsFile } from "./build-timeline";
 import type { EngineContext } from "./context";
 import { printIssues } from "./context";
-import { renderStills, renderVideo } from "./render";
+import { renderStills, renderVideo, scaledSize } from "./render";
 import { buildQaTable, copyToOutput, printQaTable, updateReport, type ReproInfo } from "./report";
 
 // ------------------------------------------------------------------ 1-3. Analisis + validacion
@@ -74,6 +74,13 @@ export const stepAnalyze = async (
 };
 
 // ------------------------------------------------------------------ 4. Generacion de voz
+/**
+ * true si la linea usa el audio grabado del saludo (saludo + pausa + resto). Las voces de borrador
+ * sin ese audio dicen la linea completa; las voces finales siguen exigiendo el saludo grabado.
+ */
+export const greetingAudioApplies = (split: { rest: string } | null, greetingRecorded: boolean, draftProvider: boolean): boolean =>
+  !!split && (greetingRecorded || !draftProvider);
+
 export const stepVoices = async (
   ctx: EngineContext,
   opts: { tts?: string; force?: boolean; allowMissingAudio?: boolean } = {},
@@ -99,8 +106,10 @@ export const stepVoices = async (
     const voice = resolveVoice(scene.character, chCfg, project);
     // Saludo recurrente: la linea empieza con "¡Papu papu!" -> audio reutilizable + solo el resto al TTS.
     const greeting = cfg.render.audio.greeting;
-    const split = greeting ? splitGreeting(scene.dialogue, greeting.text) : null;
-    const greetingFile = split && chCfg?.voice?.greeting ? fromRepo(chCfg.voice.greeting) : undefined;
+    const greetingSplit = greeting ? splitGreeting(scene.dialogue, greeting.text) : null;
+    const greetingFile = greetingSplit && chCfg?.voice?.greeting ? fromRepo(chCfg.voice.greeting) : undefined;
+    // Voz de borrador (espeak/flite/silent) sin saludo grabado: el proveedor dice la linea completa (ADR 0013).
+    const split = greetingAudioApplies(greetingSplit, !!greetingFile && fs.existsSync(greetingFile), provider.draft === true) ? greetingSplit : null;
     const greetingTag = split
       ? `greet=${greetingFile && fs.existsSync(greetingFile) ? `${fs.statSync(greetingFile).size}:${fs.statSync(greetingFile).mtimeMs}` : "missing"}:${greeting!.gapMs}`
       : "";
@@ -289,6 +298,8 @@ export interface RenderStepOptions {
   checkRepro?: boolean;
   allowInvalid?: boolean;
   durationPolicy?: "enforce" | "ignore";
+  /** Prototipo de baja resolucion (render.json > preview) en output/<id>/preview.mp4 (ADR 0013). */
+  preview?: boolean;
 }
 
 export const stepRender = async (ctx: EngineContext, opts: RenderStepOptions = {}): Promise<{ ok: boolean; output?: OutputCheck; plan: RenderPlan }> => {
@@ -310,15 +321,18 @@ export const stepRender = async (ctx: EngineContext, opts: RenderStepOptions = {
   const plan = buildRenderPlan(timeline, catalog.resolved, cfg.render, { showSafeArea: opts.safeArea });
   writeJson(project.paths.plan, plan);
 
-  log.step("8b", "Renderizando con Remotion");
-  const outFile = project.paths.video;
-  const { ms } = await renderVideo({ plan, cfg: cfg.render, outFile, name: project.id });
+  const preview = opts.preview ? (cfg.render.preview ?? { scale: 0.5, crf: 28 }) : null;
+  const outFile = preview ? project.paths.preview : project.paths.video;
+  log.step("8b", `Renderizando con Remotion${preview ? ` (prototipo: escala ${preview.scale}, crf ${preview.crf})` : ""}`);
+  const { ms } = await renderVideo({ plan, cfg: cfg.render, outFile, name: project.id, preview });
   log.ok(`${toRepoRel(outFile)} (${(ms / 1000).toFixed(1)} s de render)`);
 
   log.step(9, "Validacion final del MP4");
+  const previewSize = preview ? scaledSize(cfg.render.video.width, cfg.render.video.height, preview.scale) : undefined;
   const output = await validateOutput(outFile, cfg.render, {
     durationPolicy: opts.durationPolicy,
     expectedDurationMs: Math.round((plan.durationInFrames * 1000) / plan.fps),
+    ...(previewSize ? { expectedSize: previewSize } : {}),
   });
   printIssues(output.issues);
 
@@ -335,7 +349,7 @@ export const stepRender = async (ctx: EngineContext, opts: RenderStepOptions = {
       ),
     }),
   };
-  if (opts.checkRepro) {
+  if (opts.checkRepro && !preview) {
     log.step("9b", "Prueba de reproducibilidad (fotogramas renderizados dos veces)");
     repro = { ...repro, ...(await checkReproducibility(plan, project.id)) };
     log[repro.identical ? "ok" : "error"](`${repro.framesCompared} fotogramas ${repro.identical ? "identicos" : "DIFERENTES"}`);
@@ -343,7 +357,7 @@ export const stepRender = async (ctx: EngineContext, opts: RenderStepOptions = {
 
   // Portada (Reels/Shorts): fotograma del gancho con el rotulo legible (ADR 0006).
   let cover: string | null = null;
-  if (plan.titleCard) {
+  if (plan.titleCard && !preview) {
     try {
       const frame = Math.max(0, Math.min(15, plan.titleCard.to - 1));
       const [png] = await renderStills({ plan, frames: [frame], outDir: path.join(CACHE_DIR, "cover", project.id), name: `${project.id}-cover` });
@@ -357,14 +371,14 @@ export const stepRender = async (ctx: EngineContext, opts: RenderStepOptions = {
   }
 
   log.step(10, "Salida");
-  const qa = buildQaTable({ timeline: validation, output, repro: opts.checkRepro ? repro : undefined });
+  const qa = buildQaTable({ timeline: validation, output, repro: opts.checkRepro && !preview ? repro : undefined, previewSize });
   const report = updateReport(project, {
     timelineValidation: validation,
     outputValidation: output,
     reproducibility: repro,
     qa,
     licenses: licenseSummary(ctx, validation),
-    steps: { render: { ms, output: toRepoRel(outFile), planHash: repro.planHash } },
+    steps: { render: { ms, output: toRepoRel(outFile), planHash: repro.planHash, ...(preview ? { preview } : {}) } },
   });
   copyToOutput(project, [
     [timelinePath, "timeline.json"],
@@ -373,7 +387,15 @@ export const stepRender = async (ctx: EngineContext, opts: RenderStepOptions = {
   ]);
   printQaTable(qa, (s) => log.info(s));
   const ok = validation.ok && output.ok && (repro.identical ?? true);
-  updateReport(project, { summary: { status: ok ? "pass" : "fail", video: toRepoRel(outFile), durationMs: output.info.durationMs, commercialUse: (report.licenses as { commercialUse: string }).commercialUse } });
+  updateReport(project, {
+    summary: {
+      status: ok ? "pass" : "fail",
+      video: toRepoRel(outFile),
+      ...(preview ? { preview: true, note: "Prototipo de baja resolucion: solo para revision, nunca se publica." } : {}),
+      durationMs: output.info.durationMs,
+      commercialUse: (report.licenses as { commercialUse: string }).commercialUse,
+    },
+  });
   copyToOutput(project, [[project.paths.report, "report.json"]]);
   return { ok, output, plan };
 };

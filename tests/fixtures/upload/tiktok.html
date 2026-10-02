@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>TikTok Studio (simulado)</title></head>
+<body>
+<!-- Pagina SIMULADA para probar src/upload/platforms.ts (SITES.tiktok) sin cuenta ni red. ?noai=1 quita el interruptor de IA. -->
+<input type="file" accept="video/*" id="file" style="display:none">
+<div id="editor" hidden>
+  <div class="public-DraftEditor-content" contenteditable="true" id="caption">video</div>
+  <button id="more">Mostrar más</button>
+  <div id="advanced" hidden>
+    <div class="row" id="ai-row"><span>Contenido generado por IA</span><div role="switch" aria-checked="false" id="ai" style="width:30px;height:16px;background:#ccc"></div></div>
+  </div>
+  <button data-e2e="post_video_button" aria-disabled="true" id="post">Publicar</button>
+</div>
+<div id="confirm" hidden><p>¿Activar la etiqueta de contenido generado por IA?</p><button id="turn-on">Activar</button></div>
+<div id="done" hidden>Video publicado</div>
+<script>
+  const $ = (id) => document.getElementById(id);
+  if (new URLSearchParams(location.search).has("noai")) $("ai-row").remove();
+  $("file").addEventListener("change", () => {
+    window.__file = $("file").files[0].name;
+    $("editor").hidden = false;
+    setTimeout(() => $("post").setAttribute("aria-disabled", "false"), 700); // subida simulada
+  });
+  $("more").onclick = () => ($("advanced").hidden = false);
+  if ($("ai")) $("ai").onclick = () => { $("ai").setAttribute("aria-checked", "true"); $("confirm").hidden = false; };
+  $("turn-on").onclick = () => ($("confirm").hidden = true);
+  $("post").onclick = () => {
+    if ($("post").getAttribute("aria-disabled") === "true") return;
+    window.__posted = { file: window.__file, caption: $("caption").innerText, ai: !!$("ai") && $("ai").getAttribute("aria-checked") === "true" };
+    $("done").hidden = false;
+  };
+</script>
+</body>
+</html>

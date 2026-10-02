@@ -25,10 +25,21 @@ script (para depurar por partes) y escribe en `projects/<id>/report.json > steps
   characters.json o requested_voices.json) | `files` (WAV/MP3 ya generados en
   `audio/input/<sceneId>.wav`; `npm run voices -- --list` muestra los ids; con
   `generate --allow-missing-audio` los que falten salen en silencio provisional y se listan en
-  report.json > steps.voices.missingAudio) | `flite` (voz offline de
-  ffmpeg, solo desarrollo) | `silent` (silencio con duracion estimada, mock).
+  report.json > steps.voices.missingAudio) | `espeak` (voz offline en **espanol** con espeak-ng y
+  MBROLA, una voz por personaje en `characters.json > voice.espeak`; solo prototipos, ADR 0013) |
+  `flite` (voz offline de ffmpeg en ingles, solo desarrollo) | `silent` (silencio con duracion
+  estimada, mock). Las voces de borrador (`espeak`, `flite`, `silent`) dicen el saludo "¡Papu papu!"
+  ellas mismas si falta su audio grabado; `fish` y `files` lo siguen exigiendo.
 - **Transcripcion**: `whisper-cpp` (local) | `estimate` (reparte el texto en la parte con voz) |
   `auto` (whisper si esta instalado; `estimate` con TTS `silent`).
+
+## Prototipos de baja resolucion (ADR 0013)
+`npm run generate -- --project P --tts espeak --preview` produce `output/<id>/preview.mp4`: mismo
+timeline, voz de borrador y render a `render.json > preview.scale` (0.5 -> 540x960) con `preview.crf`.
+La validacion del MP4 espera ese tamano, la tabla de QA lo indica y `report.json > summary.preview` queda
+en `true`. No se exporta portada ni se prueba reproducibilidad. Nunca se publica: `npm run upload`
+rechaza cualquier archivo que no sea el `video.mp4` final de 1080x1920. `npm run review` lo copia como
+`Prototipo.mp4` en la carpeta de revision.
 
 ## Autoridad temporal
 El LLM/director propone estructura y tiempos estimados; **el audio real manda**:

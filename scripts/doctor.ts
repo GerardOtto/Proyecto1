@@ -3,7 +3,9 @@
 import fs from "node:fs";
 import { FFMPEG, FFPROBE } from "../src/audio/ffmpeg";
 import { buildCatalog, loadEngineConfig } from "../src/catalog/catalog";
+import { EspeakProvider } from "../src/tts/espeak";
 import { FliteProvider } from "../src/tts/flite";
+import { resolveBrowserBinary } from "../src/upload/browser";
 import { WhisperCppTranscriber } from "../src/transcribe/whisper-cpp";
 import { main } from "../src/utils/cli";
 import { run, which } from "../src/utils/exec";
@@ -56,6 +58,16 @@ main(async () => {
   const flite = await new FliteProvider().check();
   if (flite.ok) ok("ffmpeg con flite (voz offline de desarrollo: --tts flite)");
   else log.info("ffmpeg sin flite (opcional)");
+  const espeak = await new EspeakProvider().check();
+  if (espeak.ok) ok("espeak-ng (voz de prototipo en espanol: --tts espeak --preview)");
+  else log.info(`${espeak.reason} (opcional, solo para prototipos)`);
+  try {
+    const upload = resolveBrowserBinary();
+    if (upload) ok(`Chromium para subir videos: ${upload} (npm run upload -- --login)`);
+    else log.info("Chromium no encontrado: npm run upload usara Chrome via Selenium Manager (o define UPLOAD_BROWSER)");
+  } catch (err) {
+    log.warn((err as Error).message);
+  }
   if (process.env.FISH_AUDIO_API_KEY) ok("FISH_AUDIO_API_KEY definido");
   else log.warn("FISH_AUDIO_API_KEY no definido (necesario para --tts fish)");
   if (process.env.ANTHROPIC_API_KEY) ok("ANTHROPIC_API_KEY definido");

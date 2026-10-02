@@ -45,6 +45,9 @@ Salida en `output/demo_001/`: `video.mp4`, `timeline.json`, `subtitles.srt`, `re
 | `npm run validate -- --project P [--draft] [--output]` | Valida **sin renderizar** (y opcionalmente el MP4 existente). |
 | `npm run render -- --project P [--repro] [--safe-area]` | Renderiza el `timeline.json` existente + validacion final + reporte. |
 | `npm run generate -- --project P [...]` | Todo lo anterior en orden (pasos 1-10 del plan). |
+| `npm run generate -- --project P --tts espeak --preview` | Prototipo de revision: voz de borrador en espanol y render 540x960 en `output/<id>/preview.mp4`. |
+| `npm run planilla [-- --desde AAAA-MM-DD --semanas 4]` | Planilla de produccion (.xlsx): calendario TikTok/Reels/Shorts, plazos y seguimiento. |
+| `npm run upload -- --login \| --episode <id> \| --due` | Sube el video final con Selenium + Chromium (pregunta antes de publicar). |
 | `npm run studio -- --project P [--draft]` | Preview en Remotion Studio. |
 | `npm run smoke` / `npm run test:render` | Render de humo de un fixture de 8 s. |
 | `npm test` / `npm run lint` | Vitest / ESLint + `tsc --noEmit`. |
@@ -54,4 +57,5 @@ Salida en `output/demo_001/`: `video.mp4`, `timeline.json`, `subtitles.srt`, `re
 - [`CLAUDE.md`](CLAUDE.md) — reglas y mapa para el agente.
 - [`docs/00_README.md`](docs/00_README.md) — indice del paquete de especificacion.
 - [`docs/STATUS.md`](docs/STATUS.md) — que funciona, que falta y como seguir.
+- [`docs/12_PUBLICACION.md`](docs/12_PUBLICACION.md) — planilla de produccion, prototipos y subida.
 - Plan original: [`docs/plan/`](docs/plan/).

@@ -80,6 +80,8 @@ export interface ProjectContext {
     srt: string;
     outputDir: string;
     video: string;
+    /** Prototipo de baja resolucion (render --preview, ADR 0013): nunca se publica. */
+    preview: string;
   };
 }
 
@@ -114,6 +116,7 @@ export const loadProject = (dir: string): ProjectContext => {
       srt: path.join(dir, "transcript", "subtitles.srt"),
       outputDir,
       video: path.join(outputDir, "video.mp4"),
+      preview: path.join(outputDir, "preview.mp4"),
     },
   };
 };

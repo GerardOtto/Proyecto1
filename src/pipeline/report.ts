@@ -44,6 +44,8 @@ export const buildQaTable = (input: {
   timeline?: ValidationResult;
   output?: OutputCheck;
   repro?: ReproInfo;
+  /** Prototipo de baja resolucion (ADR 0013): la fila de formato muestra el tamano esperado. */
+  previewSize?: { width: number; height: number };
 }): QaRow[] => {
   const all: ValidationIssue[] = [...(input.timeline?.issues ?? []), ...(input.output?.issues ?? [])];
   return QA_CHECKS.map((c) => {
@@ -66,7 +68,8 @@ export const buildQaTable = (input: {
     }
     if (issues.some((i) => i.level === "error")) status = c.type === "hard" ? "fail" : "warn";
     else if (issues.length > 0 && status !== "not_run") status = "warn";
-    return { check: c.check, label: c.label, condition: c.condition, type: c.type, status, details: issues.map((i) => `${i.code}: ${i.message}${i.where ? ` @ ${i.where}` : ""}`) };
+    const condition = c.check === "format" && input.previewSize ? `${input.previewSize.width}x${input.previewSize.height} (prototipo), 9:16, H.264/AAC` : c.condition;
+    return { check: c.check, label: c.label, condition, type: c.type, status, details: issues.map((i) => `${i.code}: ${i.message}${i.where ? ` @ ${i.where}` : ""}`) };
   });
 };
 

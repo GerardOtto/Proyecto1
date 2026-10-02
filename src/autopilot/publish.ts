@@ -63,20 +63,28 @@ export const buildPublishTexts = (plan: EpisodePlan, opts: { title: string; hook
 };
 
 // ------------------------------------------------------------------ calendario (hora CDMX)
-const CDMX_OFFSET_H = -6;
-type Slot = { dow: number; hour: number; minute: number };
-export const CALENDAR: Record<"tiktok" | "instagram" | "youtube", Slot[]> = {
-  tiktok: [
-    { dow: 2, hour: 19, minute: 30 },
-    { dow: 4, hour: 19, minute: 30 },
-    { dow: 0, hour: 10, minute: 30 },
-  ],
-  instagram: [1, 2, 3, 4].map((dow) => ({ dow, hour: 13, minute: 0 })),
-  youtube: [
-    { dow: 5, hour: 17, minute: 0 },
-    { dow: 6, hour: 17, minute: 0 },
-  ],
+export const CDMX_OFFSET_H = -6;
+export type Platform = "tiktok" | "instagram" | "youtube";
+export const PLATFORMS: Platform[] = ["tiktok", "instagram", "youtube"];
+export type WeekBlock = "A" | "B" | "C";
+/** `day`: dias desde el lunes de la semana del bloque (7 = lunes siguiente). */
+export type WeeklySlot = { day: number; hour: number; minute: number };
+
+/**
+ * Semana tipo de 3 videos (docs/10 §2.3): TikTok primero, Reels al dia siguiente y Shorts 2-3 dias
+ * despues. Cada plataforma recibe 3 videos por semana separados al menos 24 h.
+ */
+export const WEEKLY: Record<WeekBlock, Record<Platform, WeeklySlot>> = {
+  A: { tiktok: { day: 1, hour: 19, minute: 30 }, instagram: { day: 2, hour: 13, minute: 0 }, youtube: { day: 4, hour: 17, minute: 0 } },
+  B: { tiktok: { day: 3, hour: 19, minute: 30 }, instagram: { day: 4, hour: 13, minute: 0 }, youtube: { day: 5, hour: 17, minute: 0 } },
+  C: { tiktok: { day: 6, hour: 10, minute: 30 }, instagram: { day: 7, hour: 13, minute: 0 }, youtube: { day: 9, hour: 17, minute: 0 } },
 };
+
+type Slot = { dow: number; hour: number; minute: number };
+/** Franjas por dia de la semana (0 = domingo), derivadas de WEEKLY. */
+export const CALENDAR: Record<Platform, Slot[]> = Object.fromEntries(
+  PLATFORMS.map((p) => [p, Object.values(WEEKLY).map(({ [p]: s }) => ({ dow: (s.day + 1) % 7, hour: s.hour, minute: s.minute }))]),
+) as Record<Platform, Slot[]>;
 
 /** Proxima franja >= `from` (Date en UTC). Devuelve fecha local CDMX "YYYY-MM-DD HH:MM" y el Date UTC. */
 export const nextSlot = (platform: keyof typeof CALENDAR, from: Date): { local: string; utc: Date } => {

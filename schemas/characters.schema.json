@@ -60,6 +60,17 @@
               "additionalProperties": false,
               "properties": { "voice": { "type": "string" } }
             },
+            "espeak": {
+              "description": "Voz de prototipo en espanol (espeak-ng, con MBROLA si esta instalado). Solo para borradores (--tts espeak, ADR 0013).",
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["voice", "pitch", "speed"],
+              "properties": {
+                "voice": { "type": "string", "minLength": 1 },
+                "pitch": { "type": "integer", "minimum": 0, "maximum": 99 },
+                "speed": { "type": "integer", "minimum": 80, "maximum": 450 }
+              }
+            },
             "greeting": {
               "description": "Audio reutilizable del saludo recurrente (audio.greeting.text en render.json), ruta relativa al repo.",
               "type": "string",

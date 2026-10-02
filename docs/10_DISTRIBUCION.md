@@ -9,8 +9,9 @@ Fecha: 2026-10-01 · Cuenta: **@tetociencia** · Plataformas: TikTok, Instagram 
 > 2. **TikTok primero, Reels al día siguiente y Shorts dos días después.** TikTok es la plataforma
 >    principal: allí la Generación Z hispana busca respuestas, y los videos de más de 60 s entran en
 >    el programa de monetización (Creator Rewards).
-> 3. **Horarios de partida:** TikTok martes a jueves 19:30 y domingo 10:30 · Reels lunes a jueves 13:00 ·
->    Shorts viernes y sábado 17:00. Son hipótesis para validar con tus propias métricas en 4 semanas (§4).
+> 3. **Horarios de partida:** TikTok martes y jueves 19:30 y domingo 10:30 · Reels lunes, miércoles y
+>    viernes 13:00 · Shorts miércoles, viernes y sábado 17:00 (la semana tipo de §2.3). Son hipótesis
+>    para validar con tus propias métricas en 4 semanas (§4).
 > 4. **Las descripciones son metadatos de búsqueda:** palabra clave en los primeros ~100 caracteres,
 >    una pregunta para provocar comentarios y **de 3 a 5 hashtags** (Instagram ya no permite más de 5).
 >    En YouTube, los hashtags van en la descripción y no en el título.
@@ -102,6 +103,11 @@ Reglas del calendario:
    con el pico de actividad.
 5. Quédate **60 minutos** después de publicar para responder comentarios: alimenta la señal de
    interacción temprana.
+
+> Implementación: esta tabla es `WEEKLY` en `src/autopilot/publish.ts` (bloques A/B/C). La usan el kit
+> de publicación de cada episodio y la **planilla de producción** (`npm run planilla`), que reparte los
+> episodios pendientes en las semanas, calcula los plazos de producción y vigila la separación entre
+> videos; la subida se hace con `npm run upload` (ver [12_PUBLICACION.md](12_PUBLICACION.md), ADR 0014).
 
 ## 3. Formato de descripciones por plataforma
 
@@ -271,7 +277,8 @@ que manda es el de tu propia cuenta.**
 - [ ] Shorts (2–3 días después): título de 60–80 caracteres sin hashtags, descripción con fuentes y
       3 hashtags, contenido sintético declarado, video relacionado y playlist.
 - [ ] Primera hora tras publicar en TikTok: responder comentarios.
-- [ ] A las 48 h: anotar retención, envíos y % visto/deslizado en la hoja de seguimiento.
+- [ ] A las 48 h: anotar retención, envíos y % visto/deslizado en la hoja **Seguimiento** de la planilla
+      (`npm run planilla`).
 
 ## 8. Tarea de implementación para el agente: rótulo de palabra clave en el gancho
 

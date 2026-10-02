@@ -9,6 +9,7 @@ Estado actual y pendientes: `docs/STATUS.md`.
 Distribucion (horarios, descripciones, etiqueta de IA): `docs/10_DISTRIBUCION.md`.
 Rotulo de palabra clave en el gancho: implementado (`meta.hookTitle`, ADR 0006; `docs/10_DISTRIBUCION.md` §8).
 Autopiloto de produccion: `docs/11_AUTOPILOT.md` (ADR 0007; revision humana obligatoria antes de producir/publicar).
+Planilla de produccion, prototipos y subida con Selenium: `docs/12_PUBLICACION.md` (ADR 0013, 0014).
 
 ## Reglas (no negociables)
 1. No inventar paths de assets: todo se referencia por ID contra `config/*.json` (catalogo).
@@ -34,13 +35,17 @@ npm run smoke                      # render de humo 8 s (tests/fixtures/smoke.ti
 npm test                           # vitest (rapido, sin render)
 npm run test:render                # smoke render via vitest (lento)
 npm run lint                       # eslint + tsc --noEmit
-npm run generate -- --project projects/demo_001 [--tts fish|files|flite|silent] [--director rules|anthropic]
-npm run render   -- --project projects/demo_001 [--repro] [--safe-area]
+npm run generate -- --project projects/demo_001 [--tts fish|files|espeak|flite|silent] [--director rules|anthropic]
+npm run generate -- --project projects/<ep> --tts espeak --preview     # prototipo 540x960 con voz de borrador (ADR 0013)
+npm run render   -- --project projects/demo_001 [--repro] [--safe-area] [--preview]
 npm run validate -- --project projects/demo_001 [--draft] [--output]   # valida SIN renderizar
 npm run studio   -- --project projects/demo_001                        # preview en Remotion Studio
 npm run review   [-- --episode ep_a,ep_b]                              # carpeta de revision simple (REVIEW_DIR)
 npm run autopilot [-- --batch 3 | --produce | --episode <id> --produce]  # produccion automatica (docs/11)
 npm run avatars:ingest -- --character <id> --from <carpeta>           # renders -> avatares
+npm run planilla [-- --desde 2026-10-05 --semanas 4]                   # planilla .xlsx: calendario, plazos, seguimiento
+npm run upload -- --login | --episode <id> [--simular] | --due [--publicar]  # Selenium + Chromium (ADR 0014)
+npm run test:upload                                                    # flujos de subida vs paginas simuladas (chromedriver)
 ```
 Pasos sueltos: `analyze`, `voices`, `transcribe`, `build-timeline` (ver `docs/07_PIPELINE.md`).
 
@@ -52,7 +57,10 @@ Pasos sueltos: `analyze`, `voices`, `transcribe`, `build-timeline` (ver `docs/07
 - `src/director/` — parser de guion, director `rules`, director LLM (`llm/`).
 - `src/tts/`, `src/transcribe/`, `src/audio/` — voz, timestamps (whisper.cpp / estimate), ffmpeg.
 - `src/pipeline/` — pasos, render (bundle+renderMedia), reporte/QA.
-- `src/autopilot/` — autopiloto: noticias/evergreen, plan, escritores, SFX, graficos, publicacion (ADR 0007).
+- `src/autopilot/` — autopiloto: noticias/evergreen, plan, escritores, SFX, graficos, publicacion (ADR 0007);
+  `schedule.ts` + `planilla*.ts`: planilla de produccion (ADR 0014).
+- `src/upload/` — subida con Selenium: kit/validacion del video final, `--due` desde la planilla, flujos por
+  plataforma (`platforms.ts > SITES`: selectores en un solo lugar).
 - `config/autopilot/` — fuentes, banco evergreen, formatos, casting, temas visuales, reglas SFX, humor.
 - `scripts/` — CLIs finos que llaman a `src/pipeline/steps.ts`.
 
@@ -71,3 +79,5 @@ Pasos sueltos: `analyze`, `voices`, `transcribe`, `build-timeline` (ver `docs/07
 - `REMOTION_BROWSER_EXECUTABLE` permite usar un Chromium ya instalado (si no, Remotion descarga uno).
 - whisper.cpp 1.5.5 via `@remotion/install-whisper-cpp`; el modelo se valida por magic bytes.
 - Licencias: placeholder/unknown => `commercialUse: blocked` en report.json (ver docs/09_LICENSING.md).
+- `preview.mp4` (prototipo) nunca se publica: `npm run upload` solo acepta el `video.mp4` final de 1080x1920.
+- Las funciones que empiezan con `use` son hooks para ESLint (react-hooks): no nombrar asi helpers de Node.

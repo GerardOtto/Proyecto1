@@ -146,6 +146,8 @@ export interface CharacterConfig {
   voice?: {
     fish?: { referenceId?: string; speed?: number; volume?: number };
     flite?: { voice?: string };
+    /** Voz de prototipo en espanol (espeak-ng/MBROLA, ADR 0013): solo para borradores. */
+    espeak?: { voice: string; pitch: number; speed: number };
     /** Audio reutilizable del saludo recurrente (ruta relativa al repo). */
     greeting?: string;
     /** Personaje mudo: nunca tiene dialogo; aparece como listener y "habla" con su SFX de firma (ADR 0011). */
@@ -222,6 +224,8 @@ export interface Box {
 }
 
 export interface RenderConfig {
+  /** Prototipos de baja resolucion (render --preview, ADR 0013). */
+  preview?: { scale: number; crf: number };
   video: {
     width: number;
     height: number;

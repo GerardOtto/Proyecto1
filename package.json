@@ -23,6 +23,8 @@
     "autopilot": "tsx scripts/autopilot.ts",
     "compare-writers": "tsx scripts/compare-writers.ts",
     "review": "tsx scripts/review.ts",
+    "planilla": "tsx scripts/planilla.ts",
+    "upload": "tsx scripts/upload.ts",
     "studio": "tsx scripts/studio.ts",
     "smoke": "tsx scripts/smoke.ts",
     "whisper:install": "tsx scripts/setup-whisper.ts",
@@ -31,6 +33,7 @@
     "format": "prettier --write .",
     "test": "vitest run",
     "test:render": "vitest run tests/render.smoke.test.ts",
+    "test:upload": "vitest run tests/upload.browser.test.ts",
     "test:watch": "vitest"
   },
   "dependencies": {
@@ -43,20 +46,28 @@
     "@remotion/install-whisper-cpp": "4.0.530",
     "@remotion/renderer": "4.0.530",
     "ajv": "8.20.0",
+    "exceljs": "4.4.0",
     "fast-xml-parser": "5.11.2",
     "puppeteer-core": "25.12.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "remotion": "4.0.530"
+    "remotion": "4.0.530",
+    "selenium-webdriver": "4.50.0"
   },
   "devDependencies": {
     "@remotion/eslint-config-flat": "4.0.530",
     "@types/node": "22.20.4",
     "@types/react": "19.3.0",
+    "@types/selenium-webdriver": "4.35.7",
     "eslint": "9.39.5",
     "prettier": "3.9.9",
     "tsx": "4.23.15",
     "typescript": "5.7.3",
     "vitest": "5.0.3"
+  },
+  "overrides": {
+    "exceljs": {
+      "uuid": "11.1.1"
+    }
   }
 }

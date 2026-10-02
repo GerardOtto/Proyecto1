@@ -52,6 +52,11 @@ describe("carpeta de revision", async () => {
     expect(txt).not.toMatch(/\[[A-Z]+:|\{SFX|sfx_/);
   });
 
+  it("estado: el prototipo de baja resolucion se anuncia; el video final manda sobre el prototipo", () => {
+    expect(renderReviewScript({ ...ep, previewFile: "/repo/output/ep_x/preview.mp4" })).toContain("Estado: Prototipo listo (voz de borrador, baja resolucion)");
+    expect(renderReviewScript({ ...ep, previewFile: "/p.mp4", videoFile: "/v.mp4" })).toContain("Estado: Video listo");
+  });
+
   it("assets usados y nombres de carpeta validos en Windows", () => {
     expect(usedVisualIds(timeline)).toEqual(["broll_robot", "ep_headline", "ep_main", "meme_boom"]);
     expect(safeName('2026-10-01 ¿Qué: "pasó"? <GitHub>')).toBe("2026-10-01 ¿Qué pasó GitHub");

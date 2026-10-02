@@ -42,6 +42,10 @@
       0.35
     ]
   },
+  "preview": {
+    "scale": 0.5,
+    "crf": 28
+  },
   "video": {
     "width": 1080,
     "height": 1920,

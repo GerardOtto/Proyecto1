@@ -65,7 +65,19 @@ export interface RenderVideoOptions {
   name: string;
   concurrency?: number | null;
   frameRange?: [number, number] | null;
+  /** Prototipo de baja resolucion (ADR 0013): escala del fotograma y CRF propios. */
+  preview?: { scale: number; crf: number } | null;
 }
+
+/** Tamano de salida con `scale`, con la misma regla de Remotion (dimensiones pares para H.264). */
+export const scaledSize = (width: number, height: number, scale: number): { width: number; height: number } => {
+  const even = (n: number) => {
+    let x = n;
+    while (Math.round(x * scale) % 2 !== 0) x--;
+    return Math.round(x * scale);
+  };
+  return { width: even(width), height: even(height) };
+};
 
 export const renderVideo = async (opts: RenderVideoOptions): Promise<{ outFile: string; ms: number }> => {
   const t0 = Date.now();
@@ -84,7 +96,8 @@ export const renderVideo = async (opts: RenderVideoOptions): Promise<{ outFile: 
     composition,
     inputProps,
     codec: opts.cfg.video.codec,
-    crf: opts.cfg.video.crf,
+    crf: opts.preview?.crf ?? opts.cfg.video.crf,
+    scale: opts.preview?.scale ?? 1,
     pixelFormat: opts.cfg.video.pixelFormat as "yuv420p",
     audioCodec: opts.cfg.video.audioCodec,
     audioBitrate: opts.cfg.video.audioBitrate as `${number}k`,

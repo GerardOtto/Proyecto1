@@ -20,3 +20,6 @@ subtitulos muestran la linea completa.
 
 Con `generate --allow-missing-audio`, si falta el saludo se usa silencio provisional y el bloque queda
 listado en `report.json > steps.voices.missingAudio`.
+
+Las voces de borrador (`--tts espeak`, `flite` o `silent`, ADR 0013) no necesitan este archivo: si falta,
+dicen la linea completa ellas mismas (prototipos). `fish` y `files` siguen exigiendo el saludo grabado.
