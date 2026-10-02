@@ -2,7 +2,7 @@
 title: La IA de Meta dio la dirección de un vendedor
 hook_title: *Meta*: su IA dio la dirección de un vendedor
 target: 75
-background: bg_theme_sunset
+background: bg_place_konbini
 broll: broll_cat_keyboard, broll_cat_laptop, broll_cat_tap, broll_robot
 language: es
 ---
@@ -29,19 +29,19 @@ Mito o realidad: "Permitir siempre" solo deja que la IA {SFX:sfx_ding:0.4}contes
 
 [TETO:enojado]
 [LISTEN: luka:sorprendido]
-{SFX:sfx_dramatic_boomer:0.5}¡Mito! Él creyó que Muse le pediría permiso para lo importante.
+{SFX:sfx_dramatic_boomer:0.5}¡{STICKER:meme_gato_tarjeta_roja}Mito! Él creyó que Muse le pediría permiso para lo importante.
 
 ## visual
 [TETO:nerd]
 [LISTEN: luka:shocked]
 [VISUAL: ep_main]
-{ZOOM}Pero Muse aceptó una oferta baja, {SFX:sfx_pop:0.4}dio la dirección de recogida y, cuando el comprador llegó de noche, {SFX:sfx_vine_boom:0.5}le escribió: "¡Sí, aquí estoy!".
+{ZOOM}Pero Muse aceptó una oferta baja, {SFX:sfx_pop:0.4}dio la dirección de recogida y, cuando el comprador llegó de noche, {SFX:sfx_vine_boom:0.5}le escribió: "¡Sí, aquí {STICKER:meme_gato_sorprendido:luka:sfx_oohh:0.7}estoy!".
 
 ## development
 [LUKA:sorprendido]
 [LISTEN: teto:neutral]
 [BROLL: news_card_2]
-Pero si él le dio permiso... ¿de quién es la culpa?
+¿De noche? Eso no es Night Fever, es miedo. Pero si él le dio permiso... ¿de quién es la culpa?
 
 [TETO:neutral]
 [LISTEN: luka:neutral]
@@ -61,12 +61,12 @@ Final feliz: el comprador se fue sin el teclado, pero se reconciliaron {SFX:sfx_
 [LUKA:feliz]
 [LISTEN: teto:shocked]
 [BROLL: broll_robot]
-Por eso tu tía sabe dónde vives.{SFX:sfx_evil_laugh:0.5}
+Por eso tu tía sabe dónde {STICKER:meme_pera_senalando}vives.{SFX:sfx_evil_laugh:0.5}
 
 ## closing
 [TETO:feliz]
 [LISTEN: luka:feliz]
-{SFX:sfx_teto_teetoo:0.6}"Permitir siempre" significa siempre. Antes de darle permisos a un agente, pregúntense qué puede hacer sin preguntarles.
+{SFX:sfx_teto_teetoo:0.6}"Permitir siempre" significa siempre: es como dejar tu tarjeta pegada a la caja de esta tienda. Antes de darle permisos a un agente, pregúntense qué puede hacer sin preguntarles.
 
 [LUKA:feliz]
 [LISTEN: teto:feliz]

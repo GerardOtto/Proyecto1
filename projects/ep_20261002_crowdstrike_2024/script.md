@@ -2,7 +2,7 @@
 title: La caída de CrowdStrike
 hook_title: *CrowdStrike*: el fallo que tumbó aeropuertos
 target: 85
-background: bg_theme_sunset
+background: bg_place_servidores
 broll: broll_cat_keyboard, broll_cat_laptop, broll_cat_tap, broll_robot
 language: es
 ---
@@ -10,7 +10,7 @@ language: es
 
 ## hook
 [LUKA:shocked]
-¡Papu papu! *CrowdStrike*: el fallo que tumbó aeropuertos{SFX:sfx_dramatic_boomer:0.5}
+{SFX:sfx_dramatic_boomer:0.7}{SHAKE}¡Papu papu! {ZOOM}{SFX:sfx_vine_boom:0.6}*CrowdStrike*: el fallo que tumbó aeropuertos
 
 ## reaction
 [MEME:meme_boom:sfx_boom]
@@ -23,7 +23,7 @@ CrowdStrike es una empresa de ciberseguridad cuyo software Falcon protege millon
 ## development
 [TETO:confundido]
 [LISTEN: luka:neutral]
-¿A mano? ¿Uno por uno?
+¿Y por eso me trajiste a esta sala tan ruidosa y helada?
 
 [LUKA:feliz]
 [LISTEN: teto:neutral]
@@ -37,24 +37,24 @@ El 19 de julio de 2024 publicó una actualización de configuración defectuosa 
 [LUKA:nerd]
 [LISTEN: teto:neutral]
 [VISUAL: ep_main]
-{ZOOM}Ese software funciona muy cerca del núcleo del sistema, así que el fallo provocó pantallas azules y reinicios en bucle.{SFX:sfx_ding:0.45}
+{ZOOM}Ese software funciona muy cerca del núcleo del sistema, así que el fallo provocó pantallas azules y reinicios en {STICKER:meme_gato_oscuro}bucle. Imagínate esta sala entera así.{SFX:sfx_ding:0.45}
 
 ## development
 [TETO:sorprendido]
 [LISTEN: luka:neutral]
-Mmm, ya voy entendiendo.
+O sea, un solo archivo malo y todo en pantalla azul.
 
 [LUKA:feliz]
 [LISTEN: teto:neutral]
 Microsoft estimó unos 8,5 millones de equipos afectados en todo el mundo.
 
-[TETO:feliz]
+[TETO:shocked]
 [LISTEN: luka:neutral]
-¡No puede ser!
+¿Ocho millones y medio? ¡Eso es más que todas las {STICKER:meme_gato_sorprendido:sfx_oohh:0.7}baguettes que me he comido!
 
 [LUKA:sorprendido]
 [LISTEN: teto:neutral]
-{SFX:sfx_vine_boom:0.45}Aerolíneas, bancos, hospitales y medios quedaron paralizados horas, y muchos equipos se tuvieron que arreglar a mano.
+{SFX:sfx_vine_boom:0.45}Aerolíneas, bancos, hospitales y medios quedaron paralizados horas, y muchos equipos se tuvieron que arreglar a mano, uno por uno. Para los técnicos fue su propio Night Fever.
 
 ## punchline
 [TETO:shocked]
@@ -63,7 +63,7 @@ Y yo que pospongo las actualizaciones por flojera desde hace treinta y un años.
 
 [LUKA:riendo]
 [LISTEN: teto:riendo]
-Ese día tu flojera fue ciberseguridad.{SFX:sfx_evil_laugh:0.5}
+Ese día tu flojera fue {STICKER:meme_gato_pulgar}ciberseguridad.{SFX:sfx_evil_laugh:0.5}
 
 ## closing
 [LUKA:feliz]

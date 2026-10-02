@@ -80,10 +80,12 @@
     "targetSec": 85,
     "casting": {
       "host": "teto",
-      "foil": "miku"
+      "foil": "miku",
+      "cameo": "neru"
     },
     "theme": "sunset",
-    "seed": "2026-10-01:4:news_agentes_ia_filtran_capturas_github"
+    "seed": "2026-10-01:4:news_agentes_ia_filtran_capturas_github",
+    "setting": "oficina"
   },
   "writer": "manual:claude-code",
   "estimatedMs": null,

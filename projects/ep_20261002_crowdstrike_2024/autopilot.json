@@ -55,7 +55,8 @@
       "foil": "teto"
     },
     "theme": "sunset",
-    "seed": "2026-10-02:1:crowdstrike_2024"
+    "seed": "2026-10-02:1:crowdstrike_2024",
+    "setting": "servidores"
   },
   "writer": "template",
   "estimatedMs": 64947,

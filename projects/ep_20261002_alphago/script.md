@@ -2,7 +2,7 @@
 title: AlphaGo vs Lee Sedol
 hook_title: *AlphaGo*: la IA que venció al campeón de Go
 target: 85
-background: bg_tech_loop
+background: bg_place_parque
 broll: broll_cat_keyboard, broll_cat_laptop, broll_cat_tap, broll_robot
 language: es
 ---
@@ -10,7 +10,7 @@ language: es
 
 ## hook
 [MIKU:shocked]
-¡Papu papu! *AlphaGo*: la IA que venció al campeón de Go{SFX:sfx_dramatic_boomer:0.5}
+{SFX:sfx_dramatic_boomer:0.7}{SHAKE}¡Papu papu! {ZOOM}{SFX:sfx_vine_boom:0.6}*AlphaGo*: la IA que venció al campeón de Go
 
 ## reaction
 [MEME:meme_question:sfx_vine_boom]
@@ -18,12 +18,12 @@ language: es
 ## context
 [MIKU:nerd]
 [LISTEN: luka:neutral]
-El Go es un juego de mesa milenario con tantas posiciones posibles que superan a los átomos del universo observable.
+¿Ves a los señores de ese parque jugando con piedritas? Es Go: un juego de mesa milenario con tantas posiciones posibles que superan a los átomos del universo observable.
 
 ## development
 [LUKA:confundido]
 [LISTEN: miku:neutral]
-¿Más posiciones que átomos? ¿Más que atunes en el mar?
+¿Más posiciones que átomos? ¿Más que {STICKER:meme_gato_sorprendido:sfx_oohh:0.7}atunes en el mar?
 
 [MIKU:feliz]
 [LISTEN: luka:neutral]
@@ -42,11 +42,11 @@ Durante años se pensó que una computadora tardaría décadas en vencer a los m
 ## development
 [LUKA:feliz]
 [LISTEN: miku:neutral]
-¡No puede ser!
+¿Cuatro a uno? Ni a los abuelitos del parque les ganan así.
 
 [MIKU:feliz]
 [LISTEN: luka:neutral]
-Su jugada 37 en la segunda partida pareció un error a los expertos, y terminó siendo brillante.
+Su jugada 37 en la segunda partida pareció un {STICKER:meme_gato_nerd}error a los expertos, y terminó siendo brillante.
 
 [LUKA:confundido]
 [LISTEN: miku:neutral]
@@ -54,12 +54,12 @@ Su jugada 37 en la segunda partida pareció un error a los expertos, y terminó 
 
 [MIKU:sorprendido]
 [LISTEN: luka:neutral]
-AlphaGo combinaba redes neuronales con búsqueda, y aprendió jugando millones de partidas contra sí misma.
+AlphaGo combinaba redes neuronales con búsqueda, y aprendió jugando millones de partidas contra sí misma. Como yo con Rabbit Hole: repetir y repetir.
 
 ## punchline
 [LUKA:shocked]
 [LISTEN: miku:neutral]
-{SFX:sfx_dramatic_boomer:0.55}Y yo que no le gano ni al buscaminas.
+{SFX:sfx_dramatic_boomer:0.55}Y yo que no le gano ni al {STICKER:meme_gato_mojado}buscaminas.
 
 [MIKU:riendo]
 [LISTEN: luka:riendo]
@@ -68,7 +68,7 @@ El buscaminas no perdona, papu.
 ## closing
 [MIKU:feliz]
 [LISTEN: luka:feliz]
-Fue la primera vez que muchos vieron a una IA mostrar algo parecido a creatividad.{SFX:sfx_ding:0.45}
+Fue la primera vez que muchos vieron a una IA mostrar algo parecido a {STICKER:pair_miku_luka_cantando}creatividad.{SFX:sfx_ding:0.45}
 
 [LUKA:feliz]
 [LISTEN: miku:feliz]

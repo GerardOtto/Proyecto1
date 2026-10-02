@@ -64,10 +64,12 @@
     "targetSec": 75,
     "casting": {
       "host": "miku",
-      "foil": "teto"
+      "foil": "teto",
+      "cameo": "neru"
     },
     "theme": "navy_tech",
-    "seed": "2026-10-02:2:open_weights"
+    "seed": "2026-10-02:2:open_weights",
+    "setting": "habitacion"
   },
   "writer": "template",
   "estimatedMs": 75547,

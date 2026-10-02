@@ -91,7 +91,8 @@
       "foil": "luka"
     },
     "theme": "sunset",
-    "seed": "2026-10-01:5:news_meta_muse_direccion_marketplace"
+    "seed": "2026-10-01:5:news_meta_muse_direccion_marketplace",
+    "setting": "konbini"
   },
   "writer": "manual:claude-code",
   "estimatedMs": null,

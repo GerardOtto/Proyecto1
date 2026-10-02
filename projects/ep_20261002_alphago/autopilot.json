@@ -55,7 +55,8 @@
       "foil": "luka"
     },
     "theme": "navy_tech",
-    "seed": "2026-10-02:0:alphago"
+    "seed": "2026-10-02:0:alphago",
+    "setting": "parque"
   },
   "writer": "template",
   "estimatedMs": 71365,

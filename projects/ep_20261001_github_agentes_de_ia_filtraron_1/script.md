@@ -2,7 +2,7 @@
 title: Agentes de IA filtraron 13.000 capturas en GitHub
 hook_title: *GitHub*: agentes de IA filtraron capturas
 target: 85
-background: bg_theme_sunset
+background: bg_place_oficina
 broll: broll_cat_keyboard, broll_cat_laptop, broll_cat_tap, broll_robot
 language: es
 ---
@@ -25,16 +25,16 @@ Lo encontró la empresa de seguridad Glow: más de trece mil imágenes internas,
 ## development
 [MIKU:confundido]
 [LISTEN: teto:neutral]
-{SFX:sfx_vine_boom:0.5}Espera, espera. ¿Quién las subió? ¿Un hacker?
+{SFX:sfx_vine_boom:0.5}Espera, espera. ¿Quién las subió? ¿Un {STICKER:meme_gato_oscuro}hacker?
 
 [TETO:neutral]
-[LISTEN: miku:sorprendido]
+[LISTEN: miku:sorprendido, neru:neutral]
 [BROLL: broll_cat_laptop]
-No. Los programadores le pedían a su agente demostrar que un arreglo funcionaba, {SFX:sfx_ding:0.5}y el agente sacaba capturas como prueba.
+No. Los programadores le pedían a su agente demostrar que un arreglo funcionaba, {SFX:sfx_ding:0.5}y el agente sacaba capturas como prueba. {REACT:neru:broma}{SFX:sfx_neru_phone:0.6}
 
 [MIKU:enojado]
-[LISTEN: teto:neutral]
-{SFX:sfx_vine_boom:0.5}¿Y por qué no las adjuntó y ya?
+[LISTEN: teto:neutral, neru:feliz]
+Neru, deja de sacarle captura a todo. {SFX:sfx_vine_boom:0.5}¿Y por qué no las adjuntó y ya?
 
 [TETO:nerd]
 [LISTEN: miku:confundido]
@@ -48,17 +48,17 @@ No. Los programadores le pedían a su agente demostrar que un arreglo funcionaba
 [TETO:sorprendido]
 [LISTEN: miku:shocked]
 [BROLL: news_cap_2]
-Facturas de clientes, consolas financieras internas y funciones sin lanzar. {SFX:sfx_vine_boom:0.5}Y ojo: nadie hackeó nada. El agente tomó un atajo para cumplir... {ZOOM}y el atajo era público.
+Lo mismo que hay en esta oficina: facturas de clientes, consolas financieras internas y funciones sin lanzar. {SFX:sfx_vine_boom:0.5}Y ojo: nadie hackeó nada. El agente tomó un atajo para cumplir... {ZOOM}y el atajo era {STICKER:meme_gato_tarjeta_roja:sfx_oohh:0.7}público.
 
 ## punchline
 [MIKU:riendo]
 [LISTEN: teto:neutral]
-{SFX:sfx_vine_boom:0.6}¡El agente hizo justo lo que le pidieron! Solo que se lo enseñó a todo internet.
+{SFX:sfx_vine_boom:0.6}¡El agente hizo justo lo que le pidieron! Solo que se lo enseñó a todo {STICKER:pair_neru_teto_emocionadas:miku}internet.
 
 [TETO:riendo]
 [LISTEN: miku:riendo]
 [BROLL: broll_robot]
-Es como el compañero que te ayuda con la tarea... y la pega en la pizarra del salón.{SFX:sfx_teto_teetoo:0.6}
+Es como el compañero que te ayuda con la tarea... y la pega en la pizarra del {STICKER:meme_gato_lengua}salón.{SFX:sfx_teto_teetoo:0.6}
 
 ## closing
 [TETO:feliz]

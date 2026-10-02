@@ -13,7 +13,8 @@
         "foil": "luka"
       },
       "theme": "navy_tech",
-      "status": "planned"
+      "status": "planned",
+      "setting": "parque"
     },
     {
       "episodeId": "ep_20261002_crowdstrike_2024",
@@ -28,7 +29,8 @@
         "foil": "teto"
       },
       "theme": "sunset",
-      "status": "planned"
+      "status": "planned",
+      "setting": "servidores"
     },
     {
       "episodeId": "ep_20261002_open_weights",
@@ -40,10 +42,12 @@
       "format": "myth_vs_fact",
       "casting": {
         "host": "miku",
-        "foil": "teto"
+        "foil": "teto",
+        "cameo": "neru"
       },
       "theme": "navy_tech",
-      "status": "planned"
+      "status": "planned",
+      "setting": "habitacion"
     },
     {
       "episodeId": "ep_20261001_openai_openai_cancelo_gpt_6_1_as",
@@ -77,10 +81,12 @@
       "format": "controversy_story",
       "casting": {
         "host": "teto",
-        "foil": "miku"
+        "foil": "miku",
+        "cameo": "neru"
       },
       "theme": "sunset",
-      "status": "planned"
+      "status": "planned",
+      "setting": "oficina"
     },
     {
       "episodeId": "ep_20261001_meta_la_ia_de_meta_dio_la_direcc",
@@ -98,7 +104,8 @@
         "foil": "luka"
       },
       "theme": "sunset",
-      "status": "planned"
+      "status": "planned",
+      "setting": "konbini"
     }
   ]
 }
