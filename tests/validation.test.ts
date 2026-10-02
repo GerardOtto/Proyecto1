@@ -21,6 +21,18 @@ describe("validacion semantica del timeline", async () => {
     expect(codes(t2)).toContain("NO_DEVELOPMENT");
   });
 
+  it("una sola voz por personaje en el video: mezclar [VOICE:x] con su voz base avisa (ADR 0015)", () => {
+    const warn = (t: ReturnType<typeof longTimeline>) => v(t).issues.filter((i) => i.code === "VOICE_MIXED");
+    expect(warn(longTimeline())).toEqual([]);
+    const mixed = clone(longTimeline());
+    mixed.scenes.find((x) => x.id === "close")!.voiceVariant = "fluida"; // teto: hook base + cierre fluida
+    expect(warn(mixed)).toHaveLength(1);
+    expect(warn(mixed)[0]!.message).toMatch(/teto usa dos voces/);
+    const all = clone(longTimeline());
+    for (const x of all.scenes) if (x.character === "teto") x.voiceVariant = "fluida";
+    expect(warn(all)).toEqual([]);
+  });
+
   it("avatar: personaje y reaccion deben existir en el catalogo", () => {
     const t = clone(longTimeline());
     t.scenes[0]!.avatar = "sorpresa2";

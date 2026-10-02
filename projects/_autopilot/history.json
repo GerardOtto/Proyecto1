@@ -157,6 +157,23 @@
       "theme": "sakura",
       "setting": "oficina",
       "status": "produced"
+    },
+    {
+      "episodeId": "ep_20261002_vocaloid_tech",
+      "date": "2026-10-02",
+      "kind": "evergreen",
+      "topicId": "vocaloid_tech",
+      "title": "¿Miku es una IA?",
+      "urls": [],
+      "format": "concept_lesson",
+      "casting": {
+        "host": "miku",
+        "foil": "luka",
+        "cameo": "neru"
+      },
+      "theme": "ocean",
+      "setting": "parque",
+      "status": "final"
     }
   ]
 }

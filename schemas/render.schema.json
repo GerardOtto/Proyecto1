@@ -60,7 +60,18 @@
         "crf": { "type": "integer", "minimum": 1, "maximum": 51 },
         "pixelFormat": { "type": "string" },
         "audioCodec": { "enum": ["aac", "mp3"] },
-        "audioBitrate": { "type": "string" }
+        "audioBitrate": { "type": "string" },
+        "draftScale": {
+          "description": "Escala del render BORRADOR (calidad draft, la de revision): 0.5 -> 540x960. El final siempre es 1080x1920 (ADR 0015).",
+          "type": "number",
+          "minimum": 0.25,
+          "maximum": 1
+        },
+        "concurrency": {
+          "description": "Pestañas de Chrome en paralelo al renderizar. null = todos los nucleos de la maquina (ADR 0015).",
+          "type": ["integer", "null"],
+          "minimum": 1
+        }
       }
     },
     "duration": {

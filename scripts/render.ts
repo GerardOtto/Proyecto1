@@ -1,6 +1,8 @@
 // Pasos 8-10: render del timeline.json existente + validacion final + reporte.
 // Uso: npm run render -- --project projects/demo_001 [--timeline ruta.json] [--safe-area] [--repro]
-//                        [--allow-invalid] [--draft]
+//                        [--allow-invalid] [--draft] [--final] [--full]
+// Calidad (ADR 0015): por defecto BORRADOR a media resolucion (revision); --final = 1080x1920, solo con la
+// aprobacion del usuario. Render parcial automatico si la version anterior lo permite; --full lo desactiva.
 import { loadContext } from "../src/pipeline/context";
 import { stepRender } from "../src/pipeline/steps";
 import { main, parseCli } from "../src/utils/cli";
@@ -14,6 +16,8 @@ const { values } = parseCli({
   repro: { type: "boolean" },
   "allow-invalid": { type: "boolean" },
   draft: { type: "boolean" },
+  final: { type: "boolean" },
+  full: { type: "boolean" },
 });
 
 main(async () => {
@@ -24,6 +28,8 @@ main(async () => {
     safeArea: values["safe-area"],
     checkRepro: values.repro,
     allowInvalid: values["allow-invalid"],
+    quality: values.final ? "final" : "draft",
+    partial: !values.full,
   });
   if (res.ok) log.ok(`Listo: ${toRepoRel(ctx.project.paths.video)}`);
   else log.error(`Render con fallos de QA: ver ${toRepoRel(ctx.project.paths.report)}`);

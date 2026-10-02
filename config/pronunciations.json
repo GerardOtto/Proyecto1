@@ -3,6 +3,9 @@
   "$comment": "Como debe DECIR la voz ciertos terminos (ADR 0013). Solo cambia el texto enviado al TTS; los subtitulos muestran el guion. Terminos tecnicos en ingles: pronunciacion inglesa. Agregar una regla regenera solo las lineas que contienen el termino.",
   "rules": [
     { "term": "Log4Shell", "say": "Log four shell" },
-    { "term": "Log4j", "say": "Log four jay" }
+    { "term": "Log4j", "say": "Log four jay" },
+    { "term": "Synthesizer V", "say": "Synthesizer Vee" },
+    { "term": "UTAU", "say": "utáu" },
+    { "term": "Coachella", "say": "Couchéla" }
   ]
 }

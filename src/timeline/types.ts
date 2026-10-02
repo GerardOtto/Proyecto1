@@ -123,6 +123,8 @@ export interface Scene {
   broll?: string[];
   /** Ritmo extra de la voz de ESTA linea ([TEMPO:x] en el guion); multiplica voiceTempo x voice.tempo (ADR 0013). */
   voiceTempo?: number;
+  /** Voz alternativa del personaje para ESTA linea ([VOICE:x] en el guion; voice.variants, ADR 0015). */
+  voiceVariant?: string;
   events?: Array<TimelineEvent | EventShorthand>;
   audio?: { src: string; offsetMs?: number; durationMs: number };
   notes?: string;
@@ -177,6 +179,13 @@ export interface CharacterConfig {
      * local (atempo) sobre el audio ya generado: cambiarlo NO vuelve a llamar al proveedor de TTS.
      */
     tempo?: number;
+    /**
+     * Voces alternativas del personaje, elegidas por linea con [VOICE:<nombre>] (ADR 0015). Cada una
+     * reemplaza `fish`/`tempo` de la voz base; lo que no defina se hereda.
+     */
+    variants?: Record<string, { description?: string; fish?: { referenceId?: string; speed?: number; volume?: number }; tempo?: number; minWordsPerSec?: number }>;
+    /** Ritmo minimo de una toma del TTS (palabras/s antes de acelerar); por debajo se pide otra (ADR 0015). */
+    minWordsPerSec?: number;
     /** Audio reutilizable del saludo recurrente (ruta relativa al repo). */
     greeting?: string;
     /** Personaje mudo: nunca tiene dialogo; aparece como listener y "habla" con su SFX de firma (ADR 0011). */
@@ -263,6 +272,10 @@ export interface RenderConfig {
     pixelFormat: string;
     audioCodec: "aac" | "mp3";
     audioBitrate: string;
+    /** Escala del render borrador (revision): 0.5 -> 540x960. El final siempre sale a width x height (ADR 0015). */
+    draftScale?: number;
+    /** Pestañas de Chrome en paralelo; null/ausente = todos los nucleos (ADR 0015). */
+    concurrency?: number | null;
   };
   duration: { minMs: number; maxMs: number; targetMs: number };
   safeArea: { top: number; bottom: number; left: number; right: number };

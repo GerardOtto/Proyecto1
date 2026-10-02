@@ -21,4 +21,23 @@ describe("resolveVoice", () => {
     const v = resolveVoice("teto", ch, project({ voices: { teto: { fishReferenceId: "proj-id" } } }));
     expect(v.fishReferenceId).toBe("proj-id");
   });
+
+  describe("variantes de voz por linea (ADR 0015)", () => {
+    const luka = {
+      voice: { fish: { referenceId: "base-id", speed: 1 }, tempo: 1.2, variants: { fluida: { fish: { referenceId: "fluida-id" }, tempo: 1 }, solo_ritmo: { tempo: 1.4 } } },
+    } as unknown as CharacterConfig;
+
+    it("[VOICE:x] cambia la voz de Fish y el ritmo; sin variante queda la base", () => {
+      expect(resolveVoice("luka", luka, project({}))).toMatchObject({ fishReferenceId: "base-id", tempo: 1.2 });
+      expect(resolveVoice("luka", luka, project({}), "fluida")).toMatchObject({ fishReferenceId: "fluida-id", tempo: 1 });
+    });
+
+    it("lo que la variante no define se hereda de la base", () => {
+      expect(resolveVoice("luka", luka, project({}), "solo_ritmo")).toMatchObject({ fishReferenceId: "base-id", tempo: 1.4 });
+    });
+
+    it("una variante inexistente es un error claro (no cae en silencio a la voz base)", () => {
+      expect(() => resolveVoice("luka", luka, project({}), "nope")).toThrow(/no existe la variante de voz "nope".*fluida, solo_ritmo/);
+    });
+  });
 });

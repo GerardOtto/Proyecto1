@@ -19,7 +19,7 @@ export interface QaRow {
 
 export const QA_CHECKS: Array<{ check: string; label: string; condition: string; type: "hard" | "soft"; sources: string[]; needs: "timeline" | "output" | "repro" }> = [
   { check: "duration", label: "Duracion", condition: "60.0 <= duration <= 120.0 segundos", type: "hard", sources: ["duration"], needs: "output" },
-  { check: "format", label: "Formato", condition: "1080x1920, 9:16, H.264/AAC", type: "hard", sources: ["format"], needs: "output" },
+  { check: "format", label: "Formato", condition: "1080x1920 (final) o 540x960 (borrador), 9:16, H.264/AAC", type: "hard", sources: ["format"], needs: "output" },
   { check: "audio", label: "Audio", condition: "Sin clipping severo, voz inteligible, sync razonable", type: "hard", sources: ["audio"], needs: "output" },
   { check: "subtitles", label: "Subtitulos", condition: "Sin texto fuera de safe area; color correcto por personaje", type: "hard", sources: ["subtitles"], needs: "timeline" },
   { check: "avatar", label: "Avatar", condition: "Cada personaje usa una reaccion valida del catalogo", type: "hard", sources: ["avatar", "characters"], needs: "timeline" },

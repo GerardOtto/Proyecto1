@@ -137,6 +137,7 @@ export const validateTimeline = (
   const signatureOwner = new Map<string, string>();
   for (const [id, ch] of Object.entries(resolved.characters)) if (ch.signatureSfx) signatureOwner.set(ch.signatureSfx, id);
 
+  const voicesByCharacter = new Map<string, { voice: string; warned: boolean }>();
   scenes.forEach((s, i) => {
     const where = `scenes[${i}] (${s.id})`;
     const duration = s.endMs - s.startMs;
@@ -146,6 +147,15 @@ export const validateTimeline = (
       // Personaje mudo (ADR 0011): solo escucha y reacciona; su "voz" es su SFX de firma.
       if (resolved.characters[s.character]?.mute && s.dialogue?.trim()) {
         add("error", "characters", "MUTE_CHARACTER_SPEAKS", `${s.character} es mudo: no puede tener dialogo (ponlo en listeners y usa su SFX de firma)`, where);
+      }
+      // Una sola voz por personaje en cada video (pedido del usuario, ADR 0015): [VOICE:x] en todas sus lineas o en ninguna.
+      if (s.dialogue?.trim()) {
+        const v = s.voiceVariant ?? "base";
+        const seen = voicesByCharacter.get(s.character);
+        if (seen && seen.voice !== v && !seen.warned) {
+          add("warning", "characters", "VOICE_MIXED", `${s.character} usa dos voces en el mismo video ("${seen.voice}" y "${v}"): usa una sola (pon [VOICE:${v === "base" ? seen.voice : v}] en todas sus lineas o en ninguna)`, where);
+          seen.warned = true;
+        } else if (!seen) voicesByCharacter.set(s.character, { voice: v, warned: false });
       }
     }
     const onScreen = new Set<string>(s.character ? [s.character] : []);

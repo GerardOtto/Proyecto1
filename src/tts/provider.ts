@@ -8,6 +8,8 @@ export interface VoiceSettings {
   fliteVoice?: string;
   /** Ritmo propio (atempo local, no se envia al proveedor; ADR 0013). */
   tempo?: number;
+  /** Ritmo minimo de una toma (palabras/s, antes de acelerar): por debajo se pide otra toma (ADR 0015). */
+  minWordsPerSec?: number;
 }
 
 export interface TTSRequest {

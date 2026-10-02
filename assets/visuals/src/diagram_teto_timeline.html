@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="output" content="assets/visuals/diagram_teto_timeline.png" data-width="1200" data-height="900">
+<link rel="stylesheet" href="style.css">
+<style>
+  /* Kasane Teto: broma del Dia de los Inocentes (1 de abril de 2008, 2channel) -> voz UTAU hecha por fans
+     (2008) -> voz de Synthesizer V AI (2023). Fuente: https://en.wikipedia.org/wiki/Kasane_Teto */
+  .card { --teto: #e0475b; }
+  .line { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 30px; margin-top: 22px;
+          border-left: 8px solid var(--teto); margin-left: 40px; padding-left: 46px; }
+  .item { position: relative; }
+  .item::before { content: ""; position: absolute; left: -73px; top: 14px; width: 38px; height: 38px; border-radius: 50%;
+                  background: var(--teto); border: 6px solid #fff; }
+  .year { font-size: 30px; color: var(--teto); font-weight: 900; }
+  .what { font-size: 40px; font-weight: 900; line-height: 1.15; }
+  .what small { display: block; font-size: 27px; font-weight: 800; color: var(--muted); margin-top: 4px; }
+  .ai { display: inline-block; background: #7ef0a8; color: #10132a; border-radius: 12px; padding: 2px 14px; font-size: 30px; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="title">Teto: de broma a estrella</div>
+    <div class="line">
+      <div class="item"><div class="year">1 de abril de 2008</div><div class="what">Broma del Día de los Inocentes<small>una "nueva Vocaloid" que no existía</small></div></div>
+      <div class="item"><div class="year">2008</div><div class="what">Los fans le hacen voz de verdad<small>en UTAU, un programa gratis (sin IA)</small></div></div>
+      <div class="item"><div class="year">2023</div><div class="what">Voz en Synthesizer V <span class="ai">con IA</span><small>una red neuronal que aprendió de una voz humana</small></div></div>
+    </div>
+  </div>
+</body>
+</html>

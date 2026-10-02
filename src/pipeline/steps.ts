@@ -2,7 +2,7 @@
 // `npm run generate` los encadena. Todos escriben su resultado en disco y en report.json.
 import fs from "node:fs";
 import path from "node:path";
-import { applyGainDb, applyTempo, blockGainDb, capInternalSilences, concatWavs, imageToJpeg, makeSilence, measureLoudnessLufs, probeDurationMs, toWav } from "../audio/ffmpeg";
+import { applyGainDb, applyTempo, blockGainDb, capInternalSilences, concatWavs, imageToJpeg, makeSilence, measureLoudnessLufs, probeDurationMs, speedUpMp4, toWav } from "../audio/ffmpeg";
 import { AnthropicProvider } from "../director/llm/anthropic";
 import { llmDirector } from "../director/llm/director";
 import type { LLMProvider } from "../director/llm/provider";
@@ -17,6 +17,7 @@ import { WhisperCppTranscriber } from "../transcribe/whisper-cpp";
 import { createTTSProvider, resolveVoice } from "../tts";
 import { FilesProvider } from "../tts/files";
 import { splitGreeting } from "../tts/greeting";
+import { countWords, synthesizeWithRetakes, type Take } from "../tts/retake";
 import { applyPronunciations } from "../tts/pronounce";
 import type { TTSRequest } from "../tts/provider";
 import { estimateSpeechMs } from "../tts/silent";
@@ -29,7 +30,9 @@ import { validateTimeline, type ValidationResult } from "../validation/timeline"
 import { buildFinalTimeline, type AudioBlock, type AudioIndex, type WordsFile } from "./build-timeline";
 import type { EngineContext } from "./context";
 import { printIssues } from "./context";
-import { renderStills, renderVideo } from "./render";
+import { clearRenderState, planFileHashes, renderCodeHash, saveRenderState, tryPartialRender } from "./partial-render";
+import { scaleSrt } from "../timeline/captions-speed";
+import { renderScale, renderStills, renderVideo, type RenderQuality } from "./render";
 import { buildQaTable, copyToOutput, printQaTable, updateReport, type ReproInfo } from "./report";
 
 // ------------------------------------------------------------------ 1-3. Analisis + validacion
@@ -113,27 +116,60 @@ export const stepVoices = async (
   // Cache global de clips del proveedor (texto hablado + voz): nunca se paga dos veces la misma linea.
   const clipCacheDir = path.join(CACHE_DIR, "tts");
   const clipCacheable = !(provider instanceof FilesProvider) && provider.name !== "silent";
+  // Retoma automatica (ADR 0015): algunas voces a veces "cantan" o arrastran la linea; esas tomas salen
+  // mucho mas lentas. Con voice.minWordsPerSec, una toma por debajo se vuelve a pedir (hasta MAX_TAKES) y
+  // se guarda la mas fluida. Tambien se revisa la toma que ya estaba en cache.
+  const MAX_TAKES = 3;
+  const rateOf = async (file: string, text: string) => countWords(text) / Math.max(0.1, (await probeDurationMs(file)) / 1000);
+  // Llamadas REALES al proveedor (lo que cuesta); una linea sacada de .cache/tts no cuenta.
+  let providerCalls = 0;
   const synthesizeCached = async (req: TTSRequest): Promise<{ file: string }> => {
-    if (!clipCacheable) return provider.synthesize(req);
+    if (!clipCacheable) {
+      providerCalls++;
+      return provider.synthesize(req);
+    }
+    const minWps = req.voice.minWordsPerSec;
     const key = sha256(`${provider.cacheTag(req)}|${req.language}|${req.text}`);
     const hit = ["wav", "mp3"].map((ext) => path.join(clipCacheDir, `${key}.${ext}`)).find((f) => fs.existsSync(f));
-    if (hit) return { file: hit };
-    const res = await provider.synthesize(req);
+    // Si ya se agotaron las retomas de esta linea, la toma guardada queda aceptada (no se vuelve a pagar).
+    const accepted = path.join(clipCacheDir, `${key}.accepted`);
+    let initial: Take | undefined;
+    if (hit) {
+      const wps = minWps && !fs.existsSync(accepted) ? await rateOf(hit, req.text) : Infinity;
+      if (!minWps || wps >= minWps) return { file: hit };
+      log.warn(`${req.blockId} (${req.character}): la toma guardada es lenta (${wps.toFixed(2)} pal/s < ${minWps}); se pide otra`);
+      initial = { file: hit, wps };
+    }
+    const { best, takes } = await synthesizeWithRetakes({
+      synth: async (take) => {
+        providerCalls++;
+        return (await provider.synthesize({ ...req, outBase: take > 1 ? `${req.outBase}.t${take}` : req.outBase })).file;
+      },
+      rate: (f) => rateOf(f, req.text),
+      minWps,
+      maxTakes: MAX_TAKES,
+      initial,
+      onSlow: (take, wps, last) => log.warn(`${req.blockId} (${req.character}): toma ${take} lenta (${wps.toFixed(2)} pal/s < ${minWps})${last ? "; se queda la mas fluida" : "; se pide otra"}`),
+    });
     fs.mkdirSync(clipCacheDir, { recursive: true });
-    const cached = path.join(clipCacheDir, `${key}${path.extname(res.file) || ".wav"}`);
-    fs.copyFileSync(res.file, cached);
-    return res;
+    const cached = path.join(clipCacheDir, `${key}${path.extname(best.file) || ".wav"}`);
+    if (path.resolve(best.file) !== path.resolve(cached)) fs.copyFileSync(best.file, cached);
+    if (minWps && best.wps < minWps) fs.writeFileSync(accepted, `${best.wps.toFixed(2)} pal/s: mejor de ${takes.length + (initial ? 1 : 0)} tomas
+`);
+    for (const t of takes) if (path.resolve(t) !== path.resolve(best.file)) fs.rmSync(t, { force: true });
+    return { file: best.file };
   };
   // Pausas raras del TTS dentro de una linea: se acortan en local, tambien en audio reutilizado (idempotente).
   const pauseCap = cfg.render.audio.voicePauseCap;
   const capPauses = (file: string) => (pauseCap ? capInternalSilences(file, pauseCap.maxMs, pauseCap.keepMs, pauseCap.noiseDb) : Promise.resolve(0));
   const blocks: AudioBlock[] = [];
   let generated = 0;
+  let fromClipCache = 0;
   let reused = 0;
   for (const scene of draft.scenes) {
     if (!scene.dialogue || !scene.character) continue;
     const chCfg = cfg.characters.characters[scene.character];
-    const voice = resolveVoice(scene.character, chCfg, project);
+    const voice = resolveVoice(scene.character, chCfg, project, scene.voiceVariant);
     // Saludo recurrente: la linea empieza con "¡Papu papu!" -> audio reutilizable + solo el resto al TTS.
     const greeting = cfg.render.audio.greeting;
     const split = greeting ? splitGreeting(scene.dialogue, greeting.text) : null;
@@ -184,6 +220,13 @@ export const stepVoices = async (
       log.ok(`${scene.id} (${scene.character}) ${durationMs} ms [reutilizado, ritmo x${(tempo / retempo.t).toFixed(2)}${cut ? `, pausa interna -${cut} ms` : ""}]`);
       continue;
     }
+    // Texto -> WAV (la linea completa; el corte por clausulas se probo y se descarto, ADR 0015).
+    const synthToWav = async (dst: string): Promise<void> => {
+      const res = await synthesizeCached(req);
+      await toWav(res.file, dst, sr);
+      if (res.file.startsWith(project.paths.blocksDir) && res.file !== dst) fs.rmSync(res.file, { force: true });
+    };
+    const callsBefore = providerCalls;
     let greetingMissing = false;
     if (split) {
       // saludo + pausa + resto (el resto puede no existir si la linea es solo el saludo)
@@ -198,20 +241,16 @@ export const stepVoices = async (
       }
       const parts = [g];
       if (split.rest) {
-        const res = await synthesizeCached(req);
         const r = `${out}.rest.wav`;
         const gap = `${out}.gap.wav`;
-        await toWav(res.file, r, sr);
-        if (res.file.startsWith(project.paths.blocksDir) && res.file !== out) fs.rmSync(res.file, { force: true });
+        await synthToWav(r);
         await makeSilence(gap, greeting!.gapMs, sr);
         parts.push(gap, r);
       }
       await concatWavs(parts, out);
       for (const p of parts) fs.rmSync(p, { force: true });
     } else {
-      const res = await synthesizeCached(req);
-      await toWav(res.file, out, sr);
-      if (res.file.startsWith(project.paths.blocksDir) && res.file !== out) fs.rmSync(res.file, { force: true });
+      await synthToWav(out);
     }
     // Ritmo: acelera la voz sin cambiar el tono (el timeline se reajusta a la nueva duracion).
     if (tempo !== 1) await applyTempo(out, tempo);
@@ -240,17 +279,20 @@ export const stepVoices = async (
       ...(silentPlaceholder ? { placeholder: true } : {}),
     });
     generated++;
+    if (providerCalls === callsBefore) fromClipCache++;
     log.ok(`${scene.id} (${scene.character}) ${durationMs} ms${gainNote}${silentPlaceholder ? " [SILENCIO: falta audio]" : ""}`);
   }
   fs.rmSync(snapDir, { recursive: true, force: true });
   const index: AudioIndex = { provider: provider.name, sampleRate: cfg.render.audio.sampleRate, blocks };
   writeJson(project.paths.audioIndex, index);
   if (reused) log.info(`${reused} bloque(s) reutilizados del audio previo (sin llamar al proveedor)`);
+  if (fromClipCache) log.info(`${fromClipCache} bloque(s) armados con clips ya pagados (.cache/tts)`);
+  log.info(`llamadas al proveedor de voz: ${providerCalls}`);
   const totalMs = blocks.reduce((a, b) => a + b.durationMs, 0);
   const missingAudio = blocks.filter((b) => b.placeholder).map((b) => b.blockId);
   if (missingAudio.length) log.warn(`Bloques sin voz (silencio provisional): ${missingAudio.join(", ")}`);
   updateReport(project, {
-    steps: { voices: { provider: provider.name, blocks: blocks.length, generated, cached: blocks.length - generated, reused, speechMs: totalMs, missingAudio } },
+    steps: { voices: { provider: provider.name, blocks: blocks.length, generated, fromClipCache, providerCalls, reused, speechMs: totalMs, missingAudio } },
   });
   return index;
 };
@@ -353,6 +395,10 @@ export interface RenderStepOptions {
   checkRepro?: boolean;
   allowInvalid?: boolean;
   durationPolicy?: "enforce" | "ignore";
+  /** draft = revision a media resolucion; final = 1080x1920 tras la aprobacion (ADR 0015). Por defecto final. */
+  quality?: RenderQuality;
+  /** Render parcial si la version anterior lo permite (por defecto true); false = siempre completo. */
+  partial?: boolean;
 }
 
 export const stepRender = async (ctx: EngineContext, opts: RenderStepOptions = {}): Promise<{ ok: boolean; output?: OutputCheck; plan: RenderPlan }> => {
@@ -374,16 +420,43 @@ export const stepRender = async (ctx: EngineContext, opts: RenderStepOptions = {
   const plan = buildRenderPlan(timeline, catalog.resolved, cfg.render, { showSafeArea: opts.safeArea });
   writeJson(project.paths.plan, plan);
 
-  log.step("8b", "Renderizando con Remotion");
+  const quality: RenderQuality = opts.quality ?? "final";
+  const scale = renderScale(cfg.render, quality);
+  log.step("8b", `Renderizando con Remotion (${quality === "draft" ? `borrador ${Math.round(plan.width * scale)}x${Math.round(plan.height * scale)}` : `final ${plan.width}x${plan.height}`})`);
   const outFile = project.paths.video;
-  const { ms } = await renderVideo({ plan, cfg: cfg.render, outFile, name: project.id });
-  log.ok(`${toRepoRel(outFile)} (${(ms / 1000).toFixed(1)} s de render)`);
+  const codeHash = renderCodeHash(cfg.render);
+  const fileHashes = planFileHashes(plan);
+  // Velocidad de exportacion (project.json > outputSpeed): el MP4 acelerado no sirve de base para el render parcial.
+  const speed = project.config.outputSpeed ?? 1;
+  if (speed !== 1) log.info(`velocidad de exportacion x${speed}: render completo y luego se acelera todo el MP4`);
+  let partial =
+    opts.partial === false || opts.checkRepro || speed !== 1
+      ? null
+      : await tryPartialRender({ plan, cfg: cfg.render, name: project.id, outFile, quality, codeHash, fileHashes });
+  let ms = partial ? partial.ms : (await renderVideo({ plan, cfg: cfg.render, outFile, name: project.id, quality })).ms;
+  log.ok(
+    `${toRepoRel(outFile)} (${(ms / 1000).toFixed(1)} s de render${partial ? `, parcial: ${partial.renderedFrames}/${partial.totalFrames} fotogramas nuevos` : ""})`,
+  );
+
+  if (speed !== 1) {
+    const t1 = Date.now();
+    await speedUpMp4(outFile, speed, cfg.render.video);
+    ms += Date.now() - t1;
+    log.ok(`MP4 acelerado x${speed}`);
+  }
 
   log.step(9, "Validacion final del MP4");
-  const output = await validateOutput(outFile, cfg.render, {
-    durationPolicy: opts.durationPolicy,
-    expectedDurationMs: Math.round((plan.durationInFrames * 1000) / plan.fps),
-  });
+  const validateOpts = { durationPolicy: opts.durationPolicy, expectedDurationMs: Math.round((plan.durationInFrames * 1000) / plan.fps / speed), scale };
+  let output = await validateOutput(outFile, cfg.render, validateOpts);
+  // Red de seguridad del render parcial: si el ensamblado no decodifica limpio o se desincroniza, render completo.
+  if (partial && output.issues.some((i) => i.level === "error" && ["DECODE_ERRORS", "AV_DESYNC", "RESOLUTION", "OUTPUT_UNREADABLE"].includes(i.code))) {
+    log.warn("el MP4 ensamblado no paso la validacion: se renderiza completo");
+    partial = null;
+    ms += (await renderVideo({ plan, cfg: cfg.render, outFile, name: project.id, quality })).ms;
+    output = await validateOutput(outFile, cfg.render, validateOpts);
+  }
+  if (speed === 1) saveRenderState(project.id, { quality, codeHash, plan, fileHashes, videoFile: outFile });
+  else clearRenderState(project.id);
   printIssues(output.issues);
 
   let repro: ReproInfo = {
@@ -428,16 +501,29 @@ export const stepRender = async (ctx: EngineContext, opts: RenderStepOptions = {
     reproducibility: repro,
     qa,
     licenses: licenseSummary(ctx, validation),
-    steps: { render: { ms, output: toRepoRel(outFile), planHash: repro.planHash } },
+    steps: {
+      render: {
+        ms,
+        output: toRepoRel(outFile),
+        planHash: repro.planHash,
+        quality,
+        outputSpeed: speed,
+        size: `${Math.round(plan.width * scale)}x${Math.round(plan.height * scale)}`,
+        partial: partial ? { renderedFrames: partial.renderedFrames, totalFrames: partial.totalFrames, segments: partial.segments } : null,
+      },
+    },
   });
   copyToOutput(project, [
     [timelinePath, "timeline.json"],
     [project.paths.srt, "subtitles.srt"],
     [project.paths.report, "report.json"],
   ]);
+  if (speed !== 1 && fs.existsSync(project.paths.srt)) {
+    fs.writeFileSync(path.join(project.paths.outputDir, "subtitles.srt"), scaleSrt(fs.readFileSync(project.paths.srt, "utf8"), speed));
+  }
   printQaTable(qa, (s) => log.info(s));
   const ok = validation.ok && output.ok && (repro.identical ?? true);
-  updateReport(project, { summary: { status: ok ? "pass" : "fail", video: toRepoRel(outFile), durationMs: output.info.durationMs, commercialUse: (report.licenses as { commercialUse: string }).commercialUse } });
+  updateReport(project, { summary: { status: ok ? "pass" : "fail", quality, video: toRepoRel(outFile), durationMs: output.info.durationMs, commercialUse: (report.licenses as { commercialUse: string }).commercialUse } });
   copyToOutput(project, [[project.paths.report, "report.json"]]);
   return { ok, output, plan };
 };

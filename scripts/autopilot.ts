@@ -3,7 +3,8 @@
 //
 //   npm run autopilot                                  # planifica + escribe 1 episodio y lo deja para revision
 //   npm run autopilot -- --produce                     # ...y ademas lo produce (voces, render, QA)
-//   npm run autopilot -- --episode ep_20261002_big_o --produce   # produce un episodio ya revisado
+//   npm run autopilot -- --episode ep_20261002_big_o --produce   # produce un episodio ya revisado (borrador 540x960)
+//   npm run autopilot -- --episode <id> --produce --final        # render final 1080x1920 (SOLO tras la aprobacion)
 //   npm run autopilot -- --batch 3                     # planifica 3 episodios (semana tipo)
 //   npm run autopilot -- --mode evergreen --topic big_o --writer template --tts silent
 //   npm run autopilot -- --brief projects/_autopilot/briefs/x.json --writer manual [--format myth_vs_fact]
@@ -45,6 +46,8 @@ const { values } = parseCli({
   "refresh-visuals": { type: "boolean" },
   "list-topics": { type: "boolean" },
   "allow-missing-audio": { type: "boolean" },
+  final: { type: "boolean" },
+  full: { type: "boolean" },
 });
 
 const today = () => new Date().toISOString().slice(0, 10);
@@ -54,6 +57,8 @@ const produce = (episodeId: string, tts: string | undefined) =>
     const args = ["tsx", "scripts/generate.ts", "--project", `projects/${episodeId}`];
     if (tts) args.push("--tts", tts);
     if (values["allow-missing-audio"]) args.push("--allow-missing-audio");
+    if (values.final) args.push("--final");
+    if (values.full) args.push("--full");
     const child = spawn("npx", args, { cwd: fromRepo(), stdio: "inherit", shell: process.platform === "win32" });
     child.on("close", (code) => resolve(code ?? 1));
   });

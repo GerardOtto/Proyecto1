@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="output" content="assets/visuals/diagram_vocaloid_recortes.png" data-width="1200" data-height="900">
+<link rel="stylesheet" href="style.css">
+<style>
+  /* Vocaloid clasico (sintesis por concatenacion): la voz de Miku son grabaciones de Saki Fujita
+     cortadas en silabas; quien produce escribe la melodia y la letra nota por nota. */
+  .card { --miku: #39c5bb; }
+  .steps { flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 22px; margin-top: 18px; }
+  .step { display: flex; align-items: center; gap: 26px; }
+  .num { flex: none; width: 70px; height: 70px; border-radius: 50%; background: var(--miku); color: #10132a;
+         font-size: 40px; font-weight: 900; display: flex; align-items: center; justify-content: center; }
+  .txt { font-size: 34px; line-height: 1.2; }
+  .txt small { display: block; font-size: 25px; color: var(--muted); }
+  .tiles { display: flex; gap: 14px; margin-left: 96px; }
+  .tile { border-radius: 16px; padding: 12px 22px; font-size: 36px; font-weight: 900; color: #10132a; background: #ffffff;
+          border: 5px dashed var(--miku); transform: rotate(var(--r)); }
+  .roll { margin-left: 96px; height: 120px; border-radius: 16px; background:
+          repeating-linear-gradient(0deg, #2f3566 0 2px, transparent 2px 30px), #161a36; position: relative; }
+  .note { position: absolute; height: 26px; border-radius: 8px; background: var(--miku); color: #10132a;
+          font-size: 20px; font-weight: 900; padding-left: 8px; line-height: 26px; }
+  .arrow { text-align: center; font-size: 30px; color: var(--gold); }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="title">Así canta Miku (sin IA)</div>
+    <div class="steps">
+      <div class="step"><div class="num">1</div><div class="txt">Una actriz de voz real graba sílabas<small>la voz de Miku es de Saki Fujita</small></div></div>
+      <div class="tiles">
+        <div class="tile" style="--r:-4deg">ha</div><div class="tile" style="--r:3deg">tsu</div>
+        <div class="tile" style="--r:-2deg">ne</div><div class="tile" style="--r:4deg">mi</div><div class="tile" style="--r:-3deg">ku</div>
+      </div>
+      <div class="step"><div class="num">2</div><div class="txt">El programa las recorta y las pega<small>como letras recortadas de revista</small></div></div>
+      <div class="step"><div class="num">3</div><div class="txt">Una persona escribe cada nota y cada palabra</div></div>
+      <div class="roll">
+        <div class="note" style="left: 30px;  top: 62px; width: 120px">mi</div>
+        <div class="note" style="left: 160px; top: 32px; width: 90px">ku</div>
+        <div class="note" style="left: 260px; top: 2px;  width: 150px">mi</div>
+        <div class="note" style="left: 420px; top: 32px; width: 110px">ku</div>
+        <div class="note" style="left: 540px; top: 62px; width: 180px">ni</div>
+        <div class="note" style="left: 730px; top: 92px; width: 130px">shi</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

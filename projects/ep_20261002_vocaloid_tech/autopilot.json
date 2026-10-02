@@ -1,0 +1,135 @@
+{
+  "plan": {
+    "episodeId": "ep_20261002_vocaloid_tech",
+    "date": "2026-10-02",
+    "topic": {
+      "id": "vocaloid_tech",
+      "kind": "evergreen",
+      "category": "ai_concept",
+      "keyword": "Vocaloid",
+      "title": "¿Miku es una IA?",
+      "hookTitle": "¿*Vocaloid* es inteligencia artificial?",
+      "points": [
+        "Vocaloid es un sintetizador de voz creado por Yamaha. Hatsune Miku salió en 2007 de la mano de Crypton Future Media.",
+        "El Vocaloid clásico funciona uniendo fragmentos de voz grabados por una actriz de voz real, ajustando tono y duración.",
+        "Eso no es inteligencia artificial generativa: es síntesis por concatenación de muestras, controlada nota a nota por quien produce.",
+        "Kasane Teto empezó como una broma del Día de los Inocentes en 2008 y se convirtió en una voz de UTAU muy querida.",
+        "Hoy existen sintetizadores con redes neuronales, como Synthesizer V AI, y Teto tiene un banco de voz para él."
+      ],
+      "questions": [
+        "¿Entonces Miku no es un robot?",
+        "¿Teto empezó como una broma?"
+      ],
+      "punchline": {
+        "line": "O sea que Teto pasó de broma a estrella. Hay esperanza para mí.",
+        "reply": "Primero tendrías que aprender a cantar, papu."
+      },
+      "takeaway": "Detrás de cada voz sintética hay una voz humana; la IA llegó después a los sintetizadores.",
+      "visual": {
+        "type": "keypoints",
+        "title": "Voces sintéticas",
+        "items": [
+          "Vocaloid: muestras unidas",
+          "Synthesizer V AI: redes neuronales",
+          "Siempre hay una voz humana base"
+        ]
+      },
+      "sources": [
+        "https://en.wikipedia.org/wiki/Vocaloid",
+        "https://en.wikipedia.org/wiki/Hatsune_Miku",
+        "https://en.wikipedia.org/wiki/Kasane_Teto"
+      ],
+      "entities": [
+        "vocaloid",
+        "hatsunemiku",
+        "kasaneteto"
+      ]
+    },
+    "format": "concept_lesson",
+    "structure": [
+      "hook",
+      "meme",
+      "question",
+      "explain",
+      "example",
+      "visual",
+      "punchline",
+      "takeaway",
+      "cta"
+    ],
+    "targetSec": 85,
+    "casting": {
+      "host": "miku",
+      "foil": "luka",
+      "guest": "teto",
+      "cameo": "neru"
+    },
+    "theme": "ocean",
+    "setting": "parque",
+    "backgroundStyle": "suave",
+    "arcs": [
+      {
+        "id": "neru_voice",
+        "label": "Neru consigue su voz",
+        "appearances": 4,
+        "stage": "Intentos",
+        "beat": "Neru abre la boca como si fuera a hablar y solo suena el celular; alguien lo nota ('¿Neru... intentó decir algo?') y se distrae con el tema.",
+        "finaleAvailable": false,
+        "finale": "Capitulo especial: Neru obtiene su propia voz. Solo cuando el usuario lo decida, con su voz configurada en characters.json y al menos 10 videos del arco."
+      }
+    ],
+    "seed": "2026-10-02:9:vocaloid_tech"
+  },
+  "writer": "template",
+  "estimatedMs": 78646,
+  "lint": [],
+  "sfx": [
+    {
+      "line": 13,
+      "character": "miku",
+      "rule": "hook_drama",
+      "sfx": "sfx_dramatic_boomer",
+      "anchor": "end"
+    },
+    {
+      "line": 26,
+      "character": "luka",
+      "rule": "confused_humor",
+      "sfx": "sfx_oohh",
+      "anchor": "end"
+    },
+    {
+      "line": 36,
+      "character": "luka",
+      "rule": "surprise",
+      "sfx": "sfx_vine_boom",
+      "anchor": "start"
+    },
+    {
+      "line": 57,
+      "character": "luka",
+      "rule": "confused_humor",
+      "sfx": "sfx_huh_cat",
+      "anchor": "end"
+    },
+    {
+      "line": 68,
+      "character": "luka",
+      "rule": "shock",
+      "sfx": "sfx_dramatic_boomer",
+      "anchor": "start"
+    },
+    {
+      "line": 84,
+      "character": "miku",
+      "rule": "insight",
+      "sfx": "sfx_ding",
+      "anchor": "end"
+    }
+  ],
+  "notes": [
+    "cameo mudo: neru",
+    "v1 orquestador Claude (2026-10-02): guion reescrito con docs/12_GUIA_PRODUCCION.md; Teto invitada (su origen es parte del tema)"
+  ],
+  "status": "final"
+}

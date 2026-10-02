@@ -3,7 +3,9 @@
 //
 // Uso: npm run generate -- --project projects/demo_001
 //        [--director rules|anthropic] [--tts fish|files|flite|silent] [--transcriber auto|whisper-cpp|estimate]
-//        [--no-render] [--repro] [--safe-area] [--force-voices]
+//        [--no-render] [--repro] [--safe-area] [--force-voices] [--final] [--full]
+//        --final: render 1080x1920 (solo tras la aprobacion); por defecto borrador a media resolucion (ADR 0015)
+//        --full:  desactiva el render parcial (por defecto se reutilizan los tramos sin cambios)
 //        [--allow-missing-audio]   con --tts files: bloques sin archivo -> silencio provisional (preview)
 import { loadContext, printIssues } from "../src/pipeline/context";
 import { DurationError } from "../src/pipeline/build-timeline";
@@ -24,6 +26,8 @@ const { values } = parseCli({
   "safe-area": { type: "boolean" },
   "force-voices": { type: "boolean" },
   "allow-missing-audio": { type: "boolean" },
+  final: { type: "boolean" },
+  full: { type: "boolean" },
 });
 
 main(async () => {
@@ -81,7 +85,7 @@ main(async () => {
     log.ok(`Timeline listo sin render (${((Date.now() - t0) / 1000).toFixed(1)} s). Render: npm run render -- --project ${project.rel}`);
     return;
   }
-  const res = await stepRender(ctx, { safeArea: values["safe-area"], checkRepro: values.repro });
+  const res = await stepRender(ctx, { safeArea: values["safe-area"], checkRepro: values.repro, quality: values.final ? "final" : "draft", partial: !values.full });
   log.info(`Tiempo total: ${((Date.now() - t0) / 1000).toFixed(1)} s`);
   if (res.ok) {
     log.ok(`MP4: ${toRepoRel(project.paths.video)}`);

@@ -2,6 +2,24 @@
 
 ## Sin publicar
 
+### Voces por linea, render borrador y render parcial (ADR 0015)
+- `voice.variants` + `[VOICE:x]` (alias `[VOZ:x]`): voz alternativa por linea. Luka: base (japonesa,
+  x1.2) para frases cortas; `fluida` (`1243e3a8...`, x1.0) para explicaciones largas.
+- Render borrador por defecto (`video.draftScale` 0.5 -> 540x960) en `generate`, `render` y
+  `autopilot --produce`; `--final` = 1080x1920 solo tras la aprobacion. `video.concurrency: null` = todos
+  los nucleos. La carpeta de revision muestra "Video borrador.mp4" o "Video final.mp4".
+- Render parcial automatico (`--full` lo desactiva): si la duracion y lo global no cambian, solo se
+  renderizan los tramos sucios (`src/timeline/plan-diff.ts`), alineados a fotogramas clave y unidos sin
+  recodificar. El audio se copia si no cambio o se mezcla con ffmpeg desde el plan. Un sticker cambiado:
+  14 s en lugar de 180 s, con los fotogramas fuera del tramo identicos bit a bit.
+- Una sola voz por personaje por video (aviso `VOICE_MIXED`) y retoma automatica de tomas lentas
+  (`voice.minWordsPerSec`). La sintesis por clausulas se probo y se descarto.
+- `outputSpeed` en project.json (acelera todo el MP4 y el SRT); `voices.providerCalls` en el reporte (costo real).
+- Guiones sin referencias al lugar fisico (fondos de color): el brief del escritor y la guia lo indican.
+- Nuevos assets: `vocaloid_logo`, `synthv_logo`, `diagram_vocaloid_recortes`, `diagram_teto_timeline`,
+  `broll_v_miku_hologram`, `broll_v_teto_synthv`, `broll_v_teto_utau`. Pronunciaciones: Synthesizer V,
+  UTAU, Coachella.
+
 ### Fondo de paleta de personajes, sin fotos (ADR 0014)
 - `background: palette`: degradado animado aesthetic / kawaii-core con la paleta del elenco
   (`characters.json > palette`) que transiciona hacia quien habla; brillos, cuadricula de los fondos de

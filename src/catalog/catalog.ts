@@ -58,6 +58,11 @@ export interface ProjectConfig {
   director?: "rules" | "anthropic";
   tts?: "fish" | "files" | "flite" | "silent";
   transcriber?: "whisper-cpp" | "estimate" | "auto";
+  /**
+   * Velocidad de exportacion del MP4 (ADR 0015): 1.1 acelera TODO el video (imagen, voz, SFX) un 10 %
+   * despues del render, como la vista previa que aprobo el usuario. El SRT se ajusta igual.
+   */
+  outputSpeed?: number;
   assets?: AssetEntry[];
 }
 

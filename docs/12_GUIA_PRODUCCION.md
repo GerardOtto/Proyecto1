@@ -14,11 +14,16 @@ producir o revisar un episodio.
 1. **Autopiloto** (`npm run autopilot`): planifica, escribe y deja el episodio en `needs_review`.
 2. **Orquestador (Claude):** reescribe el guion con esta guía. Arma el relleno contextual línea por línea
    y busca y cataloga los assets que falten (§4-§5).
-3. **Producción** (`npm run autopilot -- --episode <id> --produce --tts fish`).
+3. **Producción en borrador** (`npm run autopilot -- --episode <id> --produce --tts fish`): 540x960 con
+   todos los núcleos. Es la versión para revisar ([ADR 0015](adr/0015-voces-por-linea-borrador-y-render-parcial.md)).
 4. **QA visual del orquestador**, además del QA automático (§7).
 5. **Revisión del usuario:** deja un `Correcciones.txt` por video. El orquestador aplica cada punto,
-   vuelve a producir reutilizando las voces (§3) y responde en `Historial de cambios.txt`.
-6. **Entrega:** el episodio aprobado pasa a `status: "final"` en `projects/<id>/autopilot.json` y su
+   vuelve a producir en borrador reutilizando las voces (§3) y responde en `Historial de cambios.txt`.
+   Si la duración no cambia (por ejemplo, solo un sticker o una imagen), el render es parcial: solo se
+   renderizan los tramos que cambiaron.
+6. **Render final, solo con la aprobación explícita del usuario:**
+   `npm run autopilot -- --episode <id> --produce --final` (1080x1920; reutiliza todas las voces).
+7. **Entrega:** el episodio aprobado pasa a `status: "final"` en `projects/<id>/autopilot.json` y su
    carpeta a `Desktop/Proyecto vocaloid/1. Videos finales/`. Desde ahí sale de la carpeta de revisión
    (`npm run review`).
 
@@ -34,11 +39,11 @@ producir o revisar un episodio.
   mitad de lo que queda; si los datos se duplican, solo necesitas un paso más".
 - **Casos reales y verificables que la audiencia reconozca.** Log4Shell y Minecraft: un mensaje en el
   chat del juego, con la captura del aviso oficial de Mojang.
-- **Lore pasivo (2-3 guiños), escenario mencionado 1-2 veces y duración de 65 s o más** (ADR 0012). Ejemplos:
-  - Lore: la apisonadora de Rin, Teto bromeando sobre sí misma y las baguettes, el puerro de Miku, el
-    atún de Luka, Matryoshka con GUMI.
-  - Escenario: "pide tu programa para llevar, como este café"; "el cuaderno donde el jefe de esta
-    oficina anota quién llega tarde".
+- **Lore pasivo (2-3 guiños) y duración de 65 s o más** (ADR 0012). Ejemplos de lore: la apisonadora
+  de Rin, Teto bromeando sobre sí misma y las baguettes, el puerro de Miku, el atún de Luka, Matryoshka
+  con GUMI.
+- **Sin referencias al lugar físico** (corrección del 2 de octubre de 2026): el fondo es de colores
+  (ADR 0014), así que frases como "esta banca del parque" o "el jefe de esta oficina" sobran.
 - **Interrupciones de Miku con vine boom** (gag recurrente). sfx_oohh en los picos.
 - **Neru:** muda, con su propio beat de 1 s (ella y un solo oyente). Luego alguien "traduce" su mensaje
   ("Neru dice que..."). Nunca va como tercer personaje en la escena de otro. Usar su avatar `feliz`:
@@ -52,6 +57,10 @@ producir o revisar un episodio.
 - **Términos técnicos en inglés se pronuncian en inglés:** agrega una regla a
   `config/pronunciations.json` ANTES de generar ("Log4Shell" se lee "Log four shell"). El subtítulo no
   cambia.
+- **Dos voces para Luka** ([ADR 0015](adr/0015-voces-por-linea-borrador-y-render-parcial.md)): su voz base
+  (japonesa) va en frases cortas y calmadas, a x1,2. `[VOICE:fluida]` usa otra voz más fluida y enérgica,
+  sin acelerar, para las explicaciones largas. Muestras y notas del usuario en
+  `Desktop/Proyecto vocaloid/3. Recursos/Muestras de voz Luka (2026-10-02)/`.
 - **Ritmo:**
   - Luka es lenta por naturaleza (`voice.tempo: 1.2`).
   - Una línea concreta se ajusta con `[TEMPO:1.5]` (en local, sin regenerar).

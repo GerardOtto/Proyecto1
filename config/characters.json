@@ -195,6 +195,17 @@
           "voice": "slt"
         },
         "tempo": 1.2,
+        "variants": {
+          "fluida": {
+            "description": "Explicaciones largas: mas fluida y con mas energia, sin acelerar (eleccion del usuario 2026-10-02, muestra 5). La base (muestra 0) queda para frases cortas, calmadas y controladas, a x1.2.",
+            "fish": {
+              "referenceId": "1243e3a8130d40e6b4b0fd292d62c460",
+              "speed": 1
+            },
+            "tempo": 1,
+            "minWordsPerSec": 2.2
+          }
+        },
         "greeting": "assets/voice/luka/papu_papu.mp3"
       },
       "license": {

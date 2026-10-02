@@ -58,18 +58,46 @@ export const bundleForPlan = async (plan: RenderPlan, name: string): Promise<str
   });
 };
 
+/**
+ * Calidad del render (ADR 0015): `draft` = revision, a `video.draftScale` (0.5 -> 540x960);
+ * `final` = 1080x1920, solo tras la aprobacion del usuario.
+ */
+export type RenderQuality = "draft" | "final";
+
+export const renderScale = (cfg: RenderConfig, quality: RenderQuality): number => (quality === "final" ? 1 : cfg.video.draftScale ?? 0.5);
+
+/** Pestañas de Chrome en paralelo: `video.concurrency` o todos los nucleos (ADR 0015). */
+export const renderConcurrency = (cfg: RenderConfig, override?: number | null): number =>
+  Math.max(1, override ?? cfg.video.concurrency ?? os.cpus().length);
+
 export interface RenderVideoOptions {
   plan: RenderPlan;
   cfg: RenderConfig;
   outFile: string;
   name: string;
+  quality?: RenderQuality;
   concurrency?: number | null;
   frameRange?: [number, number] | null;
+  /** Sin pista de audio ni limitador (piezas del render parcial). */
+  muted?: boolean;
+  /** Bundle ya empaquetado (evita volver a correr webpack). */
+  serveUrl?: string;
 }
+
+const progressLogger = (label: string) => {
+  let lastPct = -10;
+  return ({ progress }: { progress: number }) => {
+    const pct = Math.floor(progress * 100);
+    if (pct >= lastPct + 10) {
+      lastPct = pct;
+      log.info(`${label} ${pct}%`);
+    }
+  };
+};
 
 export const renderVideo = async (opts: RenderVideoOptions): Promise<{ outFile: string; ms: number }> => {
   const t0 = Date.now();
-  const serveUrl = await bundleForPlan(opts.plan, opts.name);
+  const serveUrl = opts.serveUrl ?? (await bundleForPlan(opts.plan, opts.name));
   const inputProps = { plan: opts.plan };
   const composition = await selectComposition({
     serveUrl,
@@ -78,7 +106,6 @@ export const renderVideo = async (opts: RenderVideoOptions): Promise<{ outFile: 
     browserExecutable: browserExecutable(),
   });
   fs.mkdirSync(path.dirname(opts.outFile), { recursive: true });
-  let lastPct = -10;
   await renderMedia({
     serveUrl,
     composition,
@@ -88,27 +115,26 @@ export const renderVideo = async (opts: RenderVideoOptions): Promise<{ outFile: 
     pixelFormat: opts.cfg.video.pixelFormat as "yuv420p",
     audioCodec: opts.cfg.video.audioCodec,
     audioBitrate: opts.cfg.video.audioBitrate as `${number}k`,
-    enforceAudioTrack: true,
+    ...(opts.muted ? { muted: true } : { enforceAudioTrack: true }),
+    scale: renderScale(opts.cfg, opts.quality ?? "final"),
     outputLocation: opts.outFile,
     overwrite: true,
     imageFormat: "jpeg",
     jpegQuality: 92,
     colorSpace: "bt709",
     browserExecutable: browserExecutable(),
-    concurrency: opts.concurrency ?? Math.max(1, Math.min(8, os.cpus().length)),
+    concurrency: renderConcurrency(opts.cfg, opts.concurrency),
     frameRange: opts.frameRange ?? null,
-    onProgress: ({ progress }) => {
-      const pct = Math.floor(progress * 100);
-      if (pct >= lastPct + 10) {
-        lastPct = pct;
-        log.info(`render ${pct}%`);
-      }
-    },
+    onProgress: progressLogger(opts.frameRange ? `render ${opts.frameRange[0]}-${opts.frameRange[1]}` : "render"),
   });
   // Los SFX se suman a la voz dentro de Remotion: un limitador final evita picos/clipping.
-  const limit = opts.cfg.audio.finalLimiterDb;
-  if (limit !== undefined) await limitMp4Audio(opts.outFile, limit, opts.cfg.video.audioCodec === "mp3" ? "libmp3lame" : "aac", opts.cfg.video.audioBitrate);
+  if (!opts.muted) await applyFinalLimiter(opts.outFile, opts.cfg);
   return { outFile: opts.outFile, ms: Date.now() - t0 };
+};
+
+export const applyFinalLimiter = async (mp4: string, cfg: RenderConfig): Promise<void> => {
+  const limit = cfg.audio.finalLimiterDb;
+  if (limit !== undefined) await limitMp4Audio(mp4, limit, cfg.video.audioCodec === "mp3" ? "libmp3lame" : "aac", cfg.video.audioBitrate);
 };
 
 /** Renderiza fotogramas sueltos a PNG (QA visual y prueba de reproducibilidad). */

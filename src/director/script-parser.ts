@@ -224,6 +224,15 @@ export const parseScript = (source: string, catalog: Catalog): ParsedScript => {
         else target.beat.voiceTempo = t;
         return true;
       }
+      case "VOICE":
+      case "VOZ": {
+        // Voz alternativa del personaje para ESTE bloque (ADR 0015): [VOICE:fluida] -> voice.variants.fluida
+        const v = slug(args[0] ?? "").replace(/-/g, "_");
+        if (!target) errors.push({ line, message: "VOICE va dentro de un bloque de dialogo" });
+        else if (!/^[a-z0-9_]+$/.test(v)) errors.push({ line, message: "VOICE espera el nombre de una variante de voz (p. ej. [VOICE:fluida])" });
+        else target.beat.voiceVariant = v;
+        return true;
+      }
       case "CROWD":
         if (target) target.beat.crowd = true;
         else pending.crowd = true;

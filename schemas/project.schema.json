@@ -19,6 +19,12 @@
     "director": { "type": "string", "enum": ["rules", "anthropic"] },
     "tts": { "type": "string", "enum": ["fish", "files", "flite", "silent"] },
     "transcriber": { "type": "string", "enum": ["whisper-cpp", "estimate", "auto"] },
+    "outputSpeed": {
+      "description": "Acelera TODO el MP4 al exportar (imagen, voz y SFX), p. ej. 1.1; el SRT se ajusta. Desactiva el render parcial (ADR 0015).",
+      "type": "number",
+      "minimum": 1,
+      "maximum": 1.5
+    },
     "assets": {
       "description": "Assets locales del proyecto (rutas relativas a la carpeta del proyecto).",
       "type": "array",

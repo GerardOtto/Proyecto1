@@ -51,7 +51,9 @@
     "crf": 20,
     "pixelFormat": "yuv420p",
     "audioCodec": "aac",
-    "audioBitrate": "192k"
+    "audioBitrate": "192k",
+    "draftScale": 0.5,
+    "concurrency": null
   },
   "duration": {
     "minMs": 60000,

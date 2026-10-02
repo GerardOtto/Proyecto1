@@ -118,6 +118,11 @@
           "minimum": 0.7,
           "maximum": 1.8
         },
+        "voiceVariant": {
+          "description": "Voz alternativa del personaje para esta linea ([VOICE:x]; voice.variants en characters.json, ADR 0015).",
+          "type": "string",
+          "pattern": "^[a-z0-9_]+$"
+        },
         "visuals": {
           "description": "Atajo: muestra estos visuales durante toda la escena.",
           "type": "array",

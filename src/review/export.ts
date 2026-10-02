@@ -83,6 +83,8 @@ export interface ReviewEpisode {
   audioInputDir?: string;
   greetingText: string | null;
   videoFile: string | null;
+  /** Calidad del ultimo render (ADR 0015): draft = borrador de revision; final = 1080x1920 aprobado. */
+  videoQuality?: "draft" | "final";
 }
 
 /** Guion simplificado: sin etiquetas, una entrada por linea de dialogo. */
@@ -100,7 +102,7 @@ export const renderReviewScript = (ep: ReviewEpisode): string => {
   );
   const dialogueScenes = ep.timeline.scenes.filter((s) => s.dialogue);
   const recorded = dialogueScenes.filter((s) => ep.audio[s.id]).length;
-  lines.push(`Estado: ${ep.videoFile ? "Video listo" : STATUS_LABEL[ep.status] ?? ep.status}  |  Audios grabados: ${recorded}/${dialogueScenes.length}`);
+  lines.push(`Estado: ${ep.videoFile ? (ep.videoQuality === "draft" ? "Borrador listo (540x960, para revision)" : "Video listo") : STATUS_LABEL[ep.status] ?? ep.status}  |  Audios grabados: ${recorded}/${dialogueScenes.length}`);
   if (ep.sources.length) lines.push("", "Fuentes:", ...ep.sources.map((s) => `  - ${s}`));
   if (recorded < dialogueScenes.length && ep.audioInputDir) lines.push("", `Audios: guarda cada linea con el nombre indicado en ${ep.audioInputDir}`);
   lines.push("Imagenes: los nombres corresponden a los archivos de la carpeta Imagenes (personajes en Personajes).");
@@ -184,6 +186,7 @@ export const loadReviewEpisode = async (engine: EngineConfig, episodeId: string)
       audioInputDir: audioDir,
       greetingText: engine.render.audio.greeting?.text ?? null,
       videoFile: fs.existsSync(video) ? video : null,
+      videoQuality: readRenderQuality(dir),
     },
   };
 };
@@ -232,10 +235,24 @@ export const exportEpisodeReview = async (engine: EngineConfig, episodeId: strin
   const audios = path.join(folder, "Audios");
   resetDir(audios);
   for (const f of Object.values(ep.audio)) fs.copyFileSync(f, path.join(audios, path.basename(f)));
-  const videoOut = path.join(folder, "Video final.mp4");
+  // Un solo video por carpeta: "Video borrador.mp4" (revision, media resolucion) o "Video final.mp4".
+  const videoOut = path.join(folder, ep.videoQuality === "draft" ? "Video borrador.mp4" : "Video final.mp4");
+  for (const name of ["Video borrador.mp4", "Video final.mp4"]) {
+    const f = path.join(folder, name);
+    if (f !== videoOut || !ep.videoFile) fs.rmSync(f, { force: true });
+  }
   if (ep.videoFile) fs.copyFileSync(ep.videoFile, videoOut);
-  else fs.rmSync(videoOut, { force: true });
   return { folder, ep };
+};
+
+/** Calidad del ultimo render segun report.json; sin dato (renders anteriores a ADR 0015) = final. */
+const readRenderQuality = (projectDir: string): "draft" | "final" => {
+  try {
+    const r = JSON.parse(fs.readFileSync(path.join(projectDir, "report.json"), "utf8")) as { steps?: { render?: { quality?: string } } };
+    return r.steps?.render?.quality === "draft" ? "draft" : "final";
+  } catch {
+    return "final";
+  }
 };
 
 /** Resumen.txt en la raiz: una linea por episodio exportado. */

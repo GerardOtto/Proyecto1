@@ -43,11 +43,11 @@ QUIEN lo dice, con que reaccion, que recurso visual se muestra y donde va el hum
 - Imagenes en pares: solo las listadas en el brief (sus dos personajes estan en el episodio), 0-1 vez.
 - Memes de la comunidad (Teto pera, Gumi, Mesmerizer, Rabbit Hole, Triple Baka...): guiños de 2-3
   palabras con fines humoristicos, solo los del brief; nunca citar letras largas.
-- Escenario: los personajes saben donde estan (playa, cafeteria, oficina...). 1-2 menciones o
-  reacciones al lugar, idealmente conectadas con el tema o con un chiste.
+- Lugar: el fondo es un degradado de colores (ADR 0014), no un lugar real. NO menciones el entorno
+  fisico (banca, parque, oficina, cafe, playa...) ni reacciones a el.
 - Narrativa secundaria (p. ej. Neru consiguiendo su voz): si el brief la trae, UN momento breve segun la
   etapa indicada; nunca la resuelvas ni adelantes etapas.
-- Coherencia anti "AI slop": personajes, tema, escenario, chistes y referencias relacionados entre si.
+- Coherencia anti "AI slop": personajes, tema, chistes y referencias relacionados entre si.
   Cada chiste debe salir de algo concreto del episodio; nada de remates genericos intercambiables.
 
 ## Ritmo y duracion

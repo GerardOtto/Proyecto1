@@ -30,7 +30,8 @@ describe("autopiloto: escenarios, arcos y coherencia (ADR 0012)", async () => {
   it("planEpisode asigna escenario y, con Neru de cameo, la etapa de su arco", () => {
     const p = planEpisode({ ap, engine: cfg, history: { episodes: [] }, clusters: [], mode: "evergreen", forceTopic: "big_o", canWriteNews: false, date: "2026-10-02" });
     expect(p.setting && ap.settings.settings[p.setting]).toBeTruthy();
-    expect(settingBrief(p, ap).join("\n")).toContain("SABEN donde estan");
+    // Fondos de color (ADR 0014): el usuario pidio no mencionar el entorno fisico (2026-10-02).
+    expect(settingBrief(p, ap).join("\n")).toContain("NO menciones el entorno fisico");
   });
 
   it("arco de Neru: avanza con sus apariciones y el final solo es posible tras 10 videos (nunca automatico)", () => {

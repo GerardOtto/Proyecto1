@@ -73,6 +73,35 @@
               "minimum": 0.7,
               "maximum": 1.5
             },
+            "minWordsPerSec": {
+              "description": "Ritmo minimo de una toma del TTS (palabras/s, antes de acelerar). Una toma mas lenta ('cantada' o arrastrada) se vuelve a pedir, hasta 3 veces, y se queda la mas fluida (ADR 0015).",
+              "type": "number",
+              "minimum": 0.5,
+              "maximum": 6
+            },
+            "variants": {
+              "description": "Voces alternativas del mismo personaje, elegidas por linea con [VOICE:<nombre>] en el guion (ADR 0015). Cada una reemplaza fish/tempo de la voz base; lo que no defina se hereda.",
+              "type": "object",
+              "propertyNames": { "pattern": "^[a-z0-9_]+$" },
+              "additionalProperties": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "description": { "type": "string" },
+                  "fish": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "referenceId": { "type": "string" },
+                      "speed": { "type": "number", "minimum": 0.5, "maximum": 2 },
+                      "volume": { "type": "number" }
+                    }
+                  },
+                  "tempo": { "type": "number", "minimum": 0.7, "maximum": 1.5 },
+                  "minWordsPerSec": { "type": "number", "minimum": 0.5, "maximum": 6 }
+                }
+              }
+            },
             "greeting": {
               "description": "Audio reutilizable del saludo recurrente (audio.greeting.text en render.json), ruta relativa al repo.",
               "type": "string",

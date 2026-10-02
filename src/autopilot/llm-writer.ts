@@ -54,15 +54,17 @@ export const loreBrief = (cast: string[], lore: AutopilotConfig["lore"]): string
   return ["## Contexto de personajes (referencias PASIVAS)", ...lore.rules.map((r) => `> ${r}`), ...own, ...shared, ...(community.length ? ["Memes y canciones de la comunidad (con fines humoristicos):", ...community] : [])];
 };
 
-/** Escenario del episodio (ADR 0012): los personajes saben donde estan. Pura. */
+/**
+ * Escenario del episodio. Desde ADR 0014 el fondo es un degradado de colores (sin lugares reales), asi que
+ * el usuario pidio (2026-10-02) NO mencionar el entorno fisico: la instruccion es explicita para el escritor. Pura.
+ */
 export const settingBrief = (plan: EpisodePlan, ap: AutopilotConfig): string[] => {
   const s = plan.setting ? ap.settings?.settings[plan.setting] : undefined;
   if (!s) return [];
   return [
     "",
-    `## Escenario: ${s.label}`,
-    "Los personajes SABEN donde estan: 1-2 menciones o reacciones al lugar (en el gancho o en un chiste), ligadas al tema si se puede.",
-    ...s.awareness.map((a) => `- ${a}`),
+    "## Lugar",
+    "El fondo es un degradado de colores, no un lugar: NO menciones el entorno fisico (banca, parque, oficina, cafe, playa...) ni reacciones a el.",
   ];
 };
 
@@ -110,7 +112,7 @@ export const buildWriterBrief = (plan: EpisodePlan, ap: AutopilotConfig, assets:
     ...loreBrief(cast, ap.lore),
     "",
     "## Coherencia (anti 'AI slop')",
-    "Personajes, tema, escenario, chistes y referencias deben estar relacionados (no al 100%, pero se debe notar): cada guiño o chiste sale del tema, del lugar o de quienes estan. Nada de chistes genericos intercambiables.",
+    "Personajes, tema, chistes y referencias deben estar relacionados (no al 100%, pero se debe notar): cada guiño o chiste sale del tema o de quienes estan. Nada de chistes genericos intercambiables.",
     ...(pairs.length
       ? [
           "",

@@ -75,6 +75,16 @@ describe("orquestacion: pronunciacion, pausas, beat mudo y reutilizacion de audi
     expect(draft.scenes[0]!.voiceTempo).toBe(1.5);
   });
 
+  it("[VOICE:x] elige una voz alternativa solo para esa linea (ADR 0015)", () => {
+    const p = parseScript(["[LUKA:nerd]", "[VOICE:fluida]", "Una explicacion larga y fluida.", "", "[LUKA:feliz]", "Corta.", "", "[MIKU:feliz]", "[VOICE:]", "Hola."].join("\n"), catalog);
+    expect(p.beats[0]!.voiceVariant).toBe("fluida");
+    expect(p.beats[1]!.voiceVariant).toBeUndefined();
+    expect(p.errors.map((e) => e.message)).toEqual(["VOICE espera el nombre de una variante de voz (p. ej. [VOICE:fluida])"]);
+    const draft = beatsToDraftTimeline(p.beats.slice(0, 2), { title: "t", durationTargetSec: 70, language: "es", generator: "test" }, cfg);
+    expect(draft.scenes[0]!.voiceVariant).toBe("fluida");
+    expect(cfg.characters.characters.luka?.voice?.variants?.fluida?.fish?.referenceId).toBeTruthy();
+  });
+
   it("reutiliza el audio por contenido al reordenar escenas y reajusta el ritmo sin volver a sintetizar", async () => {
     const dir = fs.mkdtempSync(path.join(fromRepo(".cache"), "vr-"));
     const project = loadProject(dir);

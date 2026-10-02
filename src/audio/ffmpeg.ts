@@ -305,3 +305,17 @@ export const volumeStats = async (file: string): Promise<{ maxDb: number; meanDb
   const num = (v: string | undefined) => (v === undefined || v === "-inf" ? -Infinity : Number(v));
   return { maxDb: num(max), meanDb: num(mean) };
 };
+
+/** Acelera TODO un MP4 (imagen y audio) por `speed`, en sitio (velocidad de exportacion, ADR 0015). */
+export const speedUpMp4 = async (mp4: string, speed: number, video: { crf: number; fps: number; audioCodec: string; audioBitrate: string }): Promise<void> => {
+  const tmp = mp4.replace(/\.mp4$/i, "") + `.x${speed}.mp4`;
+  await run(FFMPEG, [
+    "-y", "-v", "error", "-i", mp4,
+    "-filter_complex", `[0:v]setpts=PTS/${speed},fps=${video.fps}[v];[0:a]atempo=${speed}[a]`,
+    "-map", "[v]", "-map", "[a]",
+    "-c:v", "libx264", "-crf", String(video.crf), "-preset", "medium", "-pix_fmt", "yuv420p", "-g", String(video.fps),
+    "-c:a", video.audioCodec === "mp3" ? "libmp3lame" : "aac", "-b:a", video.audioBitrate, "-movflags", "+faststart",
+    tmp,
+  ]);
+  fs.renameSync(tmp, mp4);
+};

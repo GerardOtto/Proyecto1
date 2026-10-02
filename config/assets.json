@@ -2596,6 +2596,142 @@
       "license": "Sin documentar (fan art en Tenor)",
       "license_status": "unknown",
       "description": "Miku chibi celebrando con confeti"
+    },
+    {
+      "id": "broll_v_miku_hologram",
+      "type": "broll",
+      "path": "assets/broll/broll_v_miku_hologram.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "vocaloid",
+        "miku",
+        "concierto",
+        "holograma",
+        "coachella",
+        "escenario"
+      ],
+      "source": "https://tenor.com/view/hatsune-miku-coachella-hatsune-miku-gif-7GVWelPS7Qg",
+      "license": "Sin documentar (MMD / concierto de la comunidad Vocaloid en Tenor)",
+      "license_status": "unknown",
+      "description": "Miku aparece como holograma en el escenario (concierto)",
+      "notes": "GIF -> MP4 852x640 (4:3) con el GIF completo sobre su version difuminada (sin recortes). 9.5 s."
+    },
+    {
+      "id": "broll_v_teto_synthv",
+      "type": "broll",
+      "path": "assets/broll/broll_v_teto_synthv.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "vocaloid",
+        "teto",
+        "synthesizer_v",
+        "ia",
+        "voz",
+        "cantando",
+        "guitarra"
+      ],
+      "source": "https://tenor.com/view/synthv-synthesizer-v-gif-2XZMaYBm_W0",
+      "license": "Sin documentar (MMD de la comunidad Vocaloid en Tenor)",
+      "license_status": "unknown",
+      "description": "Teto (Synthesizer V) cantando con guitarra en el escenario (MMD)",
+      "notes": "GIF -> MP4 852x640 (4:3) con el GIF completo sobre su version difuminada (sin recortes). 9.6 s."
+    },
+    {
+      "id": "broll_v_teto_utau",
+      "type": "broll",
+      "path": "assets/broll/broll_v_teto_utau.mp4",
+      "tags": [
+        "broll",
+        "gif",
+        "vocaloid",
+        "teto",
+        "utau",
+        "cantando",
+        "chibi",
+        "voz"
+      ],
+      "source": "https://tenor.com/view/kasane-teto-utau-gif-31Jo4k9IvMc",
+      "license": "Sin documentar (fan art de la comunidad UTAU en Tenor)",
+      "license_status": "unknown",
+      "description": "Teto chibi cantando 'aaa~' (UTAU)",
+      "notes": "GIF -> MP4 852x640 (4:3) con el GIF completo sobre su version difuminada; recortado 0.45-2.65 s (los extremos quedaban casi vacios)."
+    },
+    {
+      "id": "vocaloid_logo",
+      "type": "logo",
+      "path": "assets/logos/vocaloid_logo.png",
+      "tags": [
+        "logo",
+        "vocaloid",
+        "yamaha",
+        "miku",
+        "voz",
+        "sintetizador"
+      ],
+      "safeArea": true,
+      "source": "Diseno propio: assets/visuals/src/logo_vocaloid.html (npm run graphics); logos: https://commons.wikimedia.org/wiki/File:Vocaloid_2_logo.png y https://commons.wikimedia.org/wiki/File:Yamaha_logo_text.svg",
+      "license": "Logos: dominio publico (Wikimedia Commons, tipograficos); Vocaloid y Yamaha son marcas de Yamaha Corporation (uso informativo). Tarjeta: propia.",
+      "license_status": "documented",
+      "notes": "Uso nominativo/editorial de la marca en contenido informativo."
+    },
+    {
+      "id": "synthv_logo",
+      "type": "logo",
+      "path": "assets/logos/synthv_logo.png",
+      "tags": [
+        "logo",
+        "synthesizer_v",
+        "ia",
+        "redes_neuronales",
+        "teto",
+        "voz",
+        "sintetizador"
+      ],
+      "safeArea": true,
+      "source": "Diseno propio: assets/visuals/src/logo_synthv.html (npm run graphics); logo: https://commons.wikimedia.org/wiki/File:Synthesizer_V_logo.png",
+      "license": "Logo: dominio publico (Wikimedia Commons, tipografico); Synthesizer V es marca de Dreamtonics (uso informativo). Tarjeta: propia.",
+      "license_status": "documented",
+      "notes": "Uso nominativo/editorial de la marca en contenido informativo."
+    },
+    {
+      "id": "diagram_vocaloid_recortes",
+      "type": "diagram",
+      "path": "assets/visuals/diagram_vocaloid_recortes.png",
+      "tags": [
+        "diagrama",
+        "vocaloid",
+        "miku",
+        "voz",
+        "sintesis",
+        "concatenacion",
+        "sin_ia"
+      ],
+      "safeArea": true,
+      "source": "Diseno propio: assets/visuals/src/diagram_vocaloid_recortes.html (npm run graphics). Hechos: https://en.wikipedia.org/wiki/Vocaloid, https://en.wikipedia.org/wiki/Hatsune_Miku",
+      "license": "Propio",
+      "license_status": "owned",
+      "description": "Asi canta Miku (sin IA): silabas grabadas por Saki Fujita, recortadas y pegadas; una persona escribe cada nota"
+    },
+    {
+      "id": "diagram_teto_timeline",
+      "type": "diagram",
+      "path": "assets/visuals/diagram_teto_timeline.png",
+      "tags": [
+        "diagrama",
+        "teto",
+        "utau",
+        "synthesizer_v",
+        "ia",
+        "historia",
+        "linea_de_tiempo"
+      ],
+      "safeArea": true,
+      "source": "Diseno propio: assets/visuals/src/diagram_teto_timeline.html (npm run graphics). Hechos: https://en.wikipedia.org/wiki/Kasane_Teto",
+      "license": "Propio",
+      "license_status": "owned",
+      "description": "Teto: broma del 1 de abril de 2008 -> voz UTAU de los fans -> Synthesizer V con IA (2023)"
     }
   ]
 }

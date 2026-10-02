@@ -1,0 +1,29 @@
+{
+  "$schema": "../../schemas/project.schema.json",
+  "title": "¿Miku es una IA?",
+  "language": "es",
+  "durationTargetSec": 85,
+  "background": "palette",
+  "director": "rules",
+  "tts": "fish",
+  "transcriber": "auto",
+  "assets": [
+    {
+      "id": "ep_main",
+      "type": "image",
+      "path": "visuals/ep_main.png",
+      "tags": [
+        "autopilot",
+        "ai_concept",
+        "vocaloid",
+        "hatsunemiku",
+        "kasaneteto"
+      ],
+      "safeArea": true,
+      "source": "generado por src/autopilot/graphics.ts (ep_20261002_vocaloid_tech)",
+      "license": "propio",
+      "license_status": "owned"
+    }
+  ],
+  "outputSpeed": 1.1
+}
