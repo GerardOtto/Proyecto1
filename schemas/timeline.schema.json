@@ -148,7 +148,8 @@
         "meme_explosion",
         "subtitle_emphasis",
         "pause",
-        "sfx"
+        "sfx",
+        "sticker"
       ]
     },
     "eventShorthand": {
@@ -268,6 +269,21 @@
               "type": true, "atMs": true, "atWord": true,
               "sfx": { "$ref": "#/definitions/id" },
               "volume": { "type": "number", "minimum": 0, "maximum": 1 }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "sticker" } } },
+          "then": {
+            "additionalProperties": false,
+            "required": ["type", "sticker"],
+            "properties": {
+              "type": true, "atMs": true, "atWord": true,
+              "sticker": { "$ref": "#/definitions/id" },
+              "sfx": { "$ref": "#/definitions/id" },
+              "volume": { "type": "number", "minimum": 0, "maximum": 1 },
+              "character": { "$ref": "#/definitions/id" },
+              "durationMs": { "type": "integer", "minimum": 400, "maximum": 4000 }
             }
           }
         }

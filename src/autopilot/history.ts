@@ -14,8 +14,9 @@ export interface HistoryEntry {
   title: string;
   urls: string[];
   format: string;
-  casting: { host: string; foil: string; guest?: string };
+  casting: { host: string; foil: string; guest?: string; cameo?: string };
   theme: string;
+  setting?: string;
   status: "planned" | "produced" | "published" | "discarded";
 }
 
@@ -45,6 +46,7 @@ export const recordPlan = (h: History, plan: EpisodePlan): History => ({
       format: plan.format,
       casting: plan.casting,
       theme: plan.theme,
+      ...(plan.setting ? { setting: plan.setting } : {}),
       status: "planned",
     },
   ],
@@ -54,7 +56,7 @@ export const setStatus = (h: History, episodeId: string, status: HistoryEntry["s
   episodes: h.episodes.map((e) => (e.episodeId === episodeId ? { ...e, status } : e)),
 });
 
-const active = (h: History) => h.episodes.filter((e) => e.status !== "discarded");
+export const active = (h: History) => h.episodes.filter((e) => e.status !== "discarded");
 
 /** true si la noticia (por URL o por titulo muy parecido) ya se uso. */
 export const newsAlreadyUsed = (h: History, url: string, title: string): boolean => {

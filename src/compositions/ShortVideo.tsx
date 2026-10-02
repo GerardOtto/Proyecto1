@@ -10,6 +10,7 @@ import { Captions } from "../components/Captions";
 import { MemeLayer } from "../components/MemeLayer";
 import { SafeAreaGuide } from "../components/SafeAreaGuide";
 import { Stage } from "../components/Stage";
+import { Stickers } from "../components/Stickers";
 import { TitleCard } from "../components/TitleCard";
 import { Visuals } from "../components/Visuals";
 import { Watermark } from "../components/Watermark";
@@ -40,6 +41,8 @@ export const ShortVideo: React.FC<ShortVideoProps> = ({ plan }) => (
     </Camera>
     {/* Fuera de la camara (no tiembla ni hace zoom) y debajo de los subtitulos (no los tapa). */}
     <Watermark watermark={plan.watermark ?? null} />
+    {/* Stickers de reaccion: fuera de la camara (el zoom no los empuja hacia los subtitulos). */}
+    <Stickers stickers={plan.stickers ?? []} />
     {/* Rotulo del gancho: fuera de la camara, encima de la marca de agua y debajo de los subtitulos. */}
     <TitleCard card={plan.titleCard ?? null} />
     <Captions pages={plan.captions} style={plan.style.captions} centerX={plan.style.captionCenterX} names={plan.names} />

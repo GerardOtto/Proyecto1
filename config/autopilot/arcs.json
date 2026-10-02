@@ -1,0 +1,18 @@
+{
+  "$comment": "Narrativas secundarias a lo largo de muchos episodios (ADR 0012). La etapa sale del historial: cuantos episodios anteriores (no descartados) tuvieron al personaje en pantalla. El final NUNCA es automatico: requiere decision humana y al menos minEpisodesBeforeFinale videos.",
+  "arcs": [
+    {
+      "id": "neru_voice",
+      "label": "Neru consigue su voz",
+      "character": "neru",
+      "minEpisodesBeforeFinale": 10,
+      "stages": [
+        { "from": 0, "label": "Solo celular", "beat": "Neru responde solo con su celular; nadie espera que hable. Un personaje traduce su 'mensaje' a su manera." },
+        { "from": 3, "label": "Intentos", "beat": "Neru abre la boca como si fuera a hablar y solo suena el celular; alguien lo nota ('¿Neru... intentó decir algo?') y se distrae con el tema." },
+        { "from": 6, "label": "Mensajes", "beat": "Un personaje lee en voz alta un mensaje de Neru ('Neru dice: ...'); sus mensajes son cada vez mas largos y opinan del tema. Gag: nadie la deja terminar." },
+        { "from": 9, "label": "Casi", "beat": "Neru reacciona como si estuviera a punto de hablar y todos se callan un segundo; el celular la interrumpe. Se insinua que se acerca algo (sin resolverlo)." }
+      ],
+      "finale": "Capitulo especial: Neru obtiene su propia voz. Solo cuando el usuario lo decida, con su voz configurada en characters.json y al menos 10 videos del arco."
+    }
+  ]
+}

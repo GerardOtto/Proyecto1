@@ -1,0 +1,156 @@
+{
+  "$comment": "Contexto de los personajes y de la comunidad para referencias PASIVAS y chistes en los guiones (ADR 0011, ampliado en ADR 0012). El escritor recibe solo lo de los personajes del episodio (y lo compartido si coinciden). Verificar datos antes de agregar: nada inventado.",
+  "rules": [
+    "Referencias PASIVAS: el contexto se nota en un detalle dentro de una línea (un comentario de paso, una comparación, una reacción, un objeto), nunca como explicación ni como tema del video.",
+    "2-3 guiños por episodio como máximo (lore, dinámica entre personajes o meme de la comunidad); el tema del episodio manda.",
+    "Los guiños deben conectar con el tema, el escenario o la situación (no pegados al azar): así el video se distingue de un contenido genérico.",
+    "No contradecir estos datos ni inventar otros sobre los personajes.",
+    "Canciones y memes: solo el nombre o un guiño de 2-3 palabras; nunca citar letras largas ni poner la música.",
+    "Miku y Neru molestan a Teto por comer mucho (sobre todo baguettes), en tono ligero; Neru lo hace con el celular o con una reacción. Que se ve gorda solo lo dice Teto misma: nadie comenta su cuerpo.",
+    "Neru es muda: nunca tiene diálogo. Los demás reaccionan a ella o le contestan como si hubiera dicho algo; ella responde con su celular (sfx_neru_phone).",
+    "Gumi no tiene avatar en el canal: solo se la menciona o aparece como sticker (meme_pera_gumi)."
+  ],
+  "characters": {
+    "teto": [
+      "Nació como broma del Día de los Inocentes de 2008 en 2channel (una falsa 'nueva Vocaloid'); los fans la hicieron real como voz UTAU y años después tuvo voz para Synthesizer V.",
+      "La voz UTAU más famosa: viene de los fans, no de una empresa (orgullo de 'la que empezó como broma').",
+      "Es una 'quimera' y tiene 31 años (eternamente).",
+      "Su pelo son dos taladros (drills).",
+      "Ama el pan francés (baguette) y come mucho.",
+      "Se considera gorda y lo comenta ella misma; Miku y Neru la molestan por comer mucho."
+    ],
+    "miku": [
+      "Primera voz de la serie Character Vocal de Crypton (2007); tiene 16 años y el número 01 en el brazo.",
+      "Siempre con un puerro (negi), por el meme de Ievan Polkka.",
+      "Es la más famosa: los demás a veces viven a su sombra (y ella lo sabe)."
+    ],
+    "luka": [
+      "Voz de Crypton (2009), 20 años, bilingüe (japonés e inglés): la 'adulta sensata' del grupo.",
+      "Los fans la asocian con el atún (maguro)."
+    ],
+    "rin": [
+      "Kagamine Rin, 14 años: 'reflejo' de Len (Crypton nunca aclaró si son gemelos o hermanos).",
+      "Naranjas y una apisonadora (road roller)."
+    ],
+    "len": [
+      "Kagamine Len, 14 años: 'reflejo' de Rin (Crypton nunca aclaró si son gemelos o hermanos).",
+      "Plátanos."
+    ],
+    "kaito": [
+      "Una de las primeras voces de Crypton (2006); al principio vendió poco y los fans lo rescataron.",
+      "Helado (aunque haga frío) y bufanda (aunque haga calor); los fans le dicen 'BaKAITO'."
+    ],
+    "neru": [
+      "Akita Neru: personaje creado por fans en 2channel (2008), no es una Vocaloid oficial.",
+      "No tiene voicebank oficial: por eso no habla; su voz es el celular.",
+      "Siempre escribiendo en el celular; tsundere.",
+      "Su nombre es un juego de palabras en japonés: 'me aburrí, me voy a dormir'."
+    ]
+  },
+  "shared": [
+    {
+      "id": "triple_baka",
+      "characters": ["miku", "teto", "neru"],
+      "min": 2,
+      "facts": ["Triple Baka (canción de LamazeP): Miku, Teto y Neru cantan '¡baka, baka, baka!'. Un guiño al 'trío baka' cuando coinciden."]
+    },
+    {
+      "id": "teto_comilona",
+      "characters": ["teto", "miku", "neru"],
+      "min": 2,
+      "facts": ["Miku (o Neru, con el celular) molestan a Teto por comer mucho: la baguette aparece en el peor momento."]
+    },
+    {
+      "id": "mesmerizer_duo",
+      "characters": ["miku", "teto"],
+      "min": 2,
+      "facts": ["Mesmerizer (Satsuki, 2024) las hizo virales juntas: 'el dúo de Mesmerizer' cuando Miku y Teto coinciden."]
+    },
+    {
+      "id": "teto_vs_miku",
+      "characters": ["teto", "miku"],
+      "min": 2,
+      "facts": ["Teto nació como una broma que fingía ser la nueva Vocaloid, a la sombra de Miku: una rivalidad amistosa."]
+    },
+    {
+      "id": "crypton",
+      "characters": ["miku", "rin", "len", "luka", "kaito"],
+      "min": 2,
+      "facts": ["Miku, Rin, Len, Luka y Kaito son de la misma empresa (Crypton); Teto y Neru nacieron de los fans."]
+    },
+    {
+      "id": "fans_vs_empresa",
+      "characters": ["teto", "neru"],
+      "min": 1,
+      "facts": ["Teto y Neru 'las hicieron los fans'; las de Crypton tienen empresa detrás: buen ángulo para temas de código abierto vs. cerrado o comunidad vs. corporación."]
+    },
+    {
+      "id": "kagamine_espejo",
+      "characters": ["rin", "len"],
+      "min": 2,
+      "facts": ["Rin y Len discuten quién es el reflejo de quién; nadie sabe si son gemelos."]
+    },
+    {
+      "id": "kaito_hermano_mayor",
+      "characters": ["kaito", "miku", "rin", "len", "luka"],
+      "min": 2,
+      "facts": ["Kaito hace de hermano mayor despistado del grupo de Crypton (y alguien le esconde el helado)."]
+    }
+  ],
+  "community": [
+    {
+      "id": "teto_pear",
+      "characters": ["teto"],
+      "facts": ["'Teto pera': la comunidad convirtió a Teto en una pera (stickers meme_pera*); ella no entiende por qué."]
+    },
+    {
+      "id": "mesmerizer",
+      "characters": ["miku", "teto"],
+      "facts": ["Mesmerizer (Satsuki, 2024, con Miku y Teto): megaviral; guiño ideal para temas de hipnosis, algoritmos o 'no puedo dejar de verlo'."]
+    },
+    {
+      "id": "rabbit_hole",
+      "characters": ["miku"],
+      "facts": ["Rabbit Hole (DECO*27, 2023, con Miku): megaviral en TikTok; guiño para 'caer en la madriguera' de internet, adicción al scroll o búsquedas sin fin."]
+    },
+    {
+      "id": "ievan_polkka",
+      "characters": ["miku"],
+      "facts": ["Ievan Polkka: Miku girando el puerro; el origen del puerro."]
+    },
+    {
+      "id": "miku_miku_ni_shite_ageru",
+      "characters": ["miku"],
+      "facts": ["'Miku Miku ni shite ageru' (2007): el primer gran viral de Miku."]
+    },
+    {
+      "id": "world_is_mine",
+      "characters": ["miku"],
+      "facts": ["World is Mine (supercell): Miku 'princesa caprichosa'; guiño para temas de exigencias, usuarios difíciles o 'el cliente siempre tiene la razón'."]
+    },
+    {
+      "id": "luka_luka_night_fever",
+      "characters": ["luka"],
+      "facts": ["Luka Luka★Night Fever (samfree): la canción fiestera de Luka; guiño para fiestas, desvelos o servidores 'en llamas' de noche."]
+    },
+    {
+      "id": "road_roller",
+      "characters": ["rin"],
+      "facts": ["La apisonadora de Rin ('¡Roada rolla da!', meme de JoJo): solución exagerada a cualquier problema."]
+    },
+    {
+      "id": "gumi",
+      "characters": [],
+      "facts": ["Gumi (Megpoid, Internet Co., 2009): pelo verde, zanahorias; en el canal solo se la menciona o sale como sticker de pera Gumi (meme_pera_gumi)."]
+    }
+  ],
+  "affinities": {
+    "teto": ["history", "controversy", "open_source", "comunidad", "fraude", "comida"],
+    "miku": ["news", "ai_concept", "redes", "tiktok", "algoritmo", "musica", "voz"],
+    "luka": ["seguridad", "privacidad", "idiomas", "traduccion", "cs_concept", "datos"],
+    "rin": ["programming", "hardware", "robots", "videojuegos"],
+    "len": ["controversy", "estafa", "hype", "videojuegos"],
+    "kaito": ["history", "cs_concept", "comida"],
+    "neru": ["celulares", "redes", "notificaciones", "mensajes"]
+  }
+}

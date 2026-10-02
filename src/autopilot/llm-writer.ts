@@ -37,20 +37,88 @@ export const WRITER_SCHEMA: Record<string, unknown> = {
   },
 };
 
+/** Todos los personajes del episodio (con dialogo + cameo mudo). */
+export const castOf = (plan: EpisodePlan): string[] =>
+  [plan.casting.host, plan.casting.foil, plan.casting.guest, plan.casting.cameo].filter((c): c is string => !!c);
+
+/** Contexto (lore) de los personajes presentes + el compartido que aplica (ADR 0011). Pura. */
+export const loreBrief = (cast: string[], lore: AutopilotConfig["lore"]): string[] => {
+  const own = cast.flatMap((c) => (lore.characters[c] ?? []).map((f) => `- ${c}: ${f}`));
+  const shared = lore.shared
+    .filter((s) => s.characters.filter((c) => cast.includes(c)).length >= s.min)
+    .flatMap((s) => s.facts.map((f) => `- (${s.characters.filter((c) => cast.includes(c)).join("+")}) ${f}`));
+  const community = (lore.community ?? [])
+    .filter((m) => m.characters.length === 0 || m.characters.some((c) => cast.includes(c)))
+    .flatMap((m) => m.facts.map((f) => `- [meme] ${f}`));
+  if (own.length + shared.length + community.length === 0) return [];
+  return ["## Contexto de personajes (referencias PASIVAS)", ...lore.rules.map((r) => `> ${r}`), ...own, ...shared, ...(community.length ? ["Memes y canciones de la comunidad (con fines humoristicos):", ...community] : [])];
+};
+
+/** Escenario del episodio (ADR 0012): los personajes saben donde estan. Pura. */
+export const settingBrief = (plan: EpisodePlan, ap: AutopilotConfig): string[] => {
+  const s = plan.setting ? ap.settings?.settings[plan.setting] : undefined;
+  if (!s) return [];
+  return [
+    "",
+    `## Escenario: ${s.label}`,
+    "Los personajes SABEN donde estan: 1-2 menciones o reacciones al lugar (en el gancho o en un chiste), ligadas al tema si se puede.",
+    ...s.awareness.map((a) => `- ${a}`),
+  ];
+};
+
+/** Narrativas secundarias activas (ADR 0012): etapa actual; el final nunca lo decide el escritor. Pura. */
+export const arcBrief = (plan: EpisodePlan): string[] =>
+  (plan.arcs ?? []).flatMap((a) => [
+    "",
+    `## Narrativa secundaria: ${a.label} (etapa "${a.stage}", ${a.appearances} apariciones previas)`,
+    `- ${a.beat}`,
+    "- Un solo momento breve por episodio; no resolver el arco.",
+    a.finaleAvailable ? "- El final ya es posible, pero SOLO lo decide el usuario (capitulo especial)." : `- Final: no antes de cumplir el minimo de videos (${a.finale})`,
+  ]);
+
+/** Imagenes en pares cuyos personajes estan TODOS en el episodio (ADR 0011). Pura. */
+export const pairsFor = (cast: string[], catalog: Catalog): Array<{ id: string; description: string }> =>
+  Object.values(catalog.entries)
+    .filter((e) => e.characters?.length && e.characters.every((c) => cast.includes(c)))
+    .map((e) => ({ id: e.id, description: e.description ?? e.tags.join(", ") }))
+    .sort((a, b) => a.id.localeCompare(b.id));
+
 export const buildWriterBrief = (plan: EpisodePlan, ap: AutopilotConfig, assets: WriterAssets, catalog: Catalog, engine: EngineConfig): string => {
   const t = plan.topic;
+  const cast = castOf(plan);
+  const pairs = pairsFor(cast, catalog);
   const wps = engine.render.timing.estimatedWordsPerSecond;
   const budget = Math.round(plan.targetSec * wps * 0.85);
   const p = ap.casting.personalities;
   const lines = [
     `# Episodio ${plan.episodeId} (${plan.format}: ${ap.formats.formats[plan.format].label})`,
-    `Duracion objetivo: ${plan.targetSec} s (limites 60-120). Presupuesto: ~${budget} palabras de dialogo en total.`,
+    `Duracion objetivo: ${plan.targetSec} s (minimo 65 s; puede pasar de 90 si el contenido lo justifica; maximo 120). Presupuesto: ~${budget} palabras de dialogo en total.`,
+    "Gancho: los primeros 2 s van SOBRECARGADOS (golpe + sacudida al arrancar, SFX en la palabra clave, zoom) para que no deslicen.",
     `Estructura sugerida: ${plan.structure.join(" -> ")}`,
     "",
     "## Casting",
     `- host: ${plan.casting.host} — ${p[plan.casting.host] ?? ""}`,
     `- foil: ${plan.casting.foil} — ${p[plan.casting.foil] ?? ""}`,
     ...(plan.casting.guest ? [`- invitado (1-2 intervenciones): ${plan.casting.guest} — ${p[plan.casting.guest] ?? ""}`] : []),
+    ...(plan.casting.cameo
+      ? [`- cameo MUDO (sin dialogo; 1-3 apariciones como listener, reaccionando con su SFX de firma): ${plan.casting.cameo} — ${p[plan.casting.cameo] ?? ""}`]
+      : []),
+    "",
+    ...settingBrief(plan, ap),
+    ...arcBrief(plan),
+    "",
+    ...loreBrief(cast, ap.lore),
+    "",
+    "## Coherencia (anti 'AI slop')",
+    "Personajes, tema, escenario, chistes y referencias deben estar relacionados (no al 100%, pero se debe notar): cada guiño o chiste sale del tema, del lugar o de quienes estan. Nada de chistes genericos intercambiables.",
+    ...(pairs.length
+      ? [
+          "",
+          "## Imagenes en pares (solo estas: sus personajes estan en el episodio)",
+          "Usalas 0-1 vez, en un momento compartido (remate, cierre o reaccion conjunta) con [VISUAL: id] o {STICKER:id}:",
+          ...pairs.map((x) => `- ${x.id}: ${x.description}`),
+        ]
+      : []),
     "",
     "## Tema",
     `Tipo: ${t.kind} / ${t.category}. Palabra clave: ${t.keyword}. Titulo: ${t.title}`,
@@ -74,6 +142,10 @@ export const buildWriterBrief = (plan: EpisodePlan, ap: AutopilotConfig, assets:
       : []),
     `Saludo: ${ap.humor.greeting}`,
     `Memes disponibles: ${ap.humor.memeBeats.map((m) => `[MEME:${m.meme}:${m.sfx}]`).join(" ")}`,
+    "Stickers de reaccion (2-5 por video, {STICKER:id[:sfx][:personaje]} anclado a la palabra; ~1.3 s junto al personaje, sin flash; sfx_oohh es el favorito del canal):",
+    ...Object.values(catalog.entries)
+      .filter((e) => e.type === "meme" && e.tags.includes("sticker"))
+      .map((e) => `- ${e.id}: ${e.description ?? e.tags.join(", ")}`),
     `CTA (dos bloques finales, con [VISUAL: ${ap.humor.ctaVisual}]): ${ap.humor.ctaLines.map(([w, l]) => `${w.replace("{host}", plan.casting.host).replace("{foil}", plan.casting.foil)}: "${l}"`).join(" | ")}`,
     "",
     buildCatalogBrief(catalog, engine),

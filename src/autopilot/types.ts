@@ -73,6 +73,8 @@ export interface Casting {
   host: string;
   foil: string;
   guest?: string;
+  /** Cameo mudo (ADR 0011): aparece como listener y reacciona con su SFX de firma, sin dialogo. */
+  cameo?: string;
 }
 
 export interface EpisodePlan {
@@ -84,7 +86,23 @@ export interface EpisodePlan {
   targetSec: number;
   casting: Casting;
   theme: string;
+  /** Escenario (settings.json): fondo y lugar del que los personajes son conscientes (ADR 0012). */
+  setting?: string;
+  /** Etapa de las narrativas secundarias activas en este episodio (p. ej. la voz de Neru). */
+  arcs?: ArcBeat[];
   seed: string;
+}
+
+export interface ArcBeat {
+  id: string;
+  label: string;
+  /** Apariciones anteriores del personaje del arco (episodios no descartados). */
+  appearances: number;
+  stage: string;
+  beat: string;
+  /** true si ya se cumplio el minimo de episodios: el final queda a decision humana. */
+  finaleAvailable: boolean;
+  finale: string;
 }
 
 export const BEAT_SECTION: Record<BeatKind, Section> = {

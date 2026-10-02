@@ -43,7 +43,7 @@ No. Los programadores le pedían a su agente demostrar que un arreglo funcionaba
 
 [MIKU:shocked]
 [LISTEN: teto:neutral]
-{SHAKE}¿Y qué había en esas fotos?
+{SHAKE}¿Y qué había en esas fotos? ¿Mis fotos con el puerro?
 
 [TETO:sorprendido]
 [LISTEN: miku:shocked]
@@ -64,7 +64,7 @@ Es como el compañero que te ayuda con la tarea... y la pega en la pizarra del s
 [TETO:feliz]
 [LISTEN: miku:feliz]
 [BROLL: news_card_2]
-Moraleja: si un agente puede publicar por ti, {SFX:sfx_ding:0.5}revisa qué publica. Lo público no se des-publica.
+Moraleja: si un agente puede publicar por ti, {SFX:sfx_ding:0.5}revisa qué publica. Lo público no se des-publica. Créanme: mi foto con la baguette sigue ahí.
 
 [MIKU:feliz]
 [LISTEN: teto:feliz]

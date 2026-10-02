@@ -31,7 +31,7 @@ Un modelo de pesos abiertos se puede descargar y ejecutar en tus propios equipos
 
 [TETO:confundido]
 [LISTEN: miku:neutral]
-¿Y cuál es mejor?
+¿Y cuál es mejor? Y no me digas que la más famosa, Miku.
 
 ## visual
 [MIKU:nerd]
@@ -63,7 +63,7 @@ Los abiertos dan control y privacidad; los cerrados suelen ser más fáciles de 
 
 [MIKU:riendo]
 [LISTEN: teto:riendo]
-Mejor empieza por liberar espacio de las fotos repetidas.
+Mejor empieza por liberar espacio de tus fotos con baguette.
 
 ## closing
 [MIKU:feliz]

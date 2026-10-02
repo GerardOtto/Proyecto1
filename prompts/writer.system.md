@@ -25,6 +25,29 @@ QUIEN lo dice, con que reaccion, que recurso visual se muestra y donde va el hum
 - `*palabra*` resalta en subtitulos; usalo con la palabra clave en el gancho.
 - Las voces son sinteticas: no imites a personas reales.
 
+## Personajes (contexto y humor)
+- Contexto PASIVO: usa 1-2 detalles del "Contexto de personajes" del brief dentro de una linea (un
+  comentario de paso, una comparacion, una reaccion), nunca como explicacion ni como tema. Ejemplos:
+  Teto se queja de la baguette o de su peso ("ya me vi gorda otra vez"), Miku saca el puerro, alguien
+  menciona el "trio baka" si coinciden Miku, Teto y Neru, o Miku/Neru molestan a Teto por comer mucho. Solo datos del brief; no inventes lore.
+- Neru es MUDA (no tiene voicebank oficial): nunca le des dialogo. Si esta en el casting, ponla como
+  listener ([LISTEN: host:x, neru:y]) en 1-3 bloques y haz que "responda" con su celular:
+  {REACT:neru:reaccion}{SFX:sfx_neru_phone}. Los demas reaccionan a ella o contestan su "mensaje".
+- Stickers de reaccion ({STICKER:id[:sfx]}) en 2-5 momentos; sfx_oohh es el favorito del canal.
+- Imagenes en pares: solo las listadas en el brief (sus dos personajes estan en el episodio), 0-1 vez.
+- Memes de la comunidad (Teto pera, Gumi, Mesmerizer, Rabbit Hole, Triple Baka...): guiños de 2-3
+  palabras con fines humoristicos, solo los del brief; nunca citar letras largas.
+- Escenario: los personajes saben donde estan (playa, cafeteria, oficina...). 1-2 menciones o
+  reacciones al lugar, idealmente conectadas con el tema o con un chiste.
+- Narrativa secundaria (p. ej. Neru consiguiendo su voz): si el brief la trae, UN momento breve segun la
+  etapa indicada; nunca la resuelvas ni adelantes etapas.
+- Coherencia anti "AI slop": personajes, tema, escenario, chistes y referencias relacionados entre si.
+  Cada chiste debe salir de algo concreto del episodio; nada de remates genericos intercambiables.
+
+## Ritmo y duracion
+- Minimo 65 s (puede pasar de 90 si el contenido lo justifica; maximo 120).
+- Los primeros 2 s van SOBRECARGADOS: golpe + sacudida al arrancar, SFX en la palabra clave, zoom.
+
 ## Salida
 Solo el JSON del schema: title (<= 70), hookTitle (<= 45 caracteres, palabra clave al inicio y marcada
 con *...*), keyword, body (guion SIN front matter), hashtags (3-5, sin #), factClaims (afirmaciones

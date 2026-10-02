@@ -51,7 +51,7 @@ export const lintScript = (
   for (const b of dialogue) if ((b.dialogue ?? "").length > 600) add("error", "BLOCK_TOO_LONG", `Bloque de mas de 600 caracteres (linea ${b.line})`);
 
   if (estimatedMs !== null) {
-    if (estimatedMs < 62_000) add("warning", "SHORT", `Duracion estimada ${Math.round(estimatedMs / 1000)} s: riesgo de quedar < 60 s con el audio real`);
+    if (estimatedMs < 66_000) add("warning", "SHORT", `Duracion estimada ${Math.round(estimatedMs / 1000)} s: el canal pide al menos 65 s (riesgo de quedar corto con el audio real)`);
     if (estimatedMs > 115_000) add("warning", "LONG", `Duracion estimada ${Math.round(estimatedMs / 1000)} s: riesgo de pasar de 120 s`);
   }
   if (plan.topic.sources.length === 0) add("warning", "NO_SOURCES", "El tema no tiene fuentes");

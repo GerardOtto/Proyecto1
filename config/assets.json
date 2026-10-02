@@ -832,14 +832,14 @@
       "tags": [
         "sfx",
         "neru",
-        "reservado",
+        "solo_personaje",
         "personaje"
       ],
       "source": "Aportado por el usuario (Desktop/Proyecto vocaloid/SFX): neru-phone.mp3. Pendiente: URL de origen.",
       "license": "Sin documentar",
       "license_status": "unknown",
-      "description": "RESERVADO para NERU (futuro personaje de comic relief): no usar en otros personajes",
-      "notes": "Sin silencio inicial, 1.0 s, pico -3 dBFS. Reservado hasta implementar a NERU."
+      "description": "Voz de NERU (personaje mudo, ADR 0011): su unica forma de 'hablar'. Solo con Neru en pantalla.",
+      "notes": "Sin silencio inicial, 1.0 s, pico -3 dBFS. SFX de firma de neru (characters.json > voice.signatureSfx)."
     },
     {
       "id": "sfx_oohh",
@@ -848,14 +848,16 @@
       "tags": [
         "sfx",
         "meme",
-        "china",
         "humor",
+        "reaccion",
+        "enfasis",
+        "favorito",
         "corto"
       ],
       "source": "Aportado por el usuario (Desktop/Proyecto vocaloid/SFX): oohh_chinese_man_sound_.mp3. Pendiente: URL de origen.",
       "license": "Sin documentar",
       "license_status": "unknown",
-      "description": "'Oohh' del meme chino (0.6 s): al mencionar China/chino",
+      "description": "'Oohh' (0.6 s): reaccion chistosa general (sorpresa, dato fuerte, burla, sticker); favorito del canal, no solo para temas de China",
       "notes": "Recorte 0.24-0.84 s del original, mono 48 kHz, pico normalizado."
     },
     {
@@ -968,6 +970,478 @@
       "source": "generado por src/autopilot/backgrounds.ts (tema ocean)",
       "license": "propio",
       "license_status": "owned"
+    },
+    {
+      "id": "pair_miku_rin_cargando",
+      "type": "image",
+      "path": "assets/characters/pares/miku_rin_cargando.png",
+      "tags": [
+        "pareja",
+        "miku",
+        "rin",
+        "cargando",
+        "broma"
+      ],
+      "characters": [
+        "miku",
+        "rin"
+      ],
+      "source": "Pinterest https://www.pinterest.com/pin/1146166174356098865/ (tablero https://www.pinterest.com/chaewonjames/pares/); render MMD de terceros, fondo eliminado con scripts/remove-bg.py (T_LO=7)",
+      "license": "Sin documentar (render de terceros)",
+      "license_status": "unknown",
+      "description": "Miku y Rin: uno carga al otro. Solo si ambos aparecen en el video (ADR 0011)."
+    },
+    {
+      "id": "pair_len_rin_emocionados",
+      "type": "image",
+      "path": "assets/characters/pares/len_rin_emocionados.png",
+      "tags": [
+        "pareja",
+        "len",
+        "rin",
+        "emocionados",
+        "emocionado"
+      ],
+      "characters": [
+        "len",
+        "rin"
+      ],
+      "source": "Pinterest https://www.pinterest.com/pin/1146166174356098881/ (tablero https://www.pinterest.com/chaewonjames/pares/); render MMD de terceros, fondo eliminado con scripts/remove-bg.py (T_LO=7)",
+      "license": "Sin documentar (render de terceros)",
+      "license_status": "unknown",
+      "description": "Len y Rin: emocionados. Solo si ambos aparecen en el video (ADR 0011)."
+    },
+    {
+      "id": "pair_miku_rin_corazon",
+      "type": "image",
+      "path": "assets/characters/pares/miku_rin_corazon.png",
+      "tags": [
+        "pareja",
+        "miku",
+        "rin",
+        "corazon",
+        "feliz"
+      ],
+      "characters": [
+        "miku",
+        "rin"
+      ],
+      "source": "Pinterest https://www.pinterest.com/pin/1146166174356098885/ (tablero https://www.pinterest.com/chaewonjames/pares/); render MMD de terceros, fondo eliminado con scripts/remove-bg.py (T_LO=7)",
+      "license": "Sin documentar (render de terceros)",
+      "license_status": "unknown",
+      "description": "Miku y Rin: forman un corazon con las manos. Solo si ambos aparecen en el video (ADR 0011)."
+    },
+    {
+      "id": "pair_miku_kaito_corazon",
+      "type": "image",
+      "path": "assets/characters/pares/miku_kaito_corazon.png",
+      "tags": [
+        "pareja",
+        "miku",
+        "kaito",
+        "corazon",
+        "feliz"
+      ],
+      "characters": [
+        "miku",
+        "kaito"
+      ],
+      "source": "Pinterest https://www.pinterest.com/pin/1146166174356099471/ (tablero https://www.pinterest.com/chaewonjames/pares/); render MMD de terceros, fondo eliminado con scripts/remove-bg.py (T_LO=7)",
+      "license": "Sin documentar (render de terceros)",
+      "license_status": "unknown",
+      "description": "Miku y Kaito: forman un corazon con las manos. Solo si ambos aparecen en el video (ADR 0011)."
+    },
+    {
+      "id": "pair_miku_teto_preocupadas",
+      "type": "image",
+      "path": "assets/characters/pares/miku_teto_preocupadas.png",
+      "tags": [
+        "pareja",
+        "miku",
+        "teto",
+        "preocupadas",
+        "preocupado"
+      ],
+      "characters": [
+        "miku",
+        "teto"
+      ],
+      "source": "Pinterest https://www.pinterest.com/pin/1146166174356099486/ (tablero https://www.pinterest.com/chaewonjames/pares/); render MMD de terceros, fondo eliminado con scripts/remove-bg.py (T_LO=7)",
+      "license": "Sin documentar (render de terceros)",
+      "license_status": "unknown",
+      "description": "Miku y Teto: preocupadas. Solo si ambos aparecen en el video (ADR 0011)."
+    },
+    {
+      "id": "pair_miku_kaito_preocupados",
+      "type": "image",
+      "path": "assets/characters/pares/miku_kaito_preocupados.png",
+      "tags": [
+        "pareja",
+        "miku",
+        "kaito",
+        "preocupados",
+        "preocupado"
+      ],
+      "characters": [
+        "miku",
+        "kaito"
+      ],
+      "source": "Pinterest https://www.pinterest.com/pin/1146166174356099489/ (tablero https://www.pinterest.com/chaewonjames/pares/); render MMD de terceros, fondo eliminado con scripts/remove-bg.py (T_LO=7)",
+      "license": "Sin documentar (render de terceros)",
+      "license_status": "unknown",
+      "description": "Miku y Kaito: preocupados. Solo si ambos aparecen en el video (ADR 0011)."
+    },
+    {
+      "id": "pair_neru_miku_saludando",
+      "type": "image",
+      "path": "assets/characters/pares/neru_miku_saludando.png",
+      "tags": [
+        "pareja",
+        "neru",
+        "miku",
+        "saludando",
+        "saludo"
+      ],
+      "characters": [
+        "neru",
+        "miku"
+      ],
+      "source": "Pinterest https://www.pinterest.com/pin/1146166174356099501/ (tablero https://www.pinterest.com/chaewonjames/pares/); render MMD de terceros, fondo eliminado con scripts/remove-bg.py (T_LO=7)",
+      "license": "Sin documentar (render de terceros)",
+      "license_status": "unknown",
+      "description": "Neru y Miku: saludando. Solo si ambos aparecen en el video (ADR 0011)."
+    },
+    {
+      "id": "pair_teto_neru_saludando",
+      "type": "image",
+      "path": "assets/characters/pares/teto_neru_saludando.png",
+      "tags": [
+        "pareja",
+        "teto",
+        "neru",
+        "saludando",
+        "saludo"
+      ],
+      "characters": [
+        "teto",
+        "neru"
+      ],
+      "source": "Pinterest https://www.pinterest.com/pin/1146166174356099513/ (tablero https://www.pinterest.com/chaewonjames/pares/); render MMD de terceros, fondo eliminado con scripts/remove-bg.py (T_LO=7)",
+      "license": "Sin documentar (render de terceros)",
+      "license_status": "unknown",
+      "description": "Teto y Neru: saludando. Solo si ambos aparecen en el video (ADR 0011)."
+    },
+    {
+      "id": "pair_rin_len_cargando",
+      "type": "image",
+      "path": "assets/characters/pares/rin_len_cargando.png",
+      "tags": [
+        "pareja",
+        "rin",
+        "len",
+        "cargando",
+        "broma"
+      ],
+      "characters": [
+        "rin",
+        "len"
+      ],
+      "source": "Pinterest https://www.pinterest.com/pin/1146166174356099517/ (tablero https://www.pinterest.com/chaewonjames/pares/); render MMD de terceros, fondo eliminado con scripts/remove-bg.py (T_LO=7)",
+      "license": "Sin documentar (render de terceros)",
+      "license_status": "unknown",
+      "description": "Rin y Len: uno carga al otro. Solo si ambos aparecen en el video (ADR 0011)."
+    },
+    {
+      "id": "pair_kaito_miku_feliz",
+      "type": "image",
+      "path": "assets/characters/pares/kaito_miku_feliz.png",
+      "tags": [
+        "pareja",
+        "kaito",
+        "miku",
+        "feliz",
+        "feliz"
+      ],
+      "characters": [
+        "kaito",
+        "miku"
+      ],
+      "source": "Pinterest https://www.pinterest.com/pin/1146166174356099525/ (tablero https://www.pinterest.com/chaewonjames/pares/); render MMD de terceros, fondo eliminado con scripts/remove-bg.py (T_LO=7)",
+      "license": "Sin documentar (render de terceros)",
+      "license_status": "unknown",
+      "description": "Kaito y Miku: felices. Solo si ambos aparecen en el video (ADR 0011)."
+    },
+    {
+      "id": "pair_miku_len_abrazo",
+      "type": "image",
+      "path": "assets/characters/pares/miku_len_abrazo.png",
+      "tags": [
+        "pareja",
+        "miku",
+        "len",
+        "abrazo",
+        "feliz"
+      ],
+      "characters": [
+        "miku",
+        "len"
+      ],
+      "source": "Pinterest https://www.pinterest.com/pin/1146166174356099532/ (tablero https://www.pinterest.com/chaewonjames/pares/); render MMD de terceros, fondo eliminado con scripts/remove-bg.py (T_LO=7)",
+      "license": "Sin documentar (render de terceros)",
+      "license_status": "unknown",
+      "description": "Miku y Len: abrazo. Solo si ambos aparecen en el video (ADR 0011)."
+    },
+    {
+      "id": "pair_miku_luka_cantando",
+      "type": "image",
+      "path": "assets/characters/pares/miku_luka_cantando.png",
+      "tags": [
+        "pareja",
+        "miku",
+        "luka",
+        "cantando",
+        "feliz"
+      ],
+      "characters": [
+        "miku",
+        "luka"
+      ],
+      "source": "Pinterest https://www.pinterest.com/pin/1146166174356099543/ (tablero https://www.pinterest.com/chaewonjames/pares/); render MMD de terceros, fondo eliminado con scripts/remove-bg.py (T_LO=7)",
+      "license": "Sin documentar (render de terceros)",
+      "license_status": "unknown",
+      "description": "Miku y Luka: cantando juntas. Solo si ambos aparecen en el video (ADR 0011)."
+    },
+    {
+      "id": "pair_miku_teto_reverencia",
+      "type": "image",
+      "path": "assets/characters/pares/miku_teto_reverencia.png",
+      "tags": [
+        "pareja",
+        "miku",
+        "teto",
+        "reverencia",
+        "saludo"
+      ],
+      "characters": [
+        "miku",
+        "teto"
+      ],
+      "source": "Pinterest https://www.pinterest.com/pin/1146166174356099566/ (tablero https://www.pinterest.com/chaewonjames/pares/); render MMD de terceros, fondo eliminado con scripts/remove-bg.py (T_LO=7)",
+      "license": "Sin documentar (render de terceros)",
+      "license_status": "unknown",
+      "description": "Miku y Teto: reverencia. Solo si ambos aparecen en el video (ADR 0011)."
+    },
+    {
+      "id": "pair_rin_miku_corazon",
+      "type": "image",
+      "path": "assets/characters/pares/rin_miku_corazon.png",
+      "tags": [
+        "pareja",
+        "rin",
+        "miku",
+        "corazon",
+        "feliz"
+      ],
+      "characters": [
+        "rin",
+        "miku"
+      ],
+      "source": "Pinterest https://www.pinterest.com/pin/1146166174356099572/ (tablero https://www.pinterest.com/chaewonjames/pares/); render MMD de terceros, fondo eliminado con scripts/remove-bg.py (T_LO=7)",
+      "license": "Sin documentar (render de terceros)",
+      "license_status": "unknown",
+      "description": "Rin y Miku: forman un corazon con las manos. Solo si ambos aparecen en el video (ADR 0011)."
+    },
+    {
+      "id": "pair_len_miku_feliz",
+      "type": "image",
+      "path": "assets/characters/pares/len_miku_feliz.png",
+      "tags": [
+        "pareja",
+        "len",
+        "miku",
+        "feliz",
+        "feliz"
+      ],
+      "characters": [
+        "len",
+        "miku"
+      ],
+      "source": "Pinterest https://www.pinterest.com/pin/1146166174356099582/ (tablero https://www.pinterest.com/chaewonjames/pares/); render MMD de terceros, fondo eliminado con scripts/remove-bg.py (T_LO=7)",
+      "license": "Sin documentar (render de terceros)",
+      "license_status": "unknown",
+      "description": "Len y Miku: felices. Solo si ambos aparecen en el video (ADR 0011)."
+    },
+    {
+      "id": "pair_neru_teto_emocionadas",
+      "type": "image",
+      "path": "assets/characters/pares/neru_teto_emocionadas.png",
+      "tags": [
+        "pareja",
+        "neru",
+        "teto",
+        "emocionadas",
+        "emocionado"
+      ],
+      "characters": [
+        "neru",
+        "teto"
+      ],
+      "source": "Pinterest https://www.pinterest.com/pin/1146166174356099589/ (tablero https://www.pinterest.com/chaewonjames/pares/); render MMD de terceros, fondo eliminado con scripts/remove-bg.py (T_LO=7)",
+      "license": "Sin documentar (render de terceros)",
+      "license_status": "unknown",
+      "description": "Neru y Teto: emocionadas. Solo si ambos aparecen en el video (ADR 0011)."
+    },
+    {
+      "id": "pair_teto_miku_emocionadas",
+      "type": "image",
+      "path": "assets/characters/pares/teto_miku_emocionadas.png",
+      "tags": [
+        "pareja",
+        "teto",
+        "miku",
+        "emocionadas",
+        "emocionado"
+      ],
+      "characters": [
+        "teto",
+        "miku"
+      ],
+      "source": "Pinterest https://www.pinterest.com/pin/1146166174356099598/ (tablero https://www.pinterest.com/chaewonjames/pares/); render MMD de terceros, fondo eliminado con scripts/remove-bg.py (T_LO=7)",
+      "license": "Sin documentar (render de terceros)",
+      "license_status": "unknown",
+      "description": "Teto y Miku: emocionadas. Solo si ambos aparecen en el video (ADR 0011)."
+    },
+    {
+      "id": "pair_teto_neru_posando",
+      "type": "image",
+      "path": "assets/characters/pares/teto_neru_posando.png",
+      "tags": [
+        "pareja",
+        "teto",
+        "neru",
+        "posando",
+        "feliz"
+      ],
+      "characters": [
+        "teto",
+        "neru"
+      ],
+      "source": "Pinterest https://www.pinterest.com/pin/1146166174356099611/ (tablero https://www.pinterest.com/chaewonjames/pares/); render MMD de terceros, fondo eliminado con scripts/remove-bg.py (T_LO=7)",
+      "license": "Sin documentar (render de terceros)",
+      "license_status": "unknown",
+      "description": "Teto y Neru: posando. Solo si ambos aparecen en el video (ADR 0011)."
+    },
+    {
+      "id": "bg_place_playa",
+      "type": "background_image",
+      "path": "assets/backgrounds/bg_place_playa.png",
+      "tags": [
+        "background",
+        "escenario",
+        "playa"
+      ],
+      "source": "Ilustracion propia: assets/backgrounds/src/bg_place_playa.html (npm run graphics)",
+      "license": "propio",
+      "license_status": "owned",
+      "description": "Escenario: Playa (ADR 0012). Los personajes saben que estan aqui."
+    },
+    {
+      "id": "bg_place_cafeteria",
+      "type": "background_image",
+      "path": "assets/backgrounds/bg_place_cafeteria.png",
+      "tags": [
+        "background",
+        "escenario",
+        "cafeteria"
+      ],
+      "source": "Ilustracion propia: assets/backgrounds/src/bg_place_cafeteria.html (npm run graphics)",
+      "license": "propio",
+      "license_status": "owned",
+      "description": "Escenario: Cafeteria (ADR 0012). Los personajes saben que estan aqui."
+    },
+    {
+      "id": "bg_place_oficina",
+      "type": "background_image",
+      "path": "assets/backgrounds/bg_place_oficina.png",
+      "tags": [
+        "background",
+        "escenario",
+        "oficina"
+      ],
+      "source": "Ilustracion propia: assets/backgrounds/src/bg_place_oficina.html (npm run graphics)",
+      "license": "propio",
+      "license_status": "owned",
+      "description": "Escenario: Oficina (ADR 0012). Los personajes saben que estan aqui."
+    },
+    {
+      "id": "bg_place_parque",
+      "type": "background_image",
+      "path": "assets/backgrounds/bg_place_parque.png",
+      "tags": [
+        "background",
+        "escenario",
+        "parque"
+      ],
+      "source": "Ilustracion propia: assets/backgrounds/src/bg_place_parque.html (npm run graphics)",
+      "license": "propio",
+      "license_status": "owned",
+      "description": "Escenario: Parque (ADR 0012). Los personajes saben que estan aqui."
+    },
+    {
+      "id": "bg_place_aula",
+      "type": "background_image",
+      "path": "assets/backgrounds/bg_place_aula.png",
+      "tags": [
+        "background",
+        "escenario",
+        "aula"
+      ],
+      "source": "Ilustracion propia: assets/backgrounds/src/bg_place_aula.html (npm run graphics)",
+      "license": "propio",
+      "license_status": "owned",
+      "description": "Escenario: Salon de clases (ADR 0012). Los personajes saben que estan aqui."
+    },
+    {
+      "id": "bg_place_habitacion",
+      "type": "background_image",
+      "path": "assets/backgrounds/bg_place_habitacion.png",
+      "tags": [
+        "background",
+        "escenario",
+        "habitacion"
+      ],
+      "source": "Ilustracion propia: assets/backgrounds/src/bg_place_habitacion.html (npm run graphics)",
+      "license": "propio",
+      "license_status": "owned",
+      "description": "Escenario: Habitacion gamer (ADR 0012). Los personajes saben que estan aqui."
+    },
+    {
+      "id": "bg_place_servidores",
+      "type": "background_image",
+      "path": "assets/backgrounds/bg_place_servidores.png",
+      "tags": [
+        "background",
+        "escenario",
+        "servidores"
+      ],
+      "source": "Ilustracion propia: assets/backgrounds/src/bg_place_servidores.html (npm run graphics)",
+      "license": "propio",
+      "license_status": "owned",
+      "description": "Escenario: Sala de servidores (ADR 0012). Los personajes saben que estan aqui."
+    },
+    {
+      "id": "bg_place_konbini",
+      "type": "background_image",
+      "path": "assets/backgrounds/bg_place_konbini.png",
+      "tags": [
+        "background",
+        "escenario",
+        "konbini"
+      ],
+      "source": "Ilustracion propia: assets/backgrounds/src/bg_place_konbini.html (npm run graphics)",
+      "license": "propio",
+      "license_status": "owned",
+      "description": "Escenario: Tienda de conveniencia (ADR 0012). Los personajes saben que estan aqui."
     }
   ]
 }

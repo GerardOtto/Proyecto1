@@ -22,7 +22,10 @@ el compilador, nunca hackear el timeline.
    azul). Posicion = funcion pura del frame (`src/timeline/watermark.ts`). El texto sale de
    `render.json > watermark.handles[<idioma del video>]` (o `default`): al traducir un video solo
    cambia el handle, no la estructura.
-   **TitleCard** encima de la marca de agua: rotulo del gancho (`meta.hookTitle`) desde el
+   **Stickers** (ADR 0010) encima de la marca de agua: caja de `events.sticker.size` (330 px) en la
+   esquina inferior del area de visuales del lado del personaje que reacciona; pop elastico, balanceo
+   y salida encogiendose en `durationMs` (1.3 s). Uno nuevo en la misma esquina corta al anterior.
+   **TitleCard** encima: rotulo del gancho (`meta.hookTitle`) desde el
    fotograma 0 hasta el fin de la escena hook; con `reserveVisualArea` los visuales del gancho bajan
    bajo el rotulo (ADR 0006).
    **Captions** encima (fuera de la camara: nunca salen de la safe area).

@@ -26,12 +26,12 @@ describe("autopiloto: escritores", async () => {
     }
   });
 
-  it.each(ap.evergreen.map((t) => t.id))("plantilla para %s: parsea, dura 62-115 s, borrador valido y lint sin errores", (id) => {
+  it.each(ap.evergreen.map((t) => t.id))("plantilla para %s: parsea, dura 65-115 s, borrador valido y lint sin errores", (id) => {
     const plan = planFor(id);
     const w = writeTemplateScript(plan, ap, assets, catalog, cfg);
     const { parsed, estimatedMs } = estimateScript(w.source, catalog, cfg);
     expect(parsed.errors).toEqual([]);
-    expect(estimatedMs!).toBeGreaterThanOrEqual(62_000);
+    expect(estimatedMs!).toBeGreaterThanOrEqual(65_000);
     expect(estimatedMs!).toBeLessThanOrEqual(115_000);
     const draft = beatsToDraftTimeline(parsed.beats, { title: "t", hookTitle: /^hook_title: (.*)$/m.exec(w.source)![1], durationTargetSec: 80, language: "es", generator: "test" }, cfg);
     expect(validateTimeline(draft, catalog, cfg.render, { stage: "draft" }).issues.filter((i) => i.level === "error")).toEqual([]);

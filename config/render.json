@@ -171,6 +171,16 @@
     "broll": {
       "clipMs": 3500,
       "minMs": 1000
+    },
+    "sticker": {
+      "durationMs": 1300,
+      "size": 330,
+      "popInMs": 180,
+      "popOutMs": 150,
+      "tiltDeg": 12,
+      "inset": 12,
+      "sfx": "sfx_pop",
+      "volume": 0.4
     }
   }
 }

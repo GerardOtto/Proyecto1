@@ -59,7 +59,7 @@ Microsoft estimó unos 8,5 millones de equipos afectados en todo el mundo.
 ## punchline
 [TETO:shocked]
 [LISTEN: luka:neutral]
-Y yo que pospongo las actualizaciones por flojera.
+Y yo que pospongo las actualizaciones por flojera desde hace treinta y un años.
 
 [LUKA:riendo]
 [LISTEN: teto:riendo]

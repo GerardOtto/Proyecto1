@@ -2,10 +2,10 @@
 // Determinista: misma fecha + mismo historial + mismas noticias => mismo plan.
 import type { EngineConfig } from "../catalog/catalog";
 import type { AutopilotConfig, EvergreenTopic } from "./config";
-import { evergreenLastUsed, newsAlreadyUsed, recent, type History } from "./history";
+import { active, evergreenLastUsed, newsAlreadyUsed, recent, type History } from "./history";
 import { clusterKeyword, type SourcesConfig } from "./news";
 import { pick, pickAvoiding, seeded, shuffle } from "./random";
-import type { Casting, EpisodePlan, FormatId, NewsCluster, TopicBrief, TopicCategory } from "./types";
+import type { ArcBeat, Casting, EpisodePlan, FormatId, NewsCluster, TopicBrief, TopicCategory } from "./types";
 
 export const slugify = (s: string): string =>
   s
@@ -107,20 +107,77 @@ export const readyCharacters = (engine: EngineConfig, allowPlaceholder = false):
     .map(([id]) => id)
     .sort();
 
-export const chooseCasting = (ap: AutopilotConfig, ready: string[], history: History, seed: string): Casting => {
+/** Personajes mudos (ADR 0011) con avatares reales: pueden aparecer como cameo sin voz. */
+export const silentCharacters = (engine: EngineConfig, allowPlaceholder = false): string[] =>
+  Object.entries(engine.characters.characters)
+    .filter(([, c]) => c.voice?.mute && (allowPlaceholder || (c.license?.license_status ?? "unknown") !== "placeholder"))
+    .map(([id]) => id)
+    .sort();
+
+/** Etiquetas del tema para relacionar personajes y escenario (categoria, tipo, entidades, palabra clave). Pura. */
+export const topicTags = (topic: TopicBrief): string[] =>
+  [...new Set([topic.category, topic.kind, ...(topic.entities ?? []), ...slugify(topic.keyword).split("_")].map((t) => slugify(t)).filter(Boolean))];
+
+const overlap = (a: string[], b: string[]) => a.filter((x) => b.includes(x)).length;
+
+/**
+ * Escenario (ADR 0012): el de mas afinidad con el tema (tags + lista de la categoria), sin repetir el
+ * del episodio anterior; desempate determinista por semilla. Pura.
+ */
+export const chooseSetting = (ap: AutopilotConfig, topic: TopicBrief, history: History, seed: string): string | undefined => {
+  const all = Object.entries(ap.settings?.settings ?? {});
+  if (all.length === 0) return undefined;
+  const tags = topicTags(topic);
+  const byCat = ap.settings.byCategory[topic.category] ?? [];
+  const last = recent(history, 1)[0]?.setting;
+  const scored = shuffle(all, `${seed}:setting`)
+    .filter(([id]) => id !== last || all.length === 1)
+    .map(([id, s]) => ({ id, score: overlap(s.tags.map(slugify), tags) * 2 + (byCat.includes(id) ? 3 - byCat.indexOf(id) * 0.5 : 0) }))
+    .sort((a, b) => b.score - a.score);
+  return scored[0]?.id;
+};
+
+/** Etapa de cada narrativa secundaria cuyo personaje esta en el episodio (ADR 0012). Pura. */
+export const arcBeats = (ap: AutopilotConfig, history: History, casting: Casting): ArcBeat[] => {
+  const cast = [casting.host, casting.foil, casting.guest, casting.cameo].filter(Boolean);
+  const done = active(history);
+  return (ap.arcs?.arcs ?? [])
+    .filter((a) => cast.includes(a.character))
+    .map((a) => {
+      const appearances = done.filter((e) => [e.casting.host, e.casting.foil, e.casting.guest, e.casting.cameo].includes(a.character)).length;
+      const stage = [...a.stages].reverse().find((s) => appearances >= s.from) ?? a.stages[0]!;
+      return {
+        id: a.id,
+        label: a.label,
+        appearances,
+        stage: stage.label,
+        beat: stage.beat,
+        finaleAvailable: done.length >= a.minEpisodesBeforeFinale,
+        finale: a.finale,
+      };
+    });
+};
+
+export const chooseCasting = (ap: AutopilotConfig, ready: string[], history: History, seed: string, silent: string[] = [], tags: string[] = []): Casting => {
   const roles = ap.casting.roles;
   const hosts = roles.host.filter((c) => ready.includes(c));
   if (hosts.length === 0) throw new Error("No hay personajes listos para el rol host (revisa avatares/voces o usa --allow-placeholder)");
   const recentPairs = recent(history, ap.casting.pairsAvoidRepeatWindow).map((e) => `${e.casting.host}+${e.casting.foil}`);
+  // Afinidad personaje-tema (lore.json > affinities): a igualdad, el orden lo decide la semilla.
+  const aff = (c: string) => overlap((ap.lore?.affinities?.[c] ?? []).map(slugify), tags);
   const pairs = shuffle(
     hosts.flatMap((h) => roles.foil.filter((f) => f !== h && ready.includes(f)).map((f) => ({ host: h, foil: f }))),
     `${seed}:pairs`,
-  );
+  ).sort((a, b) => aff(b.host) + aff(b.foil) - (aff(a.host) + aff(a.foil)));
   if (pairs.length === 0) throw new Error("Se necesitan al menos 2 personajes listos (host + foil)");
   const fresh = pairs.find((p) => !recentPairs.includes(`${p.host}+${p.foil}`)) ?? pairs[0]!;
   const guests = roles.guest.filter((g) => ready.includes(g) && g !== fresh.host && g !== fresh.foil);
   const withGuest = guests.length > 0 && seeded(`${seed}:guest`) < ap.casting.guestProbability;
-  return withGuest ? { ...fresh, guest: pick(guests, `${seed}:guestpick`) } : fresh;
+  const cast: Casting = withGuest ? { ...fresh, guest: pick(guests, `${seed}:guestpick`) } : fresh;
+  // Cameo mudo (Neru): solo escucha y reacciona con su SFX de firma; no cuenta como rol con dialogo.
+  const cameos = (ap.casting.cameo?.characters ?? []).filter((c) => silent.includes(c) && c !== cast.host && c !== cast.foil && c !== cast.guest);
+  const withCameo = cameos.length > 0 && seeded(`${seed}:cameo`) < (ap.casting.cameo?.probability ?? 0);
+  return withCameo ? { ...cast, cameo: pick(cameos, `${seed}:cameopick`) } : cast;
 };
 
 export const chooseTheme = (ap: AutopilotConfig, category: TopicCategory, history: History, seed: string): string => {
@@ -166,6 +223,9 @@ export const planEpisode = (input: PlanInput): EpisodePlan => {
   const format = input.format ?? chooseFormat(topic.category, ap, seed, history);
   if (!ap.formats.formats[format]) throw new Error(`Formato desconocido: ${format}`);
   const f = ap.formats.formats[format];
+  const casting = chooseCasting(ap, readyCharacters(input.engine, input.allowPlaceholder), history, seed, silentCharacters(input.engine, input.allowPlaceholder), topicTags(topic));
+  const setting = chooseSetting(ap, topic, history, seed);
+  const arcs = arcBeats(ap, history, casting);
   return {
     episodeId: `ep_${date.replace(/-/g, "")}_${slugify(topic.kind === "news" ? topic.keyword + "_" + topic.title : topic.id).slice(0, 32)}`,
     date,
@@ -173,8 +233,10 @@ export const planEpisode = (input: PlanInput): EpisodePlan => {
     format,
     structure: f.structure,
     targetSec: f.targetSec,
-    casting: chooseCasting(ap, readyCharacters(input.engine, input.allowPlaceholder), history, seed),
+    casting,
     theme: chooseTheme(ap, topic.category, history, seed),
+    ...(setting ? { setting } : {}),
+    ...(arcs.length ? { arcs } : {}),
     seed,
   };
 };

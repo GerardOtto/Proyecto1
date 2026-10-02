@@ -64,6 +64,7 @@ del dialogo; `build-timeline` lo convierte a `atMs` con el audio real). Sin ancl
 | subtitle_emphasis | words?, color? | Resalta palabras (sin `words`: todo el dialogo desde el ancla) |
 | pause | durationMs? | Micro-pausa comica: inserta silencio en el audio (antes de `atWord` o al final) |
 | sfx | sfx, volume? | Efecto de sonido (extension del MVP) |
+| sticker | sticker, sfx?, volume?, character?, durationMs? | Sticker de reaccion junto al personaje, sin flash (ADR 0010) |
 
 Formas cortas validas: `"camera_zoom"`, `"camera_shake"`, `"meme_explosion"`, `"subtitle_emphasis"`, `"pause"`.
 

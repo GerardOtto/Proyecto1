@@ -264,3 +264,28 @@ para uso comercial (docs/09_LICENSING.md). Las reacciones sin imagen propia usan
 | feliz | feliz.png | Neru_feliz.png | 1146166174356099010 |
 | nerd | nerd.png | Neru_nerd.png | 1146166174356098911 |
 | neutral | neutral.png | Neru_nerviosa.png | 1146166174356099553 |
+
+## Pares (ADR 0011)
+Imagenes de dos personajes juntos (`assets/characters/pares/`, assets `pair_*` en config/assets.json).
+Solo se usan si ambos personajes aparecen en el video (validacion PAIR_CHARACTER_ABSENT). Se omiten las de Meiko (no es personaje del canal).
+
+| Archivo | Pin |
+|---|---|
+| miku_rin_cargando.png | https://www.pinterest.com/pin/1146166174356098865/ |
+| len_rin_emocionados.png | https://www.pinterest.com/pin/1146166174356098881/ |
+| miku_rin_corazon.png | https://www.pinterest.com/pin/1146166174356098885/ |
+| miku_kaito_corazon.png | https://www.pinterest.com/pin/1146166174356099471/ |
+| miku_teto_preocupadas.png | https://www.pinterest.com/pin/1146166174356099486/ |
+| miku_kaito_preocupados.png | https://www.pinterest.com/pin/1146166174356099489/ |
+| neru_miku_saludando.png | https://www.pinterest.com/pin/1146166174356099501/ |
+| teto_neru_saludando.png | https://www.pinterest.com/pin/1146166174356099513/ |
+| rin_len_cargando.png | https://www.pinterest.com/pin/1146166174356099517/ |
+| kaito_miku_feliz.png | https://www.pinterest.com/pin/1146166174356099525/ |
+| miku_len_abrazo.png | https://www.pinterest.com/pin/1146166174356099532/ |
+| miku_luka_cantando.png | https://www.pinterest.com/pin/1146166174356099543/ |
+| miku_teto_reverencia.png | https://www.pinterest.com/pin/1146166174356099566/ |
+| rin_miku_corazon.png | https://www.pinterest.com/pin/1146166174356099572/ |
+| len_miku_feliz.png | https://www.pinterest.com/pin/1146166174356099582/ |
+| neru_teto_emocionadas.png | https://www.pinterest.com/pin/1146166174356099589/ |
+| teto_miku_emocionadas.png | https://www.pinterest.com/pin/1146166174356099598/ |
+| teto_neru_posando.png | https://www.pinterest.com/pin/1146166174356099611/ |

@@ -2,6 +2,34 @@
 
 ## Sin publicar
 
+### Mundo del canal (ADR 0012)
+- Lore ampliado: trasfondos, dinamicas (trio baka, Teto comilona, duo de Mesmerizer, Kagamine espejo,
+  Kaito hermano mayor) y memes de la comunidad (Teto pera, Gumi, Mesmerizer, Rabbit Hole, Ievan Polkka,
+  World is Mine, Luka Luka Night Fever, Roada Rolla Da).
+- Escenarios con fondos propios (`bg_place_*`: playa, cafeteria, oficina, parque, aula, habitacion
+  gamer, servidores, konbini) elegidos por afinidad con el tema; los personajes saben donde estan.
+- Narrativa secundaria "Neru consigue su voz" por etapas; final solo por decision humana tras 10+ videos.
+- Casting con afinidad personaje-tema; minimo 65 s (objetivos 80-90 s); seccion de coherencia en el brief.
+- `npm run graphics` tambien renderiza `assets/backgrounds/src/*.html`.
+
+### Pares, Neru muda y contexto de personajes (ADR 0011)
+- 18 imagenes en pares (`pair_*`, campo `characters`): solo si ambos personajes estan en el video
+  (error `PAIR_CHARACTER_ABSENT`); el brief del escritor lista las disponibles para el casting.
+- Personajes mudos: `voice.mute` y `voice.signatureSfx`. Neru nunca habla (error
+  `MUTE_CHARACTER_SPEAKS`); su voz es `sfx_neru_phone` (aviso `SIGNATURE_SFX_WITHOUT_OWNER`), que deja
+  de estar reservado. En el autopiloto Neru pasa de foil/guest a cameo mudo (35 %).
+- `config/autopilot/lore.json`: contexto de cada personaje y compartido (Triple Baka, Crypton,
+  rivalidad Teto-Miku) para referencias pasivas; reglas en `prompts/writer.system.md`.
+- Los 5 guiones sin producir (GitHub, Meta, AlphaGo, CrowdStrike, pesos abiertos) llevan 1-2 guiños.
+
+### Stickers de reaccion (ADR 0010)
+- Evento `sticker` (`{STICKER:id[:sfx][:volumen][:personaje]}`): sticker breve en la esquina del area
+  de visuales del lado de quien reacciona, sin flash ni sacudida y sin tapar subtitulos.
+  `render.json > events.sticker`, `Stickers.tsx`, validacion, director LLM y escritor del autopiloto.
+- `sfx_oohh` deja de ser exclusivo de China: reaccion chistosa general (favorito del canal); el
+  director de SFX lo considera en sorpresas y enfasis.
+- Episodio OpenAI Astra: 6 stickers de reaccion (2 con "oohh").
+
 ### Avatares reales y reacciones ampliadas (ADR 0008)
 - Set nuevo de avatares desde los tableros de Pinterest (209 imagenes, origen por pin en
   `assets/characters/SOURCES.md`): Teto, Miku y Luka reemplazados; Rin y Len dejan de ser placeholder;

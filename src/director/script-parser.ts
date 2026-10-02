@@ -162,6 +162,32 @@ export const parseScript = (source: string, catalog: Catalog): ParsedScript => {
         }
         return true;
       }
+      case "STICKER": {
+        // {STICKER:id} [:sfx] [:volumen 0-1] [:personaje] (ADR 0010); los opcionales en cualquier orden.
+        const id = args[0] ?? "";
+        if (!id) {
+          errors.push({ line, message: "STICKER necesita un id: {STICKER:meme_gato_sorprendido}" });
+          return true;
+        }
+        if (!checkAsset(id, ["meme", "image"], line)) return true;
+        const ev: Extract<TimelineEvent, { type: "sticker" }> = { type: "sticker", sticker: id };
+        for (const raw of args.slice(1)) {
+          const arg = raw.trim();
+          if (!arg) continue;
+          if (/^\d*\.?\d+$/.test(arg)) {
+            const vol = Number(arg);
+            if (!(vol >= 0 && vol <= 1)) {
+              errors.push({ line, message: `Volumen de STICKER invalido "${arg}" (usar 0-1)` });
+              return true;
+            }
+            ev.volume = vol;
+          } else if (characters[slug(arg)]) ev.character = slug(arg);
+          else if (checkAsset(arg, ["sfx"], line)) ev.sfx = arg;
+          else return true;
+        }
+        push({ ...ev, ...anchor });
+        return true;
+      }
       case "ZOOM":
         push({ type: "camera_zoom", ...(args[0] ? { scale: Number(args[0]) } : {}), ...anchor });
         return true;

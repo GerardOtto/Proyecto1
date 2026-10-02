@@ -138,6 +138,10 @@ export const directorOutputToBeats = (out: DirectorOutput): Beat[] =>
         case "sfx":
           if (e.target) events.push({ type: "sfx", sfx: e.target, ...anchor });
           break;
+        case "sticker":
+          // target = id del sticker (meme/imagen); character = quien reacciona (lado en pantalla).
+          if (e.target) events.push({ type: "sticker", sticker: e.target, ...(e.character ? { character: e.character } : {}), ...anchor });
+          break;
         case "camera_zoom":
         case "camera_shake":
         case "pause":

@@ -37,6 +37,12 @@
         },
         "path": { "type": "string", "pattern": "^[^\\\\]+\\.(png|jpg|jpeg|webp|svg|gif|mp4|webm|mov|wav|mp3|ogg|m4a)$" },
         "tags": { "type": "array", "items": { "type": "string" } },
+        "characters": {
+          "description": "Personajes que aparecen en la imagen (pares, ADR 0011): el validador exige que todos esten en el video.",
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
         "safeArea": { "type": "boolean" },
         "loop": { "type": "boolean" },
         "startMs": { "type": "integer", "minimum": 0, "description": "music: ms del tema desde los que empieza a sonar (saltar intros)." },

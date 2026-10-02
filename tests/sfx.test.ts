@@ -31,10 +31,13 @@ describe("efectos de sonido", async () => {
     expect(parseScript("[TETO:feliz]\n{SFX:sfx_vine_boom:3}Hola.\n", catalog).errors.length).toBeGreaterThan(0);
   });
 
-  it("usar un asset reservado (telefono de NERU) genera un aviso", () => {
+  it("el telefono de NERU es su firma (ADR 0011): aviso si suena sin ella en pantalla", () => {
     const tl = clone(longTimeline());
     tl.scenes[0]!.events = [{ type: "sfx", sfx: "sfx_neru_phone" }];
     const v = validateTimeline(tl, catalog, cfg.render, { stage: "draft", checkAudioFiles: false });
-    expect(v.issues.some((i) => i.code === "ASSET_RESERVED")).toBe(true);
+    expect(v.issues.some((i) => i.code === "SIGNATURE_SFX_WITHOUT_OWNER")).toBe(true);
+    tl.scenes[0]!.listeners = [{ character: "neru", avatar: "neutral" }];
+    const ok = validateTimeline(tl, catalog, cfg.render, { stage: "draft", checkAudioFiles: false });
+    expect(ok.issues.some((i) => i.code === "SIGNATURE_SFX_WITHOUT_OWNER" || i.code === "ASSET_RESERVED")).toBe(false);
   });
 });

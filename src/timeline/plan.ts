@@ -123,6 +123,48 @@ export interface PlanBroll {
   area?: Box;
 }
 
+/** Sticker de reaccion (ADR 0010): pop breve en la esquina del area de visuales del lado del personaje. */
+export interface PlanSticker {
+  from: number;
+  to: number;
+  src: string;
+  kind: "gif" | "image";
+  /** Caja cuadrada donde el sticker se ajusta (contain). */
+  box: Box;
+  popInFrames: number;
+  popOutFrames: number;
+  tiltDeg: number;
+  seed: string;
+}
+
+export const DEFAULT_STICKER: NonNullable<RenderConfig["events"]["sticker"]> = {
+  durationMs: 1300,
+  size: 330,
+  popInMs: 180,
+  popOutMs: 150,
+  tiltDeg: 12,
+  inset: 12,
+  sfx: null,
+  volume: 0.4,
+};
+
+/** Caja del sticker: esquina inferior del area de visuales del lado dado (centro si "center"). Pura. */
+export const stickerBox = (side: Side, area: Box, size: number, inset: number): Box => {
+  const x =
+    side === "left" ? area.x + inset : side === "right" ? area.x + area.width - size - inset : area.x + (area.width - size) / 2;
+  return { x: Math.round(x), y: Math.round(area.y + area.height - size - inset), width: size, height: size };
+};
+
+/** Un sticker nuevo en el mismo lado corta al anterior (nunca se apilan en la misma esquina). Pura. */
+export const trimStickers = (list: PlanSticker[]): PlanSticker[] => {
+  const out = [...list].sort((a, b) => a.from - b.from);
+  for (let i = 0; i < out.length; i++) {
+    const next = out.slice(i + 1).find((s) => s.box.x === out[i]!.box.x && s.from < out[i]!.to);
+    if (next) out[i] = { ...out[i]!, to: Math.max(out[i]!.from + 1, next.from) };
+  }
+  return out;
+};
+
 type Span = { from: number; to: number };
 
 /** Huecos (>= minFrames) de [0, total) no cubiertos por `busy`. Pura. */
@@ -260,6 +302,8 @@ export interface RenderPlan {
   captions: PlanCaptionPage[];
   camera: PlanCamera[];
   memes: PlanMeme[];
+  /** Stickers de reaccion (ADR 0010). */
+  stickers: PlanSticker[];
   /** Relleno del area de visuales cuando no hay visual ni meme. */
   broll: PlanBroll[];
   /** Marca de agua rebotando (handle segun idioma); null = sin marca. */
@@ -454,7 +498,9 @@ export const buildRenderPlan = (
   // ---------------------------------------------------------------- camera, memes, sfx
   const camera: PlanCamera[] = [];
   const memes: PlanMeme[] = [];
+  const stickers: PlanSticker[] = [];
   const sfx: PlanAudioClip[] = [];
+  const st = cfg.events.sticker ?? DEFAULT_STICKER;
   for (const scene of scenes) {
     const { from: sFrom, to: sTo } = msRangeToFrames(scene.startMs, scene.endMs, fps);
     sceneEvents(scene).forEach((e, idx) => {
@@ -488,6 +534,27 @@ export const buildRenderPlan = (
         case "sfx":
           sfx.push({ src: asset(e.sfx, ["sfx"]).path, from: at, volume: e.volume ?? cfg.audio.sfxVolume });
           break;
+        case "sticker": {
+          // Lado del personaje que reacciona (por defecto el que habla); sin personaje, al centro.
+          const who = e.character ?? scene.character;
+          const side: Side = (who && sides.get(who)) || "center";
+          const a = asset(e.sticker, ["meme", "image"]);
+          const to = Math.min(durationInFrames, at + msToDurationInFrames(e.durationMs ?? st.durationMs, fps));
+          stickers.push({
+            from: at,
+            to: Math.max(at + 1, to),
+            src: a.path,
+            kind: a.path.toLowerCase().endsWith(".gif") ? "gif" : "image",
+            box: stickerBox(side, cfg.layout.visualArea, st.size, st.inset),
+            popInFrames: msToDurationInFrames(st.popInMs, fps),
+            popOutFrames: msToDurationInFrames(st.popOutMs, fps),
+            tiltDeg: st.tiltDeg,
+            seed,
+          });
+          const sfxId = e.sfx ?? st.sfx;
+          if (sfxId && catalog.assets[sfxId]) sfx.push({ src: asset(sfxId, ["sfx"]).path, from: at, volume: e.volume ?? st.volume });
+          break;
+        }
         default:
           break;
       }
@@ -635,6 +702,7 @@ export const buildRenderPlan = (
     captions,
     camera,
     memes,
+    stickers: trimStickers(stickers),
     broll,
     watermark: buildWatermark(cfg, timeline.meta.language, fps),
     titleCard,

@@ -1,19 +1,40 @@
 {
-  "$comment": "Casting por rol. host explica (nerd/feliz), foil pregunta o se equivoca (confundido/shocked), guest aporta un tercer punto de vista. Solo se eligen personajes 'listos' (avatares no placeholder + voice.fish.referenceId configurado) salvo --allow-placeholder.",
+  "$comment": "Casting por rol. host explica (nerd/feliz), foil pregunta o se equivoca (confundido/shocked), guest aporta un tercer punto de vista. Solo se eligen personajes 'listos' (avatares no placeholder + voice.fish.referenceId configurado) salvo --allow-placeholder. cameo: personajes MUDOS (voice.mute) que aparecen como listener y reaccionan con su SFX de firma (ADR 0011).",
   "roles": {
-    "host": ["teto", "miku", "luka"],
-    "foil": ["miku", "teto", "luka", "rin", "len", "neru"],
-    "guest": ["luka", "rin", "len", "kaito", "neru"]
+    "host": [
+      "teto",
+      "miku",
+      "luka"
+    ],
+    "foil": [
+      "miku",
+      "teto",
+      "luka",
+      "rin",
+      "len"
+    ],
+    "guest": [
+      "luka",
+      "rin",
+      "len",
+      "kaito"
+    ]
   },
   "pairsAvoidRepeatWindow": 2,
   "guestProbability": 0.25,
+  "cameo": {
+    "characters": [
+      "neru"
+    ],
+    "probability": 0.5
+  },
   "personalities": {
     "teto": "Presentadora entusiasta y algo dramatica; firma con su 'teto-teetoo'. Explica con analogias cotidianas.",
     "miku": "Curiosa y rapida; hace las preguntas que haria el publico y exagera las reacciones.",
     "luka": "Seria y precisa; corrige mitos con datos y remata con humor seco.",
     "rin": "Impulsiva; propone ideas locas que los demas desmontan.",
     "kaito": "Hermano mayor tranquilo y bonachon; baja los dramas con calma y analogias de cocina (y de helado).",
-    "neru": "Alivio comico: pegada al celular, sarcastica y floja; comenta todo como si fuera chisme de redes.",
+    "neru": "MUDA (no tiene voicebank oficial): nunca tiene dialogo. Pegada al celular; su unica 'voz' es el sonido del celular (sfx_neru_phone). Aparece como listener ([LISTEN: ..., neru:reaccion]) y reacciona con {REACT:neru:x}{SFX:sfx_neru_phone}; los demas comentan lo que hace o le responden como si hubiera dicho algo.",
     "len": "Escéptico y bromista; desconfia del hype y pide pruebas."
   }
 }

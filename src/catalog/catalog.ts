@@ -329,6 +329,8 @@ export const buildCatalog = async (cfg: EngineConfig, project?: ProjectContext):
       anchor: ch.anchor,
       avatars,
       ...(Object.keys(variants).length ? { variants } : {}),
+      ...(ch.voice?.mute ? { mute: true } : {}),
+      ...(ch.voice?.signatureSfx ? { signatureSfx: ch.voice.signatureSfx } : {}),
     };
     characterLicenses[id] = ch.license?.license_status ?? "unknown";
     if (characterLicenses[id] === "unknown") {

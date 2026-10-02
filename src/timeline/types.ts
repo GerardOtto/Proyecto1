@@ -11,6 +11,7 @@ export const EVENT_TYPES = [
   "subtitle_emphasis",
   "pause",
   "sfx",
+  "sticker",
 ] as const;
 export type EventType = (typeof EVENT_TYPES)[number];
 
@@ -72,7 +73,9 @@ export type TimelineEvent =
   | ({ type: "meme_explosion"; meme?: string; sfx?: string; durationMs?: number } & EventAnchor)
   | ({ type: "subtitle_emphasis"; words?: string[]; color?: string } & EventAnchor)
   | ({ type: "pause"; durationMs?: number } & EventAnchor)
-  | ({ type: "sfx"; sfx: string; volume?: number } & EventAnchor);
+  | ({ type: "sfx"; sfx: string; volume?: number } & EventAnchor)
+  /** Sticker de reaccion (ADR 0010): imagen breve junto al personaje que reacciona; sin flash ni sacudida. */
+  | ({ type: "sticker"; sticker: string; sfx?: string; volume?: number; character?: string; durationMs?: number } & EventAnchor);
 
 export type EventShorthand =
   | "camera_zoom"
@@ -145,6 +148,10 @@ export interface CharacterConfig {
     flite?: { voice?: string };
     /** Audio reutilizable del saludo recurrente (ruta relativa al repo). */
     greeting?: string;
+    /** Personaje mudo: nunca tiene dialogo; aparece como listener y "habla" con su SFX de firma (ADR 0011). */
+    mute?: boolean;
+    /** SFX que funciona como su "voz" (p. ej. el celular de Neru); solo suena con ella en pantalla. */
+    signatureSfx?: string;
   };
   license?: LicenseInfo;
 }
@@ -199,6 +206,8 @@ export interface AssetEntry {
   license_status: LicenseStatus;
   description?: string;
   notes?: string;
+  /** Personajes que aparecen en la imagen (pares, ADR 0011): solo se usa si todos estan en el video. */
+  characters?: string[];
 }
 
 export interface AssetsFile {
@@ -346,6 +355,21 @@ export interface RenderConfig {
     };
     /** B-roll: duracion de cada clip y hueco minimo que vale la pena rellenar. */
     broll?: { clipMs: number; minMs: number };
+    /** Sticker de reaccion (ADR 0010): esquina inferior del area de visuales, del lado del personaje. */
+    sticker?: {
+      durationMs: number;
+      /** Lado mayor del sticker en px. */
+      size: number;
+      popInMs: number;
+      popOutMs: number;
+      /** Inclinacion maxima (grados, determinista por semilla). */
+      tiltDeg: number;
+      /** Separacion desde el borde del area de visuales. */
+      inset: number;
+      /** SFX por defecto si el evento no trae uno (null = silencio). */
+      sfx: string | null;
+      volume: number;
+    };
   };
 }
 
@@ -365,6 +389,10 @@ export interface ResolvedCatalog {
       avatars: Record<string, string>;
       /** reaccion -> [principal, ...variantes] (solo reacciones con variantes). */
       variants?: Record<string, string[]>;
+      /** Mudo: sin dialogo propio (ADR 0011). */
+      mute?: boolean;
+      /** SFX de firma (su "voz" si es mudo). */
+      signatureSfx?: string;
     }
   >;
   /** alias o canonica -> canonica */

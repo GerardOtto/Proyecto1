@@ -65,6 +65,9 @@ COMO ocurre (tiempos exactos, posiciones, animaciones). No tienes libertad pixel
 - meme_explosion: target = id de meme ("" = meme por defecto).
 - subtitle_emphasis: words = palabras exactas del dialogo a resaltar.
 - sfx: target = id de sfx.
+- sticker: target = id de un meme con tag "sticker" (gatos, peras, nugget...); character = quien
+  reacciona (aparece en su lado de la pantalla). Reaccion breve (~1.3 s) sin flash: 2-5 por video, en
+  momentos de sorpresa, burla, error o remate; nunca dos seguidos ni en el mismo turno que un meme.
 - pause: micro-pausa (solo si aporta al chiste).
 
 ## Duracion

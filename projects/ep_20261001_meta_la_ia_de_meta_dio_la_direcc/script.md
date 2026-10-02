@@ -56,7 +56,7 @@ Final feliz: el comprador se fue sin el teclado, pero se reconciliaron {SFX:sfx_
 ## punchline
 [TETO:riendo]
 [LISTEN: luka:neutral]
-{SHAKE}{SFX:sfx_vine_boom:0.6}¡Yo le doy "Permitir siempre" a todo! A las cookies, a las notificaciones, a mi tía...
+{SHAKE}{SFX:sfx_vine_boom:0.6}¡Yo le doy "Permitir siempre" a todo! A las cookies, por eso estoy gorda... a las notificaciones, a mi tía...
 
 [LUKA:feliz]
 [LISTEN: teto:shocked]

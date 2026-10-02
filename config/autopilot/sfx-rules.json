@@ -2,7 +2,7 @@
   "$comment": "Director de SFX automatico. Solo actua en bloques SIN efectos marcados a mano. Elige por TAGS del catalogo (config/assets.json), no por id, para que los SFX nuevos se usen solos. anchor: start = primera palabra, end = ultima.",
   "maxPerVideo": 7,
   "minBlocksBetween": 1,
-  "excludeTags": ["reservado"],
+  "excludeTags": ["reservado", "solo_personaje"],
   "rules": [
     { "id": "hook_drama", "when": { "section": ["hook"] }, "pickTags": ["hook"], "volume": 0.5, "anchor": "end" },
     { "id": "shock", "when": { "reaction": ["shocked", "gritando"] }, "pickTags": ["drama", "enfasis"], "volume": 0.55, "anchor": "start" },

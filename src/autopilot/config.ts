@@ -31,7 +31,46 @@ export interface CastingConfig {
   roles: { host: string[]; foil: string[]; guest: string[] };
   pairsAvoidRepeatWindow: number;
   guestProbability: number;
+  /** Personajes mudos que pueden aparecer de cameo (ADR 0011). */
+  cameo?: { characters: string[]; probability: number };
   personalities: Record<string, string>;
+}
+
+/** Contexto de los personajes (lore) para referencias PASIVAS en los guiones (ADR 0011). */
+export interface LoreConfig {
+  rules: string[];
+  characters: Record<string, string[]>;
+  /** Contexto compartido: se ofrece si al menos `min` de sus personajes estan en el episodio. */
+  shared: Array<{ id: string; characters: string[]; min: number; facts: string[] }>;
+  /** Memes y canciones de la comunidad: se ofrecen si alguno de sus personajes esta (o si no tiene personajes). */
+  community?: Array<{ id: string; characters: string[]; facts: string[] }>;
+  /** Temas (tags) con los que conecta cada personaje: el casting prefiere afinidad con el tema (ADR 0012). */
+  affinities?: Record<string, string[]>;
+}
+
+/** Escenarios (ADR 0012): fondo + lugar del que los personajes son conscientes. */
+export interface SettingDef {
+  label: string;
+  background: string;
+  tags: string[];
+  awareness: string[];
+}
+export interface SettingsConfig {
+  settings: Record<string, SettingDef>;
+  byCategory: Partial<Record<TopicCategory, string[]>>;
+}
+
+/** Narrativas secundarias entre episodios (ADR 0012). */
+export interface ArcDef {
+  id: string;
+  label: string;
+  character: string;
+  minEpisodesBeforeFinale: number;
+  stages: Array<{ from: number; label: string; beat: string }>;
+  finale: string;
+}
+export interface ArcsConfig {
+  arcs: ArcDef[];
 }
 
 export interface ThemeDef {
@@ -86,6 +125,9 @@ export interface AutopilotConfig {
   themes: ThemesConfig;
   sfx: SfxRulesConfig;
   humor: HumorConfig;
+  lore: LoreConfig;
+  settings: SettingsConfig;
+  arcs: ArcsConfig;
 }
 
 const cfgFile = (name: string) => fromRepo("config/autopilot", name);
@@ -105,5 +147,8 @@ export const loadAutopilotConfig = (): AutopilotConfig => {
     themes: readJson<ThemesConfig>(cfgFile("themes.json")),
     sfx: readJson<SfxRulesConfig>(cfgFile("sfx-rules.json")),
     humor: readJson<HumorConfig>(cfgFile("humor.json")),
+    lore: readJson<LoreConfig>(cfgFile("lore.json")),
+    settings: readJson<SettingsConfig>(cfgFile("settings.json")),
+    arcs: readJson<ArcsConfig>(cfgFile("arcs.json")),
   };
 };

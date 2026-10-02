@@ -69,6 +69,11 @@ volumen opcional (0-1). Al aparecer cada visual o captura suena un "pop" automat
 (`render.json > events.visual.sfx`), asi que no hace falta marcarlo a mano. Tras `build-timeline` se
 convierten en milisegundos exactos segun el audio real.
 
+`{STICKER:id}` muestra un **sticker de reaccion** (~1.3 s, sin flash ni sacudida) en la esquina del
+area de visuales del lado de quien habla. Opcionales en cualquier orden: SFX, volumen y personaje que
+reacciona: `{STICKER:meme_gato_sorprendido:sfx_oohh:0.7}`, `{STICKER:meme_nugget:luka}`. Sin SFX suena
+el pop de `render.json > events.sticker.sfx`. Stickers = assets `meme` con tag `sticker`. ADR 0010.
+
 `*palabra*` marca la palabra para `subtitle_emphasis` (los asteriscos no se leen en el TTS).
 
 ## Relleno contextual (`[BROLL: a, b]`)

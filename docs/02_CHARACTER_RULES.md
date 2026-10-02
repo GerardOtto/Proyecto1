@@ -16,8 +16,20 @@ Ningun guion ni timeline puede cambiar color, escala o anclaje de un personaje.
 
 Los colores son una propuesta de implementacion, no colores oficiales. Ajustarlos al material real.
 Nota: luka/teto y rin/len/neru tienen colores cercanos; el nombre del personaje se muestra sobre cada
-pagina de subtitulos para desambiguar. Kaito y Neru no tienen voz de Fish Audio todavia: el autopiloto
-no los elige hasta que se configure `voice.fish.referenceId`.
+pagina de subtitulos para desambiguar. Kaito no tiene voz de Fish Audio todavia: el autopiloto no lo
+elige hasta que se configure `voice.fish.referenceId`.
+
+**Neru es muda** (no tiene voicebank oficial; ADR 0011): `voice.mute` + `voice.signatureSfx:
+sfx_neru_phone`. Nunca tiene dialogo (error `MUTE_CHARACTER_SPEAKS`); aparece como listener y
+"contesta" con `{REACT:neru:x}{SFX:sfx_neru_phone}`. Su celular solo suena con ella en pantalla
+(aviso `SIGNATURE_SFX_WITHOUT_OWNER`). En el autopiloto entra como cameo, no como rol con dialogo.
+
+**Imagenes en pares** (`pair_<a>_<b>_<accion>`, `assets/characters/pares/`): solo si ambos personajes
+aparecen en el video (error `PAIR_CHARACTER_ABSENT`). Se usan con `[VISUAL:]` o `{STICKER:}`.
+
+**Contexto de personajes**: `config/autopilot/lore.json` (Triple Baka, Teto quimera de 31 anos que se
+cree gorda y a quien Miku y Neru molestan por comer mucho, el puerro de Miku, Neru sin voicebank...). Los guiones lo usan de forma PASIVA: 1-2
+detalles por episodio dentro de una linea, nunca como explicacion.
 
 Campos por personaje: `displayName`, `subtitleColor`, `defaultScale` (alto del avatar = escala x 1920),
 `anchor` (lado preferido), `avatarDir`, `reactions` (reaccion canonica -> archivo), `voice`

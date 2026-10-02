@@ -51,7 +51,10 @@ personajes con avatares placeholder), `--no-graphics`, `--allow-missing-audio`.
 | `sources.json` | Feeds (url, idioma, peso), palabras clave del nicho con peso, lista de bloqueo, umbral y vida media de frescura. **Verificar URLs con `--check-feeds`.** |
 | `evergreen.json` | 29 temas con puntos (4-6), preguntas del foil, remate, idea final, visual y fuentes. Schema: `schemas/evergreen.schema.json`. |
 | `formats.json` | Formatos (news_explainer, concept_lesson, controversy_story, myth_vs_fact), estructura y duracion objetivo. |
-| `casting.json` | Personajes por rol (host / foil / guest), personalidades para el LLM, probabilidad de invitado. |
+| `casting.json` | Personajes por rol (host / foil / guest), personalidades para el LLM, probabilidad de invitado y `cameo` mudo (Neru, ADR 0011). |
+| `lore.json` | Contexto de cada personaje, dinamicas compartidas, memes de la comunidad (Teto pera, Mesmerizer, Rabbit Hole, Gumi...) y afinidades personaje-tema (ADR 0011/0012). |
+| `settings.json` | Escenarios (playa, cafeteria, oficina, parque, aula, habitacion, servidores, konbini, estudio): fondo + tags + conciencia del lugar (ADR 0012). |
+| `arcs.json` | Narrativas secundarias por etapas (Neru consigue su voz; final solo por decision humana tras 10+ videos). |
 | `themes.json` | Temas visuales: fondo, gradiente, colores de tarjetas y acento; temas por categoria. Los colores de subtitulos de cada personaje NO cambian (identidad). |
 | `sfx-rules.json` | Reglas del director de SFX (por tags del catalogo, maximo por video, separacion). |
 | `humor.json` | Saludo, memes, preguntas/reacciones/malentendidos del foil, remates genericos, CTA. |

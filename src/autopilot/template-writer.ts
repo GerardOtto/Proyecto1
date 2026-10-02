@@ -40,7 +40,7 @@ export const writeTemplateScript = (
   assets: WriterAssets,
   catalog: Catalog,
   engine: EngineConfig,
-  minMs = 64_000,
+  minMs = 66_000,
 ): WrittenScript => {
   const { topic, casting } = plan;
   if (topic.kind !== "evergreen") throw new Error("El escritor de plantilla solo admite temas evergreen (usa --writer llm para noticias)");
@@ -115,7 +115,15 @@ export const writeTemplateScript = (
   }
   const punch = topic.punchline ?? { line: fill(pick(humor.punchlines, s("punch")), vars), reply: pick(humor.punchlineReplies, s("reply")) };
   blocks.push(say("punchline", foil, "shocked", punch.line, [listen(host)]));
-  blocks.push(say("punchline", host, "riendo", punch.reply, [listen(foil, "riendo")]));
+  // Cameo mudo (ADR 0011): escucha el remate y "contesta" con su SFX de firma al final.
+  const cameo = casting.cameo;
+  const cameoSfx = cameo ? engine.characters.characters[cameo]?.voice?.signatureSfx : undefined;
+  if (cameo && cameoSfx && catalog.entries[cameoSfx]) {
+    blocks.push(say("punchline", host, "riendo", `${punch.reply} {REACT:${cameo}:broma}{SFX:${cameoSfx}}`, [`[LISTEN: ${foil}:riendo, ${cameo}:neutral]`]));
+    notes.push(`cameo mudo: ${cameo}`);
+  } else {
+    blocks.push(say("punchline", host, "riendo", punch.reply, [listen(foil, "riendo")]));
+  }
   if (!casting.guest) blocks.push(say("takeaway", host, "feliz", topic.takeaway, [listen(foil, "feliz")]));
   for (const [who, line] of humor.ctaLines) {
     const id = fill(who, vars);

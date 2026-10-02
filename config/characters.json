@@ -473,13 +473,8 @@
         "neutral": "neutral.png"
       },
       "voice": {
-        "fish": {
-          "referenceId": "",
-          "speed": 1
-        },
-        "flite": {
-          "voice": "slt"
-        }
+        "mute": true,
+        "signatureSfx": "sfx_neru_phone"
       },
       "license": {
         "source": "Pinterest (pinterest.com/chaewonjames, tableros por personaje): renders MMD de terceros; fondo eliminado con scripts/remove-bg.py (T_LO=7)",

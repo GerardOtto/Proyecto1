@@ -129,17 +129,41 @@ export const validateTimeline = (
     if (HUMOR_REACTIONS.has(reaction)) humorSignals += 0.5;
   };
 
+  // Quien se ve en cada escena (como el plan: listener automatico = hablante anterior; escena sin
+  // dialogo ni listeners = se mantienen los de la anterior) y quien aparece en todo el video.
+  const presentInVideo = new Set<string>();
+  let prevVisible = new Set<string>();
+  let lastSpeaker: string | undefined;
+  const signatureOwner = new Map<string, string>();
+  for (const [id, ch] of Object.entries(resolved.characters)) if (ch.signatureSfx) signatureOwner.set(ch.signatureSfx, id);
+
   scenes.forEach((s, i) => {
     const where = `scenes[${i}] (${s.id})`;
     const duration = s.endMs - s.startMs;
     if (s.character) {
       checkAvatar(s.character, s.avatar, where);
       pushAvatar(s.character, s.startMs, s.avatar);
+      // Personaje mudo (ADR 0011): solo escucha y reacciona; su "voz" es su SFX de firma.
+      if (resolved.characters[s.character]?.mute && s.dialogue?.trim()) {
+        add("error", "characters", "MUTE_CHARACTER_SPEAKS", `${s.character} es mudo: no puede tener dialogo (ponlo en listeners y usa su SFX de firma)`, where);
+      }
     }
     const onScreen = new Set<string>(s.character ? [s.character] : []);
     for (const l of s.listeners ?? []) {
       checkAvatar(l.character, l.avatar, `${where}.listeners`);
       onScreen.add(l.character);
+    }
+    const visible = s.character || s.listeners ? new Set(onScreen) : new Set(prevVisible);
+    if (s.character && !s.listeners && lastSpeaker && lastSpeaker !== s.character) visible.add(lastSpeaker);
+    for (const c of visible) presentInVideo.add(c);
+    prevVisible = visible;
+    if (s.character) lastSpeaker = s.character;
+    for (const e of sceneEvents(s)) {
+      const sfxId = e.type === "sfx" || e.type === "meme_explosion" || e.type === "sticker" ? e.sfx : undefined;
+      const owner = sfxId ? signatureOwner.get(sfxId) : undefined;
+      if (owner && !visible.has(owner)) {
+        add("warning", "characters", "SIGNATURE_SFX_WITHOUT_OWNER", `"${sfxId}" es la firma de ${owner}, que no esta en pantalla en esta escena`, where);
+      }
     }
     if (onScreen.size > cfg.layout.maxCharactersOnScreen && !s.crowd) {
       add("error", "characters", "TOO_MANY_ON_SCREEN", `${onScreen.size} personajes en pantalla (max ${cfg.layout.maxCharactersOnScreen}); usar crowd: true solo si el evento lo justifica`, where);
@@ -176,6 +200,22 @@ export const validateTimeline = (
         case "sfx":
           checkAsset(e.sfx, ["sfx"], ew);
           break;
+        case "sticker": {
+          humorSignals += 1;
+          checkAsset(e.sticker, ["meme", "image"], ew);
+          const st = cfg.events.sticker;
+          if (e.sfx) checkAsset(e.sfx, ["sfx"], ew);
+          else if (st?.sfx && catalog.entries[st.sfx]) assetsUsed.add(st.sfx);
+          if (e.character) {
+            if (!resolved.characters[e.character]) {
+              add("error", "avatar", "UNKNOWN_CHARACTER", `Personaje "${e.character}" no existe en config/characters.json`, ew);
+            } else if (s.listeners && e.character !== s.character && !s.listeners.some((l) => l.character === e.character)) {
+              // El sticker se coloca del lado del personaje: si no esta en pantalla, queda junto a nadie.
+              add("warning", "events", "STICKER_CHARACTER_OFFSCREEN", `${e.character} no esta en pantalla en esta escena`, ew);
+            }
+          }
+          break;
+        }
         case "subtitle_emphasis":
           if (e.words && s.dialogue) {
             const present = new Set(splitWords(s.dialogue).map(normalizeWord));
@@ -214,6 +254,11 @@ export const validateTimeline = (
   for (const id of assetsUsed) {
     if (catalog.entries[id]?.tags.includes("reservado")) {
       add("warning", "assets", "ASSET_RESERVED", `"${id}" esta reservado (${catalog.entries[id]!.description ?? "ver catalogo"})`);
+    }
+    // Imagenes en pares (ADR 0011): solo si TODOS sus personajes aparecen en el video.
+    const missing = (catalog.entries[id]?.characters ?? []).filter((c) => !presentInVideo.has(c));
+    if (missing.length > 0) {
+      add("error", "assets", "PAIR_CHARACTER_ABSENT", `"${id}" muestra a ${missing.join(", ")}, que no aparece en el video`);
     }
   }
 

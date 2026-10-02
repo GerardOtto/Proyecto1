@@ -64,6 +64,14 @@
               "description": "Audio reutilizable del saludo recurrente (audio.greeting.text en render.json), ruta relativa al repo.",
               "type": "string",
               "pattern": "^[^\\\\]+\\.(wav|mp3|m4a|ogg|flac)$"
+            },
+            "mute": {
+              "description": "Personaje mudo (ADR 0011): nunca tiene dialogo; aparece como listener y se expresa con su SFX de firma.",
+              "type": "boolean"
+            },
+            "signatureSfx": {
+              "description": "Id del asset sfx que funciona como su voz/firma; solo debe sonar con el personaje en pantalla.",
+              "type": "string"
             }
           }
         },

@@ -23,7 +23,7 @@ El Go es un juego de mesa milenario con tantas posiciones posibles que superan a
 ## development
 [LUKA:confundido]
 [LISTEN: miku:neutral]
-¿Más posiciones que átomos?
+¿Más posiciones que átomos? ¿Más que atunes en el mar?
 
 [MIKU:feliz]
 [LISTEN: luka:neutral]

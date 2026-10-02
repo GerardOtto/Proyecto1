@@ -60,8 +60,8 @@ npm run generate -- --project projects/demo_001 --tts fish --repro
    (`assets/characters/SOURCES.md`), todos `license_status: unknown`. Pendiente: documentar autores y
    licencias de avatares, memes, logos y visuales.
 2. **Voces**: elegir/registrar un `reference_id` de Fish Audio por personaje y verificar sus derechos.
-   Faltan Rin, Len, Kaito y Neru (sin voz no entran al casting automatico); al tener la de Neru, quitar
-   el tag `reservado` de `sfx_neru_phone`.
+   Faltan Rin, Len y Kaito (sin voz no entran al casting automatico). Neru es muda por diseno: su
+   "voz" es `sfx_neru_phone` y entra como cameo (ADR 0011).
 3. **Primera corrida real** con Fish Audio + whisper.cpp (`--transcriber whisper-cpp`) y revisar la
    coincidencia de alineado en `transcript/words.json` (warning si < 60%).
 4. **Primera corrida real del director LLM** (`--director anthropic`) con un guion libre; ajustar

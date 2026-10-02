@@ -137,15 +137,19 @@ export const runAutopilotEpisode = async (
     allowPlaceholder: opts.allowPlaceholder,
     canWriteNews,
   });
-  log.ok(`plan: ${plan.episodeId} | ${plan.topic.kind}:${plan.topic.id} | ${plan.format} | host=${plan.casting.host} foil=${plan.casting.foil}${plan.casting.guest ? ` guest=${plan.casting.guest}` : ""} | tema ${plan.theme}`);
+  log.ok(`plan: ${plan.episodeId} | ${plan.topic.kind}:${plan.topic.id} | ${plan.format} | host=${plan.casting.host} foil=${plan.casting.foil}${plan.casting.guest ? ` guest=${plan.casting.guest}` : ""}${plan.casting.cameo ? ` cameo=${plan.casting.cameo}` : ""} | tema ${plan.theme}${plan.setting ? ` | escenario ${plan.setting}` : ""}`);
 
   // Proyecto
   const projectDir = fromRepo("projects", plan.episodeId);
   fs.mkdirSync(projectDir, { recursive: true });
   const theme = ap.themes.themes[plan.theme]!;
   const baseCatalog = await buildCatalog(engine);
-  const background = baseCatalog.entries[theme.background] ? theme.background : "bg_tech_loop";
-  if (background !== theme.background) log.warn(`fondo ${theme.background} no existe (npm run autopilot -- --make-backgrounds); se usa bg_tech_loop`);
+  // El escenario (ADR 0012) manda sobre el fondo del tema visual; si su fondo no existe, el del tema.
+  const settingBg = plan.setting ? ap.settings.settings[plan.setting]?.background : undefined;
+  const wanted = settingBg && baseCatalog.entries[settingBg] ? settingBg : theme.background;
+  if (settingBg && wanted !== settingBg) log.warn(`fondo del escenario ${settingBg} no existe (npm run graphics); se usa el del tema`);
+  const background = baseCatalog.entries[wanted] ? wanted : "bg_tech_loop";
+  if (background !== wanted) log.warn(`fondo ${wanted} no existe (npm run autopilot -- --make-backgrounds); se usa bg_tech_loop`);
 
   const graphics = opts.graphics === false ? { assets: [], files: [] } : await generateEpisodeGraphics(plan, theme, projectDir);
   const news =
